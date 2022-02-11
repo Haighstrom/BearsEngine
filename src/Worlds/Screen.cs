@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using BearsEngine.Tweens;
-using HaighFramework;
+﻿using HaighFramework;
 using HaighFramework.OpenGL4;
-using BearsEngine.Graphics;
 
 namespace BearsEngine.Worlds
 {
@@ -94,7 +90,7 @@ namespace BearsEngine.Worlds
 
         public List<E> GetEntities<E>(bool considerChildren = true) => _container.GetEntities<E>(considerChildren);
 
-        public E Collide<E>(Point p, bool considerChildren = true)
+        public E Collide<E>(IPoint<float> p, bool considerChildren = true)
             where E : ICollideable
             => _container.Collide<E>(p, considerChildren);
 
@@ -106,7 +102,7 @@ namespace BearsEngine.Worlds
             where E : ICollideable
             => _container.Collide<E>(i, considerChildren);
 
-        public List<E> CollideAll<E>(Point p, bool considerChildren = true)
+        public List<E> CollideAll<E>(IPoint<float> p, bool considerChildren = true)
             where E : ICollideable
             => _container.CollideAll<E>(p, considerChildren);
 
@@ -125,10 +121,10 @@ namespace BearsEngine.Worlds
         public virtual void End() { }
 
         #region OnResize
-        public virtual void OnResize(object sender, SizeEventArgs e)
+        public virtual void OnResize()
         {
-            OpenGL.Viewport(0, 0, (int)e.Width, (int)e.Height);
-            HV.OrthoMatrix = Matrix4.CreateOrtho(e.Width, e.Height);
+            OpenGL.Viewport(HV.Window.Viewport);
+            HV.OrthoMatrix = Matrix4.CreateOrtho(HV.Window.ClientSize.X, HV.Window.ClientSize.Y);
         }
         #endregion
         #endregion
@@ -158,7 +154,7 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Methods
-        protected void OnFocusChanged(object sender, BoolEventArgs e) => Active = e.Value;
+        protected void OnFocusChanged(object? sender, BoolEventArgs e) => Active = e.Value;
         #endregion
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework;
-using BearsEngine.Tweens;
+﻿using HaighFramework;
 using BearsEngine.Worlds.Controllers;
 
 namespace BearsEngine.Worlds
@@ -197,7 +193,7 @@ namespace BearsEngine.Worlds
 
         public List<E> GetEntities<E>(bool considerChildren = true) => _container.GetEntities<E>(considerChildren);
 
-        public E Collide<E>(Point p, bool considerChildren = true)
+        public E Collide<E>(IPoint<float> p, bool considerChildren = true)
             where E : ICollideable
             => _container.Collide<E>(p, considerChildren);
 
@@ -209,7 +205,7 @@ namespace BearsEngine.Worlds
             where E : ICollideable
             => _container.Collide<E>(i, considerChildren);
 
-        public List<E> CollideAll<E>(Point p, bool considerChildren = true)
+        public List<E> CollideAll<E>(IPoint<float> p, bool considerChildren = true)
             where E : ICollideable
             => _container.CollideAll<E>(p, considerChildren);
 
@@ -228,7 +224,7 @@ namespace BearsEngine.Worlds
         public bool Collideable { get; set; } = true;
 
         #region Collides
-        public virtual bool Collides(Point p) => WindowPosition.Contains(p);
+        public virtual bool Collides(IPoint<float> p) => WindowPosition.Contains(p);
 
         public virtual bool Collides(IRect<float> r) => WindowPosition.Intersects(r);
 
@@ -275,7 +271,7 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Properties
-        public bool IsOnScreen => HV.Window.ClientZeroed.Intersects(WindowPosition);
+        public bool IsOnScreen => true;//todo: HEngine2.Window.ClientSize.ToRect().Intersects(WindowPosition);
 
         #region Angle
         /// <summary>
@@ -314,7 +310,7 @@ namespace BearsEngine.Worlds
                 default:
                     throw new HException("directionFromEntity case not handled in Entity.AddToolTip");
             }
-            HV.Screen.Add(stt);
+            //todo:fix HV.Screen.Add(stt);
         }
         #endregion
 
@@ -324,14 +320,15 @@ namespace BearsEngine.Worlds
         /// </summary>
         protected void ClampWithinWindow()
         {
-            if (WindowPosition.Left < 0)
-                X = Parent.GetLocalPosition(new Point()).X;
-            if (WindowPosition.Right > HV.Window.ClientZeroed.Right)
-                X = Parent.GetLocalPosition(new Point(HV.Window.ClientZeroed.Right, 0)).X - W;
-            if (WindowPosition.Top < 0)
-                Y = Parent.GetLocalPosition(new Point()).Y;
-            if (WindowPosition.Bottom > HV.Window.ClientZeroed.Bottom)
-                Y = Parent.GetLocalPosition(new Point(0, HV.Window.ClientZeroed.Bottom)).Y - H;
+            throw new NotImplementedException();
+            //if (WindowPosition.Left < 0)
+            //    X = Parent.GetLocalPosition(new Point()).X;
+            //if (WindowPosition.Right > HV.Window.ClientZeroed.Right)
+            //    X = Parent.GetLocalPosition(new Point(HV.Window.ClientZeroed.Right, 0)).X - W;
+            //if (WindowPosition.Top < 0)
+            //    Y = Parent.GetLocalPosition(new Point()).Y;
+            //if (WindowPosition.Bottom > HV.Window.ClientZeroed.Bottom)
+            //    Y = Parent.GetLocalPosition(new Point(0, HV.Window.ClientZeroed.Bottom)).Y - H;
         }
         #endregion
 

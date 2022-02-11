@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework;
-using BearsEngine;
-using BearsEngine.Worlds;
+﻿using BearsEngine.Worlds;
 
 namespace BearsEngine.Tasks
 {
     public class TaskController: AddableBase, IUpdatable
     {
         #region Fields
-        private ITask _currentTask;
+        private ITask? _currentTask;
         #endregion
 
         #region Constructors
-        public TaskController(Func<ITask> getNextTask = null) : this(null, getNextTask) { }
+        public TaskController(Func<ITask>? getNextTask = null) : this(null, getNextTask) { }
 
-        public TaskController(ITask firstTask, Func<ITask> getNextTask = null)
+        public TaskController(ITask? firstTask, Func<ITask>? getNextTask = null)
         {
             CurrentTask = firstTask;
             GetNextTask = getNextTask;
@@ -49,10 +44,10 @@ namespace BearsEngine.Tasks
         #endregion
         #endregion
 
-        public Func<ITask> GetNextTask { get; set; }
+        public Func<ITask>? GetNextTask { get; set; }
 
         #region CurrentTask
-        public ITask CurrentTask
+        public ITask? CurrentTask
         {
             get => _currentTask;
             set

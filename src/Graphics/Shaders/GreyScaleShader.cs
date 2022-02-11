@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using HaighFramework;
+﻿using HaighFramework;
 using HaighFramework.OpenGL4;
 
 namespace BearsEngine.Graphics

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HaighFramework;
-using HaighFramework.Input;
+﻿using HaighFramework;
 using HaighFramework.OpenGL4;
 using BearsEngine.Graphics;
 
@@ -20,12 +14,11 @@ namespace BearsEngine.Worlds
         private CameraMSAAShader _mSAAShader;
 
         //temporary mess of properties
-        public HaighFramework.OpenGL4.MSAA_Samples MSAASamples { get; set; } = MSAA_Samples.Disabled; //todo: trigger resize if this changes?
+        public MSAA_Samples MSAASamples { get; set; } = MSAA_Samples.Disabled; //todo: trigger resize if this changes?
         private uint _frameBufferShaderPassID;
         protected uint VertexBuffer { get; private set; }
         protected Vertex[] Vertices { get; set; }
         private IRect<float> _view = new Rect();
-        private float _x, _y, _w, _h;
         private int _layer;
         private IContainer _container;
         private float _tileWidth, _tileHeight;
@@ -137,7 +130,8 @@ namespace BearsEngine.Worlds
             //Set normal blend function for within the layers
             OpenGL.BlendFunc(BlendingFactorSrc.One, BlendingFactorDest.OneMinusSrcAlpha);
 
-            //Set the viewport to match the size of the texture we are now drawing to - the FBO
+            //Save the previous viewport and set the viewport to match the size of the texture we are now drawing to - the FBO
+            Rect<int> prevVP = OpenGL.GetViewport();
             OpenGL.Viewport(0, 0, (int)W, (int)H);
 
             //Locally save the current render target, we will then set this camera as the current render target for child cameras, then put it back
@@ -186,8 +180,8 @@ namespace BearsEngine.Worlds
             //Set some other blend fucntion when render the FBO texture which apparantly lets the layer alpha blend with the one beneath?
             OpenGL.BlendFunc(BlendingFactorSrc.One, BlendingFactorDest.OneMinusSrcAlpha);
 
-            //This needs to be equal to the FBO of what's being drawn to. Usually the screen, but. . .
-            OpenGL.Viewport(0, 0, ViewportForcedX ?? HV.Window.Width, ViewportForcedY ?? HV.Window.Height);
+            //reset viewport
+            OpenGL.Viewport(prevVP);
 
             Matrix4 mv = modelView;
             if (Angle != 0)
@@ -270,7 +264,7 @@ namespace BearsEngine.Worlds
 
         public E Remove<E>(E e) where E : IAddable => _container.Remove(e);
 
-        public void RemoveAll(bool cascadeToChildren) => _container.RemoveAll(cascadeToChildren);
+        public void RemoveAll(bool cascadeToChildren = true) => _container.RemoveAll(cascadeToChildren);
 
         public void RemoveAll<T>(bool cascadeToChildren = true) where T : IAddable => _container.RemoveAll<T>(cascadeToChildren);
 
@@ -288,13 +282,13 @@ namespace BearsEngine.Worlds
 
         public List<E> GetEntities<E>(bool considerChildren = true) => _container.GetEntities<E>(considerChildren);
 
-        public E Collide<E>(Point p, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(p, considerChildren);
+        public E Collide<E>(IPoint<float> p, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(p, considerChildren);
 
         public E Collide<E>(IRect<float> r, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(r, considerChildren);
 
         public E Collide<E>(ICollideable i, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(i, considerChildren);
 
-        public List<E> CollideAll<E>(Point p, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(p, considerChildren);
+        public List<E> CollideAll<E>(IPoint<float> p, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(p, considerChildren);
 
         public List<E> CollideAll<E>(IRect<float> r, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(r, considerChildren);
 
@@ -383,7 +377,8 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Resize
-        public void Resize(Point newSize) => Resize(newSize.X, newSize.Y);
+        public void Resize(IPoint<float> newSize) => Resize(newSize.X, newSize.Y);
+        public void Resize(IPoint<int> newSize) => Resize(newSize.X, newSize.Y);
 
         public void Resize(float newW, float newH)
         {
@@ -435,15 +430,6 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Properties
-        /// <summary>
-        /// todo: horrible hacks to make this work, please fix
-        /// </summary>
-        public int? ViewportForcedX { get; set; }
-        /// <summary>
-        /// todo: horrible hacks to make this work, please fix
-        /// </summary>
-        public int? ViewportForcedY { get; set; }
-
         #region Angle
         /// <summary>
         /// Angle in Degrees

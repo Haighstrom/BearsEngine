@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
+using System.Text.Json;
 using System.Xml.Serialization;
-using System.IO;
 using HaighFramework;
-using Newtonsoft.Json;
 
 namespace BearsEngine
 {
@@ -169,7 +164,7 @@ namespace BearsEngine
                 {
                     lineData[i] = data[i, j];
                 }
-                line = String.Join(",", lineData);
+                line = string.Join(",", lineData);
                 csv.AppendLine(line);
             }
 
@@ -248,7 +243,7 @@ namespace BearsEngine
         /// <summary>
         /// Converts a struct to its JSON string equivalent
         /// </summary>
-        public static string SerialiseToJSON<M>(M @object, bool indent = false) => JsonConvert.SerializeObject(@object, indent ? Formatting.Indented : Formatting.None);
+        public static string SerialiseToJSON<M>(M @object, bool indent = false) => JsonSerializer.Serialize(@object, new JsonSerializerOptions { WriteIndented = indent });
         #endregion
 
         #region SaveJSON
@@ -262,7 +257,7 @@ namespace BearsEngine
         /// <summary>
         /// Constructs an instance of a struct from its JSON string equivalent
         /// </summary>
-        public static M DeserialiseFromJSON<M>(string json, bool indented = false) => JsonConvert.DeserializeObject<M>(json, new JsonSerializerSettings() { Formatting = indented ? Formatting.Indented : Formatting.None });
+        public static M DeserialiseFromJSON<M>(string json, bool indented = false) => JsonSerializer.Deserialize<M>(json, new JsonSerializerOptions { WriteIndented = indented });
         #endregion
 
         #region LoadJSON

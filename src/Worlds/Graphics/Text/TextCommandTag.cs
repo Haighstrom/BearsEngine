@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using HaighFramework;
-
-namespace BearsEngine.Worlds.Graphics.Text
+﻿namespace BearsEngine.Worlds.Graphics.Text
 {
     #region public enum TextCommandType
     /// <summary>

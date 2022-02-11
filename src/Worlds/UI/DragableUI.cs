@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework;
+﻿using HaighFramework;
 
 namespace BearsEngine.Worlds
 {
@@ -40,8 +37,8 @@ namespace BearsEngine.Worlds
             {
                 Dragging = true;
                 OnStartedDragging();
-                _dragStartX = HI.MouseWindowX - (int)X;
-                _dragStartY = HI.MouseWindowY - (int)Y;
+                _dragStartX = (int)(HI.MouseWindowX - X);
+                _dragStartY = (int)(HI.MouseWindowY - Y);
             }
 
             if (Dragging && (HI.MouseLeftUp || !Dragable))

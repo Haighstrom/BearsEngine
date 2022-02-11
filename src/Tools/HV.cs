@@ -1,29 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HaighFramework;
+﻿using HaighFramework;
 using HaighFramework.Input;
 using HaighFramework.Window;
-using BearsEngine.Worlds;
 using BearsEngine.Graphics;
+using HaighFramework.DisplayDevices;
 
 namespace BearsEngine
 {
     public static class HV
     {
-        public static IEngine Engine { get; set; }
-        public static HEngine2 Engine2 { get; set; }
-
-        //Window Info
-        public static IWindow Window => Engine.Window;
-        public static IMouseManager Mouse => Engine.InputManager.MouseManager;
-        public static IKeyboardManager Keyboard => Engine.InputManager.KeyboardManager;
-
-        public static int FramesPerSecond => Engine.RenderFPS;
-        public static int UpdatesPerSecond => Engine.UpdateFPS;
-        //public static decimal MemoryUse { get; set; }
+        #region Engine
+        public static IScene Scene
+        {
+            get => Engine.Instance.Scene;
+            set => Engine.Instance.Scene = value;
+        }
+        public static IWindow Window => Engine.Instance.Window;
+        public static DisplayDeviceManager DisplayDeviceManager => Engine.Instance.DisplayDM;
+        public static IMouseManager Mouse => Engine.Instance.InputDM.MouseManager;
+        public static IKeyboardManager Keyboard => Engine.Instance.InputDM.KeyboardManager;
+        #endregion
 
         //Timing
         public static double GameSpeed { get; set; } = 1;
@@ -40,12 +35,5 @@ namespace BearsEngine
         public static uint LastBoundShader;
 
         public static Dictionary<string, Texture> TextureDictionary { get; set; } = new Dictionary<string, Texture>();
-
-        //Worlds
-        public static Screen Screen
-        {
-            get => Engine.Scene as Screen;
-            set => Engine.Scene = value;
-        }
     }
 }

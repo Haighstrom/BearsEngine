@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace BearsEngine.Tweens
+﻿namespace BearsEngine.Tweens
 {
     /// <summary>
     /// Simple alarm, used for timed events etc

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HaighFramework;
+﻿using HaighFramework;
 
 namespace BearsEngine.Pathfinding
 {
@@ -24,7 +19,12 @@ namespace BearsEngine.Pathfinding
             set { Nodes[x, y] = value; }
         }
 
-        public N this[Point p]
+        public N this[IPoint<int> p]
+        {
+            get { return Nodes[p.X, p.Y]; }
+            set { Nodes[p.X, p.Y] = value; }
+        }
+        public N this[IPoint<float> p]
         {
             get { return Nodes[(int)p.X, (int)p.Y]; }
             set { Nodes[(int)p.X, (int)p.Y] = value; }
@@ -38,7 +38,7 @@ namespace BearsEngine.Pathfinding
         #endregion
 
         #region Methods
-        public bool IsInBounds(Point p) => IsInBounds((int)p.X, (int)p.Y);
+        public bool IsInBounds(IPoint<float> p) => IsInBounds((int)p.X, (int)p.Y);
         public bool IsInBounds(int x, int y) => x >= 0 && x < Width && y >= 0 && y < Height;
 
         #region ResizeGrid

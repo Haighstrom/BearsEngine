@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework;
-using BearsEngine;
-using BearsEngine.Worlds;
-
-namespace BearsEngine
+﻿namespace BearsEngine
 {
     public interface IAttachable<T>
     {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds
 {
     public interface IAddable
     {

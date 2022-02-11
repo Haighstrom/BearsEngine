@@ -1,15 +1,10 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Text;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using HaighFramework;
 using HaighFramework.OpenGL4;
 using BearsEngine.Graphics;
-using System.IO;
 using BearsEngine.Worlds;
-using System.Numerics;
 using BearsEngine.Pathfinding;
 
 namespace BearsEngine
@@ -41,17 +36,10 @@ namespace BearsEngine
         #region Arrays
         public static class Arrays
         {
-            public unsafe static int[,] FillArray(int width, int height, int value)
+            public static int[] FillArray(int size, int value)
             {
-                var ret = new int[width, height];
-
-                fixed (int* a = &ret[0, 0])
-                {
-                    int* b = a;
-                    var span = new Span<int>(b, width * height);
-                    span.Fill(value);
-                }
-
+                var ret = new int[size];
+                Array.Fill(ret, value);
                 return ret;
             }
         }
@@ -314,7 +302,7 @@ namespace BearsEngine
             /// </summary>
             private static Texture GenPaddedTexture(string path, int spriteRows, int spriteColumns, TextureParameter minFilter = TextureParameter.Nearest, TextureParameter magFilter = TextureParameter.Nearest, TextureParameter wrapMode = TextureParameter.ClampToEdge)
             {
-                if (String.IsNullOrEmpty(path)) throw new ArgumentException(path);
+                if (string.IsNullOrEmpty(path)) throw new ArgumentException(path);
                 if (!File.Exists(path)) throw new System.IO.FileNotFoundException(path);
 
                 var t = new Texture()
@@ -638,15 +626,15 @@ namespace BearsEngine
             #endregion
 
             #region Dist
-            public static float Dist(Point p1, Point p2)
+            public static float Dist(IPoint<float> p1, IPoint<float> p2)
             {
                 return (float)Math.Sqrt((p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y));
             }
-            public static float DistSquared(Point p1, Point p2)
+            public static float DistSquared(IPoint<float> p1, IPoint<float> p2)
             {
                 return (p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y);
             }
-            public static float DistGrid(Point p1, Point p2) => Math.Abs(p1.X - p2.X) + Math.Abs(p1.Y - p2.Y);
+            public static float DistGrid(IPoint<float> p1, IPoint<float> p2) => Math.Abs(p1.X - p2.X) + Math.Abs(p1.Y - p2.Y);
             #endregion
 
             #region GetDirection
@@ -794,23 +782,24 @@ namespace BearsEngine
         public static class Pathfinding
         {
             #region ChooseRandomRoute
-            public static List<INode> ChooseRandomRoute(INode startNode, Func<INode, bool> passableTest, int maximumSteps)
+            public static List<INode> ChooseRandomRoute<N>(N startNode, Func<N, bool> passableTest, int maximumSteps)
+                where N : INode
             {
                 int steps = 0;
-                var openNodes = new List<INode>();
+                List<N> openNodes = new();
                 openNodes.Add(startNode);
-                var path = new List<INode>();
-                INode currentNode;
+                List<INode> path = new();
+                N currentNode;
 
                 while (steps <= maximumSteps)
                 {
                     currentNode = openNodes[HF.Randomisation.Rand(openNodes.Count)];
                     //replace open nodes with current node's connections, skipping any already in path
                     openNodes.Clear();
-                    foreach (INode n in currentNode.ConnectedNodes)
+                    foreach (N n in currentNode.ConnectedNodes)
                     {
                         if (passableTest(n) && !path.Contains(n))
-                            openNodes.Insert(HF.Randomisation.Rand(0, openNodes.Count), n);
+                            openNodes.Insert(Randomisation.Rand(0, openNodes.Count), n);
                     }
 
                     path.Add(currentNode);
@@ -823,15 +812,14 @@ namespace BearsEngine
             #endregion
 
             #region GetAStarRoute
-            public static List<INode> GetAStarRoute(INode start, INode end, Func<INode, bool> passableTest)
+            public static List<N>? GetAStarRoute<N>(N start, N end, Func<N, bool> passableTest)
+                where N : INode
             {
-                var openNodes = new List<INode>();
-                var closedNodes = new List<INode>();
+                List<N> openNodes = new();
+                List<N> closedNodes = new();
 
-                INode currentNode = start;
-                INode testNode;
-
-                List<INode> connectedNodes;
+                N currentNode = start;
+                N testNode;
 
                 float f, g, h;
 
@@ -841,13 +829,11 @@ namespace BearsEngine
 
                 while (!currentNode.Equals(end))
                 {
-                    connectedNodes = currentNode.ConnectedNodes;
-
-                    for (int i = 0; i < connectedNodes.Count; ++i)
+                    for (int i = 0; i < currentNode.ConnectedNodes.Count; ++i)
                     {
-                        testNode = connectedNodes[i];
+                        testNode = (N)currentNode.ConnectedNodes[i];
 
-                        if (testNode.Equals(currentNode) || !passableTest(testNode)) 
+                        if (testNode.Equals(currentNode) || !passableTest(testNode))
                             continue;
 
                         g = (float)currentNode.PG + 1;
@@ -888,19 +874,19 @@ namespace BearsEngine
                 }
 
                 return BuildPath(start, end);
-
             }
             #endregion
 
             #region BuildPath
-            private static List<INode> BuildPath(INode start, INode end)
+            private static List<N> BuildPath<N>(N start, N end)
+                where N : INode
             {
-                var path = new List<INode>();
-                INode node = end;
+                List<N> path = new();
+                N node = end;
                 path.Add(node);
                 while (!(node.X == start.X && node.Y == start.Y))
                 {
-                    node = node.ParentNode;
+                    node = (N)node.ParentNode;
 
                     path.Insert(0, node);
                 }
@@ -914,7 +900,8 @@ namespace BearsEngine
             #endregion
 
             #region CompareNodeF
-            private static int CompareNodeF(INode x, INode y)
+            private static int CompareNodeF<N>(N x, N y)
+                where N : INode
             {
                 if (x.PF < y.PF) return -1;
                 else if (x.PF == y.PF) return 0;
@@ -922,7 +909,7 @@ namespace BearsEngine
             }
             #endregion
         }
-#endregion
+        #endregion
 
         #region Randomisation
         public static class Randomisation

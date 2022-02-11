@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using HaighFramework;
-using BearsEngine;
+﻿using HaighFramework;
 using BearsEngine.Worlds;
 
 namespace BearsEngine
@@ -11,7 +8,7 @@ namespace BearsEngine
         IRect<float> WindowPosition { get; }
         bool Collideable { get; set; }
 
-        bool Collides(Point p);
+        bool Collides(IPoint<float> p);
         bool Collides(IRect<float> r);
         bool Collides(ICollideable i);
     }

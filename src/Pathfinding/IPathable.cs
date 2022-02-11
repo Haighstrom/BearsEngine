@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BearsEngine.Pathfinding;
 
-namespace BearsEngine.Pathfinding
+public interface IPathable<N>
+    where N : INode
 {
-    public interface IPathable
-    {
-        INode CurrentNode { get; }
-        bool CanPathThrough(INode node);
-    }
+    N CurrentNode { get; }
+    bool CanPathThrough(N node);
 }

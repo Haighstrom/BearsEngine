@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using BearsEngine;
-using BearsEngine.Graphics;
-using BearsEngine.Worlds;
-using HaighFramework;
+﻿using HaighFramework;
 
 namespace BearsEngine.Worlds
 {

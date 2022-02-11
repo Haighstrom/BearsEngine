@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using BearsEngine.Graphics;
+﻿using BearsEngine.Graphics;
 using HaighFramework;
 using HaighFramework.OpenGL4;
 
@@ -73,7 +71,7 @@ namespace BearsEngine.Worlds
         }
         #endregion
 
-        public bool IsOnScreen => HV.Window.ClientZeroed.Intersects(Parent.GetWindowPosition(this));
+        public bool IsOnScreen => true;//HV.Window.ClientZeroed.Intersects(Parent.GetWindowPosition(this));
         #endregion
 
         #region Properties

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using BearsEngine.Pathfinding;
-using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds
 {
     //public class GridCamera<N> : TerrainCamera
     //    where N : INode

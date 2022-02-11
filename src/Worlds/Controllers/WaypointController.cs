@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using HaighFramework;
-using HaighFramework.Input;
-using BearsEngine;
-using BearsEngine.Worlds;
+﻿using HaighFramework;
 
 namespace BearsEngine.Worlds.Controllers
 {
@@ -56,7 +51,7 @@ namespace BearsEngine.Worlds.Controllers
                     {
                         p = p.Normal;
                         _target.X += p.X * amountToMove;
-                        _target.Y += p.X * amountToMove;
+                        _target.Y += p.Y * amountToMove;
                         amountToMove = 0;
                     }
                     else

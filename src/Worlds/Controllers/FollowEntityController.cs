@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using HaighFramework;
-using HaighFramework.Input;
-using BearsEngine;
-using BearsEngine.Tweens;
-using BearsEngine.Worlds;
-
-namespace BearsEngine.Worlds.Controllers
+﻿namespace BearsEngine.Worlds.Controllers
 {
     [Flags]
     public enum CameraFollowMode

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework;
-using BearsEngine.Pathfinding;
+﻿using BearsEngine.Pathfinding;
 using BearsEngine.Worlds.Controllers;
 
 namespace BearsEngine.Worlds
@@ -11,7 +7,9 @@ namespace BearsEngine.Worlds
     {
         WaypointController WaypointController { get; }
     }
-    public interface IWaypointableAndPathable : IWaypointable, IPathable
+
+    public interface IWaypointableAndPathable<N> : IWaypointable, IPathable<N>
+        where N : INode
     {
     }
 }

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework;
-using HaighFramework.Input;
-using BearsEngine;
-using BearsEngine.Worlds;
-
-namespace BearsEngine
+﻿namespace BearsEngine
 {
     public interface IUpdatable
     {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework;
+﻿using HaighFramework;
 
 namespace BearsEngine.Worlds
 {
@@ -15,7 +12,7 @@ namespace BearsEngine.Worlds
             Entity plusButton = new Button(layer, plusButtonPos, plusButtonGfx, () => { changeFunction(1); UpdateValueText(); });
             Entity minusButton = new Button(layer, minusButtonPos, minusButtonGfx, () => { changeFunction(-1); UpdateValueText(); });
 
-            HV.Screen.Add(plusButton, minusButton);
+            //todo: what the fuck is this? HV.Screen.Add(plusButton, minusButton);
         }
     }
 }

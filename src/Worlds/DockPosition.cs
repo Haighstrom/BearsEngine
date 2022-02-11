@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds
 {
     public enum DockPosition
     {

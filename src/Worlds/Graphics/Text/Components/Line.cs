@@ -1,16 +1,4 @@
-﻿using System.Drawing;
-using System.Drawing.Text;
-using System.Drawing.Imaging;
-using System.Drawing.Drawing2D;
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework;
-using HaighFramework.OpenGL4;
-using Point = HaighFramework.Point;
-using BearsEngine.Graphics;
-using System.Collections;
+﻿using HaighFramework;
 
 namespace BearsEngine.Worlds.Graphics.Text
 {
@@ -18,7 +6,7 @@ namespace BearsEngine.Worlds.Graphics.Text
     {
         #region Fields
         private bool _finalised = false;
-        private List<ILineComponent> _components = new List<ILineComponent>();
+        private readonly List<ILineComponent> _components = new();
         #endregion
 
         #region AutoProperties
@@ -53,7 +41,7 @@ namespace BearsEngine.Worlds.Graphics.Text
 
             EndsWithNewLine = lastCharIsNewline;
 
-            if (_components.Count > 0)
+            if (_components.Count > 1) //don't remove spaces if only a space
                 while (_components.Last() is LC_Space s)
                     _components.Remove(s);
 

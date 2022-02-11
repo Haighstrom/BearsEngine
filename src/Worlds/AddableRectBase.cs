@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using HaighFramework;
+﻿using HaighFramework;
 
 namespace BearsEngine.Worlds
 {
@@ -142,7 +140,7 @@ namespace BearsEngine.Worlds
         public IRect<float> ScaleAroundCentre(float scale) => ScaleAroundCentre(scale, scale);
         public IRect<float> ScaleAroundCentre(float scaleX, float scaleY) => ScaleAround(scaleX, scaleY, Centre.X, Centre.Y);
         public IRect<float> ScaleAround(float scaleX, float scaleY, float originX, float originY) => ResizeAround(W * scaleX, H * scaleY, originX, originY);
-        public IRect<float> Resize(float newW, float newH) => new Rect(X, Y, newW, newH);
+        public virtual IRect<float> Resize(float newW, float newH) => new Rect(X, Y, newW, newH);
 
         #region ResizeAround
 

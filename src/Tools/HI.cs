@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HaighFramework;
+﻿using HaighFramework;
 using HaighFramework.Input;
 
 namespace BearsEngine
@@ -31,11 +26,11 @@ namespace BearsEngine
         #region Mouse Position
         public static int MouseScreenX { get { return _curMouseState.ScreenX; } }
         public static int MouseScreenY { get { return _curMouseState.ScreenY; } }
-        public static Point MouseScreenP { get { return new Point(MouseScreenX, MouseScreenY); } }
+        public static IPoint<int> MouseScreenP { get { return new Point<int>(MouseScreenX, MouseScreenY); } }
 
-        public static int MouseWindowX => HV.Mouse.State.ScreenX - (int)HV.Window.ClientPosition.X;
-        public static int MouseWindowY => HV.Mouse.State.ScreenY - (int)HV.Window.ClientPosition.Y;
-        public static Point MouseWindowP => new Point(MouseWindowX, MouseWindowY);
+        public static float MouseWindowX => HV.Window.ScreenToClient(MouseScreenP).X;
+        public static float MouseWindowY => HV.Window.ScreenToClient(MouseScreenP).Y;
+        public static IPoint<float> MouseWindowP => new Point(MouseWindowX, MouseWindowY);
 
         public static int MouseXDelta { get { return _curMouseState.AbsX - _prevMouseState.AbsX; } }
         public static int MouseYDelta { get { return _curMouseState.AbsY - _prevMouseState.AbsY; } }

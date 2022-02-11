@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds
 {
     /// <summary>
     /// Resize behaviour specs for cells of GridLayout panels

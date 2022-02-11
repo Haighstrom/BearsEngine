@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework;
-using BearsEngine.Pathfinding;
+﻿using HaighFramework;
 
 namespace BearsEngine.Worlds
 {

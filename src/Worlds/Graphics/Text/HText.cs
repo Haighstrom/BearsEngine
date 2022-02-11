@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using HaighFramework;
-using HaighFramework.OpenGL4;
 using BearsEngine.Graphics;
-using BearsEngine.Worlds.Graphics.Text;
 
 namespace BearsEngine.Worlds.Graphics.Text
 {
@@ -534,7 +529,7 @@ namespace BearsEngine.Worlds.Graphics.Text
         #endregion
 
         #region SplitTextToLines
-        private List<Graphics.Text.Line> SplitTextToLines(string text)
+        private List<Line> SplitTextToLines(string text)
         {
             text = text.Replace("\r\n", "\n");
             text = text.Replace("\r", "\n");
@@ -542,11 +537,11 @@ namespace BearsEngine.Worlds.Graphics.Text
             if (!Multiline)
                 text = text.Replace("\n", "");
 
-            var lines = new List<Graphics.Text.Line>();
-            var currentLine = new Graphics.Text.Line();
-            var activeOverrides = new List<TextCommandTag>();
+            List<Line> lines = new();
+            Line currentLine = new();
+            List<TextCommandTag> activeOverrides = new();
             (HFont font, Colour colour, bool underline, bool strikethrough) currentAttributes = (Font, Colour, Underline, Strikethrough);
-            var oneLetterWiderThanWholeLine = false;
+            float sizeOfLetterLongerThanWholeLine = 0;
 
             while (!text.IsNullOrEmpty())
             {
@@ -555,7 +550,7 @@ namespace BearsEngine.Worlds.Graphics.Text
                     currentLine.Add(new LC_NewLine(currentAttributes.font, ScaleY));
                     currentLine.Finalise(true);
                     lines.Add(currentLine);
-                    currentLine = new Graphics.Text.Line();
+                    currentLine = new Line();
                     text = text.Remove(0, 1);
                 }
                 else if (text[0] == ' ')
@@ -563,9 +558,12 @@ namespace BearsEngine.Worlds.Graphics.Text
                     var s = new LC_Space(currentAttributes.font, currentAttributes.colour, ExtraSpaceWidth, ScaleX, ScaleY, currentAttributes.underline, currentAttributes.strikethrough);
                     if (Multiline && currentLine.Length + s.Length > W)
                     {
+                        if (currentLine.IsEmpty) //case where one space is wider than W - so a space will take up a full line
+                            currentLine.Add(s);
+
                         currentLine.Finalise(false);
                         lines.Add(currentLine);
-                        currentLine = new Graphics.Text.Line();
+                        currentLine = new Line();
                     }
                     else
                         currentLine.Add(s);
@@ -650,20 +648,20 @@ namespace BearsEngine.Worlds.Graphics.Text
                             if (splitAt == 0) //if one letter is too wide to fit, display it anyway
                             {
                                 splitAt = 1;
-                                oneLetterWiderThanWholeLine = true;
+                                sizeOfLetterLongerThanWholeLine = Math.Max((float)Math.Round(sizeOfLetterLongerThanWholeLine, 2), nextCharLength);
                             }
 
                             currentLine.Add(new LC_Word(nextText.Substring(0, splitAt), currentAttributes.font, currentAttributes.colour, ExtraCharacterSpacing, ScaleX, ScaleY, currentAttributes.underline, currentAttributes.strikethrough));
                             currentLine.Finalise(false);
                             lines.Add(currentLine);
-                            currentLine = new Graphics.Text.Line();
+                            currentLine = new Line();
                             text = text.Remove(0, splitAt);
                         }
                         else //push the word to the next line
                         {
                             currentLine.Finalise(false);
                             lines.Add(currentLine);
-                            currentLine = new Graphics.Text.Line();
+                            currentLine = new Line();
                             //we don't add the next word to the next line yet - it might not fit - just loop again
                         }
                     }
@@ -684,10 +682,10 @@ namespace BearsEngine.Worlds.Graphics.Text
                 HConsole.Warning("HText/SplitTextToLines: lines total height ({0}) is bigger than text box height ({1})", height, H);
 
             if (lines.Max(l => l.Length > W))
-                HConsole.Warning("HText/SplitTextToLines: line is longer ({0}) than text box width ({1})", lines.Max(l => l.Length), W);
+                HConsole.Warning($"HText/SplitTextToLines: line is wider ({lines.Max(l => l.Length)}) than text box width ({W})");
 
-            if (oneLetterWiderThanWholeLine)
-                HConsole.Warning("HText/SplitTextToLines: a single letter is beyond the text box width ({0})", W);
+            if (sizeOfLetterLongerThanWholeLine > 0)
+                HConsole.Warning($"HText/SplitTextToLines: a single letter is wider ({sizeOfLetterLongerThanWholeLine}) than the text box width ({W})");
             #endregion
 
             return lines;
@@ -716,10 +714,10 @@ namespace BearsEngine.Worlds.Graphics.Text
                     dest.Y = 0;
                     break;
                 case VAlignment.Centred:
-                    dest.Y = (int)((H - (lines.Sum(l => l.Height) + Math.Max(lines.Count - 1, 0) * ExtraLineSpacing)) / 2);
+                    dest.Y = (H - (lines.Sum(l => l.Height) + Math.Max(lines.Count - 1, 0) * ExtraLineSpacing)) / 2;//todo: was 'int'ed before to avoid looking shit with no AA - but buggers up text in cameras - complex if statement?
                     break;
                 case VAlignment.Bottom:
-                    dest.Y = (int)(H - (lines.Sum(l => l.Height) + Math.Max(lines.Count - 1, 0) * ExtraLineSpacing));
+                    dest.Y = H - (lines.Sum(l => l.Height) + Math.Max(lines.Count - 1, 0) * ExtraLineSpacing);//todo: was 'int'ed before to avoid looking shit with no AA - but buggers up text in cameras - complex if statement?
                     break;
                 case VAlignment.Full:
                     fullAlignmentLineSpacing = (H - lines.Sum(l => l.Height)) / Math.Max(lines.Count - 1, 1);
@@ -741,10 +739,10 @@ namespace BearsEngine.Worlds.Graphics.Text
                         dest.X = 0;
                         break;
                     case HAlignment.Centred:
-                        dest.X = (int)((W - lineLen) / 2); //int to avoid it looking bad with no AA
+                        dest.X = (W - lineLen) / 2; //todo: was 'int'ed before to avoid looking shit with no AA - but buggers up text in cameras - complex if statement?
                         break;
                     case HAlignment.Right:
-                        dest.X = (int)(W - lineLen); //int to avoid it looking bad with no AA
+                        dest.X = W - lineLen;//todo: was 'int'ed before to avoid looking shit with no AA - but buggers up text in cameras - complex if statement?
                         break;
                     case HAlignment.Full:
                         dest.X = 0;
@@ -832,41 +830,25 @@ namespace BearsEngine.Worlds.Graphics.Text
             string text = Text.Substring(FirstCharToDraw, NumCharsToDraw);
             var len = ScaleX * Font.MeasureString(text).X;
 
-            var dest = new Rect();
-            dest.H = ScaleY * _font.HighestChar;
-
-            switch (HAlignment)
+            Rect dest = new()
             {
-                case HAlignment.Left:
-                case HAlignment.Full:
-                    dest.X = 0;
-                    break;
-                case HAlignment.Centred:
-                    dest.X = (int)((W - len) / 2); //int to avoid it looking bad with no AA
-                    break;
-                case HAlignment.Right:
-                    dest.X = (int)(W - len); //int to avoid it looking bad with no AA
-                    break;
-                default:
-                    throw new HException("HText/SetVertices: alignment {0} was not catered for.", HAlignment);
-            }
+                H = ScaleY * _font.HighestChar
+            };
 
-            switch (VAlignment)
+            dest.X = HAlignment switch //todo: was 'int'ed before to avoid looking shit with no AA - but buggers up text in cameras - complex if statement?
             {
-                case VAlignment.Top:
-                case VAlignment.Full:
-                    dest.Y = 0;
-                    break;
-                case VAlignment.Centred:
-                    dest.Y = (int)((H - dest.H) / 2);//int to avoid it looking bad with no AA
-                    break;
-                case VAlignment.Bottom:
-                    dest.Y = (int)(H - dest.H);//int to avoid it looking bad with no AA
-                    break;
-                default:
-                    throw new HException("HText/SetVertices: alignment {0} was not catered for.", VAlignment);
-            }
-
+                HAlignment.Left or HAlignment.Full => 0,
+                HAlignment.Centred => (W - len) / 2,
+                HAlignment.Right => W - len,
+                _ => throw new HException("HText/SetVertices: alignment {0} was not catered for.", HAlignment),
+            };
+            dest.Y = VAlignment switch //todo: was 'int'ed before to avoid looking shit with no AA - but buggers up text in cameras - complex if statement?
+            {
+                VAlignment.Top or VAlignment.Full => 0,
+                VAlignment.Centred => (H - dest.H) / 2,
+                VAlignment.Bottom => H - dest.H,
+                _ => throw new HException("HText/SetVertices: alignment {0} was not catered for.", VAlignment),
+            };
             if (Underline)
                 _linesToDraw.Add(new Worlds.Line(Colour, UnderlineThickness, true, dest.BottomLeft.Shift(0, UnderlineOffset), dest.BottomLeft.Shift(len, UnderlineOffset)));
             if (Strikethrough)

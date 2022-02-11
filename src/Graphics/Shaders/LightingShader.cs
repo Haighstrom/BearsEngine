@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework;
+﻿using HaighFramework;
 using HaighFramework.OpenGL4;
-using BearsEngine;
-using BearsEngine.Worlds;
 
 namespace BearsEngine.Graphics
 {
@@ -93,10 +88,10 @@ namespace BearsEngine.Graphics
 
             for (int i = 0; i < MAX_LIGHTS; i++)
             {
-                _locationLights_PosUniformArray[i] = OpenGL.GetUniformLocation(_ID, String.Format("Lights[{0}].Pos", i));
-                _locationLights_ColourUniformArray[i] = OpenGL.GetUniformLocation(_ID, String.Format("Lights[{0}].Colour", i));
-                _locationLights_RadiusUniformArray[i] = OpenGL.GetUniformLocation(_ID, String.Format("Lights[{0}].Radius", i));
-                _locationLights_CutoffRadiusUniformArray[i] = OpenGL.GetUniformLocation(_ID, String.Format("Lights[{0}].CutoffRadius", i));
+                _locationLights_PosUniformArray[i] = OpenGL.GetUniformLocation(_ID, string.Format("Lights[{0}].Pos", i));
+                _locationLights_ColourUniformArray[i] = OpenGL.GetUniformLocation(_ID, string.Format("Lights[{0}].Colour", i));
+                _locationLights_RadiusUniformArray[i] = OpenGL.GetUniformLocation(_ID, string.Format("Lights[{0}].Radius", i));
+                _locationLights_CutoffRadiusUniformArray[i] = OpenGL.GetUniformLocation(_ID, string.Format("Lights[{0}].CutoffRadius", i));
             }
         }
         #endregion

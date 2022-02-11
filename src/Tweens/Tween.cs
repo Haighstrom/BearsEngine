@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using HaighFramework;
-using HaighFramework.Input;
-using BearsEngine;
+﻿using HaighFramework;
 using BearsEngine.Worlds;
 
 namespace BearsEngine.Tweens

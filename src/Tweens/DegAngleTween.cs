@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace BearsEngine.Tweens
+﻿namespace BearsEngine.Tweens
 {
     public enum AngleTweenDirection { Clockwise, CounterClockwise, Nearest }
     public class DegAngleTween : Tween

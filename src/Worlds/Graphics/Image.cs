@@ -1,5 +1,4 @@
-﻿using System;
-using HaighFramework;
+﻿using HaighFramework;
 using HaighFramework.OpenGL4;
 using BearsEngine.Graphics;
 

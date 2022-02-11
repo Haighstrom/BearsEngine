@@ -3,15 +3,15 @@ using BearsEngine.Worlds;
 
 namespace BearsEngine.Tasks
 {
-    public class T_FollowWaypoints : Task
+    public class T_FlyTo : Task
     {
         private IWaypointable _entity;
-        private List<IPosition> _waypoints;
+        private IPosition _destination;
 
-        public T_FollowWaypoints(IWaypointable entity, List<IPosition> waypoints)
+        public T_FlyTo(IWaypointable entity, IPosition destination)
         {
             _entity = entity;
-            _waypoints = waypoints;
+            _destination = destination;
 
             CompletionConditions.Add(() => entity.WaypointController.ReachedDestination);
         }
@@ -19,7 +19,7 @@ namespace BearsEngine.Tasks
         protected override void Start()
         {
             base.Start();
-            _entity.WaypointController.Waypoints = _waypoints;
+            _entity.WaypointController.Waypoints = new List<IPosition>() { _destination };
         }
     }
 }

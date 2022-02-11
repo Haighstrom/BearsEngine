@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using HaighFramework;
+﻿using HaighFramework;
 using HaighFramework.Input;
-using BearsEngine;
-using BearsEngine.Worlds;
 using BearsEngine.Worlds.Graphics.Text;
-using System.Linq;
 
 namespace BearsEngine.Worlds
 {
@@ -33,8 +28,9 @@ namespace BearsEngine.Worlds
         public TextInputBox(UITheme theme, Colour bg, int layer, Rect r, string initialValue = "")
             : base(layer, r, bg)
         {
-            HV.Window.CharEntered += OnCharPressed;
-            HV.Window.KeyDown += OnKeyDown;
+            throw new NotImplementedException();
+            //HV.Window.CharEntered += OnCharPressed;
+            //HV.Window.KeyDown += OnKeyDown;
 
             if (initialValue == null)
                 initialValue = "";

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework;
+﻿using HaighFramework;
 
 namespace BearsEngine.Worlds
 {
@@ -20,7 +17,7 @@ namespace BearsEngine.Worlds
 
         HaighFramework.OpenGL4.MSAA_Samples MSAASamples { get; set; }
 
-        void Resize(Point newSize);
+        void Resize(IPoint<float> newSize);
         void Resize(float newW, float newH);
 
         bool IsInBounds(Point p);

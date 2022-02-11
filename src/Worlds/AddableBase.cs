@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds
 {
     public class AddableBase : IAddable
     {
-        public IContainer Parent { get; set; }
+        public IContainer? Parent { get; set; }
 
         public virtual void Remove() => Parent.Remove(this);
 
@@ -14,8 +10,8 @@ namespace BearsEngine.Worlds
 
         public virtual void OnRemoved() => Removed?.Invoke(this, EventArgs.Empty);
 
-        public event EventHandler Added;
+        public event EventHandler? Added;
 
-        public event EventHandler Removed;
+        public event EventHandler? Removed;
     }
 }

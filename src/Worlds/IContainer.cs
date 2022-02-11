@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework;
+﻿using HaighFramework;
 
 namespace BearsEngine.Worlds
 {
@@ -35,14 +32,14 @@ namespace BearsEngine.Worlds
 
         List<E> GetEntities<E>(bool considerChildren = true);
 
-        E Collide<E>(Point p, bool considerChildren = true)
+        E Collide<E>(IPoint<float> p, bool considerChildren = true)
             where E : ICollideable;
         E Collide<E>(IRect<float> r, bool considerChildren = true)
             where E : ICollideable;
         E Collide<E>(ICollideable i, bool considerChildren = true)
             where E : ICollideable;
 
-        List<E> CollideAll<E>(Point p, bool considerChildren = true)
+        List<E> CollideAll<E>(IPoint<float> p, bool considerChildren = true)
             where E : ICollideable;
         List<E> CollideAll<E>(IRect<float> r, bool considerChildren = true)
             where E : ICollideable;

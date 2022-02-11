@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using HaighFramework;
-using HaighFramework.OpenGL4;
+﻿using HaighFramework;
 using BearsEngine.Worlds.Graphics.Text;
 
 namespace BearsEngine.Worlds

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework;
-using BearsEngine.Worlds;
-using HaighFramework.Input;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds
 {
     public struct LabelTheme
     {

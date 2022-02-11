@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework;
-using HaighFramework.Input;
+﻿using HaighFramework;
 using BearsEngine;
-using BearsEngine.Worlds;
 
 namespace BearsEngine.Worlds
 {
@@ -227,7 +222,7 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Collide
-        public E Collide<E>(Point p, bool considerChildren = true)
+        public E Collide<E>(IPoint<float> p, bool considerChildren = true)
             where E : ICollideable
         {
             foreach (IAddable a in Entities)
@@ -292,7 +287,7 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region CollideAll
-        public List<E> CollideAll<E>(Point p, bool considerChildren = true)
+        public List<E> CollideAll<E>(IPoint<float> p, bool considerChildren = true)
             where E : ICollideable
         {
             List<E> list = new List<E>();

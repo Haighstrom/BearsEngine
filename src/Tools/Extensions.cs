@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HaighFramework;
+﻿using HaighFramework;
 
 namespace BearsEngine
 {
@@ -29,7 +24,7 @@ namespace BearsEngine
         {
             int i;
 
-            if (!Int32.TryParse(s, out i))
+            if (!int.TryParse(s, out i))
                 throw new HException("Tried to convert a string to an int that didn't look like one: {0}", s);
 
             return i;

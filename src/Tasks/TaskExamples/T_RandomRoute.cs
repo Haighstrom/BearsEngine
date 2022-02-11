@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HaighFramework;
+﻿using HaighFramework;
 using BearsEngine;
 using BearsEngine.Worlds;
-using BearsEngine.Tasks;
 using BearsEngine.Pathfinding;
-using BearsEngine.Worlds.Controllers;
 
 namespace BearsEngine.Tasks
 {
-    public class T_RandomRoute : Task
+    public class T_RandomRoute<N> : Task
+        where N:INode
     {
         private int _maxSteps;
-        private IWaypointableAndPathable _entity; 
+        private IWaypointableAndPathable<N> _entity; 
 
-        public T_RandomRoute(IWaypointableAndPathable entity, int maxSteps)
+        public T_RandomRoute(IWaypointableAndPathable<N> entity, int maxSteps)
         {
             _entity = entity;
             _maxSteps = maxSteps;

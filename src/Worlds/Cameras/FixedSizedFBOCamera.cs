@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HaighFramework;
-using HaighFramework.Input;
+﻿using HaighFramework;
 using HaighFramework.OpenGL4;
 using BearsEngine.Graphics;
 
@@ -109,8 +103,9 @@ namespace BearsEngine.Worlds
             //Set normal blend function for within the layers
             OpenGL.BlendFunc(BlendingFactorSrc.One, BlendingFactorDest.OneMinusSrcAlpha);
 
-            //Set the viewport to match the size of the texture we are now drawing to - the FBO
-            OpenGL.Viewport(0, 0, (int)View.W, (int)View.H);
+            //Save the previous viewport and set the viewport to match the size of the texture we are now drawing to - the FBO
+            Rect<int> prevVP = OpenGL.GetViewport();
+            OpenGL.Viewport(0, 0, (int)View.W, (int)View.H); //not W,H??
 
             //Locally save the current render target, we will then set this camera as the current render target for child cameras, then put it back
             uint tempFBID = HV.LastBoundFrameBuffer;
@@ -158,9 +153,8 @@ namespace BearsEngine.Worlds
             //Set some other blend fucntion when render the FBO texture which apparantly lets the layer alpha blend with the one beneath?
             OpenGL.BlendFunc(BlendingFactorSrc.One, BlendingFactorDest.OneMinusSrcAlpha);
 
-            //Return the viewport to render position of this camera
-            //should this be window, or R, or parent camera?
-            OpenGL.Viewport(HV.Window.ClientZeroed);
+            //reset viewport
+            OpenGL.Viewport(prevVP);
 
             Matrix4 mv = modelView;
             if (Angle != 0)
@@ -261,13 +255,13 @@ namespace BearsEngine.Worlds
 
         public List<E> GetEntities<E>(bool considerChildren = true) => _container.GetEntities<E>(considerChildren);
 
-        public E Collide<E>(Point p, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(p, considerChildren);
+        public E Collide<E>(IPoint<float> p, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(p, considerChildren);
 
         public E Collide<E>(IRect<float> r, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(r, considerChildren);
 
         public E Collide<E>(ICollideable i, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(i, considerChildren);
 
-        public List<E> CollideAll<E>(Point p, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(p, considerChildren);
+        public List<E> CollideAll<E>(IPoint<float> p, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(p, considerChildren);
 
         public List<E> CollideAll<E>(IRect<float> r, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(r, considerChildren);
 
@@ -303,7 +297,7 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Resize
-        public void Resize(Point newSize) => Resize(newSize.X, newSize.Y);
+        public void Resize(IPoint<float> newSize) => Resize(newSize.X, newSize.Y);
 
         public void Resize(float newW, float newH)
         {

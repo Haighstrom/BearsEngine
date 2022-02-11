@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using HaighFramework;
+﻿using HaighFramework;
 
 namespace BearsEngine.Worlds.Graphics.Text
 {

@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
-using System.IO;
-using System.Linq;
-using HaighFramework;
-using HaighFramework.OpenGL4;
-using BearsEngine.Graphics;
 using Point = HaighFramework.Point;
 
 namespace BearsEngine.Worlds.Graphics.Text
@@ -20,12 +13,15 @@ namespace BearsEngine.Worlds.Graphics.Text
         #region private struct FontSave
         private struct FontSave
         {
-            public string Name;
-            public float Size;
-            public FontStyle FontStyle;
-            public bool AntiAliased;
-            public int WidestChar, HighestChar, SpaceWidth;
-            public Dictionary<char, Rect> CharPositions, CharPositionsNormalised;
+            public string Name { get; set; }
+            public float Size { get; set; }
+            public FontStyle FontStyle { get; set; }
+            public bool AntiAliased { get; set; }
+            public int WidestChar { get; set; }
+            public int HighestChar { get; set; }
+            public int SpaceWidth { get; set; }
+            public Dictionary<char, Rect> CharPositions { get; set; }
+            public Dictionary<char, Rect> CharPositionsNormalised { get; set; }
         }
         #endregion
 
@@ -49,7 +45,7 @@ namespace BearsEngine.Worlds.Graphics.Text
         /// <summary>
         /// Returns a basic Font
         /// </summary>
-        public static HFont Default => _default ?? (_default = new HFont(DEFAULT_FONT, DEFAULT_SIZE));
+        public static HFont Default => _default ??= new HFont(DEFAULT_FONT, DEFAULT_SIZE);
         #endregion
 
         #region Static Methods

@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HaighFramework;
-using BearsEngine;
-using BearsEngine.Worlds;
-
-namespace BearsEngine.Worlds.Controllers
+﻿namespace BearsEngine.Worlds.Controllers
 {
     public class YIndexedLayerController : AddableBase, IUpdatable
     {
