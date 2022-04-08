@@ -1,6 +1,4 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds.Graphics.Text
+﻿namespace BearsEngine.Worlds.Graphics.Text.Components
 {
     internal class Line
     {
@@ -12,7 +10,7 @@ namespace BearsEngine.Worlds.Graphics.Text
         #region AutoProperties
         public bool EndsWithNewLine { get; private set; }
         #endregion
-        
+
         #region Properties
         public bool IsEmpty => _components.Count == 0;
 

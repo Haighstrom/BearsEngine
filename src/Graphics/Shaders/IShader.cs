@@ -1,7 +1,6 @@
-﻿using HaighFramework;
-using HaighFramework.OpenGL4;
+﻿using HaighFramework.OpenGL4;
 
-namespace BearsEngine.Graphics
+namespace BearsEngine.Graphics.Shaders
 {
     public interface IShader
     {

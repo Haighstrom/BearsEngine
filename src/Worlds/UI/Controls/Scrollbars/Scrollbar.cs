@@ -1,6 +1,6 @@
-﻿using HaighFramework;
+﻿using BearsEngine.Worlds.UI.UIThemes;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.UI.Controls.Scrollbars
 {
     public class Scrollbar : Entity
     {
@@ -9,19 +9,19 @@ namespace BearsEngine.Worlds
         {
             #region Fields
             private ScrollbarDirection _direction;
-            private IRect<float> _fullPosition;
+            private Rect _fullPosition;
             private float _amountFilled;
             private bool _dragging;
             private float _dragStart;
             #endregion
 
             #region Constructors
-            public Bar(ScrollbarDirection direction, IRect<float> position, int border, UITheme theme)
+            public Bar(ScrollbarDirection direction, Rect position, int border, UITheme theme)
                 : this(direction, position, border, theme.Scrollbar.Bar.DefaultColour, theme.Scrollbar.Bar.HoverColour, theme.Scrollbar.Bar.PressedColour, theme.Scrollbar.Bar.UnclickableColour)
             {
             }
 
-            public Bar(ScrollbarDirection direction, IRect<float> position, int border, Colour barColour, Colour hoverColour, Colour pressedColour, Colour unclickableColour)
+            public Bar(ScrollbarDirection direction, Rect position, int border, Colour barColour, Colour hoverColour, Colour pressedColour, Colour unclickableColour)
                 : base(1, position)
             {
                 HoverColour = hoverColour;
@@ -62,7 +62,7 @@ namespace BearsEngine.Worlds
 
             public float MaxAmount => _direction == ScrollbarDirection.Horizontal ? (Right - _fullPosition.X) / _fullPosition.W : (Bottom - _fullPosition.Y) / _fullPosition.H;
 
-            internal IRect<float> FullPosition
+            internal Rect FullPosition
             {
                 get => _fullPosition;
                 set
@@ -196,7 +196,7 @@ namespace BearsEngine.Worlds
 
         #region Constructors
         #region UITheme Based
-        public Scrollbar(int layer, IRect<float> r, ScrollbarDirection direction, UITheme theme)
+        public Scrollbar(int layer, Rect r, ScrollbarDirection direction, UITheme theme)
             : this(layer,
                   r,
                   direction,
@@ -217,7 +217,7 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Standard
-        public Scrollbar(int layer, IRect<float> fullPosition, ScrollbarDirection direction, Colour barBackgroundColour, Colour barDefaultColour, Colour barHoverColour, Colour barPressedColour, Colour barUnclickableButton, int edgeToBarSpace, Colour arrowBG, IGraphic minusArrow, IGraphic plusArrow, Colour arrowHoverColour, Colour arrowPressedColour, Colour arrowUnclickableColour)
+        public Scrollbar(int layer, Rect fullPosition, ScrollbarDirection direction, Colour barBackgroundColour, Colour barDefaultColour, Colour barHoverColour, Colour barPressedColour, Colour barUnclickableButton, int edgeToBarSpace, Colour arrowBG, IGraphic minusArrow, IGraphic plusArrow, Colour arrowHoverColour, Colour arrowPressedColour, Colour arrowUnclickableColour)
             : base(layer, fullPosition)
         {
             _direction = direction;
@@ -301,7 +301,7 @@ namespace BearsEngine.Worlds
                 W = length;
                 _barBG.W = W - 2 * _barBG.H;
                 _plus.X = W - _plus.W;
-                _bar.FullPosition = new Rect(_bar.FullPosition.H, 0, length - 2 * _bar.FullPosition.H , _bar.FullPosition.H);
+                _bar.FullPosition = new Rect(_bar.FullPosition.H, 0, length - 2 * _bar.FullPosition.H, _bar.FullPosition.H);
             }
             else
             {

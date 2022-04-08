@@ -1,12 +1,10 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds
 {
     public class PositionChangedArgs : EventArgs
     {
-        public IRect<float> NewR;
+        public IRect NewR;
 
-        public PositionChangedArgs(IRect<float> newR)
+        public PositionChangedArgs(IRect newR)
         {
             NewR = newR;
         }

@@ -1,9 +1,9 @@
-﻿namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds.UI.UIThemes
 {
     public struct UITheme
     {
         #region Default
-        public static UITheme Default => new UITheme
+        public static UITheme Default => new()
         {
             Text = TextTheme.Default,
             Button = ButtonTheme.Default,

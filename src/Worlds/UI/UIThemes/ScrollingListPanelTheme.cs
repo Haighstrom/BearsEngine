@@ -1,11 +1,9 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds.UI.UIThemes
 {
     public struct ScrollingListPanelTheme
     {
         #region Default
-        public static ScrollingListPanelTheme Default => new ScrollingListPanelTheme
+        public static ScrollingListPanelTheme Default => new()
         {
             PanelColour = Colour.White,
         };

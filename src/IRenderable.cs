@@ -1,6 +1,4 @@
-﻿using HaighFramework;
-
-namespace BearsEngine
+﻿namespace BearsEngine
 {
     public interface IRenderable
     {

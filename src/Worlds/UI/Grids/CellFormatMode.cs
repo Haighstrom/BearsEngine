@@ -1,4 +1,4 @@
-﻿namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds.UI.Grids
 {
     /// <summary>
     /// Resize behaviour specs for cells of GridLayout panels

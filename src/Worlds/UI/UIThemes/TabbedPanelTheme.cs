@@ -1,9 +1,9 @@
-﻿namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds.UI.UIThemes
 {
     public struct TabbedPanelTheme
     {
         #region Default
-        public static TabbedPanelTheme Default => new TabbedPanelTheme
+        public static TabbedPanelTheme Default => new()
         {
             Panel = PanelTheme.Default,
         };

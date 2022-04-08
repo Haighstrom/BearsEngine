@@ -1,8 +1,8 @@
-﻿using HaighFramework;
-using HaighFramework.Input;
+﻿using HaighFramework.Input;
+using BearsEngine.Worlds.UI.UIThemes;
 using BearsEngine.Worlds.Graphics.Text;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.UI.Controls
 {
     public class TextInputBox : Entity, IActivatable
     {
@@ -28,9 +28,8 @@ namespace BearsEngine.Worlds
         public TextInputBox(UITheme theme, Colour bg, int layer, Rect r, string initialValue = "")
             : base(layer, r, bg)
         {
-            throw new NotImplementedException();
-            //HV.Window.CharEntered += OnCharPressed;
-            //HV.Window.KeyDown += OnKeyDown;
+            HV.Window.CharEntered += OnCharPressed;
+            HV.Window.KeyDown += OnKeyDown;
 
             if (initialValue == null)
                 initialValue = "";
@@ -278,7 +277,7 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region OnCharPressed
-        private void OnCharPressed(object sender, KeyboardCharEventArgs e)
+        private void OnCharPressed(object? sender, KeyboardCharEventArgs e)
         {
             if (_mode != Mode.Editing)
                 return;
@@ -296,13 +295,13 @@ namespace BearsEngine.Worlds
 
             _text = _text.Substring(0, _cursorPosition) + e.Key + _text.Substring(_cursorPosition);
             _cursorPosition++;
-            
+
             SetTextPositions();
         }
         #endregion
 
         #region OnKeyDown
-        private void OnKeyDown(object sender, KeyboardKeyEventArgs e)
+        private void OnKeyDown(object? sender, KeyboardKeyEventArgs e)
         {
             if (_mode != Mode.Editing)
                 return;
@@ -314,14 +313,14 @@ namespace BearsEngine.Worlds
                     CancelEdit();
                     break;
                 #endregion
-                
+
                 #region Enter/KeypadEnter
                 case Key.Enter:
                 case Key.KeypadEnter:
                     ConfirmEdit();
                     break;
                 #endregion
-                
+
                 #region Backspace / Delete
                 case Key.Backspace:
                 case Key.Delete:
@@ -346,7 +345,7 @@ namespace BearsEngine.Worlds
                     SetTextPositions();
                     break;
                 #endregion
-                
+
                 #region Home / Up
                 case Key.Home:
                 case Key.Up:
@@ -355,7 +354,7 @@ namespace BearsEngine.Worlds
                     SetTextPositions();
                     break;
                 #endregion
-                
+
                 #region End / Down
                 case Key.End:
                 case Key.Down:
@@ -363,7 +362,7 @@ namespace BearsEngine.Worlds
                     SetTextPositions();
                     break;
                 #endregion
-                
+
                 #region Left
                 case Key.Left:
                     if (HI.KeyDown(Key.LeftShift) || HI.KeyDown(Key.RightShift))
@@ -398,7 +397,7 @@ namespace BearsEngine.Worlds
                     }
                     break;
                 #endregion
-                
+
                 #region Right
                 case Key.Right:
                     if (HI.KeyDown(Key.LeftShift) || HI.KeyDown(Key.RightShift))

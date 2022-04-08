@@ -10,7 +10,7 @@
 
     public class PriorityQueue<T> : IPriorityQueue<T>
     {
-        protected List<T> InnerList = new List<T>();
+        protected List<T> InnerList = new();
         protected IComparer<T> Comparer;
 
         public PriorityQueue()
@@ -151,7 +151,7 @@
         public T Peek()
         {
             if (InnerList.Count > 0) return InnerList[0];
-            return default(T);
+            return default;
         }
 
         public void Clear() { InnerList.Clear(); }

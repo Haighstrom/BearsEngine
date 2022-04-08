@@ -1,7 +1,6 @@
-﻿using HaighFramework;
-using HaighFramework.OpenGL4;
+﻿using HaighFramework.OpenGL4;
 
-namespace BearsEngine.Graphics
+namespace BearsEngine.Graphics.Shaders
 {
     #region struct LightInfo
     public class LightInfo
@@ -37,7 +36,7 @@ namespace BearsEngine.Graphics
         private static int[] _locationLights_RadiusUniformArray;
         private static int[] _locationLights_CutoffRadiusUniformArray;
 
-        private static List<LightInfo> _lights = new List<LightInfo>();
+        private static List<LightInfo> _lights = new();
         #endregion
         #endregion
 
@@ -59,7 +58,7 @@ namespace BearsEngine.Graphics
         #region Initialise
         private static void Initialise()
         {
-            _ID = HF.Graphics.CreateShader(Shaders.vs_default, Shaders.fs_lighting);
+            _ID = HF.Graphics.CreateShader(Resources.Shaders.vs_default, Resources.Shaders.fs_lighting);
             HF.Graphics.BindShader(_ID);
             _locationMVMatrix = OpenGL.GetUniformLocation(_ID, "MVMatrix");
             _locationPMatrix = OpenGL.GetUniformLocation(_ID, "PMatrix");

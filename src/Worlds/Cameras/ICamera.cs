@@ -1,10 +1,8 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds.Cameras
 {
-    public interface ICamera : IRect<float>, IAddable, IUpdatable, IRenderableOnLayer, IContainer
+    public interface ICamera : IRect, IAddable, IUpdatable, IRenderableOnLayer, IContainer
     {
-        IRect<float> View { get; }
+        IRect View { get; }
 
         Colour BackgroundColour { get; set; }
 
@@ -17,7 +15,7 @@ namespace BearsEngine.Worlds
 
         HaighFramework.OpenGL4.MSAA_Samples MSAASamples { get; set; }
 
-        void Resize(IPoint<float> newSize);
+        void Resize(Point newSize);
         void Resize(float newW, float newH);
 
         bool IsInBounds(Point p);

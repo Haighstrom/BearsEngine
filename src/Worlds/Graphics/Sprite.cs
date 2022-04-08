@@ -1,8 +1,8 @@
-﻿using HaighFramework;
-using HaighFramework.OpenGL4;
+﻿using HaighFramework.OpenGL4;
+using BearsEngine.Graphics.Shaders;
 using BearsEngine.Graphics;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.Graphics
 {
     public class Sprite : RectGraphicBase
     {
@@ -16,7 +16,7 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Constructors
-        public Sprite(string imgPath, Rect r, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
+        public Sprite(string imgPath, IRect r, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
             : this(imgPath, r.X, r.Y, r.W, r.H, spriteSheetColumns, spriteSheetRows, initialFrame)
         {
         }
@@ -40,7 +40,7 @@ namespace BearsEngine.Worlds
             FramesDown = spriteSheetRows;
 
             _frameW = (1f - (1 + spriteSheetColumns) * PaddingWidth) / spriteSheetColumns;
-            _frameH = (1f  - (1 + spriteSheetRows) * PaddingHeight) / spriteSheetRows;
+            _frameH = (1f - (1 + spriteSheetRows) * PaddingHeight) / spriteSheetRows;
 
 
             _UV1.X = PaddingWidth;
@@ -133,15 +133,15 @@ namespace BearsEngine.Worlds
 
         public int LastFrame => TotalFrames - 1;
 
-        protected float PaddingWidth => ((float)HF.Graphics.TEXTURE_SPRITE_PADDING) / Texture.Width;
-        protected float PaddingHeight => ((float)HF.Graphics.TEXTURE_SPRITE_PADDING) / Texture.Height;
+        protected float PaddingWidth => (float)HF.Graphics.TEXTURE_SPRITE_PADDING / Texture.Width;
+        protected float PaddingHeight => (float)HF.Graphics.TEXTURE_SPRITE_PADDING / Texture.Height;
 
         #region Render
         public override void Render(ref Matrix4 projection, ref Matrix4 modelView)
         {
             if (W == 0 || H == 0)
                 return;
-            
+
             var mv = Matrix4.Translate(ref modelView, X, Y, 0);
 
             if (HV.LastBoundTexture != Texture.ID)

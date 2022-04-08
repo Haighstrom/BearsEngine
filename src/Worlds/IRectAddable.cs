@@ -1,6 +1,4 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds
 {
-    public interface IRectAddable : IRect<float>, IAddable { }
+    public interface IRectAddable : IRect, IAddable { }
 }

@@ -12,12 +12,12 @@
     {
         //#region Fields
         //private ICamera _camera;
-        //private IRect<float> _target;
+        //private Rect _target;
         //private CameraFollowMode _mode;
         //#endregion
 
         //#region Constructors
-        //public CameraFollowController(ICamera camera, IRect<float> target, CameraFollowMode mode)
+        //public CameraFollowController(ICamera camera, Rect target, CameraFollowMode mode)
         //{
         //    _camera = camera;
         //    _target = target;

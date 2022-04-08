@@ -1,4 +1,4 @@
-﻿namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds.Cameras
 {
     //public class GridCamera<N> : TerrainCamera
     //    where N : INode
@@ -7,11 +7,11 @@
 
     //    #region Constructors
     //    #region Variable Tile Size Cameras
-    //    public GridCamera(int mapW, int mapH, int defaultTerrain, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, IRect<float> position, float tileSizeW, float tileSizeH, Func<int,int,N> createNodeFunc, P[] terrainToPMap)
+    //    public GridCamera(int mapW, int mapH, int defaultTerrain, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, Rect position, float tileSizeW, float tileSizeH, Func<int,int,N> createNodeFunc, P[] terrainToPMap)
     //        : this(HF.Arrays.FillArray(mapW, mapH, defaultTerrain), defaultTerrain, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, tileSizeW, tileSizeH, createNodeFunc, terrainToPMap)
     //    {
     //    }
-    //    public GridCamera(int[,] map, int defaultTerrain, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, IRect<float> position, float tileSizeW, float tileSizeH, Func<int, int, N> createNodeFunc, P[] terrainToPMap)
+    //    public GridCamera(int[,] map, int defaultTerrain, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, Rect position, float tileSizeW, float tileSizeH, Func<int, int, N> createNodeFunc, P[] terrainToPMap)
     //        : base(map, defaultTerrain, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, tileSizeW, tileSizeH)
     //    {
     //        SetUpNodeGrid(map.GetLength(0), map.GetLength(1), createNodeFunc, terrainToPMap);
@@ -19,12 +19,12 @@
     //    #endregion
 
     //    #region Fixed Tile Size Cameras
-    //    public GridCamera(int mapW, int mapH, int defaultTerrain, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, IRect<float> position, IRect<float> viewport, Func<int, int, N> createNodeFunc, P[] terrainToPMap)
+    //    public GridCamera(int mapW, int mapH, int defaultTerrain, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, Rect position, Rect viewport, Func<int, int, N> createNodeFunc, P[] terrainToPMap)
     //        : this(HF.Arrays.FillArray(mapW, mapH, defaultTerrain), defaultTerrain, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, viewport, createNodeFunc, terrainToPMap)
     //    {
     //    }
 
-    //    public GridCamera(int[,] map, int defaultTerrain, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, IRect<float> position, IRect<float> viewport, Func<int, int, N> createNodeFunc, P[] terrainToPMap)
+    //    public GridCamera(int[,] map, int defaultTerrain, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, Rect position, Rect viewport, Func<int, int, N> createNodeFunc, P[] terrainToPMap)
     //        : base(map, defaultTerrain, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, viewport)
     //    {
     //        SetUpNodeGrid(map.GetLength(0), map.GetLength(1), createNodeFunc, terrainToPMap);

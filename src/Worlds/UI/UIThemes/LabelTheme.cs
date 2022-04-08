@@ -1,9 +1,9 @@
-﻿namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds.UI.UIThemes
 {
     public struct LabelTheme
     {
         #region Default
-        public static LabelTheme Default => new LabelTheme
+        public static LabelTheme Default => new()
         {
             Panel = PanelTheme.Default,
             Text = TextTheme.Default,

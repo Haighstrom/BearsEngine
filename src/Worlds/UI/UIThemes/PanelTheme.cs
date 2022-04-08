@@ -1,11 +1,9 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds.UI.UIThemes
 {
     public struct PanelTheme
     {
         #region Default
-        public static PanelTheme Default => new PanelTheme
+        public static PanelTheme Default => new()
         {
             BackgroundColour = Colour.LightBlue,
             Border = BorderTheme.Default,

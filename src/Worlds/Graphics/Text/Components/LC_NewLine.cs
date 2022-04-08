@@ -1,4 +1,4 @@
-﻿namespace BearsEngine.Worlds.Graphics.Text
+﻿namespace BearsEngine.Worlds.Graphics.Text.Components
 {
     internal class LC_NewLine : ILineComponent
     {

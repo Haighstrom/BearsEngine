@@ -1,15 +1,12 @@
-﻿using HaighFramework;
-using BearsEngine.Worlds;
-
-namespace BearsEngine
+﻿namespace BearsEngine
 {
-    public interface ICollideable : IAddable, IRect<float>
+    public interface ICollideable : IAddable, IRect
     {
-        IRect<float> WindowPosition { get; }
+        IRect WindowPosition { get; }
         bool Collideable { get; set; }
 
-        bool Collides(IPoint<float> p);
-        bool Collides(IRect<float> r);
+        bool Collides(Point p);
+        bool Collides(IRect r);
         bool Collides(ICollideable i);
     }
 }

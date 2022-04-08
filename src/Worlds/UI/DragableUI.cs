@@ -1,20 +1,18 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds.UI
 {
     public class DragableUI : Entity
     {
         private int _dragStartX, _dragStartY;
 
-        public DragableUI(int layer, IRect<float> pos, Colour colour)
+        public DragableUI(int layer, Rect pos, Colour colour)
             : base(layer, pos, colour)
         {
         }
-        public DragableUI(int layer, IRect<float> pos, string gfx)
+        public DragableUI(int layer, Rect pos, string gfx)
             : base(layer, pos, gfx)
         {
         }
-        public DragableUI(int layer, IRect<float> pos, IGraphic gfx)
+        public DragableUI(int layer, Rect pos, IGraphic gfx)
             : base(layer, pos, gfx)
         {
         }
@@ -23,7 +21,7 @@ namespace BearsEngine.Worlds
 
         public bool Dragging { get; private set; } = false;
 
-        protected virtual IRect<float> DragGrabArea => this;
+        protected virtual IRect DragGrabArea => this;
 
         #region Update
         public override void Update(double elapsed)

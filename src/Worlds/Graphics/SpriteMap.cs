@@ -1,8 +1,8 @@
-﻿using HaighFramework;
-using HaighFramework.OpenGL4;
+﻿using HaighFramework.OpenGL4;
 using BearsEngine.Graphics;
+using BearsEngine.Graphics.Shaders;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.Graphics
 {
     public class SpriteMap : AddableRectBase, IRectGraphic
     {
@@ -20,15 +20,15 @@ namespace BearsEngine.Worlds
 
         #region Constructors
         public SpriteMap(int mapW, int mapH, int defaultIndex, float tileW, float tileH, string spritesheetPath, int spriteSheetColumns, int spriteSheetRows)
-            : this(mapW, mapH, HF.Arrays.FillArray(mapW * mapH, defaultIndex), defaultIndex, tileW, tileH, spritesheetPath, spriteSheetColumns, spriteSheetRows)
+            : this(HF.Arrays.FillArray(mapW, mapH, defaultIndex), defaultIndex, tileW, tileH, spritesheetPath, spriteSheetColumns, spriteSheetRows)
         {
         }
 
-        public SpriteMap(int mapW, int mapH, int[] map, int defaultIndex, float tileW, float tileH, string spritesheetPath, int spriteSheetColumns, int spriteSheetRows)
+        public SpriteMap(int[,] map, int defaultIndex, float tileW, float tileH, string spritesheetPath, int spriteSheetColumns, int spriteSheetRows)
             : base(0, 0, tileW, tileH)
         {
-            MapW = mapW;
-            MapH = mapH;
+            MapW = map.GetLength(0);
+            MapH = map.GetLength(1);
             _ssTileW = (float)1 / spriteSheetColumns;
             _ssTileH = (float)1 / spriteSheetRows;
             _ssColumns = spriteSheetColumns;
@@ -49,8 +49,8 @@ namespace BearsEngine.Worlds
         #region Indexers
         public int this[int x, int y]
         {
-            get => MapValues[x + y * MapW];
-            set => MapValues[x + y * MapW] = value;
+            get => MapValues[x, y];
+            set => MapValues[x, y] = value;
         }
         #endregion
 
@@ -80,8 +80,8 @@ namespace BearsEngine.Worlds
                         continue;
 
                     tileMatrix = Matrix4.Translate(ref mv, i * W, j * H, 0);
-                    _shader.IndexX = HF.Maths.Mod(MapValues[i + j * MapW], _ssColumns);
-                    _shader.IndexY = MapValues[i + j * MapW] / _ssColumns;
+                    _shader.IndexX = HF.Maths.Mod(MapValues[i, j], _ssColumns);
+                    _shader.IndexY = MapValues[i, j] / _ssColumns;
                     _shader.Render(ref projection, ref tileMatrix, _vertices.Length, PrimitiveType.TriangleStrip);
                 }
         }
@@ -139,7 +139,7 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Properties
-        public int[] MapValues { get; set; }
+        public int[,] MapValues { get; set; }
         public int DefaultIndex { get; set; }
 
         public int MapW { get; private set; }
@@ -154,7 +154,7 @@ namespace BearsEngine.Worlds
 
         public bool IsOnEdge(float x, float y) => x == 0 || y == 0 || x == MapW - 1 || y == MapH - 1;
 
-        public IRect<float> DrawArea { get; set; }
+        public IRect DrawArea { get; set; }
         #endregion
 
         #region Methods
@@ -191,12 +191,7 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region SetAllMapValues
-        public void SetAllMapValue(int newValue)
-        {
-            for (int i = 0; i < MapW; ++i)
-                for (int j = 0; j < MapH; ++j)
-                    MapValues[i + j * MapW] = newValue;
-        }
+        public void SetAllMapValue(int newValue) => MapValues = HF.Arrays.FillArray(MapW, MapH, newValue);
         #endregion
 
         #region Resize
@@ -204,17 +199,17 @@ namespace BearsEngine.Worlds
 
         public void Resize(int newW, int newH, int newIndex)
         {
-            int[] newMap = new int[newW * newH];
-
-            MapW = newW;
-            MapH = newH;
+            int[,] newMap = new int[newW, newH];
 
             for (int i = 0; i < newW; ++i)
                 for (int j = 0; j < newH; ++j)
                     if (IsInBounds(i, j))
-                        newMap[i + j * MapW] = MapValues[i + j * MapW];
+                        newMap[i, j] = MapValues[i, j];
                     else
-                        newMap[i + j * MapW] = newIndex;
+                        newMap[i, j] = newIndex;
+
+            MapW = newW;
+            MapH = newH;
 
             MapValues = newMap;
         }

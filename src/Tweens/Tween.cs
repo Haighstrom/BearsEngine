@@ -1,7 +1,4 @@
-﻿using HaighFramework;
-using BearsEngine.Worlds;
-
-namespace BearsEngine.Tweens
+﻿namespace BearsEngine.Tweens
 {
     public delegate float Easer(float t);
 

@@ -119,42 +119,42 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="fs_cameraMSAA" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\fs_cameraMSAA.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>fs_cameramsaa.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="fs_default" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\fs_default.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>fs_default.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="fs_greyscale" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\fs_greyscale.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>fs_greyscale.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="fs_invisibility" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\fs_invisibility.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>fs_invisibility.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="fs_lighting" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\fs_lighting.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>fs_lighting.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="fs_solidcolour" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\fs_solidcolour.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>fs_solidcolour.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="gs_default" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\gs_default.geom;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>gs_default.geom;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="gs_smoothlines" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\gs_smoothlines.geom;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>gs_smoothlines.geom;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="vs_camera_msaa" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\vs_camera_msaa.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>vs_camera_msaa.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="vs_default" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\vs_default.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>vs_default.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="vs_nomatrixsolidcolour" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\vs_nomatrixsolidcolour.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>vs_nomatrixsolidcolour.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="vs_solidcolour" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\vs_solidcolour.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>vs_solidcolour.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="vs_spritesheet" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\vs_spritesheet.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>vs_spritesheet.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

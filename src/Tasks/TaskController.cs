@@ -1,8 +1,6 @@
-﻿using BearsEngine.Worlds;
-
-namespace BearsEngine.Tasks
+﻿namespace BearsEngine.Tasks
 {
-    public class TaskController: AddableBase, IUpdatable
+    public class TaskController : AddableBase, IUpdatable
     {
         #region Fields
         private ITask? _currentTask;

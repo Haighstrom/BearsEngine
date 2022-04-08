@@ -1,8 +1,6 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds
 {
-    public interface IMoveable : IRect<float>
+    public interface IMoveable : IRect
     {
         float Speed { get; }
     }

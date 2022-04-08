@@ -1,7 +1,6 @@
-﻿using HaighFramework;
-using HaighFramework.OpenGL4;
+﻿using HaighFramework.OpenGL4;
 
-namespace BearsEngine.Graphics
+namespace BearsEngine.Graphics.Shaders
 {
     public class SpritesheetShader : IShader
     {
@@ -20,7 +19,7 @@ namespace BearsEngine.Graphics
 
         private static void Initialise()
         {
-            _ID = HF.Graphics.CreateShader(Shaders.vs_spritesheet, Shaders.fs_default);
+            _ID = HF.Graphics.CreateShader(Resources.Shaders.vs_spritesheet, Resources.Shaders.fs_default);
             HF.Graphics.BindShader(_ID);
             _locationMVMatrix = OpenGL.GetUniformLocation(_ID, "MVMatrix");
             _locationPMatrix = OpenGL.GetUniformLocation(_ID, "PMatrix");

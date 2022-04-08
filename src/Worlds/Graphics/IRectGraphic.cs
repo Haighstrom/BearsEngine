@@ -1,6 +1,4 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds.Graphics
 {
-    public interface IRectGraphic : IRect<float>, IGraphic { }
+    public interface IRectGraphic : IRect, IGraphic { }
 }

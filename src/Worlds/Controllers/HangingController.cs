@@ -1,16 +1,14 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds.Controllers
+﻿namespace BearsEngine.Worlds.Controllers
 {
     public class HangingController : AddableBase, IUpdatable
     {
         #region Fields
-        private IRect<float> _target;
-        private IRect<float> _hangFrom;
+        private Rect _target;
+        private Rect _hangFrom;
         #endregion
 
         #region Constructors
-        public HangingController(IRect<float> target, IRect<float> hangFrom)
+        public HangingController(Rect target, Rect hangFrom)
         {
             _target = target;
             _hangFrom = hangFrom;

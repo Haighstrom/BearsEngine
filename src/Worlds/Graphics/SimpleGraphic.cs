@@ -1,13 +1,13 @@
 ﻿using BearsEngine.Graphics;
-using HaighFramework;
+using BearsEngine.Graphics.Shaders;
 using HaighFramework.OpenGL4;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.Graphics
 {
     public class SimpleGraphic : IRenderable
     {
         #region Fields
-        private object _syncRoot = new object();
+        private object _syncRoot = new();
         private bool _disposed = false;
         #endregion
 
@@ -31,7 +31,7 @@ namespace BearsEngine.Worlds
             Vertices = vertices;
 
             OpenGL.BindBuffer(BufferTarget.ArrayBuffer, VertexBuffer);
-            OpenGL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * Vertex.STRIDE, Vertices, BufferUsageHint.StreamDraw); 
+            OpenGL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * Vertex.STRIDE, Vertices, BufferUsageHint.StreamDraw);
             OpenGL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             HV.LastBoundVertexBuffer = 0;
         }

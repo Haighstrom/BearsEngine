@@ -2,7 +2,7 @@
 {
     public interface IAddable
     {
-        IContainer Parent { get; set; }
+        IContainer? Parent { get; set; }
 
         void Remove();
 

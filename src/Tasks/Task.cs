@@ -4,9 +4,9 @@
     {
         #region Fields
         private bool _firstUpdate = true;
-        protected readonly List<Action> ActionsOnStart = new List<Action>();
-        protected readonly List<Func<bool>> CompletionConditions = new List<Func<bool>>();
-        protected readonly List<Action> ActionsOnComplete = new List<Action>();
+        protected readonly List<Action> ActionsOnStart = new();
+        protected readonly List<Func<bool>> CompletionConditions = new();
+        protected readonly List<Action> ActionsOnComplete = new();
         #endregion
 
         #region ITask
@@ -50,7 +50,7 @@
             IsStarted = false;
         }
         #endregion
-        
+
         public event EventHandler TaskStarted, TaskEnded;
         #endregion
     }

@@ -1,9 +1,6 @@
-﻿using HaighFramework;
-using BearsEngine;
-using BearsEngine.Worlds;
-using BearsEngine.Pathfinding;
+﻿using BearsEngine.Pathfinding;
 
-namespace BearsEngine.Tasks
+namespace BearsEngine.Tasks.TaskExamples
 {
     public class T_AStarRoute<N> : Task
         where N : INode
@@ -22,7 +19,7 @@ namespace BearsEngine.Tasks
         protected override void Start()
         {
             base.Start();
-            var route = HF.Pathfinding.GetAStarRoute<N>(_entity.CurrentNode, _destination, _entity.CanPathThrough);
+            var route = HF.Pathfinding.GetAStarRoute(_entity.CurrentNode, _destination, _entity.CanPathThrough);
             _entity.WaypointController.Waypoints = route.Select(n => (IPosition)new Point(n.X, n.Y)).ToList();
         }
     }

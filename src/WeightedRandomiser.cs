@@ -1,10 +1,8 @@
-﻿using HaighFramework;
-
-namespace BearsEngine
+﻿namespace BearsEngine
 {
     public class WeightedRandomiser<T>
     {
-        private List<(T item, double accumWeight)> _items = new List<(T item, double accumWeight)>();
+        private readonly List<(T item, double accumWeight)> _items = new();
         private double _totalWeight;
 
         public void AddItem(T item, double weight)
@@ -13,16 +11,16 @@ namespace BearsEngine
             _items.Add((item, _totalWeight));
         }
 
-        public T GetRandomItem()
+        public T? GetRandomItem()
         {
             double r = HF.Randomisation.RandD(_totalWeight);
 
-            foreach (var iw in _items)
-                if (iw.accumWeight >= r)
-                    return iw.item;
+            foreach (var (item, accumWeight) in _items)
+                if (accumWeight >= r)
+                    return item;
 
             HConsole.Warning("WeightedRandomiser.GetRandomItem: List was empty when requesting an item.");
-            return default(T);
+            return default;
         }
     }
 }

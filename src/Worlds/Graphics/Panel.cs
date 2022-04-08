@@ -1,8 +1,8 @@
-﻿using HaighFramework;
-using HaighFramework.OpenGL4;
+﻿using HaighFramework.OpenGL4;
 using BearsEngine.Graphics;
+using BearsEngine.Graphics.Shaders;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.Graphics
 {
     public class Panel : RectGraphicBase
     {
@@ -11,25 +11,25 @@ namespace BearsEngine.Worlds
         private Vertex[] _vertices;
         private bool _verticesChanged = true;
 
-        private Rect 
-            TL = new Rect(0, 0, 0.3f, 0.3f),
-            TM = new Rect(0.3f, 0, 0.4f, 0.3f),
-            TR = new Rect(0.7f, 0, 0.3f, 0.3f),
-            ML = new Rect(0, 0.3f, 0.3f, 0.4f),
-            MM = new Rect(0.3f, 0.3f, 0.4f, 0.4f),
-            MR = new Rect(0.7f, 0.3f, 0.3f, 0.4f),
-            BL = new Rect(0, 0.7f, 0.3f, 0.3f),
-            BM = new Rect(0.3f, 0.7f, 0.4f, 0.3f),
-            BR = new Rect(0.7f, 0.7f, 0.3f, 0.3f);
+        private Rect
+            TL = new(0, 0, 0.3f, 0.3f),
+            TM = new(0.3f, 0, 0.4f, 0.3f),
+            TR = new(0.7f, 0, 0.3f, 0.3f),
+            ML = new(0, 0.3f, 0.3f, 0.4f),
+            MM = new(0.3f, 0.3f, 0.4f, 0.4f),
+            MR = new(0.7f, 0.3f, 0.3f, 0.4f),
+            BL = new(0, 0.7f, 0.3f, 0.3f),
+            BM = new(0.3f, 0.7f, 0.4f, 0.3f),
+            BR = new(0.7f, 0.7f, 0.3f, 0.3f);
         #endregion
 
         #region Constructors
-        public Panel(string imgPath, IRect<float> r)
+        public Panel(string imgPath, Rect r)
             : this(imgPath, r.X, r.Y, r.W, r.H)
         {
         }
 
-        public Panel(string imgPath, IPoint<float> size)
+        public Panel(string imgPath, Point size)
             : this(imgPath, 0, 0, size.X, size.Y)
         {
         }
@@ -40,7 +40,7 @@ namespace BearsEngine.Worlds
             Texture = HF.Graphics.LoadTexture(imgPath);
         }
         #endregion
-        
+
         #region w
         public override float W
         {

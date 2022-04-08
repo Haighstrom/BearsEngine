@@ -55,6 +55,11 @@ public sealed class Engine : IDisposable
         InputDM = new();
         Window = new HaighWindow2(windowSettings);
     }
+
+    private void Keyboard_CharEntered(object? sender, KeyboardCharEventArgs e)
+    {
+        throw new NotImplementedException();
+    }
     #endregion
 
     #region Properties

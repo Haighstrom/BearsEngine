@@ -1,8 +1,8 @@
-﻿using HaighFramework;
-using HaighFramework.Input;
+﻿using HaighFramework.Input;
+using BearsEngine.Worlds.UI.UIThemes;
 using BearsEngine.Worlds.Graphics.Text;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.UI.Controls
 {
     public class NumberInputBox<T> : Entity, IActivatable
         where T : struct,
@@ -31,12 +31,11 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Constructors
-        public NumberInputBox(UITheme theme, Colour bg, int layer, Rect r, T initialValue = default(T))
+        public NumberInputBox(UITheme theme, Colour bg, int layer, Rect r, T initialValue = default)
             : base(layer, r, bg)
         {
-            throw new NotImplementedException();
-            //    HV.Window.CharEntered += OnCharPressed;
-            //    HV.Window.KeyDown += OnKeyDown;
+            HV.Window.CharEntered += OnCharPressed;
+            HV.Window.KeyDown += OnKeyDown;
 
             Add(_textGraphic = new HText(theme, r.Zeroed, initialValue.ToString()) { Multiline = false, UseCommandTags = false });
 
@@ -149,11 +148,11 @@ namespace BearsEngine.Worlds
 
             while (true)
             {
-                if (firstChar > _firstCharDisplayed && _textGraphic.MeasureString(firstChar - 1, lastChar - firstChar + 1).X <= W)
+                if (firstChar > _firstCharDisplayed && _textGraphic.MeasureString(_text.Substring(firstChar - 1, lastChar - firstChar + 1)).X <= W)
                     firstChar--;
-                else if (lastChar < _text.Length && _textGraphic.MeasureString(firstChar, lastChar - firstChar + 1).X <= W)
+                else if (lastChar < _text.Length && _textGraphic.MeasureString(_text.Substring(firstChar, lastChar - firstChar + 1)).X <= W)
                     lastChar++;
-                else if (firstChar > 0 && _textGraphic.MeasureString(firstChar - 1, lastChar - firstChar + 1).X <= W)
+                else if (firstChar > 0 && _textGraphic.MeasureString(_text.Substring(firstChar - 1, lastChar - firstChar + 1)).X <= W)
                     firstChar--;
                 else
                     break;
@@ -300,7 +299,7 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region OnCharPressed
-        private void OnCharPressed(object sender, KeyboardCharEventArgs e)
+        private void OnCharPressed(object? sender, KeyboardCharEventArgs e)
         {
             if (_mode != Mode.Editing)
                 return;
@@ -318,13 +317,13 @@ namespace BearsEngine.Worlds
 
             _text = _text.Substring(0, _cursorPosition) + e.Key + _text.Substring(_cursorPosition);
             _cursorPosition++;
-            
+
             SetTextPositions();
         }
         #endregion
 
         #region OnKeyDown
-        private void OnKeyDown(object sender, KeyboardKeyEventArgs e)
+        private void OnKeyDown(object? sender, KeyboardKeyEventArgs e)
         {
             if (_mode != Mode.Editing)
                 return;
@@ -336,14 +335,14 @@ namespace BearsEngine.Worlds
                     CancelEdit();
                     break;
                 #endregion
-                
+
                 #region Enter/KeypadEnter
                 case Key.Enter:
                 case Key.KeypadEnter:
                     ConfirmEdit();
                     break;
                 #endregion
-                
+
                 #region Backspace / Delete
                 case Key.Backspace:
                 case Key.Delete:
@@ -368,7 +367,7 @@ namespace BearsEngine.Worlds
                     SetTextPositions();
                     break;
                 #endregion
-                
+
                 #region Home / Up
                 case Key.Home:
                 case Key.Up:
@@ -377,7 +376,7 @@ namespace BearsEngine.Worlds
                     SetTextPositions();
                     break;
                 #endregion
-                
+
                 #region End / Down
                 case Key.End:
                 case Key.Down:
@@ -385,7 +384,7 @@ namespace BearsEngine.Worlds
                     SetTextPositions();
                     break;
                 #endregion
-                
+
                 #region Left
                 case Key.Left:
                     if (HI.KeyDown(Key.LeftShift) || HI.KeyDown(Key.RightShift))
@@ -420,7 +419,7 @@ namespace BearsEngine.Worlds
                     }
                     break;
                 #endregion
-                
+
                 #region Right
                 case Key.Right:
                     if (HI.KeyDown(Key.LeftShift) || HI.KeyDown(Key.RightShift))

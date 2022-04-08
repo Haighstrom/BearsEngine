@@ -1,14 +1,14 @@
-﻿using HaighFramework;
+﻿using System.Collections.ObjectModel;
 using BearsEngine.Worlds.Graphics.Text;
-using System.Collections.ObjectModel;
+using BearsEngine.Worlds.UI.UIThemes;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.UI.Panels
 {
     public class Tab : Entity
     {
         #region Fields
         private IGraphic _activatedGraphic, _deactivatedGraphic;
-        private readonly List<IAddable> _itemsOnPage = new List<IAddable>();
+        private readonly List<IAddable> _itemsOnPage = new();
         protected HText _title;
         #endregion
 
@@ -51,10 +51,10 @@ namespace BearsEngine.Worlds
 
             _itemsOnPage.Add(a);
             TPParent?.Panel.Add(a);
-            a.Removed += (object o, EventArgs e) => { _itemsOnPage.Remove((IAddable)o); };
+            a.Removed += (o, e) => { _itemsOnPage.Remove((IAddable)o); };
         }
         #endregion
-        
+
         #region Activate
         protected internal virtual void Activate()
         {

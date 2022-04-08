@@ -1,14 +1,16 @@
-﻿using HaighFramework;
+﻿using BearsEngine.Worlds.Cameras;
+using BearsEngine.Worlds.UI.Controls.Scrollbars;
+using BearsEngine.Worlds.UI.UIThemes;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.UI.Panels
 {
     public class ScrollingListPanel : Entity
     {
-        private readonly List<IRectAddable> _itemsOnPage = new List<IRectAddable>();
+        private readonly List<IRectAddable> _itemsOnPage = new();
         private Camera _camera;
         private Scrollbar _sb;
 
-        public ScrollingListPanel(int layer, IRect<float> listPosition, int listToScrollbarGap, int scrollbarWidth, UITheme theme, int minIncrement = 0)
+        public ScrollingListPanel(int layer, Rect listPosition, int listToScrollbarGap, int scrollbarWidth, UITheme theme, int minIncrement = 0)
             : base(layer, new Rect(listPosition.X, listPosition.Y, listPosition.W + listToScrollbarGap + scrollbarWidth, listPosition.H))
         {
             Add(_camera = new Camera(1, listPosition.Zeroed, listPosition.Zeroed) { BackgroundColour = theme.ScrollingListPanel.PanelColour });

@@ -2,6 +2,7 @@
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
+using System.IO;
 using Point = HaighFramework.Point;
 
 namespace BearsEngine.Worlds.Graphics.Text
@@ -31,14 +32,14 @@ namespace BearsEngine.Worlds.Graphics.Text
         public const FontStyle DEFAULT_FONTSTYLE = FontStyle.Regular;
         public const bool DEFAULT_AA = false;
         private const string DEFAULT_CHARS_TO_LOAD = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 !£$%^&*()-=_+[]{};'#:@~,./<>?|`¬¦€""\";
-        private const string DEFAULT_FONT_FOLDER = "Content/FONTS/";
+        private const string DEFAULT_FONT_FOLDER = "Assets/Fonts/";
         private const int BITMAP_CHARS_PER_ROW = 13;
         #endregion
 
         #region Static
         #region Static Fields
         private static HFont _default;
-        private static Dictionary<string, HFont> _loadedFonts = new Dictionary<string, HFont>();
+        private static Dictionary<string, HFont> _loadedFonts = new();
         #endregion
 
         #region Static Properties
@@ -76,13 +77,13 @@ namespace BearsEngine.Worlds.Graphics.Text
             var longName = string.Format("{0},{1},{2},{3}", fontName, size, (int)fontStyle, antiAliased ? 1 : 0);
 
             //if it's already in memory reuse it
-            if (_loadedFonts.ContainsKey(longName)) 
+            if (_loadedFonts.ContainsKey(longName))
                 return _loadedFonts[longName];
 
             HFont hFont;
 
             //if it's been created and saved to disk load it
-            if (HaighIO.FileExists(DEFAULT_FONT_FOLDER + longName + ".details")) 
+            if (HaighIO.FileExists(DEFAULT_FONT_FOLDER + longName + ".details"))
             {
                 try
                 {
@@ -143,11 +144,11 @@ namespace BearsEngine.Worlds.Graphics.Text
         #endregion
 
         #region Fields
-        private readonly object _syncRoot = new object();
+        private readonly object _syncRoot = new();
         private bool _disposed = false;
 
-        private readonly Dictionary<char, Rect> _charPositions = new Dictionary<char, Rect>();
-        private readonly Dictionary<char, Rect> _charPositionsNormalised = new Dictionary<char, Rect>();
+        private readonly Dictionary<char, Rect> _charPositions = new();
+        private readonly Dictionary<char, Rect> _charPositionsNormalised = new();
         #endregion
 
         #region AutoProperties
@@ -224,7 +225,7 @@ namespace BearsEngine.Worlds.Graphics.Text
         #region GenerateCharacterBitmap
         private Bitmap GenerateCharacterBitmap(char c, Font font, bool antiAliased)
         {
-            Bitmap image = new Bitmap((int)font.Size * 2, (int)font.Size * 2, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            Bitmap image = new((int)font.Size * 2, (int)font.Size * 2, PixelFormat.Format32bppArgb);
             var g = System.Drawing.Graphics.FromImage(image);
             g.TextRenderingHint = antiAliased ? TextRenderingHint.AntiAlias : TextRenderingHint.AntiAliasGridFit;
             g.SmoothingMode = antiAliased ? SmoothingMode.AntiAlias : SmoothingMode.Default;
@@ -248,7 +249,7 @@ namespace BearsEngine.Worlds.Graphics.Text
                     throw new HException("HFont.cs/GenerateCharacterBitmap: Font {0}, Size {1}, character 't' is giving size (W:{2},H:{3})", FontName, FontSize, r.W, r.H);
             }
 
-            image = new Bitmap((int)r.X + (int)r.W, (int)r.Y + (int)r.H, System.Drawing.Imaging.PixelFormat.Format32bppArgb); //include alpha at left/top of image so positioning is preserved
+            image = new Bitmap((int)r.X + (int)r.W, (int)r.Y + (int)r.H, PixelFormat.Format32bppArgb); //include alpha at left/top of image so positioning is preserved
             g = System.Drawing.Graphics.FromImage(image);
             g.TextRenderingHint = antiAliased ? TextRenderingHint.AntiAlias : TextRenderingHint.AntiAliasGridFit;
             g.SmoothingMode = antiAliased ? SmoothingMode.AntiAlias : SmoothingMode.Default;
@@ -278,9 +279,9 @@ namespace BearsEngine.Worlds.Graphics.Text
             }
 
             int spriteSheetWidth = BITMAP_CHARS_PER_ROW * widestChar;
-            int spriteSheetHeight = (int)(Math.Ceiling((float)characterBMPs.Count / BITMAP_CHARS_PER_ROW)) * highestChar;
+            int spriteSheetHeight = (int)Math.Ceiling((float)characterBMPs.Count / BITMAP_CHARS_PER_ROW) * highestChar;
 
-            characterSS = new Bitmap(spriteSheetWidth, spriteSheetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            characterSS = new Bitmap(spriteSheetWidth, spriteSheetHeight, PixelFormat.Format32bppArgb);
             var g = System.Drawing.Graphics.FromImage(characterSS);
             g.CompositingQuality = CompositingQuality.HighQuality;
             g.TextRenderingHint = AntiAliased ? TextRenderingHint.AntiAlias : TextRenderingHint.AntiAliasGridFit;
@@ -289,8 +290,8 @@ namespace BearsEngine.Worlds.Graphics.Text
 
             foreach (char c in charsToLoad)
             {
-                posX = (j % BITMAP_CHARS_PER_ROW) * widestChar;
-                posY = (j / BITMAP_CHARS_PER_ROW) * highestChar;
+                posX = j % BITMAP_CHARS_PER_ROW * widestChar;
+                posY = j / BITMAP_CHARS_PER_ROW * highestChar;
 
                 var charRect = new Rect(posX, posY, characterBMPs[j].Width, highestChar);
                 _charPositions.Add(c, charRect);
@@ -343,18 +344,18 @@ namespace BearsEngine.Worlds.Graphics.Text
         /// <summary>
         /// Position on the underlying bitmap of the character in pixels
         /// </summary>
-        public IRect<float> BitmapPosition(char c) => _charPositions[c];
+        public Rect BitmapPosition(char c) => _charPositions[c];
         #endregion
 
         #region BitmapPositionNormalised
         /// <summary>
         /// Position on the underlying bitmap of the character in range (0,1), for use with OpenGL textures
         /// </summary>
-        public IRect<float> BitmapPositionNormalised(char c) => _charPositionsNormalised[c];
+        public Rect BitmapPositionNormalised(char c) => _charPositionsNormalised[c];
         #endregion
 
         #region MeasureString
-        public Point MeasureString(char c) => new Point(_charPositions[c].W, HighestChar);
+        public Point MeasureString(char c) => new(_charPositions[c].W, HighestChar);
 
         public Point MeasureString(string s)
         {

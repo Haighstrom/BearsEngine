@@ -1,5 +1,4 @@
-﻿using HaighFramework;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace BearsEngine.Graphics
 {
@@ -12,7 +11,7 @@ namespace BearsEngine.Graphics
         public Colour Colour;
         public float U, V;
 
-        public Vertex(IPoint<float> position, Colour colour, IPoint<float> textureCoords)
+        public Vertex(Point position, Colour colour, Point textureCoords)
             : this(position.X, position.Y, colour, textureCoords.X, textureCoords.Y)
         {
         }

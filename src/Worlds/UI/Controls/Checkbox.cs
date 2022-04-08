@@ -1,6 +1,6 @@
-﻿using HaighFramework;
+﻿using BearsEngine.Worlds.UI.UIThemes;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.UI.Controls
 {
     public class Checkbox : Button
     {
@@ -8,24 +8,24 @@ namespace BearsEngine.Worlds
 
         #region Constructors
         #region UITheme Based
-        public Checkbox(int layer, IRect<float> r, string tickGraphic, UITheme theme, bool startTicked)
+        public Checkbox(int layer, Rect r, string tickGraphic, UITheme theme, bool startTicked)
             : this(layer, r, theme.Button.DefaultColour, tickGraphic, theme, startTicked)
         {
         }
 
-        public Checkbox(int layer, IRect<float> r, string boxGraphic, string tickGraphic, UITheme theme, bool startTicked)
+        public Checkbox(int layer, Rect r, string boxGraphic, string tickGraphic, UITheme theme, bool startTicked)
             : this(layer, r, new Image(boxGraphic, r.Size), new Image(tickGraphic, r.Size), theme, startTicked)
         {
             DefaultColour = Colour.White; //ignore theme colour if we have an Image as graphic.
         }
 
-        public Checkbox(int layer, IRect<float> r, Colour boxGraphic, string tickGraphic, UITheme theme, bool startTicked)
+        public Checkbox(int layer, Rect r, Colour boxGraphic, string tickGraphic, UITheme theme, bool startTicked)
             : this(layer, r, new Image(theme.Button.DefaultColour, r.Size), new Image(tickGraphic, r.Size), theme, startTicked)
         {
             DefaultColour = boxGraphic; //ignore theme colour if graphic is a Colour
         }
 
-        public Checkbox(int layer, IRect<float> r, IRectGraphic boxGraphic, IGraphic tickGraphic, UITheme theme, bool startTicked)
+        public Checkbox(int layer, Rect r, IRectGraphic boxGraphic, IGraphic tickGraphic, UITheme theme, bool startTicked)
             : this(layer, r, boxGraphic, tickGraphic, startTicked)
         {
             DefaultColour = theme.Button.DefaultColour;
@@ -36,18 +36,18 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Standard
-        public Checkbox(int layer, IRect<float> r, string boxGraphic, string tickGraphic, bool startTicked)
+        public Checkbox(int layer, Rect r, string boxGraphic, string tickGraphic, bool startTicked)
             : this(layer, r, new Image(boxGraphic, r.Size), new Image(tickGraphic, r.Size), startTicked)
         {
         }
 
-        public Checkbox(int layer, IRect<float> r, Colour boxGraphic, string tickGraphic, bool startTicked)
+        public Checkbox(int layer, Rect r, Colour boxGraphic, string tickGraphic, bool startTicked)
             : this(layer, r, new Image(boxGraphic, r.Size), new Image(tickGraphic, r.Size), startTicked)
         {
             DefaultColour = boxGraphic; //ignore theme colour if colour is set
         }
 
-        public Checkbox(int layer, IRect<float> r, IRectGraphic boxGraphic, IGraphic tickGraphic, bool startTicked)
+        public Checkbox(int layer, Rect r, IRectGraphic boxGraphic, IGraphic tickGraphic, bool startTicked)
             : base(layer, r.X, r.Y, r.W, r.H, boxGraphic)
         {
             Add(_tickGraphic = tickGraphic);

@@ -1,11 +1,11 @@
-﻿using HaighFramework;
+﻿using BearsEngine.Worlds.UI.UIThemes;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.UI.Panels
 {
     public class TabbedPanel : Entity
     {
         #region GetPanelRect
-        private static IRect<float> GetPanelRect(IRect<float> fullPosition, Direction orientation, int edgeToPanelGap, int tabPanelOverlap)
+        private static Rect GetPanelRect(IRect fullPosition, Direction orientation, int edgeToPanelGap, int tabPanelOverlap)
         {
             Rect panelPos;
             switch (orientation)
@@ -43,26 +43,26 @@ namespace BearsEngine.Worlds
 
         private Button _tabsBack, _tabsForward;
         private Button _createNewTabButton;
-        private List<Tab> _tabs = new List<Tab>();
+        private List<Tab> _tabs = new();
         private int _firstTabDisplayed = 0;
         #endregion
 
         #region Constructors
         #region With AddNewTab Button
-        public TabbedPanel(int layer, Direction orientation, IRect<float> fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int lastTabToNewTabButtonSpace, int spaceBetweenArrows, IPoint<float> tabsBackAndForwardSize, Point tabAddButtonSize, UITheme theme, string panelGFX, string tabsBackArrow, string tabsForwardArrow, string addNewTabGFX, Func<Tab> addNewTabFn)
+        public TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int lastTabToNewTabButtonSpace, int spaceBetweenArrows, Point tabsBackAndForwardSize, Point tabAddButtonSize, UITheme theme, string panelGFX, string tabsBackArrow, string tabsForwardArrow, string addNewTabGFX, Func<Tab> addNewTabFn)
             : this(layer, orientation, fullPosition, edgeToPanelGap, tabPanelOverlap, firstTabShift, tabSpacing, lastTabToNewTabButtonSpace, spaceBetweenArrows, theme, new Panel(panelGFX, GetPanelRect(fullPosition, orientation, edgeToPanelGap, tabPanelOverlap).Size), new Image(tabsBackArrow, tabsBackAndForwardSize), new Image(tabsForwardArrow, tabsBackAndForwardSize), new Image(addNewTabGFX, tabAddButtonSize), addNewTabFn)
         {
         }
         #endregion
 
         #region With just tabs (no add, no arrows)
-        public TabbedPanel(int layer, Direction orientation, IRect<float> fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, UITheme theme, string panelGFX)
+        public TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, UITheme theme, string panelGFX)
             : this(layer, orientation, fullPosition, edgeToPanelGap, tabPanelOverlap, firstTabShift, tabSpacing, theme, new Panel(panelGFX, GetPanelRect(fullPosition, orientation, edgeToPanelGap, tabPanelOverlap).Size))
         {
         }
         #endregion
 
-        private TabbedPanel(int layer, Direction orientation, IRect<float> fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int lastTabToNewTabButtonSpace, int spaceBetweenArrows, UITheme theme, IGraphic panelGFX, IRectGraphic tabsBackArrow, IRectGraphic tabsForwardArrow, IRectGraphic tabAddButtonGraphic, Func<Tab> createNewTabFn)
+        private TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int lastTabToNewTabButtonSpace, int spaceBetweenArrows, UITheme theme, IGraphic panelGFX, IRectGraphic tabsBackArrow, IRectGraphic tabsForwardArrow, IRectGraphic tabAddButtonGraphic, Func<Tab> createNewTabFn)
             : this(layer, orientation, fullPosition, edgeToPanelGap, tabPanelOverlap, firstTabShift, tabSpacing, spaceBetweenArrows, theme, panelGFX, tabsBackArrow, tabsForwardArrow)
         {
             if (tabAddButtonGraphic == null || createNewTabFn == null)
@@ -73,7 +73,7 @@ namespace BearsEngine.Worlds
             Add(_createNewTabButton = new Button(1, tabAddButtonGraphic.Shift(_lastTabToNewTabButtonSpace, (edgeToPanelGap - tabAddButtonGraphic.H) / 2), tabAddButtonGraphic, theme, () => AddTab(createNewTabFn(), true)));
         }
 
-        private TabbedPanel(int layer, Direction orientation, IRect<float> fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int spaceBetweenArrows, UITheme theme, IGraphic panelGFX, IRectGraphic tabsBackArrow, IRectGraphic tabsForwardArrow)
+        private TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int spaceBetweenArrows, UITheme theme, IGraphic panelGFX, IRectGraphic tabsBackArrow, IRectGraphic tabsForwardArrow)
             : this(layer, orientation, fullPosition, edgeToPanelGap, tabPanelOverlap, firstTabShift, tabSpacing, theme, panelGFX)
         {
             if (tabsForwardArrow == null || tabsBackArrow == null)
@@ -98,7 +98,7 @@ namespace BearsEngine.Worlds
             });
         }
 
-        private TabbedPanel(int layer, Direction orientation, IRect<float> fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, UITheme theme, IGraphic panelGFX)
+        private TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, UITheme theme, IGraphic panelGFX)
             : base(layer, fullPosition)
         {
             _orientation = orientation;
@@ -159,7 +159,7 @@ namespace BearsEngine.Worlds
             RepositionTabs();
 
             //if we activated the tab but it's created off-screen, press the "right" button until you can see it
-            if (activate) 
+            if (activate)
                 while (!t.Visible)
                 {
                     _firstTabDisplayed++;
@@ -175,7 +175,7 @@ namespace BearsEngine.Worlds
             tab.Remove();
 
             int index = _tabs.IndexOf(tab);
-            
+
             _tabs.Remove(tab);
 
             RepositionTabs();

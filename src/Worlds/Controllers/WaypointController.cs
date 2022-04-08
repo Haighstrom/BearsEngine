@@ -1,6 +1,4 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds.Controllers
+﻿namespace BearsEngine.Worlds.Controllers
 {
     public class WaypointChangedArgs : EventArgs
     {
@@ -44,7 +42,7 @@ namespace BearsEngine.Worlds.Controllers
                 }
                 else
                 {
-                    IPoint<float> p = new Point(Waypoints[0].X - _target.X, Waypoints[0].Y - _target.Y);
+                    Point p = new Point(Waypoints[0].X - _target.X, Waypoints[0].Y - _target.Y);
                     float distanceFromTarget = p.Length;
 
                     if (distanceFromTarget > amountToMove)
@@ -71,8 +69,8 @@ namespace BearsEngine.Worlds.Controllers
         public event EventHandler<WaypointChangedArgs> ReachedWaypoint;
         #endregion
 
-        public IPosition CurrentPosition => (IPosition)_target.P;
-        public IPosition NextWaypoint => Waypoints.IsEmpty() ? default(IPosition) : Waypoints[0];
+        public IPosition CurrentPosition => _target.P;
+        public IPosition NextWaypoint => Waypoints.IsEmpty() ? default : Waypoints[0];
         public bool ReachedDestination => Waypoints.IsEmpty();
     }
 }

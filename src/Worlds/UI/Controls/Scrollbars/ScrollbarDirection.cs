@@ -1,4 +1,4 @@
-﻿namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds.UI.Controls.Scrollbars
 {
     public enum ScrollbarDirection
     {

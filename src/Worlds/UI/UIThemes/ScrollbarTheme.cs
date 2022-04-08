@@ -1,11 +1,9 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds.UI.UIThemes
 {
     public struct ScrollbarTheme
     {
         #region Default
-        public static ScrollbarTheme Default => new ScrollbarTheme
+        public static ScrollbarTheme Default => new()
         {
             BarBackgroundColour = Colour.LightGray,
             ButtonBackgroundColour = Colour.LightGray,

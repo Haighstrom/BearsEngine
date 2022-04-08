@@ -1,12 +1,11 @@
-﻿using HaighFramework;
-using BearsEngine.Worlds.Graphics.Text;
+﻿using BearsEngine.Worlds.Graphics.Text;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.UI.UIThemes
 {
     public struct TextTheme
     {
         #region Default
-        public static TextTheme Default => new TextTheme
+        public static TextTheme Default => new()
         {
             Font = HFont.Default,
             FontColour = Colour.Black,

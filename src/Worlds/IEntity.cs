@@ -1,6 +1,4 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds
 {
     public interface IEntity : IRectAddable, IUpdatable, IRenderableOnLayer, IContainer, ICollideable, IClickable
     {

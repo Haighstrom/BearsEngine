@@ -12,5 +12,6 @@ public interface INode : IPosition
 
 public static class NodeExts
 {
-    public static bool Equals(this INode n1, INode n2) => n1.X == n2.X && n1.Y == n2.Y;
+    public static bool Equals(this INode n1, INode? n2) => n1.X == n2?.X && n1.Y == n2.Y;
+    public static bool Equals(this INode n1, IPosition? n2) => n1.X == n2?.X && n1.Y == n2.Y;
 }

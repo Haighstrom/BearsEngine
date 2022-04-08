@@ -1,9 +1,8 @@
-﻿using HaighFramework;
-using HaighFramework.OpenGL4;
-using BearsEngine;
+﻿using HaighFramework.OpenGL4;
+using BearsEngine.Graphics.Shaders;
 using BearsEngine.Graphics;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.Graphics
 {
     public class Polygon : IGraphic
     {

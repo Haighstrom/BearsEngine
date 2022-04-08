@@ -1,7 +1,7 @@
-﻿using HaighFramework;
-using BearsEngine.Worlds.Graphics.Text;
+﻿using BearsEngine.Worlds.Graphics.Text;
+using BearsEngine.Worlds.UI.UIThemes;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.UI.Panels
 {
     public class PagedPanel : Entity
     {
@@ -14,7 +14,7 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Constructors
-        public PagedPanel(int layer, UITheme uiTheme, IRect<float> textPosition, IRect<float> arrow1Pos, IRect<float> arrow2Pos, string arrow1GFX, string arrow2GFX, List<Entity> pages)
+        public PagedPanel(int layer, UITheme uiTheme, Rect textPosition, Rect arrow1Pos, Rect arrow2Pos, string arrow1GFX, string arrow2GFX, List<Entity> pages)
             : base(layer)
         {
             if (pages.Count == 0)
@@ -58,7 +58,7 @@ namespace BearsEngine.Worlds
 
             _pages[newpage].Active = true;
             _pages[newpage].Visible = true;
- 
+
             _page = newpage;
 
             _pageNumText.Text = _page + 1 + " / " + _pages.Count;

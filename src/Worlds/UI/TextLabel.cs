@@ -1,7 +1,6 @@
-﻿using HaighFramework;
-using BearsEngine.Worlds.Graphics.Text;
+﻿using BearsEngine.Worlds.Graphics.Text;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.UI
 {
     public class TextLabel : Entity
     {

@@ -1,20 +1,18 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds.Controllers
+﻿namespace BearsEngine.Worlds.Controllers
 {
     public delegate float GetPosition(float time);
 
     public class PositionController : AddableBase, IUpdatable
     {
         #region Fields
-        private IRect<float> _target;
+        private Rect _target;
         private float _initialX, _initialY;
         private GetPosition _getX, _getY;
         private float _totalElapsed;
         #endregion
 
         #region Constructors
-        public PositionController(IRect<float> target, bool positionAbsolute, GetPosition getX, GetPosition getY)
+        public PositionController(Rect target, bool positionAbsolute, GetPosition getX, GetPosition getY)
         {
             _target = target;
             if (!positionAbsolute)

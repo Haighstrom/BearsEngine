@@ -1,11 +1,9 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds.UI.UIThemes
 {
     public struct BorderTheme
     {
         #region Default
-        public static BorderTheme Default => new BorderTheme
+        public static BorderTheme Default => new()
         {
             Colour = Colour.Black,
             Thickness = 2,

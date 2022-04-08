@@ -1,8 +1,8 @@
-﻿using HaighFramework;
-using HaighFramework.OpenGL4;
+﻿using HaighFramework.OpenGL4;
+using BearsEngine.Graphics.Shaders;
 using BearsEngine.Graphics;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.Graphics
 {
     public class ProgressBar : RectGraphicBase
     {
@@ -143,10 +143,10 @@ namespace BearsEngine.Worlds
                 };
 
                 OpenGL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * Vertex.STRIDE, _vertices, BufferUsageHint.StreamDraw);
-                
+
                 _verticesChanged = false;
             }
-            
+
             Shader.Render(ref projection, ref mv, _vertices.Length, PrimitiveType.Triangles);
 
             UnbindVertexBuffer();

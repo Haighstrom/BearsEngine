@@ -1,8 +1,7 @@
-﻿using BearsEngine.Graphics;
-using HaighFramework;
+﻿using BearsEngine.Graphics.Shaders;
 using HaighFramework.OpenGL4;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.Graphics
 {
     public abstract class RectGraphicBase : AddableRectBase, IRectGraphic
     {
@@ -11,7 +10,7 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Constructors
-        public RectGraphicBase(IShader shader, IRect<float> r)
+        public RectGraphicBase(IShader shader, Rect r)
             : this(shader, r.X, r.Y, r.W, r.H)
         {
         }

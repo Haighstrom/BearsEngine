@@ -1,8 +1,8 @@
-﻿using HaighFramework;
-using HaighFramework.OpenGL4;
+﻿using HaighFramework.OpenGL4;
 using BearsEngine.Graphics;
+using BearsEngine.Graphics.Shaders;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.Cameras
 {
     public class Camera : AddableRectBase, ICamera //todo: disposable - remove resize event handlers?
     {
@@ -18,19 +18,19 @@ namespace BearsEngine.Worlds
         private uint _frameBufferShaderPassID;
         protected uint VertexBuffer { get; private set; }
         protected Vertex[] Vertices { get; set; }
-        private IRect<float> _view = new Rect();
+        private IRect _view = new Rect();
         private int _layer;
         private IContainer _container;
         private float _tileWidth, _tileHeight;
         #endregion
 
         #region Constructors
-        public Camera(int layer, IRect<float> position, Point tileSize)
+        public Camera(int layer, IRect position, Point tileSize)
             : this(layer, position, tileSize.X, tileSize.Y)
         {
         }
 
-        public Camera(int layer, IRect<float> position, float tileW, float tileH)
+        public Camera(int layer, IRect position, float tileW, float tileH)
             : this(layer, position)
         {
             FixedTileSize = true;
@@ -41,7 +41,7 @@ namespace BearsEngine.Worlds
 
         }
 
-        public Camera(int layer, IRect<float> position, IRect<float> viewport)
+        public Camera(int layer, IRect position, IRect viewport)
             : this(layer, position)
         {
             FixedTileSize = false;
@@ -50,7 +50,7 @@ namespace BearsEngine.Worlds
             View = viewport;
         }
 
-        private Camera(int layer, IRect<float> position)
+        private Camera(int layer, IRect position)
             : base(position)
         {
             _container = new Container(this);
@@ -131,7 +131,7 @@ namespace BearsEngine.Worlds
             OpenGL.BlendFunc(BlendingFactorSrc.One, BlendingFactorDest.OneMinusSrcAlpha);
 
             //Save the previous viewport and set the viewport to match the size of the texture we are now drawing to - the FBO
-            Rect<int> prevVP = OpenGL.GetViewport();
+            Rect prevVP = OpenGL.GetViewport();
             OpenGL.Viewport(0, 0, (int)W, (int)H);
 
             //Locally save the current render target, we will then set this camera as the current render target for child cameras, then put it back
@@ -223,7 +223,7 @@ namespace BearsEngine.Worlds
 
         public int EntityCount => _container.EntityCount;
 
-        public IPoint<float> GetWindowPosition(IPoint<float> localCoords)
+        public Point GetWindowPosition(Point localCoords)
         {
             return Parent.GetWindowPosition(new Point(
                 X + TileWidth * (localCoords.X - View.X),
@@ -231,14 +231,14 @@ namespace BearsEngine.Worlds
                 ));
         }
 
-        public IRect<float> GetWindowPosition(IRect<float> localCoords)
+        public IRect GetWindowPosition(IRect localCoords)
         {
-            IPoint<float> tl = GetWindowPosition(localCoords.TopLeft);
-            IPoint<float> br = GetWindowPosition(localCoords.BottomRight);
-            return new Rect<float>(tl, br.X - tl.X, br.Y - tl.Y);
+            Point tl = GetWindowPosition(localCoords.TopLeft);
+            Point br = GetWindowPosition(localCoords.BottomRight);
+            return new Rect(tl, br.X - tl.X, br.Y - tl.Y);
         }
 
-        public IPoint<float> GetLocalPosition(IPoint<float> windowCoords)
+        public Point GetLocalPosition(Point windowCoords)
         {
             var p1 = Parent.GetLocalPosition(windowCoords);
             var p2 = new Point(
@@ -249,14 +249,14 @@ namespace BearsEngine.Worlds
             return p2;
         }
 
-        public IRect<float> GetLocalPosition(IRect<float> windowCoords)
+        public IRect GetLocalPosition(IRect windowCoords)
         {
-            IPoint<float> tl = GetLocalPosition(windowCoords.TopLeft);
-            IPoint<float> br = GetLocalPosition(windowCoords.BottomRight);
-            return new Rect<float>(tl, br.X - tl.X, br.Y - tl.Y);
+            Point tl = GetLocalPosition(windowCoords.TopLeft);
+            Point br = GetLocalPosition(windowCoords.BottomRight);
+            return new Rect(tl, br.X - tl.X, br.Y - tl.Y);
         }
 
-        public IPoint<float> LocalMousePosition => GetLocalPosition(HI.MouseWindowP);
+        public Point LocalMousePosition => GetLocalPosition(HI.MouseWindowP);
 
         public E Add<E>(E e) where E : IAddable => _container.Add(e);
 
@@ -282,22 +282,22 @@ namespace BearsEngine.Worlds
 
         public List<E> GetEntities<E>(bool considerChildren = true) => _container.GetEntities<E>(considerChildren);
 
-        public E Collide<E>(IPoint<float> p, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(p, considerChildren);
+        public E Collide<E>(Point p, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(p, considerChildren);
 
-        public E Collide<E>(IRect<float> r, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(r, considerChildren);
+        public E Collide<E>(IRect r, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(r, considerChildren);
 
         public E Collide<E>(ICollideable i, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(i, considerChildren);
 
-        public List<E> CollideAll<E>(IPoint<float> p, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(p, considerChildren);
+        public List<E> CollideAll<E>(Point p, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(p, considerChildren);
 
-        public List<E> CollideAll<E>(IRect<float> r, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(r, considerChildren);
+        public List<E> CollideAll<E>(IRect r, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(r, considerChildren);
 
         public List<E> CollideAll<E>(ICollideable i, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(i, considerChildren);
         #endregion
 
         #region ICamera
         #region View
-        public virtual IRect<float> View
+        public virtual IRect View
         {
             get => _view;
             set
@@ -377,8 +377,7 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Resize
-        public void Resize(IPoint<float> newSize) => Resize(newSize.X, newSize.Y);
-        public void Resize(IPoint<int> newSize) => Resize(newSize.X, newSize.Y);
+        public void Resize(Point newSize) => Resize(newSize.X, newSize.Y);
 
         public void Resize(float newW, float newH)
         {

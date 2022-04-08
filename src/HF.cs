@@ -1,15 +1,14 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
 using System.Reflection;
-using HaighFramework;
 using HaighFramework.OpenGL4;
 using BearsEngine.Graphics;
-using BearsEngine.Worlds;
 using BearsEngine.Pathfinding;
+using System.IO;
 
 namespace BearsEngine
 {
-    using Encoding = System.Text.Encoding;
+    using Encoding = Encoding;
 
     public static class HF
     {
@@ -26,7 +25,7 @@ namespace BearsEngine
             {
             0, 1, 28, 2, 29, 14, 24, 3, 30, 22, 20, 15, 25, 17, 4, 8,
             31, 27, 13, 23, 21, 19, 16, 7, 26, 12, 18, 6, 11, 5, 10, 9
-        };
+            };
 
             public static int TrailingZeroCount(int number) => _DeBruijnPositions[unchecked((uint)(number & -number) * 0x077CB531U) >> 27];
             #endregion
@@ -36,10 +35,21 @@ namespace BearsEngine
         #region Arrays
         public static class Arrays
         {
-            public static int[] FillArray(int size, int value)
+            public static T[] FillArray<T>(int size, T value)
             {
-                var ret = new int[size];
+                var ret = new T[size];
                 Array.Fill(ret, value);
+                return ret;
+            }
+
+            public static T[,] FillArray<T>(int arrayWidth, int arrayHeight, T value)
+            {
+                var ret = new T[arrayWidth, arrayHeight];
+
+                for (int i = 0; i < arrayWidth; i++)
+                    for (int j = 0; j < arrayHeight; j++)
+                        ret[i, j] = value;
+
                 return ret;
             }
         }
@@ -65,7 +75,7 @@ namespace BearsEngine
             /// </summary>
             /// <param name="angleInDegrees"></param>
             /// <returns></returns>
-            public static Point AngleToPoint(float angleInDegrees) => new Point((float)Math.Sin(angleInDegrees * Math.PI / 180), (float)Math.Cos(angleInDegrees * Math.PI / 180));
+            public static Point AngleToPoint(float angleInDegrees) => new((float)Math.Sin(angleInDegrees * Math.PI / 180), (float)Math.Cos(angleInDegrees * Math.PI / 180));
             #endregion
         }
         #endregion
@@ -95,7 +105,7 @@ namespace BearsEngine
             #endregion
 
             #region CreateShader
-            public static uint CreateShader(byte[] vertexSource, byte[] fragmentSource) 
+            public static uint CreateShader(byte[] vertexSource, byte[] fragmentSource)
                 => CreateShader(
                     Encoding.UTF8.GetString(vertexSource),
                     Encoding.UTF8.GetString(fragmentSource));
@@ -109,7 +119,7 @@ namespace BearsEngine
                     Encoding.UTF8.GetString(fragmentSource));
 
             public static uint CreateShader(string vertexSource, string geometrySource, string fragmentSource)
-            {                
+            {
                 uint programID = OpenGL.CreateProgram();
 
                 int vs, gs = 0, fs = 0;
@@ -146,7 +156,7 @@ namespace BearsEngine
                 return programID;
             }
             #endregion
-            
+
             #region CompileShader
             private static int CompileShader(uint programID, ShaderType shaderType, string shaderSrc)
             {
@@ -252,7 +262,7 @@ namespace BearsEngine
             {
                 bmp = OpenGL.PremultiplyAlpha(bmp);
 
-                Texture t = new Texture
+                Texture t = new()
                 {
                     Width = bmp.Width,
                     Height = bmp.Height,
@@ -276,7 +286,7 @@ namespace BearsEngine
             public static Texture GenTexture(Colour[,] pixels, TextureParameter minMagFilter = TextureParameter.Nearest)
             {
                 pixels = pixels.Transpose();
-                Texture t = new Texture(OpenGL.GenTexture(), pixels.GetLength(1), pixels.GetLength(0));
+                Texture t = new(OpenGL.GenTexture(), pixels.GetLength(1), pixels.GetLength(0));
 
                 OpenGL.PixelStore(PixelStoreParameter.GL_UNPACK_ALIGNMENT, 1);
 
@@ -303,7 +313,7 @@ namespace BearsEngine
             private static Texture GenPaddedTexture(string path, int spriteRows, int spriteColumns, TextureParameter minFilter = TextureParameter.Nearest, TextureParameter magFilter = TextureParameter.Nearest, TextureParameter wrapMode = TextureParameter.ClampToEdge)
             {
                 if (string.IsNullOrEmpty(path)) throw new ArgumentException(path);
-                if (!File.Exists(path)) throw new System.IO.FileNotFoundException(path);
+                if (!File.Exists(path)) throw new FileNotFoundException(path);
 
                 var t = new Texture()
                 {
@@ -338,7 +348,7 @@ namespace BearsEngine
 
                 var bmpData = paddedBMP.LockBits(new System.Drawing.Rectangle(0, 0, paddedBMP.Width, paddedBMP.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-                OpenGL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmpData.Width, bmpData.Height, 0, HaighFramework.OpenGL4.PixelFormat.Bgra, PixelType.UnsignedByte, bmpData.Scan0);
+                OpenGL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmpData.Width, bmpData.Height, 0, PixelFormat.Bgra, PixelType.UnsignedByte, bmpData.Scan0);
 
                 paddedBMP.UnlockBits(bmpData);
 
@@ -376,29 +386,19 @@ namespace BearsEngine
             #endregion
 
             #region GenTrianglePolygon
-            public static Polygon GenTrianglePolygon(IRect<float> boundingRect, int border, Direction direction, Colour colour)
+            public static Polygon GenTrianglePolygon(IRect boundingRect, int border, Direction direction, Colour colour)
             {
-                IRect<float> r = boundingRect;
+                IRect r = boundingRect;
 
-                switch (direction)
+                return direction switch
                 {
-                    case Direction.Up:
-                        return new Polygon(colour, new Point(r.W / 2, border), new Point(r.W - border, r.W - border), new Point(border, r.W - border));
-
-                    case Direction.Right:
-                        return new Polygon(colour, new Point(r.H - border, r.H / 2), new Point(border, r.H - border), new Point(border, border));
-
-                    case Direction.Down:
-                        return new Polygon(colour, new Point(border, border), new Point(r.W - border, border), new Point(r.W / 2, r.W - border));
-
-                    case Direction.Left:
-                        return new Polygon(colour, new Point(border, r.H / 2), new Point(r.H - border, r.H - border), new Point(r.H - border, border));
-
-                    case Direction.None:
-                        throw new HException("Direction.None not valid argument in HF.Graphics.GenTrianglePolygon");
-                    default:
-                        throw new HException("Unexpected Direction {0} passed to HF.Graphics.GenTrianglePolygon", direction);
-                }
+                    Direction.Up => new Polygon(colour, new Point(r.W / 2, border), new Point(r.W - border, r.W - border), new Point(border, r.W - border)),
+                    Direction.Right => new Polygon(colour, new Point(r.H - border, r.H / 2), new Point(border, r.H - border), new Point(border, border)),
+                    Direction.Down => new Polygon(colour, new Point(border, border), new Point(r.W - border, border), new Point(r.W / 2, r.W - border)),
+                    Direction.Left => new Polygon(colour, new Point(border, r.H / 2), new Point(r.H - border, r.H - border), new Point(r.H - border, border)),
+                    Direction.None => throw new HException("Direction.None not valid argument in HF.Graphics.GenTrianglePolygon"),
+                    _ => throw new HException("Unexpected Direction {0} passed to HF.Graphics.GenTrianglePolygon", direction),
+                };
             }
             #endregion
 
@@ -421,7 +421,7 @@ namespace BearsEngine
             /// </summary>
             internal static Texture LoadTexture(System.Drawing.Bitmap bufferedImage, string textureName, TextureParameter minMagFilter = TextureParameter.Nearest)
             {
-                if (HV.TextureDictionary.ContainsKey(textureName)) 
+                if (HV.TextureDictionary.ContainsKey(textureName))
                     return HV.TextureDictionary[textureName];
 
                 Texture t = GenTexture(bufferedImage, minMagFilter);
@@ -459,7 +459,7 @@ namespace BearsEngine
             #region NonZeroAlphaRegion
             public static Rect NonZeroAlphaRegion(System.Drawing.Bitmap b)
             {
-                Rect r = new Rect();
+                Rect r = new();
                 int firstPixelX = b.Width;
                 int lastPixelX = 0;
                 int firstPixelY = b.Height;
@@ -505,7 +505,7 @@ namespace BearsEngine
             #region TextureToBitmap
             public static System.Drawing.Bitmap TextureToBitmap(Texture t)
             {
-                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(t.Width, t.Height);
+                System.Drawing.Bitmap bmp = new(t.Width, t.Height);
                 OpenGL.BindTexture(TextureTarget.Texture2D, t.ID);
                 System.Drawing.Imaging.BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
                 OpenGL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
@@ -517,11 +517,11 @@ namespace BearsEngine
             #region WriteBitmapToFile
             public static void WriteBitmapToFile(System.Drawing.Bitmap b, string targetPath)
             {
-                string directory = System.IO.Path.GetDirectoryName(targetPath);
-                string fileName = System.IO.Path.GetFileName(targetPath);
-                if (!System.IO.Directory.Exists(directory))
+                string directory = Path.GetDirectoryName(targetPath);
+                string fileName = Path.GetFileName(targetPath);
+                if (!Directory.Exists(directory))
                 {
-                    System.IO.Directory.CreateDirectory(directory);
+                    Directory.CreateDirectory(directory);
                 }
                 b.Save(targetPath);
             }
@@ -593,7 +593,7 @@ namespace BearsEngine
             /// <summary>
             /// Returns angle in degrees clockwise starting UP from P1
             /// </summary>
-            public static double Angle(IPoint<float> p1, IPoint<float> p2)
+            public static double Angle(Point p1, Point p2)
             {
                 var x = Math.Atan2(p2.X - p1.X, p1.Y - p2.Y);
 
@@ -626,15 +626,15 @@ namespace BearsEngine
             #endregion
 
             #region Dist
-            public static float Dist(IPoint<float> p1, IPoint<float> p2)
+            public static float Dist(Point p1, Point p2)
             {
                 return (float)Math.Sqrt((p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y));
             }
-            public static float DistSquared(IPoint<float> p1, IPoint<float> p2)
+            public static float DistSquared(Point p1, Point p2)
             {
                 return (p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y);
             }
-            public static float DistGrid(IPoint<float> p1, IPoint<float> p2) => Math.Abs(p1.X - p2.X) + Math.Abs(p1.Y - p2.Y);
+            public static float DistGrid(Point p1, Point p2) => Math.Abs(p1.X - p2.X) + Math.Abs(p1.Y - p2.Y);
             #endregion
 
             #region GetDirection
@@ -650,8 +650,7 @@ namespace BearsEngine
             #region IsInt
             public static bool IsInt(string s)
             {
-                int n;
-                return int.TryParse(s, out n);
+                return int.TryParse(s, out _);
             }
             #endregion
 
@@ -793,7 +792,7 @@ namespace BearsEngine
 
                 while (steps <= maximumSteps)
                 {
-                    currentNode = openNodes[HF.Randomisation.Rand(openNodes.Count)];
+                    currentNode = openNodes[Randomisation.Rand(openNodes.Count)];
                     //replace open nodes with current node's connections, skipping any already in path
                     openNodes.Clear();
                     foreach (N n in currentNode.ConnectedNodes)
@@ -914,7 +913,7 @@ namespace BearsEngine
         #region Randomisation
         public static class Randomisation
         {
-            private static readonly Random _random = new Random();
+            private static readonly Random _random = new();
 
             #region Chance
             /// <summary>
@@ -961,7 +960,7 @@ namespace BearsEngine
                 return _random.Next(max);
             }
 
-            public static T RandEnum<T>() 
+            public static T RandEnum<T>()
                 where T : struct, IConvertible
             {
                 if (!typeof(T).IsEnum)
@@ -972,9 +971,9 @@ namespace BearsEngine
             }
             #endregion
 
-            public static Colour RandColour() => new Colour((byte)Rand(255), (byte)Rand(255), (byte)Rand(255), 255);
+            public static Colour RandColour() => new((byte)Rand(255), (byte)Rand(255), (byte)Rand(255), 255);
 
-            public static Point RandPoint() => new Point(RandF(2)-1, RandF(2)-1);
+            public static Point RandPoint() => new(RandF(2) - 1, RandF(2) - 1);
 
             #region RandDirection
             public static Direction RandDirection()
@@ -995,7 +994,7 @@ namespace BearsEngine
             {
                 if (max <= min)
                     return max;
-                return 
+                return
                     min + (float)_random.NextDouble() * (max - min);
             }
             /// <summary>
@@ -1027,7 +1026,7 @@ namespace BearsEngine
             public static string RandUpperCaseString(int chars)
             {
                 string def = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                StringBuilder ret = new StringBuilder();
+                StringBuilder ret = new();
                 for (int i = 0; i < chars; i++)
                     ret.Append(def.Substring(_random.Next(def.Length), 1));
                 return ret.ToString();
@@ -1037,7 +1036,7 @@ namespace BearsEngine
             #region RandWindowsColour
             public static Colour RandSystemColour()
             {
-                List<Colour> colours = new List<Colour>();
+                List<Colour> colours = new();
                 foreach (PropertyInfo i in typeof(Colour).GetProperties(
                     BindingFlags.Static | BindingFlags.Public))
                 {
@@ -1177,7 +1176,7 @@ namespace BearsEngine
         #region Windows
         public static class Windows
         {
-            public static bool RunningOnWindows => System.Environment.OSVersion.Platform == PlatformID.Win32NT || System.Environment.OSVersion.Platform == PlatformID.Win32S || System.Environment.OSVersion.Platform == PlatformID.Win32Windows || System.Environment.OSVersion.Platform == PlatformID.WinCE;
+            public static bool RunningOnWindows => Environment.OSVersion.Platform == PlatformID.Win32NT || Environment.OSVersion.Platform == PlatformID.Win32S || Environment.OSVersion.Platform == PlatformID.Win32Windows || Environment.OSVersion.Platform == PlatformID.WinCE;
         }
         #endregion
     }

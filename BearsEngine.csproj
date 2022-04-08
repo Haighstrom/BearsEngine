@@ -2,8 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-	<EnablePreviewFeatures>True</EnablePreviewFeatures>
+    <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
@@ -19,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Shaders.Designer.cs">
+    <Compile Update="Resources\Shaders.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Shaders.resx</DependentUpon>
@@ -27,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Shaders.resx">
+    <EmbeddedResource Update="Resources\Shaders.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Shaders.Designer.cs</LastGenOutput>
     </EmbeddedResource>

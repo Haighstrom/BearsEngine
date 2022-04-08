@@ -1,21 +1,19 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds.Controllers
+﻿namespace BearsEngine.Worlds.Controllers
 {
     public class DockingController : AddableBase, IUpdatable
     {
         #region Fields
-        private IRect<float> _target;
-        private Func<IRect<float>> _dockTo;
+        private Rect _target;
+        private Func<Rect> _dockTo;
         #endregion
-        
+
         #region Constructors
-        public DockingController(IRect<float> target, Func<IRect<float>> dockTo, DockPosition dockPosition, Point shift)
+        public DockingController(Rect target, Func<Rect> dockTo, DockPosition dockPosition, Point shift)
             : this(target, dockTo, dockPosition, (int)shift.X, (int)shift.Y)
         {
         }
 
-        public DockingController(IRect<float> target, Func<IRect<float>> dockTo, DockPosition dockPosition, int xShift = 0, int yShift = 0)
+        public DockingController(Rect target, Func<Rect> dockTo, DockPosition dockPosition, int xShift = 0, int yShift = 0)
         {
             _target = target;
             _dockTo = dockTo;

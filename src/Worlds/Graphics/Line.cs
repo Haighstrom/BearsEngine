@@ -1,9 +1,8 @@
-﻿using HaighFramework;
-using HaighFramework.OpenGL4;
-using BearsEngine;
+﻿using HaighFramework.OpenGL4;
+using BearsEngine.Graphics.Shaders;
 using BearsEngine.Graphics;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.Graphics
 {
     public class Line : AddableBase, IGraphic
     {
@@ -15,19 +14,19 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Constructors
-        public Line(Colour colour, float thickness, bool thicknessInPixels, IRect<float> rect)
+        public Line(Colour colour, float thickness, bool thicknessInPixels, IRect rect)
             : this(colour, thickness, thicknessInPixels, rect.TopLeft, rect.TopRight, rect.BottomRight, rect.BottomLeft, rect.TopLeft)
         {
         }
 
-        public Line(Colour colour, float thickness, bool thicknessInPixels, params IPoint<float>[] points)
+        public Line(Colour colour, float thickness, bool thicknessInPixels, params Point[] points)
         {
             _shader = new SmoothLinesShader(thickness, thicknessInPixels);
 
             _ID = OpenGL.GenBuffer();
 
             Colour = colour;
-            Points = points.Select(p => new Point<float>(p.X, p.Y)).ToList();
+            Points = points.Select(p => new Point(p.X, p.Y)).ToList();
         }
         #endregion
 
@@ -50,7 +49,7 @@ namespace BearsEngine.Worlds
             for (int i = 0; i < n; ++i)
                 _vertices[i + 1] = new Vertex(Points[i], Colour, Point.Zero);
 
-            if (Points[0] == Points[n-1]) // closed loop
+            if (Points[0] == Points[n - 1]) // closed loop
             {
                 _vertices[0] = new Vertex(Points[n - 2], Colour, Point.Zero);
                 _vertices[n + 1] = new Vertex(Points[1], Colour, Point.Zero);
@@ -124,7 +123,7 @@ namespace BearsEngine.Worlds
             set => _shader.Thickness = value;
         }
 
-        public List<Point<float>> Points { get; set; }
+        public List<Point> Points { get; set; }
         #endregion
 
         #region Methods

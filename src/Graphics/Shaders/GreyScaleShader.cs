@@ -1,7 +1,6 @@
-﻿using HaighFramework;
-using HaighFramework.OpenGL4;
+﻿using HaighFramework.OpenGL4;
 
-namespace BearsEngine.Graphics
+namespace BearsEngine.Graphics.Shaders
 {
     public class GreyScaleShader : IShader
     {
@@ -16,7 +15,7 @@ namespace BearsEngine.Graphics
 
         private static void Initialise()
         {
-            _ID = HF.Graphics.CreateShader(Shaders.vs_default, Shaders.fs_greyscale);
+            _ID = HF.Graphics.CreateShader(Resources.Shaders.vs_default, Resources.Shaders.fs_greyscale);
             HF.Graphics.BindShader(_ID);
             _locationMVMatrix = OpenGL.GetUniformLocation(_ID, "MVMatrix");
             _locationPMatrix = OpenGL.GetUniformLocation(_ID, "PMatrix");
@@ -44,7 +43,7 @@ namespace BearsEngine.Graphics
 
             OpenGL.UniformMatrix4(_locationMVMatrix, 1, false, modelView.Values);
             OpenGL.UniformMatrix4(_locationPMatrix, 1, false, projection.Values);
-            
+
             OpenGL.EnableVertexAttribArray(_locationPosition);
             OpenGL.VertexAttribPointer(_locationPosition, 2, VertexAttribPointerType.Float, false, Vertex.STRIDE, 0);
 

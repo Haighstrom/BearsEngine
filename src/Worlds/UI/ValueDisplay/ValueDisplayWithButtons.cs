@@ -1,6 +1,6 @@
-﻿using HaighFramework;
+﻿using BearsEngine.Worlds.UI.UIThemes;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.UI.ValueDisplay
 {
     public delegate void ValueChange(int change);
 

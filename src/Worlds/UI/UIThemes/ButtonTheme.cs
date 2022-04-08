@@ -1,11 +1,9 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds.UI.UIThemes
 {
     public struct ButtonTheme
     {
         #region Default
-        public static ButtonTheme Default => new ButtonTheme
+        public static ButtonTheme Default => new()
         {
             DefaultColour = Colour.White,
             HoverColour = Colour.Yellow,

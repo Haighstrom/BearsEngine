@@ -1,7 +1,6 @@
-﻿using HaighFramework;
-using HaighFramework.OpenGL4;
+﻿using HaighFramework.OpenGL4;
 
-namespace BearsEngine.Graphics
+namespace BearsEngine.Graphics.Shaders
 {
     public class SmoothLinesShader : IShader
     {
@@ -17,7 +16,7 @@ namespace BearsEngine.Graphics
 
         private static void Initialise()
         {
-            _ID = HF.Graphics.CreateShader(Shaders.vs_nomatrixsolidcolour, Shaders.gs_smoothlines, Shaders.fs_solidcolour);
+            _ID = HF.Graphics.CreateShader(Resources.Shaders.vs_nomatrixsolidcolour, Resources.Shaders.gs_smoothlines, Resources.Shaders.fs_solidcolour);
             HF.Graphics.BindShader(_ID);
             _locationMVMatrix = OpenGL.GetUniformLocation(_ID, "MVMatrix");
             _locationPMatrix = OpenGL.GetUniformLocation(_ID, "PMatrix");

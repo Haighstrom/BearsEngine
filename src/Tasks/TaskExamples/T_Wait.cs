@@ -1,4 +1,4 @@
-﻿namespace BearsEngine.Tasks
+﻿namespace BearsEngine.Tasks.TaskExamples
 {
     public class T_Wait : Task
     {

@@ -1,4 +1,4 @@
-﻿namespace BearsEngine.Worlds.Graphics.Text
+﻿namespace BearsEngine.Worlds.Graphics.Text.Components
 {
     internal interface ILineComponent
     {

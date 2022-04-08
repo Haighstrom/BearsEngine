@@ -16,7 +16,7 @@
             _target.PositionChanged += OnTargetPositionChanged;
         }
         #endregion
-        
+
         #region IUpdateable
         public bool Active { get; set; } = true;
 

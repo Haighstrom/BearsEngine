@@ -1,36 +1,40 @@
 ﻿using System.Text.RegularExpressions;
-using HaighFramework;
+using BearsEngine.Worlds.UI.UIThemes;
+using BearsEngine.Worlds.Graphics.Text.Components;
+using BearsEngine.Graphics.Shaders;
 using BearsEngine.Graphics;
 
 namespace BearsEngine.Worlds.Graphics.Text
 {
+    using Line = Line;
+
     public class HText : RectGraphicBase, IDisposable
     {
         #region Static
         #region _textCommandTagKeys
-        private static Dictionary<string, TextCommandType> _textCommandTagKeys = new Dictionary<string, TextCommandType>()
+        private static Dictionary<string, TextCommandType> _textCommandTagKeys = new()
         {
-            {"colour", TextCommandType.Colour },
-            {"font", TextCommandType.Font },
-            {"fontstyle", TextCommandType.FontStyle },
-            {"style", TextCommandType.FontStyle },
-            {"size", TextCommandType.Size },
-            {"underline", TextCommandType.Underline },
-            {"strikethrough", TextCommandType.Strikethrough },
+            { "colour", TextCommandType.Colour },
+            { "font", TextCommandType.Font },
+            { "fontstyle", TextCommandType.FontStyle },
+            { "style", TextCommandType.FontStyle },
+            { "size", TextCommandType.Size },
+            { "underline", TextCommandType.Underline },
+            { "strikethrough", TextCommandType.Strikethrough },
         };
         #endregion
 
         #region _textCommandTags
-        private static Dictionary<string, TextCommandTag> _textCommandTags = new Dictionary<string, TextCommandTag>()
+        private static Dictionary<string, TextCommandTag> _textCommandTags = new()
         {
-            {"r", new TextCommandTag(TextCommandType.FontStyle, FontStyle.Regular) },
-            {"b", new TextCommandTag(TextCommandType.FontStyle, FontStyle.Bold) },
-            {"i", new TextCommandTag(TextCommandType.FontStyle, FontStyle.Italic) },
-            {"bi", new TextCommandTag(TextCommandType.FontStyle, FontStyle.BoldItalic) },
-            {"u", new TextCommandTag(TextCommandType.Underline, true) },
-            {"nu", new TextCommandTag(TextCommandType.Underline, false) },
-            {"s", new TextCommandTag(TextCommandType.Strikethrough, true) },
-            {"ns", new TextCommandTag(TextCommandType.Strikethrough, false) },
+            { "r", new TextCommandTag(TextCommandType.FontStyle, FontStyle.Regular) },
+            { "b", new TextCommandTag(TextCommandType.FontStyle, FontStyle.Bold) },
+            { "i", new TextCommandTag(TextCommandType.FontStyle, FontStyle.Italic) },
+            { "bi", new TextCommandTag(TextCommandType.FontStyle, FontStyle.BoldItalic) },
+            { "u", new TextCommandTag(TextCommandType.Underline, true) },
+            { "nu", new TextCommandTag(TextCommandType.Underline, false) },
+            { "s", new TextCommandTag(TextCommandType.Strikethrough, true) },
+            { "ns", new TextCommandTag(TextCommandType.Strikethrough, false) },
         };
         #endregion
 
@@ -54,8 +58,8 @@ namespace BearsEngine.Worlds.Graphics.Text
         #endregion
 
         #region Fields
-        private List<Worlds.Line> _linesToDraw = new List<Worlds.Line>();
-        private List<SimpleGraphic> _vertGroups = new List<SimpleGraphic>();
+        private List<Line> _linesToDraw = new();
+        private List<SimpleGraphic> _vertGroups = new();
         private bool _verticesChanged = true;
         private HFont _font;
         private string _text;
@@ -79,26 +83,26 @@ namespace BearsEngine.Worlds.Graphics.Text
         #endregion
 
         #region Constructors
-        public HText(UITheme theme, IRect<float> r, string text)
+        public HText(UITheme theme, IRect r, string text)
             : this(theme.Text, r, text)
         {
         }
 
-        public HText(TextTheme theme, IRect<float> r, string text)
-            :this(theme.Font, r, text,theme.FontColour)
+        public HText(TextTheme theme, IRect r, string text)
+            : this(theme.Font, r, text, theme.FontColour)
         {
             ScaleX = ScaleY = theme.FontScale;
             HAlignment = theme.HAlignment;
             VAlignment = theme.VAlignment;
         }
 
-        public HText(HFont font, IRect<float> r, string text, Colour textColour)
+        public HText(HFont font, IRect r, string text, Colour textColour)
             : this(font, r, text)
         {
             Colour = textColour;
         }
 
-        public HText(HFont font, IRect<float> r, string text)
+        public HText(HFont font, IRect r, string text)
             : this(new DefaultShader(), font, r.X, r.Y, r.W, r.H, text)
         {
         }
@@ -529,7 +533,7 @@ namespace BearsEngine.Worlds.Graphics.Text
         #endregion
 
         #region SplitTextToLines
-        private List<Line> SplitTextToLines(string text)
+        private List<Components.Line> SplitTextToLines(string text)
         {
             text = text.Replace("\r\n", "\n");
             text = text.Replace("\r", "\n");
@@ -537,8 +541,8 @@ namespace BearsEngine.Worlds.Graphics.Text
             if (!Multiline)
                 text = text.Replace("\n", "");
 
-            List<Line> lines = new();
-            Line currentLine = new();
+            List<Components.Line> lines = new();
+            Components.Line currentLine = new();
             List<TextCommandTag> activeOverrides = new();
             (HFont font, Colour colour, bool underline, bool strikethrough) currentAttributes = (Font, Colour, Underline, Strikethrough);
             float sizeOfLetterLongerThanWholeLine = 0;
@@ -550,7 +554,7 @@ namespace BearsEngine.Worlds.Graphics.Text
                     currentLine.Add(new LC_NewLine(currentAttributes.font, ScaleY));
                     currentLine.Finalise(true);
                     lines.Add(currentLine);
-                    currentLine = new Line();
+                    currentLine = new();
                     text = text.Remove(0, 1);
                 }
                 else if (text[0] == ' ')
@@ -563,7 +567,7 @@ namespace BearsEngine.Worlds.Graphics.Text
 
                         currentLine.Finalise(false);
                         lines.Add(currentLine);
-                        currentLine = new Line();
+                        currentLine = new();
                     }
                     else
                         currentLine.Add(s);
@@ -576,7 +580,7 @@ namespace BearsEngine.Worlds.Graphics.Text
                     var nextSpace = nextText.IndexOf(' ');
                     var nextOpenTag = UseCommandTags ? Regex.Match(nextText, @"(?<![/])<\w+(=(\w+|[(]?\w+([ ]\w+)*(,\w+([ ]\w+)*)*[)]?))?>") : Match.Empty; //see regexr.com/51s1n
                     var nextCloseTag = UseCommandTags ? Regex.Match(nextText, @"(?<![/])<[/](\w+)?>") : Match.Empty; //see regexr.com/51s2i
-                    
+
                     if (nextOpenTag.Success && nextOpenTag.Index == 0)
                     {
                         var t = ParseTag(nextOpenTag.Value);
@@ -654,14 +658,14 @@ namespace BearsEngine.Worlds.Graphics.Text
                             currentLine.Add(new LC_Word(nextText.Substring(0, splitAt), currentAttributes.font, currentAttributes.colour, ExtraCharacterSpacing, ScaleX, ScaleY, currentAttributes.underline, currentAttributes.strikethrough));
                             currentLine.Finalise(false);
                             lines.Add(currentLine);
-                            currentLine = new Line();
+                            currentLine = new();
                             text = text.Remove(0, splitAt);
                         }
                         else //push the word to the next line
                         {
                             currentLine.Finalise(false);
                             lines.Add(currentLine);
-                            currentLine = new Line();
+                            currentLine = new();
                             //we don't add the next word to the next line yet - it might not fit - just loop again
                         }
                     }
@@ -681,7 +685,7 @@ namespace BearsEngine.Worlds.Graphics.Text
             if (height > H)
                 HConsole.Warning("HText/SplitTextToLines: lines total height ({0}) is bigger than text box height ({1})", height, H);
 
-            if (lines.Max(l => l.Length > W))
+            if (lines.Count > 0 && lines.Max(l => l.Length > W))
                 HConsole.Warning($"HText/SplitTextToLines: line is wider ({lines.Max(l => l.Length)}) than text box width ({W})");
 
             if (sizeOfLetterLongerThanWholeLine > 0)
@@ -697,7 +701,7 @@ namespace BearsEngine.Worlds.Graphics.Text
         {
             var lines = SplitTextToLines(Text.Substring(FirstCharToDraw, NumCharsToDraw));
 
-            _linesToDraw = new List<Worlds.Line>();
+            _linesToDraw = new();
             foreach (var sg in _vertGroups)
                 sg.Dispose();
             _vertGroups = new List<SimpleGraphic>();
@@ -760,9 +764,9 @@ namespace BearsEngine.Worlds.Graphics.Text
                         dest.H = s.Font.BitmapPosition(' ').H * ScaleY;
 
                         if (s.IsUnderlined)
-                            _linesToDraw.Add(new Worlds.Line(s.Colour, UnderlineThickness, true, dest.BottomLeft.Shift(0, UnderlineOffset), dest.BottomRight.Shift(0, UnderlineOffset)));
+                            _linesToDraw.Add(new Line(s.Colour, UnderlineThickness, true, dest.BottomLeft.Shift(0, UnderlineOffset), dest.BottomRight.Shift(0, UnderlineOffset)));
                         if (s.IsStruckthrough)
-                            _linesToDraw.Add(new Worlds.Line(s.Colour, StrikethroughThickness, true, dest.CentreLeft.Shift(0, StrikethroughOffset), dest.CentreRight.Shift(0, StrikethroughOffset)));
+                            _linesToDraw.Add(new Line(s.Colour, StrikethroughThickness, true, dest.CentreLeft.Shift(0, StrikethroughOffset), dest.CentreRight.Shift(0, StrikethroughOffset)));
                         if (HAlignment == HAlignment.Full && !line.EndsWithNewLine)
                             dest.X += fullAlignmentSpaceWidth;
                         else
@@ -786,9 +790,9 @@ namespace BearsEngine.Worlds.Graphics.Text
                             float sizeDifference = line.Height - dest.H;
 
                             if (w.IsUnderlined)
-                                _linesToDraw.Add(new Worlds.Line(w.Colour, UnderlineThickness, true, dest.BottomLeft.Shift(0, UnderlineOffset), dest.BottomRight.Shift(0, UnderlineOffset)));
+                                _linesToDraw.Add(new Line(w.Colour, UnderlineThickness, true, dest.BottomLeft.Shift(0, UnderlineOffset), dest.BottomRight.Shift(0, UnderlineOffset)));
                             if (w.IsStruckthrough)
-                                _linesToDraw.Add(new Worlds.Line(w.Colour, StrikethroughThickness, true, dest.CentreLeft.Shift(0, StrikethroughOffset), dest.CentreRight.Shift(0, StrikethroughOffset)));
+                                _linesToDraw.Add(new Line(w.Colour, StrikethroughThickness, true, dest.CentreLeft.Shift(0, StrikethroughOffset), dest.CentreRight.Shift(0, StrikethroughOffset)));
 
                             vertices.Add(HF.Geom.QuadToTris(
                                 new Vertex(dest.TopLeft.Shift(0, sizeDifference), w.Colour, source.TopLeft),
@@ -819,7 +823,7 @@ namespace BearsEngine.Worlds.Graphics.Text
         #region SetVerticesSimple
         private void SetVerticesSimple()
         {
-            _linesToDraw = new List<Worlds.Line>();
+            _linesToDraw = new();
 
             foreach (var sg in _vertGroups)
                 sg.Dispose();
@@ -850,9 +854,9 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _ => throw new HException("HText/SetVertices: alignment {0} was not catered for.", VAlignment),
             };
             if (Underline)
-                _linesToDraw.Add(new Worlds.Line(Colour, UnderlineThickness, true, dest.BottomLeft.Shift(0, UnderlineOffset), dest.BottomLeft.Shift(len, UnderlineOffset)));
+                _linesToDraw.Add(new Line(Colour, UnderlineThickness, true, dest.BottomLeft.Shift(0, UnderlineOffset), dest.BottomLeft.Shift(len, UnderlineOffset)));
             if (Strikethrough)
-                _linesToDraw.Add(new Worlds.Line(Colour, StrikethroughThickness, true, dest.CentreLeft.Shift(0, StrikethroughOffset), dest.CentreLeft.Shift(len, StrikethroughOffset)));
+                _linesToDraw.Add(new Line(Colour, StrikethroughThickness, true, dest.CentreLeft.Shift(0, StrikethroughOffset), dest.CentreLeft.Shift(len, StrikethroughOffset)));
 
             foreach (char c in text)
             {

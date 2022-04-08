@@ -1,6 +1,4 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds.Graphics.Text
+﻿namespace BearsEngine.Worlds.Graphics.Text.Components
 {
     internal class LC_Space : ILineComponent
     {
@@ -8,7 +6,7 @@ namespace BearsEngine.Worlds.Graphics.Text
         {
             Font = font;
             Length = scaleX * (font.SpaceWidth + extraSpaceWidth);
-            Height = scaleY * (font.HighestChar);
+            Height = scaleY * font.HighestChar;
             IsUnderlined = underline;
             IsStruckthrough = strikethrough;
             Colour = colour;

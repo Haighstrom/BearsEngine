@@ -1,6 +1,4 @@
-﻿using BearsEngine.Worlds;
-
-namespace BearsEngine
+﻿namespace BearsEngine
 {
     public interface IRenderableOnLayer : IRenderable
     {

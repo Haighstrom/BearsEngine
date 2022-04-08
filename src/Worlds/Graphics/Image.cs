@@ -1,8 +1,8 @@
-﻿using HaighFramework;
-using HaighFramework.OpenGL4;
+﻿using HaighFramework.OpenGL4;
 using BearsEngine.Graphics;
+using BearsEngine.Graphics.Shaders;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.Graphics
 {
     public class Image : RectGraphicBase
     {
@@ -13,17 +13,17 @@ namespace BearsEngine.Worlds
 
         #region Constructors
         #region ImagePath-based
-        public Image(string imgPath, IRect<float> r)
+        public Image(string imgPath, IRect r)
             : this(imgPath, r.X, r.Y, r.W, r.H)
         {
         }
 
-        public Image(string imgPath, IPoint<float> size, IPoint<float> pos)
+        public Image(string imgPath, Point size, Point pos)
             : this(imgPath, pos.X, pos.Y, size.X, size.Y)
         {
         }
 
-        public Image(string imgPath, IPoint<float> size, float x = 0, float y = 0)
+        public Image(string imgPath, Point size, float x = 0, float y = 0)
             : this(imgPath, x, y, size.X, size.Y)
         {
         }
@@ -40,17 +40,17 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Colour-based
-        public Image(Colour colour, IRect<float> r)
+        public Image(Colour colour, IRect r)
             : this(colour, r.X, r.Y, r.W, r.H)
         {
         }
 
-        public Image(Colour colour, IPoint<float> size, IPoint<float> pos)
+        public Image(Colour colour, Point size, Point pos)
             : this(colour, pos.X, pos.Y, size.X, size.Y)
         {
         }
 
-        public Image(Colour colour, IPoint<float> size, float x = 0, float y = 0)
+        public Image(Colour colour, Point size, float x = 0, float y = 0)
             : this(colour, x, y, size.X, size.Y)
         {
         }
@@ -78,7 +78,7 @@ namespace BearsEngine.Worlds
         /// <summary>
         /// Create an Image of a texture with a forced size
         /// </summary>
-        public Image(Texture texture, IRect<float> r)
+        public Image(Texture texture, IRect r)
             : this(texture, r.X, r.Y, r.W, r.H)
         {
         }

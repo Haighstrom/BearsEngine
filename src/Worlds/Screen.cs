@@ -1,5 +1,4 @@
-﻿using HaighFramework;
-using HaighFramework.OpenGL4;
+﻿using HaighFramework.OpenGL4;
 
 namespace BearsEngine.Worlds
 {
@@ -46,15 +45,15 @@ namespace BearsEngine.Worlds
 
         public int EntityCount => _container.EntityCount;
 
-        public IPoint<float> GetWindowPosition(IPoint<float> localCoords) => localCoords;
+        public Point GetWindowPosition(Point localCoords) => localCoords;
 
-        public IRect<float> GetWindowPosition(IRect<float> localCoords) => localCoords;
+        public IRect GetWindowPosition(IRect localCoords) => localCoords;
 
-        public IPoint<float> GetLocalPosition(IPoint<float> windowCoords) => windowCoords;
+        public Point GetLocalPosition(Point windowCoords) => windowCoords;
 
-        public IRect<float> GetLocalPosition(IRect<float> windowCoords) => windowCoords;
-        
-        public IPoint<float> LocalMousePosition => HI.MouseWindowP;
+        public IRect GetLocalPosition(IRect windowCoords) => windowCoords;
+
+        public Point LocalMousePosition => HI.MouseWindowP;
 
         public E Add<E>(E e)
             where E : IAddable
@@ -90,11 +89,11 @@ namespace BearsEngine.Worlds
 
         public List<E> GetEntities<E>(bool considerChildren = true) => _container.GetEntities<E>(considerChildren);
 
-        public E Collide<E>(IPoint<float> p, bool considerChildren = true)
+        public E Collide<E>(Point p, bool considerChildren = true)
             where E : ICollideable
             => _container.Collide<E>(p, considerChildren);
 
-        public E Collide<E>(IRect<float> r, bool considerChildren = true)
+        public E Collide<E>(IRect r, bool considerChildren = true)
             where E : ICollideable
             => _container.Collide<E>(r, considerChildren);
 
@@ -102,11 +101,11 @@ namespace BearsEngine.Worlds
             where E : ICollideable
             => _container.Collide<E>(i, considerChildren);
 
-        public List<E> CollideAll<E>(IPoint<float> p, bool considerChildren = true)
+        public List<E> CollideAll<E>(Point p, bool considerChildren = true)
             where E : ICollideable
             => _container.CollideAll<E>(p, considerChildren);
 
-        public List<E> CollideAll<E>(IRect<float> r, bool considerChildren = true)
+        public List<E> CollideAll<E>(IRect r, bool considerChildren = true)
             where E : ICollideable
             => _container.CollideAll<E>(r, considerChildren);
 

@@ -1,15 +1,12 @@
-﻿using HaighFramework;
-using BearsEngine;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds
 {
     public class Container : IContainer
     {
         #region Fields
-        private List<IUpdatable> _entitiesToUpdate = new List<IUpdatable>();
-        private List<int> _layers = new List<int>();
+        private List<IUpdatable> _entitiesToUpdate = new();
+        private List<int> _layers = new();
         private bool _layersNeedSorting = false;
-        private Dictionary<int, List<IRenderableOnLayer>> _entitiesToRender = new Dictionary<int, List<IRenderableOnLayer>>();
+        private Dictionary<int, List<IRenderableOnLayer>> _entitiesToRender = new();
         #endregion
 
         #region Constructors
@@ -222,7 +219,7 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Collide
-        public E Collide<E>(IPoint<float> p, bool considerChildren = true)
+        public E Collide<E>(Point p, bool considerChildren = true)
             where E : ICollideable
         {
             foreach (IAddable a in Entities)
@@ -240,16 +237,16 @@ namespace BearsEngine.Worlds
                     }
                 }
             }
-            return default(E);
+            return default;
         }
 
-        public E Collide<E>(IRect<float> r, bool considerChildren = true)
+        public E Collide<E>(IRect r, bool considerChildren = true)
             where E : ICollideable
         {
             foreach (IAddable a in Entities)
             {
                 if (a is E e && e.Collideable && e.Collides(r))
-                        return e;
+                    return e;
 
                 if (considerChildren)
                 {
@@ -261,7 +258,7 @@ namespace BearsEngine.Worlds
                     }
                 }
             }
-            return default(E);
+            return default;
         }
 
         public E Collide<E>(ICollideable i, bool considerChildren = true)
@@ -270,7 +267,7 @@ namespace BearsEngine.Worlds
             foreach (IAddable a in Entities)
             {
                 if (a is E e && (ICollideable)e != i && e.Collideable && e.Collides(i))
-                        return e;
+                    return e;
 
                 if (considerChildren)
                 {
@@ -282,15 +279,15 @@ namespace BearsEngine.Worlds
                     }
                 }
             }
-            return default(E);
+            return default;
         }
         #endregion
 
         #region CollideAll
-        public List<E> CollideAll<E>(IPoint<float> p, bool considerChildren = true)
+        public List<E> CollideAll<E>(Point p, bool considerChildren = true)
             where E : ICollideable
         {
-            List<E> list = new List<E>();
+            List<E> list = new();
 
             foreach (IAddable a in Entities)
             {
@@ -307,10 +304,10 @@ namespace BearsEngine.Worlds
             return list;
         }
 
-        public List<E> CollideAll<E>(IRect<float> r, bool considerChildren = true)
+        public List<E> CollideAll<E>(IRect r, bool considerChildren = true)
             where E : ICollideable
         {
-            List<E> list = new List<E>();
+            List<E> list = new();
 
             foreach (IAddable a in Entities)
             {
@@ -332,12 +329,12 @@ namespace BearsEngine.Worlds
         public List<E> CollideAll<E>(ICollideable i, bool considerChildren = true)
             where E : ICollideable
         {
-            List<E> list = new List<E>();
+            List<E> list = new();
 
             foreach (IAddable a in Entities)
             {
                 if (a is E e && (ICollideable)e != i && e.Collideable && e.Collides(i))
-                        list.Add(e);
+                    list.Add(e);
 
                 if (considerChildren)
                 {
@@ -350,18 +347,18 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region GetWindowPosition
-        public IPoint<float> GetWindowPosition(IPoint<float> localCoords) => Parent.GetWindowPosition(localCoords);
+        public Point GetWindowPosition(Point localCoords) => Parent.GetWindowPosition(localCoords);
 
-        public IRect<float> GetWindowPosition(IRect<float> localCoords) => Parent.GetWindowPosition(localCoords);
+        public IRect GetWindowPosition(IRect localCoords) => Parent.GetWindowPosition(localCoords);
         #endregion
 
         #region GetLocalPosition
-        public IPoint<float> GetLocalPosition(IPoint<float> windowCoords) => Parent.GetLocalPosition(windowCoords);
+        public Point GetLocalPosition(Point windowCoords) => Parent.GetLocalPosition(windowCoords);
 
-        public IRect<float> GetLocalPosition(IRect<float> windowCoords) => Parent.GetLocalPosition(windowCoords);
+        public IRect GetLocalPosition(IRect windowCoords) => Parent.GetLocalPosition(windowCoords);
         #endregion
 
-        public IPoint<float> LocalMousePosition => GetLocalPosition(HI.MouseWindowP);
+        public Point LocalMousePosition => GetLocalPosition(HI.MouseWindowP);
         #endregion
 
         public IContainer Parent { get; private set; }

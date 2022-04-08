@@ -1,6 +1,4 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Tweens
+﻿namespace BearsEngine.Tweens
 {
     public class ColourTween : Tween
     {

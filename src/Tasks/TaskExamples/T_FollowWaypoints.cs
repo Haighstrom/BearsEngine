@@ -1,7 +1,4 @@
-﻿using HaighFramework;
-using BearsEngine.Worlds;
-
-namespace BearsEngine.Tasks
+﻿namespace BearsEngine.Tasks.TaskExamples
 {
     public class T_FlyTo : Task
     {

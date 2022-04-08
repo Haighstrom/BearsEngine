@@ -1,13 +1,11 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds
 {
     public class AddableRectBase : AddableBase, IRectAddable
     {
         private float _x, _y, _w, _h;
 
         #region Constructors
-        public AddableRectBase(IRect<float> r)
+        public AddableRectBase(IRect r)
             : this(r.X, r.Y, r.W, r.H)
         {
         }
@@ -86,9 +84,9 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region P
-        public IPoint<float> P
+        public Point P
         {
-            get => new Point<float>(X, Y);
+            get => new(X, Y);
             set
             {
                 X = value.X;
@@ -98,8 +96,9 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region R
-        public IRect<float> R
+        public IRect R
         {
+            get => new Rect(X, Y, W, H);
             set
             {
                 X = value.X;
@@ -117,48 +116,48 @@ namespace BearsEngine.Worlds
         public float Top => Y;
         public float Bottom => Y + H;
         public float Area => W * H;
-        public IPoint<float> Size => new Point(W, H);
+        public Point Size => new Point(W, H);
         public float SmallestSide => Math.Min(W, H);
         public float BiggestSide => Math.Max(W, H);
-        public IPoint<float> TopLeft => P;
-        public IPoint<float> TopCentre => new Point(X + W * 0.5f, Y);
-        public IPoint<float> TopRight => new Point(X + W, Y);
-        public IPoint<float> CentreLeft => new Point(X, Y + H * 0.5f);
-        public IPoint<float> Centre => new Point(X + W * 0.5f, Y + H * 0.5f);
-        public IPoint<float> CentreRight => new Point(X + W, Y + H * 0.5f);
-        public IPoint<float> BottomLeft => new Point(X, Y + H);
-        public IPoint<float> BottomCentre => new Point(X + W * 0.5f, Y + H);
-        public IPoint<float> BottomRight => new Point(X + W, Y + H);
+        public Point TopLeft => P;
+        public Point TopCentre => new Point(X + W * 0.5f, Y);
+        public Point TopRight => new Point(X + W, Y);
+        public Point CentreLeft => new Point(X, Y + H * 0.5f);
+        public Point Centre => new Point(X + W * 0.5f, Y + H * 0.5f);
+        public Point CentreRight => new Point(X + W, Y + H * 0.5f);
+        public Point BottomLeft => new Point(X, Y + H);
+        public Point BottomCentre => new Point(X + W * 0.5f, Y + H);
+        public Point BottomRight => new Point(X + W, Y + H);
         #endregion
 
         #region Zeroed/Shift/Scale/Resize/Grow
-        public IRect<float> Zeroed => new Rect(0, 0, W, H);
-        public IRect<float> Shift(IPoint<float> direction, float distance) => Shift(direction.Normal.Multiply(distance));
-        public IRect<float> Shift(IPoint<float> direction) => Shift(direction.X, direction.Y);
-        public IRect<float> Shift(float x, float y = 0, float w = 0, float h = 0) => new Rect(X + x, Y + y, W + w, H + h);
-        public IRect<float> Scale(float scaleX, float scaleY) => new Rect(X, Y, W * scaleX, H * scaleY);
-        public IRect<float> ScaleAroundCentre(float scale) => ScaleAroundCentre(scale, scale);
-        public IRect<float> ScaleAroundCentre(float scaleX, float scaleY) => ScaleAround(scaleX, scaleY, Centre.X, Centre.Y);
-        public IRect<float> ScaleAround(float scaleX, float scaleY, float originX, float originY) => ResizeAround(W * scaleX, H * scaleY, originX, originY);
-        public virtual IRect<float> Resize(float newW, float newH) => new Rect(X, Y, newW, newH);
+        public IRect Zeroed => new Rect(0, 0, W, H);
+        public IRect Shift(Point direction, float distance) => Shift(direction.Normal * distance);
+        public IRect Shift(Point direction) => Shift(direction.X, direction.Y);
+        public IRect Shift(float x, float y = 0, float w = 0, float h = 0) => new Rect(X + x, Y + y, W + w, H + h);
+        public IRect Scale(float scaleX, float scaleY) => new Rect(X, Y, W * scaleX, H * scaleY);
+        public IRect ScaleAroundCentre(float scale) => ScaleAroundCentre(scale, scale);
+        public IRect ScaleAroundCentre(float scaleX, float scaleY) => ScaleAround(scaleX, scaleY, Centre.X, Centre.Y);
+        public IRect ScaleAround(float scaleX, float scaleY, float originX, float originY) => ResizeAround(W * scaleX, H * scaleY, originX, originY);
+        public virtual IRect Resize(float newW, float newH) => new Rect(X, Y, newW, newH);
 
         #region ResizeAround
 
-        public IRect<float> ResizeAround(float newW, float newH, IPoint<float> origin) => ResizeAround(newW, newH, origin.X, origin.Y);
-        public IRect<float> ResizeAround(float newW, float newH, float originX, float originY)
+        public IRect ResizeAround(float newW, float newH, Point origin) => ResizeAround(newW, newH, origin.X, origin.Y);
+        public IRect ResizeAround(float newW, float newH, float originX, float originY)
             => new Rect(
                 originX - newW * (originX - X) / W,
                 originY - newH * (originY - Y) / H,
                 newW, newH);
         #endregion
 
-        public IRect<float> Grow(float margin) => Grow(margin, margin, margin, margin);
-        public IRect<float> Grow(float left, float up, float right, float down) => new Rect(X - left, Y - up, W + left + right, H + up + down);
+        public IRect Grow(float margin) => Grow(margin, margin, margin, margin);
+        public IRect Grow(float left, float up, float right, float down) => new Rect(X - left, Y - up, W + left + right, H + up + down);
         #endregion
 
         #region Intersects/Intersection/Contains/IsContainedBy
         #region Intersects
-        public bool Intersects(IRect<float> r, bool touchingCounts = false)
+        public bool Intersects(IRect r, bool touchingCounts = false)
         {
             if (touchingCounts)
                 return
@@ -176,7 +175,7 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Intersection
-        public IRect<float> Intersection(IRect<float> r)
+        public IRect Intersection(IRect r)
         {
             Rect answer = new();
 
@@ -193,13 +192,13 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region Contains
-        public bool Contains(IRect<float> r) => X <= r.X && Y <= r.Y && Right >= r.Right && Bottom >= r.Bottom;
+        public bool Contains(IRect r) => X <= r.X && Y <= r.Y && Right >= r.Right && Bottom >= r.Bottom;
 
         public bool Contains(float x, float y, float w, float h) => X <= x && Y <= y && X + H >= x + w && Y + H >= y + h;
 
         public bool Contains(int x, int y, int w, int h) => X <= x && Y <= y && X + W >= x + w && Y + H >= y + h;
 
-        public bool Contains(IPoint<float> p, bool onLeftAndTopEdgesCount = true, bool onRightAndBottomEdgesCount = false)
+        public bool Contains(Point p, bool onLeftAndTopEdgesCount = true, bool onRightAndBottomEdgesCount = false)
         {
             if (onLeftAndTopEdgesCount && onRightAndBottomEdgesCount)
                 return X <= p.X && Y <= p.Y && X + W >= p.X && Y + H >= p.Y;
@@ -225,23 +224,23 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region IsContainedBy
-        public bool IsContainedBy(IRect<float> r) => X >= r.X && Y >= r.Y && X + W <= r.X + r.W && Y + H <= r.Y + r.H;
+        public bool IsContainedBy(IRect r) => X >= r.X && Y >= r.Y && X + W <= r.X + r.W && Y + H <= r.Y + r.H;
 
         public bool IsContainedBy(float x, float y, float w, float h) => X >= x && Y >= y && X + H <= x + h && Y + H <= y + h;
         #endregion
         #endregion
 
         #region ToVertices
-        public List<IPoint<float>> ToVertices() => new List<IPoint<float>>() { TopLeft, TopRight, BottomRight, BottomLeft };
+        public List<Point> ToVertices() => new() { TopLeft, TopRight, BottomRight, BottomLeft };
         #endregion
 
         #region IEquatable<IRect>
-        public bool Equals(IRect<float>? other)
+        public bool Equals(IRect? other)
         {
             if (other == null)
                 throw new ArgumentNullException(nameof(other));
-            
-            return X == other.X && Y == other.Y && W == other.W && H == other.H;
+
+            return X == other?.X && Y == other?.Y && W == other?.W && H == other?.H;
         }
         #endregion
         #endregion

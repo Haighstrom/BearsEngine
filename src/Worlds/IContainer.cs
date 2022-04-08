@@ -1,6 +1,4 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds
 {
     public interface IContainer : IUpdatable, IRenderable
     {
@@ -14,7 +12,7 @@ namespace BearsEngine.Worlds
         void Add<E>(params E[] entities)
             where E : IAddable;
 
-        E Remove<E>(E e) 
+        E Remove<E>(E e)
             where E : IAddable;
 
         void RemoveAll(bool cascadeToChildren = true);
@@ -32,24 +30,24 @@ namespace BearsEngine.Worlds
 
         List<E> GetEntities<E>(bool considerChildren = true);
 
-        E Collide<E>(IPoint<float> p, bool considerChildren = true)
+        E Collide<E>(Point p, bool considerChildren = true)
             where E : ICollideable;
-        E Collide<E>(IRect<float> r, bool considerChildren = true)
+        E Collide<E>(IRect r, bool considerChildren = true)
             where E : ICollideable;
         E Collide<E>(ICollideable i, bool considerChildren = true)
             where E : ICollideable;
 
-        List<E> CollideAll<E>(IPoint<float> p, bool considerChildren = true)
+        List<E> CollideAll<E>(Point p, bool considerChildren = true)
             where E : ICollideable;
-        List<E> CollideAll<E>(IRect<float> r, bool considerChildren = true)
+        List<E> CollideAll<E>(IRect r, bool considerChildren = true)
             where E : ICollideable;
         List<E> CollideAll<E>(ICollideable i, bool considerChildren = true)
             where E : ICollideable;
 
-        IPoint<float> GetWindowPosition(IPoint<float> localCoords);
-        IRect<float> GetWindowPosition(IRect<float> localCoords);
-        IPoint<float> GetLocalPosition(IPoint<float> windowCoords);
-        IRect<float> GetLocalPosition(IRect<float> windowCoords);
-        IPoint<float> LocalMousePosition { get; }
+        Point GetWindowPosition(Point localCoords);
+        IRect GetWindowPosition(IRect localCoords);
+        Point GetLocalPosition(Point windowCoords);
+        IRect GetLocalPosition(IRect windowCoords);
+        Point LocalMousePosition { get; }
     }
 }

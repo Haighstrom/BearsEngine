@@ -1,6 +1,4 @@
-﻿using HaighFramework;
-
-namespace BearsEngine
+﻿namespace BearsEngine
 {
     public static class EXTENSIONS
     {
@@ -57,13 +55,13 @@ namespace BearsEngine
         public static TSource MinBy<TSource, TKey>(this IEnumerable<TSource> source,
             Func<TSource, TKey> selector, IComparer<TKey> comparer)
         {
-            if (source == null) 
+            if (source == null)
                 throw new ArgumentNullException("source");
-            if (selector == null) 
+            if (selector == null)
                 throw new ArgumentNullException("selector");
 
             if (source.IsEmpty())
-                return default(TSource);
+                return default;
 
             comparer = comparer ?? Comparer<TKey>.Default;
 
@@ -158,7 +156,7 @@ namespace BearsEngine
         #region T[,].ToList
         public static List<T> ToList<T>(this T[,] array)
         {
-            List<T> list = new List<T>();
+            List<T> list = new();
 
             for (int j = 0; j < array.GetLength(1); ++j)
                 for (int i = 0; i < array.GetLength(0); ++i)
@@ -197,7 +195,7 @@ namespace BearsEngine
         #endregion
 
         #region Bitmap
-        public static IRect<float> NonZeroAlphaRegion(this System.Drawing.Bitmap b) => HF.Graphics.NonZeroAlphaRegion(b);
+        public static Rect NonZeroAlphaRegion(this System.Drawing.Bitmap b) => HF.Graphics.NonZeroAlphaRegion(b);
 
         public static void WriteToFile(this System.Drawing.Bitmap b, string targetPath) => HF.Graphics.WriteBitmapToFile(b, targetPath);
         #endregion
@@ -228,14 +226,14 @@ namespace BearsEngine
         }
         #endregion
 
-        public static List<IPoint<float>> ToVertices(this IRect<float> r) => new List<IPoint<float>>() { r.TopLeft, r.TopRight, r.BottomRight, r.BottomLeft };
+        public static List<Point> ToVertices(this Rect r) => new() { r.TopLeft, r.TopRight, r.BottomRight, r.BottomLeft };
 
-        public static List<IPoint<float>> ToClosedVertices(this IRect<float> r) => new List<IPoint<float>>() { r.TopLeft, r.TopRight, r.BottomRight, r.BottomLeft, r.TopLeft };
+        public static List<Point> ToClosedVertices(this Rect r) => new() { r.TopLeft, r.TopRight, r.BottomRight, r.BottomLeft, r.TopLeft };
         #endregion
 
         #region IRect
         #region IRect.Shift
-        public static IRect<float> Shift(this IRect<float> r, Direction d, float distance)
+        public static Rect Shift(this Rect r, Direction d, float distance)
         {
             return new Rect(
                 r.X + (d == Direction.Right ? distance : d == Direction.Left ? -distance : 0),

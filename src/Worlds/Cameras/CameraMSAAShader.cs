@@ -1,8 +1,8 @@
-﻿using HaighFramework;
-using HaighFramework.OpenGL4;
+﻿using HaighFramework.OpenGL4;
+using BearsEngine.Graphics.Shaders;
 using BearsEngine.Graphics;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.Cameras
 {
     #region private class CameraMSAAShader
     /// <summary>
@@ -21,7 +21,7 @@ namespace BearsEngine.Worlds
 
         private static void Initialise()
         {
-            _ID = HF.Graphics.CreateShader(Shaders.vs_camera_msaa, Shaders.fs_cameraMSAA);
+            _ID = HF.Graphics.CreateShader(Resources.Shaders.vs_camera_msaa, Resources.Shaders.fs_cameraMSAA);
             HF.Graphics.BindShader(_ID);
             _locationMVMatrix = OpenGL.GetUniformLocation(_ID, "MVMatrix");
             _locationPMatrix = OpenGL.GetUniformLocation(_ID, "PMatrix");

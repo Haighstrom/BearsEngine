@@ -34,7 +34,7 @@
     public class CircularMotion : EllipticalMotion
     {
         public CircularMotion(float centreX, float centreY, float radius, float startAngle, float duration, PersistType persistence = PersistType.Persist, Action actionOnComplete = null, Easer easer = null)
-            :base(centreX,centreY,radius,radius,startAngle,duration,persistence,actionOnComplete,easer)
+            : base(centreX, centreY, radius, radius, startAngle, duration, persistence, actionOnComplete, easer)
         {
 
         }

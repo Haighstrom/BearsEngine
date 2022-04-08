@@ -1,6 +1,4 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds.UI.Grids
 {
     /// <summary>
     /// Container Entity to add others too, where they will be neatly arranged in a grid. Add to a panel to use its scrollbars.
@@ -12,14 +10,14 @@ namespace BearsEngine.Worlds
         public int[] NextIndex => FindNextEmptyCell();
         public int NextRow => NextIndex[0];
         public int NextColumn => NextIndex[1];
-        public IRect<float>[,] Children { get; }
+        public IRect[,] Children { get; }
         public int Rows { get; }
         public int Columns { get; }
 
-        public IRect<float> this[int i, int j] => Children[i, j];
+        public IRect this[int i, int j] => Children[i, j];
 
         public Point MinSize
-            => new Point(
+            => new(
                 GetTotalFixedColSize(),
                 GetTotalFixedRowSize()
                 );
@@ -84,12 +82,12 @@ namespace BearsEngine.Worlds
         private int _margin = 0;
         private int _columnSpacing = 0;
         private int _rowSpacing = 0;
-        private List<CellFormat> _rowFormat = new List<CellFormat>();
-        private List<CellFormat> _columnFormat = new List<CellFormat>();
+        private List<CellFormat> _rowFormat = new();
+        private List<CellFormat> _columnFormat = new();
         #endregion
 
         #region Constructors
-        public GridLayout(int layer, IRect<float> position, List<CellFormat> rowFormat, List<CellFormat> columnFormat)
+        public GridLayout(int layer, Rect position, List<CellFormat> rowFormat, List<CellFormat> columnFormat)
             : base(layer, position)
         {
             Rows = rowFormat.Count;
@@ -98,17 +96,17 @@ namespace BearsEngine.Worlds
             _rowFormat = new List<CellFormat>(rowFormat);
             _columnFormat = new List<CellFormat>(columnFormat);
 
-            Children = new IRect<float>[Rows, Columns];
+            Children = new IRect[Rows, Columns];
             GridAlignments = new DockPosition[Rows, Columns];
         }
-        public GridLayout(int layer, IRect<float> position, int rows, int columns)
+        public GridLayout(int layer, Rect position, int rows, int columns)
             : base(layer, position)
         {
 
             Rows = rows;
             Columns = columns;
 
-            Children = new IRect<float>[Rows, Columns];
+            Children = new IRect[Rows, Columns];
             GridAlignments = new DockPosition[Rows, Columns];
 
             SetDefaultFormats();
@@ -118,7 +116,7 @@ namespace BearsEngine.Worlds
         #region Methods       
 
         #region Add
-        public E Add<E>(E e, int row, int column, DockPosition gridAlignment = DockPosition.StretchToFill) 
+        public E Add<E>(E e, int row, int column, DockPosition gridAlignment = DockPosition.StretchToFill)
             where E : IRectAddable
         {
             base.Add(e);
@@ -131,7 +129,7 @@ namespace BearsEngine.Worlds
             return e;
         }
 
-        public E Add<E>(E e, DockPosition gridAlignment) 
+        public E Add<E>(E e, DockPosition gridAlignment)
             where E : IRectAddable
         {
             int row = NextRow;
@@ -162,9 +160,9 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region GetEntitiesInColumn
-        public List<IRect<float>> GetEntitiesInColumn(int col)
+        public List<IRect> GetEntitiesInColumn(int col)
         {
-            var l = new List<IRect<float>>();
+            var l = new List<IRect>();
 
             for (int i = 0; i < Rows; i++)
                 if (Children[i, col] != null)
@@ -175,9 +173,9 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region GetEntitiesInRow
-        public List<IRect<float>> GetEntitiesInRow(int row)
+        public List<IRect> GetEntitiesInRow(int row)
         {
-            var l = new List<IRect<float>>();
+            var l = new List<IRect>();
 
             for (int j = 0; j < Columns; j++)
                 if (Children[row, j] != null)
@@ -191,7 +189,7 @@ namespace BearsEngine.Worlds
         /// <summary>
         /// Return GetPosRect, but also take into account the GridAlignment, for entities that do not fill the grid cell.
         /// </summary>
-        private Rect GetEntityPosRect(int rowIdx, int colIdx, DockPosition gridAlignment, IRect<float> entRect)
+        private Rect GetEntityPosRect(int rowIdx, int colIdx, DockPosition gridAlignment, IRect entRect)
         {
             Rect cell = GetPosRect(rowIdx, colIdx);
             switch (gridAlignment)
@@ -278,7 +276,7 @@ namespace BearsEngine.Worlds
         #endregion
 
         #region GetNextEntityPos
-        private Rect GetNextEntityPos(DockPosition gridAlignment, IRect<float> entRect) => GetEntityPosRect(NextRow, NextColumn, gridAlignment, entRect);
+        private Rect GetNextEntityPos(DockPosition gridAlignment, Rect entRect) => GetEntityPosRect(NextRow, NextColumn, gridAlignment, entRect);
         #endregion
 
         #region GetNextPos
@@ -293,7 +291,7 @@ namespace BearsEngine.Worlds
                 throw new HException("Row index of GridLayout exceeds number of rows", rowIdx, Rows, this);
             if (colIdx >= Columns)
                 throw new HException("Column index of GridLayout exceeds number of columns", colIdx, Columns, this);
-                      
+
             //Start with the total size of the control
             int availableWidth = (int)W;
             int availableHeight = (int)H;
@@ -396,7 +394,7 @@ namespace BearsEngine.Worlds
             for (int i = 0; i < Rows; i++)
                 for (int j = 0; j < Columns; j++)
                     if (Children[i, j] != null)
-                        Children[i, j].R = GetEntityPosRect(i, j, GridAlignments[i,j], Children[i,j]);
+                        Children[i, j].R = GetEntityPosRect(i, j, GridAlignments[i, j], Children[i, j]);
         }
         #endregion
         #endregion

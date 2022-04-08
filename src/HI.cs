@@ -1,5 +1,4 @@
-﻿using HaighFramework;
-using HaighFramework.Input;
+﻿using HaighFramework.Input;
 
 namespace BearsEngine
 {
@@ -24,20 +23,20 @@ namespace BearsEngine
 
         #region Mouse
         #region Mouse Position
-        public static int MouseScreenX { get { return _curMouseState.ScreenX; } }
-        public static int MouseScreenY { get { return _curMouseState.ScreenY; } }
-        public static IPoint<int> MouseScreenP { get { return new Point<int>(MouseScreenX, MouseScreenY); } }
+        public static int MouseScreenX => _curMouseState.ScreenX;
+        public static int MouseScreenY => _curMouseState.ScreenY;
+        public static Point MouseScreenP => new(MouseScreenX, MouseScreenY);
 
         public static float MouseWindowX => HV.Window.ScreenToClient(MouseScreenP).X;
         public static float MouseWindowY => HV.Window.ScreenToClient(MouseScreenP).Y;
-        public static IPoint<float> MouseWindowP => new Point(MouseWindowX, MouseWindowY);
+        public static Point MouseWindowP => new(MouseWindowX, MouseWindowY);
 
-        public static int MouseXDelta { get { return _curMouseState.AbsX - _prevMouseState.AbsX; } }
-        public static int MouseYDelta { get { return _curMouseState.AbsY - _prevMouseState.AbsY; } }
+        public static int MouseXDelta => _curMouseState.AbsX - _prevMouseState.AbsX;
+        public static int MouseYDelta => _curMouseState.AbsY - _prevMouseState.AbsY;
         #endregion
 
         #region Mouse Wheel
-        public static int MouseWheelDelta { get { return _curMouseState.Wheel - _prevMouseState.Wheel; } }
+        public static int MouseWheelDelta => _curMouseState.Wheel - _prevMouseState.Wheel;
         #endregion
 
         #region Mouse Buttons
@@ -146,7 +145,7 @@ namespace BearsEngine
         #region KeyPressed
         public static bool KeyPressed(Key k)
         {
-            return _prevKBState.IsKeyUp(k) && 
+            return _prevKBState.IsKeyUp(k) &&
                 _curKBState.IsKeyDown(k);
         }
         /// <summary>
@@ -174,7 +173,7 @@ namespace BearsEngine
         #region KeyReleased
         public static bool KeyReleased(Key k)
         {
-            return _prevKBState.IsKeyDown(k) && 
+            return _prevKBState.IsKeyDown(k) &&
                 _curKBState.IsKeyUp(k);
         }
         /// <summary>
@@ -197,5 +196,7 @@ namespace BearsEngine
         }
         #endregion
         #endregion
+
+
     }
 }

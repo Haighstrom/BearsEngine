@@ -1,9 +1,9 @@
-﻿namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds.UI.UIThemes
 {
     public struct InputBoxTheme
     {
         #region Default
-        public static InputBoxTheme Default => new InputBoxTheme
+        public static InputBoxTheme Default => new()
         {
 
         };

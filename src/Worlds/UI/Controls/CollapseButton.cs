@@ -1,6 +1,6 @@
-﻿using HaighFramework;
+﻿using BearsEngine.Worlds.UI.UIThemes;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.UI.Controls
 {
     public class CollapseButton : Button
     {
@@ -8,7 +8,7 @@ namespace BearsEngine.Worlds
         bool _collapsed = false;
         IGraphic _collapseGraphic, _expandGraphic;
 
-        public CollapseButton(int layer, IRect<float> position, string collapseGraphic, string expandGraphic, UITheme theme, ICollapsable parent)
+        public CollapseButton(int layer, Rect position, string collapseGraphic, string expandGraphic, UITheme theme, ICollapsable parent)
             : base(layer, position, collapseGraphic, theme)
         {
             _target = parent;
@@ -19,7 +19,7 @@ namespace BearsEngine.Worlds
         public override void OnLeftClicked()
         {
             base.OnLeftClicked();
-            
+
             Remove(BackgroundGraphic);
 
             if (_collapsed = !_collapsed)

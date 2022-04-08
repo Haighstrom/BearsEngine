@@ -1,21 +1,19 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds.UI.Grids
 {
     /// <summary>
     /// Info class to inform GridLayout how to stretch columns and rows.
     /// </summary>
-    public class CellFormat 
+    public class CellFormat
     {
         #region Static Members
-        public static CellFormat Fixed(int pixels) => new CellFormat() { FormatMode = CellFormatMode.Fixed, FixedSize = pixels, Weight = 0 };
-        public static CellFormat Weighted(float weight = 1f) => new CellFormat() { FormatMode = CellFormatMode.Weighted, Weight = weight, FixedSize = 0 };
-        public static CellFormat Fit => new CellFormat() { FormatMode = CellFormatMode.Fit, Weight = 0, FixedSize = 0 };
+        public static CellFormat Fixed(int pixels) => new() { FormatMode = CellFormatMode.Fixed, FixedSize = pixels, Weight = 0 };
+        public static CellFormat Weighted(float weight = 1f) => new() { FormatMode = CellFormatMode.Weighted, Weight = weight, FixedSize = 0 };
+        public static CellFormat Fit => new() { FormatMode = CellFormatMode.Fit, Weight = 0, FixedSize = 0 };
         #endregion
 
         #region Properties
         public CellFormatMode FormatMode { get; set; }
-        public GridOrientation GridOrientation { get; set; } 
+        public GridOrientation GridOrientation { get; set; }
         public int FixedSize { get; private set; }
         public float Weight { get; private set; }
         #endregion
@@ -28,7 +26,7 @@ namespace BearsEngine.Worlds
 
         #region Methods
         #region GetSize
-        public int GetSize(int totalSize, float totalWeights, List<IRect<float>> childrenInRowOrCol)
+        public int GetSize(int totalSize, float totalWeights, List<IRect> childrenInRowOrCol)
         {
             switch (FormatMode)
             {
@@ -41,23 +39,23 @@ namespace BearsEngine.Worlds
                 case CellFormatMode.Fit:
                     int size = 0;
 
-                    switch(GridOrientation)
+                    switch (GridOrientation)
                     {
-                        case (GridOrientation.Column):
-                            foreach (IRect<float> e in childrenInRowOrCol)
+                        case GridOrientation.Column:
+                            foreach (Rect e in childrenInRowOrCol)
                                 if (e.W > size)
                                     size = (int)e.W;
                             break;
 
-                        case (GridOrientation.Row):
-                            foreach (IRect<float> e in childrenInRowOrCol)
+                        case GridOrientation.Row:
+                            foreach (Rect e in childrenInRowOrCol)
                                 if (e.H > size)
                                     size = (int)e.H;
                             break;
 
                         default:
                             throw new NotImplementedException();
-                    }                    
+                    }
 
                     return size;
 
@@ -69,7 +67,7 @@ namespace BearsEngine.Worlds
 
         #region GetFixedSize
         //Return Size allocated by FIt or Fixed pixel size - to calculate how much Weighted space is remaining...
-        public int GetFixedSize(List<IRect<float>> childrenInRowOrCol)
+        public int GetFixedSize(List<IRect> childrenInRowOrCol)
         {
             switch (FormatMode)
             {
@@ -84,14 +82,14 @@ namespace BearsEngine.Worlds
 
                     switch (GridOrientation)
                     {
-                        case (GridOrientation.Column):
-                            foreach (IRect<float> e in childrenInRowOrCol)
+                        case GridOrientation.Column:
+                            foreach (IRect e in childrenInRowOrCol)
                                 if (e.W > size)
                                     size = (int)e.W;
                             break;
 
-                        case (GridOrientation.Row):
-                            foreach (IRect<float> e in childrenInRowOrCol)
+                        case GridOrientation.Row:
+                            foreach (IRect e in childrenInRowOrCol)
                                 if (e.H > size)
                                     size = (int)e.H;
                             break;

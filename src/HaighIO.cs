@@ -1,7 +1,8 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Xml.Serialization;
-using HaighFramework;
 
 namespace BearsEngine
 {
@@ -58,7 +59,7 @@ namespace BearsEngine
                 }
                 catch
                 {
-                    System.Threading.Thread.Sleep(5);
+                    Thread.Sleep(5);
                     retries--;
                 }
             }
@@ -97,8 +98,8 @@ namespace BearsEngine
                     Directory.CreateDirectory(Path.Combine(toDir, dir.Substring(fromDir.Length + 1)));
 
             //copy files
-            foreach (string file in System.IO.Directory.GetFiles(fromDir, "*", so))
-                File.Copy(file, System.IO.Path.Combine(toDir, file.Substring(fromDir.Length + 1)), (options & CopyOptions.Overwrite) > 0);
+            foreach (string file in Directory.GetFiles(fromDir, "*", so))
+                File.Copy(file, Path.Combine(toDir, file.Substring(fromDir.Length + 1)), (options & CopyOptions.Overwrite) > 0);
         }
         #endregion
         #endregion
@@ -110,7 +111,7 @@ namespace BearsEngine
         /// </summary>
         public static void SaveTXT(string filename, string contents)
         {
-            var dir = System.IO.Path.GetDirectoryName(filename);
+            var dir = Path.GetDirectoryName(filename);
 
             if (dir != "" && !Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
@@ -123,7 +124,7 @@ namespace BearsEngine
         /// </summary>
         public static void SaveTXT(string filename, IEnumerable<string> lines)
         {
-            var dir = System.IO.Path.GetDirectoryName(filename);
+            var dir = Path.GetDirectoryName(filename);
 
             if (dir != "" && !Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
@@ -152,20 +153,19 @@ namespace BearsEngine
         /// <summary>
         /// Saves a 2D array to a .csv file
         /// </summary>
-        public static void SaveCSV(string filename, string[,] data)
+        public static void SaveCSV<T>(string filename, T[,] data)
+            where T : IConvertible
         {
             var csv = new StringBuilder();
-            string line;
 
             for (int j = 0; j < data.GetLength(1); j++)
             {
                 string[] lineData = new string[data.GetLength(0)];
+
                 for (int i = 0; i < lineData.Length; i++)
-                {
-                    lineData[i] = data[i, j];
-                }
-                line = string.Join(",", lineData);
-                csv.AppendLine(line);
+                    lineData[i] = data[i, j].ToString();
+
+                csv.AppendLine(string.Join(",", lineData));
             }
 
             File.WriteAllText(filename, csv.ToString());
@@ -176,29 +176,29 @@ namespace BearsEngine
         /// <summary>
         /// Loads a .csv file into a 2D array
         /// </summary>
-        public static string[,] LoadCSV(string filename)
+        public static T[,] LoadCSV<T>(string filename)
+            where T : IConvertible
         {
-            List<string[]> data = new List<string[]>();
+            List<string[]> data = new();
 
-            using (var reader = new StreamReader(File.OpenRead(filename)))
-            {
-                while (!reader.EndOfStream)
-                {
-                    var line = reader.ReadLine().Split(',');
-                    data.Add(line);
-                }
-                string[,] ret = new string[data[0].Length, data.Count];
-                for (int i = 0; i < ret.GetLength(0); i++)
-                    for (int j = 0; j < ret.GetLength(1); j++)
-                        ret[i, j] = data[j][i];
-                return ret;
-            }
+            using var reader = new StreamReader(File.OpenRead(filename));
+
+            while (!reader.EndOfStream)
+                data.Add(reader.ReadLine().Split(','));
+
+            T[,] ret = new T[data[0].Length, data.Count];
+
+            for (int i = 0; i < ret.GetLength(0); i++)
+                for (int j = 0; j < ret.GetLength(1); j++)
+                    ret[i, j] = (T)Convert.ChangeType(data[j][i], typeof(T));
+
+            return ret;
         }
         #endregion
         #endregion
 
         #region BMP
-        public static System.Drawing.Bitmap LoadBMP(string filePath) => new System.Drawing.Bitmap(filePath);
+        public static System.Drawing.Bitmap LoadBMP(string filePath) => new(filePath);
         #endregion
 
         #region XML
@@ -209,9 +209,9 @@ namespace BearsEngine
         public static void SaveXML<M>(string fileName, M fileToSave)
             where M : struct
         {
-            XmlSerializer writer = new XmlSerializer(fileToSave.GetType());
+            XmlSerializer writer = new(fileToSave.GetType());
 
-            StreamWriter file = new StreamWriter(fileName);
+            StreamWriter file = new(fileName);
 
             writer.Serialize(file, fileToSave);
             file.Close();
@@ -227,8 +227,8 @@ namespace BearsEngine
         {
             if (File.Exists(fileName))
             {
-                FileStream loadStream = new FileStream(fileName, FileMode.Open);
-                XmlSerializer serializer = new XmlSerializer(typeof(M));
+                FileStream loadStream = new(fileName, FileMode.Open);
+                XmlSerializer serializer = new(typeof(M));
                 M fileLoaded = (M)serializer.Deserialize(loadStream);
                 loadStream.Close();
                 return fileLoaded;
@@ -243,7 +243,13 @@ namespace BearsEngine
         /// <summary>
         /// Converts a struct to its JSON string equivalent
         /// </summary>
-        public static string SerialiseToJSON<M>(M @object, bool indent = false) => JsonSerializer.Serialize(@object, new JsonSerializerOptions { WriteIndented = indent });
+        public static string SerialiseToJSON<M>(M @object, bool indent = false) =>
+            JsonSerializer.Serialize(@object, new JsonSerializerOptions
+            {
+                WriteIndented = indent,
+                Converters = { new JSON.Array2DConverter() },
+                IncludeFields = true,
+            });
         #endregion
 
         #region SaveJSON
@@ -257,7 +263,13 @@ namespace BearsEngine
         /// <summary>
         /// Constructs an instance of a struct from its JSON string equivalent
         /// </summary>
-        public static M DeserialiseFromJSON<M>(string json, bool indented = false) => JsonSerializer.Deserialize<M>(json, new JsonSerializerOptions { WriteIndented = indented });
+        public static M? DeserialiseFromJSON<M>(string json, bool indented = false) =>
+            JsonSerializer.Deserialize<M>(json, new JsonSerializerOptions
+            {
+                WriteIndented = indented,
+                Converters = { new JSON.Array2DConverter() },
+                IncludeFields = true,
+            });
         #endregion
 
         #region LoadJSON

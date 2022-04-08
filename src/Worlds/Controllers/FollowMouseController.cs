@@ -1,6 +1,4 @@
-﻿using HaighFramework;
-
-namespace BearsEngine.Worlds.Controllers
+﻿namespace BearsEngine.Worlds.Controllers
 {
     public class FollowMouseController : AddableBase, IUpdatable
     {
@@ -10,7 +8,7 @@ namespace BearsEngine.Worlds.Controllers
 
         #region Constructors
         public FollowMouseController(IEntity target, int xShift, int yShift)
-            :this(target, new Point(xShift, yShift))
+            : this(target, new Point(xShift, yShift))
         {
         }
 
@@ -23,11 +21,11 @@ namespace BearsEngine.Worlds.Controllers
 
         #region IUpdateable
         public bool Active { get; set; } = true;
-        
+
         #region Update
         public virtual void Update(double elapsed)
         {
-            _target.P = _target.Parent.LocalMousePosition.Add(Shift);
+            _target.P = _target.Parent.LocalMousePosition + Shift;
         }
         #endregion
         #endregion

@@ -1,7 +1,7 @@
-﻿using HaighFramework;
-using BearsEngine.Worlds.Graphics.Text;
+﻿using BearsEngine.Worlds.Graphics.Text;
+using BearsEngine.Worlds.UI.UIThemes;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine.Worlds.UI
 {
     public class SimpleToolTip : Entity
     {
