@@ -121,6 +121,9 @@
   <data name="fs_cameraMSAA" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>fs_cameramsaa.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="fs_darken" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>fs_darken.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="fs_default" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>fs_default.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

@@ -14,7 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HaighFramework\HaighFramework.csproj" />
+    <Reference Include="HaighFramework">
+      <HintPath>bin\Debug\net6.0\HaighFramework.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

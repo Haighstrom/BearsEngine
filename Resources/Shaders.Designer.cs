@@ -73,6 +73,16 @@ namespace BearsEngine.Resources {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] fs_darken {
+            get {
+                object obj = ResourceManager.GetObject("fs_darken", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] fs_default {
             get {
                 object obj = ResourceManager.GetObject("fs_default", resourceCulture);
