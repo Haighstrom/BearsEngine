@@ -1,7 +1,6 @@
-﻿using HaighFramework.Input;
-using HaighFramework.Window;
-using HaighFramework.DisplayDevices;
-using BearsEngine.Graphics;
+﻿using BearsEngine.Input;
+using BearsEngine.Window;
+using BearsEngine.DisplayDevices;
 
 namespace BearsEngine
 {

@@ -1,10 +1,9 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
 using System.Reflection;
-using HaighFramework.OpenGL4;
-using BearsEngine.Graphics;
 using BearsEngine.Pathfinding;
 using System.IO;
+using BearsEngine.Win32API;
 
 namespace BearsEngine
 {
@@ -91,7 +90,7 @@ namespace BearsEngine
             #region BindShader
             public static void BindShader(uint id)
             {
-                OpenGL.UseProgram(id);
+                OpenGL32.UseProgram(id);
                 HV.LastBoundShader = id;
             }
             #endregion
@@ -99,7 +98,7 @@ namespace BearsEngine
             #region UnbindShader
             public static void UnbindShader()
             {
-                OpenGL.UseProgram(0);
+                OpenGL32.UseProgram(0);
                 HV.LastBoundShader = 0;
             }
             #endregion
@@ -120,7 +119,7 @@ namespace BearsEngine
 
             public static uint CreateShader(string vertexSource, string geometrySource, string fragmentSource)
             {
-                uint programID = OpenGL.CreateProgram();
+                uint programID = OpenGL32.CreateProgram();
 
                 int vs, gs = 0, fs = 0;
                 vs = CompileShader(programID, ShaderType.VertexShader, vertexSource);
@@ -129,29 +128,29 @@ namespace BearsEngine
                 if (fragmentSource != null)
                     fs = CompileShader(programID, ShaderType.FragmentShader, fragmentSource);
 
-                OpenGL.LinkProgram(programID);
+                OpenGL32.LinkProgram(programID);
 
                 //Check for errors in compiling shader
-                var log = OpenGL.GetProgramInfoLog(programID);
+                var log = OpenGL32.GetProgramInfoLog(programID);
                 if (log.Length > 0)
                     HConsole.Log("Shader compilation error: " + log);
 
                 //Cleanup
-                OpenGL.DetachShader(programID, vs);
-                OpenGL.DeleteShader(vs);
+                OpenGL32.DetachShader(programID, vs);
+                OpenGL32.DeleteShader(vs);
                 if (geometrySource != null)
                 {
-                    OpenGL.DetachShader(programID, gs);
-                    OpenGL.DeleteShader(gs);
+                    OpenGL32.DetachShader(programID, gs);
+                    OpenGL32.DeleteShader(gs);
                 }
                 if (fragmentSource != null)
                 {
-                    OpenGL.DetachShader(programID, fs);
-                    OpenGL.DeleteShader(fs);
+                    OpenGL32.DetachShader(programID, fs);
+                    OpenGL32.DeleteShader(fs);
                 }
 
                 //Assign this shader to be the selected one in OpenGL
-                OpenGL.UseProgram(programID);
+                OpenGL32.UseProgram(programID);
 
                 return programID;
             }
@@ -160,13 +159,13 @@ namespace BearsEngine
             #region CompileShader
             private static int CompileShader(uint programID, ShaderType shaderType, string shaderSrc)
             {
-                int shaderID = OpenGL.CreateShader(shaderType);
-                OpenGL.ShaderSource(shaderID, shaderSrc);
-                OpenGL.CompileShader(shaderID);
-                OpenGL.AttachShader(programID, shaderID);
+                int shaderID = OpenGL32.CreateShader(shaderType);
+                OpenGL32.ShaderSource(shaderID, shaderSrc);
+                OpenGL32.CompileShader(shaderID);
+                OpenGL32.AttachShader(programID, shaderID);
 
                 //Check for errors in compiling shader
-                var log = OpenGL.GetShaderInfoLog(shaderID);
+                var log = OpenGL32.GetShaderInfoLog(shaderID);
 
                 if (log.Length > 0)
                     HConsole.Log("Shader compilation error: " + log);
@@ -178,40 +177,40 @@ namespace BearsEngine
             #region DeleteShader
             public static void DeleteShader(uint id)
             {
-                OpenGL.UseProgram(0);
-                OpenGL.DeleteProgram(id);
+                OpenGL32.UseProgram(0);
+                OpenGL32.DeleteProgram(id);
             }
             #endregion
 
             #region CreateFramebuffer
             public static void CreateFramebuffer(int width, int height, out uint framebufferID, out Texture framebufferTexture)
             {
-                framebufferID = OpenGL.GenFramebuffer();
-                framebufferTexture = new Texture(OpenGL.GenTexture(), width, height);
+                framebufferID = OpenGL32.GenFramebuffer();
+                framebufferTexture = new Texture(OpenGL32.GenTexture(), width, height);
 
-                OpenGL.BindTexture(TextureTarget.Texture2D, framebufferTexture.ID);
-                OpenGL.TexStorage2D(TextureTarget.Texture2D, 1, TexInternalFormat.RGBA8, width, height);
+                OpenGL32.glBindTexture(TextureTarget.Texture2D, framebufferTexture.ID);
+                OpenGL32.TexStorage2D(TextureTarget.Texture2D, 1, TexInternalFormat.RGBA8, width, height);
 
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, TextureParameter.Linear);
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, TextureParameter.Linear);
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, TextureParameter.Linear);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, TextureParameter.Linear);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
             }
             #endregion
 
             #region ResizeFramebuffer
             public static void ResizeFramebuffer(uint framebufferID, ref Texture framebufferTexture, int newW, int newH)
             {
-                OpenGL.DeleteTexture(framebufferTexture.ID);
-                framebufferTexture = new Texture(OpenGL.GenTexture(), newW, newH);
+                OpenGL32.DeleteTexture(framebufferTexture.ID);
+                framebufferTexture = new Texture(OpenGL32.GenTexture(), newW, newH);
 
-                OpenGL.BindTexture(TextureTarget.Texture2D, framebufferTexture.ID);
-                OpenGL.TexStorage2D(TextureTarget.Texture2D, 1, TexInternalFormat.RGBA8, newW, newH);
+                OpenGL32.glBindTexture(TextureTarget.Texture2D, framebufferTexture.ID);
+                OpenGL32.TexStorage2D(TextureTarget.Texture2D, 1, TexInternalFormat.RGBA8, newW, newH);
 
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, TextureParameter.Linear);
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, TextureParameter.Linear);
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, TextureParameter.Linear);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, TextureParameter.Linear);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
             }
             #endregion
 
@@ -219,33 +218,33 @@ namespace BearsEngine
             public static void CreateMSAAFramebuffer(int width, int height, MSAA_Samples samples, out uint framebufferID, out Texture framebufferTexture)
             {
                 //Generate FBO and texture to use with the MSAA antialising pass
-                framebufferTexture = new Texture(OpenGL.GenTexture(), width, height);
+                framebufferTexture = new Texture(OpenGL32.GenTexture(), width, height);
 
-                OpenGL.BindTexture(TextureTarget.Texture2DMultisample, framebufferTexture.ID);
-                OpenGL.TexImage2DMultisample(TextureTargetMultisample.Texture2DMultisample, (int)samples, PixelInternalFormat.Rgba8, width, height, false);
+                OpenGL32.glBindTexture(TextureTarget.Texture2DMultisample, framebufferTexture.ID);
+                OpenGL32.TexImage2DMultisample(TextureTargetMultisample.Texture2DMultisample, (int)samples, PixelInternalFormat.Rgba8, width, height, false);
 
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, TextureParameter.Linear);
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, TextureParameter.Linear);
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, TextureParameter.Linear);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, TextureParameter.Linear);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
 
-                framebufferID = OpenGL.GenFramebuffer();
+                framebufferID = OpenGL32.GenFramebuffer();
             }
             #endregion
 
             #region ResizeMSAAFramebuffer
             public static void ResizeMSAAFramebuffer(uint framebufferID, ref Texture framebufferTexture, int newW, int newH, MSAA_Samples newSamples)
             {
-                OpenGL.DeleteTexture(framebufferTexture.ID);
-                framebufferTexture = new Texture(OpenGL.GenTexture(), newW, newH);
+                OpenGL32.DeleteTexture(framebufferTexture.ID);
+                framebufferTexture = new Texture(OpenGL32.GenTexture(), newW, newH);
 
-                OpenGL.BindTexture(TextureTarget.Texture2DMultisample, framebufferTexture.ID);
-                OpenGL.TexImage2DMultisample(TextureTargetMultisample.Texture2DMultisample, newSamples, PixelInternalFormat.Rgba8, newW, newH, false);
+                OpenGL32.glBindTexture(TextureTarget.Texture2DMultisample, framebufferTexture.ID);
+                OpenGL32.TexImage2DMultisample(TextureTargetMultisample.Texture2DMultisample, newSamples, PixelInternalFormat.Rgba8, newW, newH, false);
 
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, TextureParameter.Linear);
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, TextureParameter.Linear);
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, TextureParameter.Linear);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, TextureParameter.Linear);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
             }
             #endregion
 
@@ -260,24 +259,24 @@ namespace BearsEngine
             /// </summary>
             public static Texture GenTexture(System.Drawing.Bitmap bmp, TextureParameter minMagFilter = TextureParameter.Nearest)
             {
-                bmp = OpenGL.PremultiplyAlpha(bmp);
+                bmp = OpenGL32.PremultiplyAlpha(bmp);
 
                 Texture t = new()
                 {
                     Width = bmp.Width,
                     Height = bmp.Height,
 
-                    ID = OpenGL.GenTexture()
+                    ID = OpenGL32.GenTexture()
                 };
 
-                OpenGL.BindTexture(TextureTarget.Texture2D, t.ID);
+                OpenGL32.glBindTexture(TextureTarget.Texture2D, t.ID);
                 HV.LastBoundTexture = t.ID;
 
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, minMagFilter);
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, minMagFilter);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, minMagFilter);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, minMagFilter);
 
                 System.Drawing.Imaging.BitmapData bmpd = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                OpenGL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmpd.Width, bmpd.Height, 0, PixelFormat.Bgra, PixelType.UnsignedByte, bmpd.Scan0);
+                OpenGL32.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmpd.Width, bmpd.Height, 0, PixelFormat.Bgra, PixelType.UnsignedByte, bmpd.Scan0);
                 bmp.UnlockBits(bmpd);
 
                 return t;
@@ -286,21 +285,21 @@ namespace BearsEngine
             public static Texture GenTexture(Colour[,] pixels, TextureParameter minMagFilter = TextureParameter.Nearest)
             {
                 pixels = pixels.Transpose();
-                Texture t = new(OpenGL.GenTexture(), pixels.GetLength(1), pixels.GetLength(0));
+                Texture t = new(OpenGL32.GenTexture(), pixels.GetLength(1), pixels.GetLength(0));
 
-                OpenGL.PixelStore(PixelStoreParameter.GL_UNPACK_ALIGNMENT, 1);
+                OpenGL32.PixelStore(PixelStoreParameter.GL_UNPACK_ALIGNMENT, 1);
 
                 t.Bind();
 
                 GCHandle pinned = GCHandle.Alloc(pixels, GCHandleType.Pinned);
                 IntPtr pointer = pinned.AddrOfPinnedObject();
 
-                OpenGL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, t.Width, t.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pointer);
+                OpenGL32.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, t.Width, t.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pointer);
 
                 pinned.Free();
 
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, minMagFilter);
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, minMagFilter);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, minMagFilter);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, minMagFilter);
 
                 return t;
             }
@@ -319,7 +318,7 @@ namespace BearsEngine
 
                 var t = new Texture()
                 {
-                    ID = OpenGL.GenTexture()
+                    ID = OpenGL32.GenTexture()
                 };
                 t.Bind();
 
@@ -346,21 +345,21 @@ namespace BearsEngine
 
                 t.Width = newW;
                 t.Height = newH;
-                paddedBMP = OpenGL.PremultiplyAlpha(paddedBMP);
+                paddedBMP = OpenGL32.PremultiplyAlpha(paddedBMP);
 
                 var bmpData = paddedBMP.LockBits(new System.Drawing.Rectangle(0, 0, paddedBMP.Width, paddedBMP.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-                OpenGL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmpData.Width, bmpData.Height, 0, PixelFormat.Bgra, PixelType.UnsignedByte, bmpData.Scan0);
+                OpenGL32.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmpData.Width, bmpData.Height, 0, PixelFormat.Bgra, PixelType.UnsignedByte, bmpData.Scan0);
 
                 paddedBMP.UnlockBits(bmpData);
 
                 //Apply interpolation filters for scaled images - normally linear for smoothing, nearest for pixel graphics
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, minFilter);
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, magFilter);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, minFilter);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, magFilter);
 
                 //I had the 3rd parameter in these set to repeat, but it gave the artefact of the top of textures being drawn across the bottom eg line across Haighman's feet. Will need to do %1f modulus on uv coords now..
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, wrapMode);
-                OpenGL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, wrapMode);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, wrapMode);
+                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, wrapMode);
 
                 BMP.Dispose();
                 paddedBMP.Dispose();
@@ -507,9 +506,9 @@ namespace BearsEngine
             public static System.Drawing.Bitmap TextureToBitmap(Texture t)
             {
                 System.Drawing.Bitmap bmp = new(t.Width, t.Height);
-                OpenGL.BindTexture(TextureTarget.Texture2D, t.ID);
+                OpenGL32.glBindTexture(TextureTarget.Texture2D, t.ID);
                 System.Drawing.Imaging.BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                OpenGL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+                OpenGL32.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
                 bmp.UnlockBits(data);
                 return bmp;
             }

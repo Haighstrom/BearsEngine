@@ -1,4 +1,4 @@
-﻿using HaighFramework.OpenGL4;
+﻿using BearsEngine.Win32API;
 
 namespace BearsEngine.Graphics.Shaders;
 
@@ -60,16 +60,16 @@ public class LightingShader : IShader
     {
         _ID = HF.Graphics.CreateShader(Resources.Shaders.vs_default, Resources.Shaders.fs_lighting);
         HF.Graphics.BindShader(_ID);
-        _locationMVMatrix = OpenGL.GetUniformLocation(_ID, "MVMatrix");
-        _locationPMatrix = OpenGL.GetUniformLocation(_ID, "PMatrix");
-        _locationPosition = OpenGL.GetAttribLocation(_ID, "Position");
-        _locationColour = OpenGL.GetAttribLocation(_ID, "Colour");
-        _locationTexture = OpenGL.GetAttribLocation(_ID, "TexCoord");
+        _locationMVMatrix = OpenGL32.GetUniformLocation(_ID, "MVMatrix");
+        _locationPMatrix = OpenGL32.GetUniformLocation(_ID, "PMatrix");
+        _locationPosition = OpenGL32.GetAttribLocation(_ID, "Position");
+        _locationColour = OpenGL32.GetAttribLocation(_ID, "Colour");
+        _locationTexture = OpenGL32.GetAttribLocation(_ID, "TexCoord");
 
-        _locationGammaUniform = OpenGL.GetUniformLocation(_ID, "Gamma");
+        _locationGammaUniform = OpenGL32.GetUniformLocation(_ID, "Gamma");
 
-        _locationSourceInvMVMatrixUniform = OpenGL.GetUniformLocation(_ID, "InverseSourceMVMatrix");
-        _locationAmbientLightColourUniform = OpenGL.GetUniformLocation(_ID, "AmbientLightColour");
+        _locationSourceInvMVMatrixUniform = OpenGL32.GetUniformLocation(_ID, "InverseSourceMVMatrix");
+        _locationAmbientLightColourUniform = OpenGL32.GetUniformLocation(_ID, "AmbientLightColour");
 
         LoadLightsArrayLocations();
 
@@ -87,10 +87,10 @@ public class LightingShader : IShader
 
         for (int i = 0; i < MAX_LIGHTS; i++)
         {
-            _locationLights_PosUniformArray[i] = OpenGL.GetUniformLocation(_ID, string.Format("Lights[{0}].Pos", i));
-            _locationLights_ColourUniformArray[i] = OpenGL.GetUniformLocation(_ID, string.Format("Lights[{0}].Colour", i));
-            _locationLights_RadiusUniformArray[i] = OpenGL.GetUniformLocation(_ID, string.Format("Lights[{0}].Radius", i));
-            _locationLights_CutoffRadiusUniformArray[i] = OpenGL.GetUniformLocation(_ID, string.Format("Lights[{0}].CutoffRadius", i));
+            _locationLights_PosUniformArray[i] = OpenGL32.GetUniformLocation(_ID, string.Format("Lights[{0}].Pos", i));
+            _locationLights_ColourUniformArray[i] = OpenGL32.GetUniformLocation(_ID, string.Format("Lights[{0}].Colour", i));
+            _locationLights_RadiusUniformArray[i] = OpenGL32.GetUniformLocation(_ID, string.Format("Lights[{0}].Radius", i));
+            _locationLights_CutoffRadiusUniformArray[i] = OpenGL32.GetUniformLocation(_ID, string.Format("Lights[{0}].CutoffRadius", i));
         }
     }
     #endregion
@@ -126,30 +126,30 @@ public class LightingShader : IShader
     {
         HF.Graphics.BindShader(_ID);
 
-        OpenGL.UniformMatrix4(_locationMVMatrix, 1, false, modelView.Values);
-        OpenGL.UniformMatrix4(_locationPMatrix, 1, false, projection.Values);
+        OpenGL32.UniformMatrix4(_locationMVMatrix, 1, false, modelView.Values);
+        OpenGL32.UniformMatrix4(_locationPMatrix, 1, false, projection.Values);
 
-        OpenGL.EnableVertexAttribArray(_locationPosition);
-        OpenGL.VertexAttribPointer(_locationPosition, 2, VertexAttribPointerType.Float, false, Vertex.STRIDE, 0);
+        OpenGL32.EnableVertexAttribArray(_locationPosition);
+        OpenGL32.VertexAttribPointer(_locationPosition, 2, VertexAttribPointerType.Float, false, Vertex.STRIDE, 0);
 
-        OpenGL.EnableVertexAttribArray(_locationColour);
-        OpenGL.VertexAttribPointer(_locationColour, 4, VertexAttribPointerType.UnsignedByte, true, Vertex.STRIDE, 8);
+        OpenGL32.EnableVertexAttribArray(_locationColour);
+        OpenGL32.VertexAttribPointer(_locationColour, 4, VertexAttribPointerType.UnsignedByte, true, Vertex.STRIDE, 8);
 
-        OpenGL.EnableVertexAttribArray(_locationTexture);
-        OpenGL.VertexAttribPointer(_locationTexture, 2, VertexAttribPointerType.Float, false, Vertex.STRIDE, 12);
+        OpenGL32.EnableVertexAttribArray(_locationTexture);
+        OpenGL32.VertexAttribPointer(_locationTexture, 2, VertexAttribPointerType.Float, false, Vertex.STRIDE, 12);
 
-        OpenGL.Uniform(_locationGammaUniform, Gamma);
+        OpenGL32.Uniform(_locationGammaUniform, Gamma);
 
-        OpenGL.Uniform4(_locationAmbientLightColourUniform, AmbientLightColour);
-        OpenGL.UniformMatrix3(_locationSourceInvMVMatrixUniform, 1, false, mdlMatrix.Inverse().Values);
+        OpenGL32.Uniform4(_locationAmbientLightColourUniform, AmbientLightColour);
+        OpenGL32.UniformMatrix3(_locationSourceInvMVMatrixUniform, 1, false, mdlMatrix.Inverse().Values);
 
         BindLightsArrayData();
 
-        OpenGL.DrawArrays(drawType, 0, verticesLength);
+        OpenGL32.DrawArrays(drawType, 0, verticesLength);
 
-        OpenGL.DisableVertexAttribArray(_locationPosition);
-        OpenGL.DisableVertexAttribArray(_locationColour);
-        OpenGL.DisableVertexAttribArray(_locationTexture);
+        OpenGL32.DisableVertexAttribArray(_locationPosition);
+        OpenGL32.DisableVertexAttribArray(_locationColour);
+        OpenGL32.DisableVertexAttribArray(_locationTexture);
     }
     #endregion
 
@@ -158,10 +158,10 @@ public class LightingShader : IShader
     {
         for (int i = 0; i < _lights.Count; i++)
         {
-            OpenGL.Uniform2(_locationLights_PosUniformArray[i], _lights[i].Position);
-            OpenGL.Uniform4(_locationLights_ColourUniformArray[i], _lights[i].Colour);
-            OpenGL.Uniform(_locationLights_RadiusUniformArray[i], _lights[i].Radius);
-            OpenGL.Uniform(_locationLights_CutoffRadiusUniformArray[i], _lights[i].CutoffRadius);
+            OpenGL32.Uniform2(_locationLights_PosUniformArray[i], _lights[i].Position);
+            OpenGL32.Uniform4(_locationLights_ColourUniformArray[i], _lights[i].Colour);
+            OpenGL32.Uniform(_locationLights_RadiusUniformArray[i], _lights[i].Radius);
+            OpenGL32.Uniform(_locationLights_CutoffRadiusUniformArray[i], _lights[i].CutoffRadius);
         }
     }
     #endregion

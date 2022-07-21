@@ -152,9 +152,7 @@
         }
         #endregion
 
-        public static List<Point> ToVertices(this Rect r) => new() { r.TopLeft, r.TopRight, r.BottomRight, r.BottomLeft };
-
-        public static List<Point> ToClosedVertices(this Rect r) => new() { r.TopLeft, r.TopRight, r.BottomRight, r.BottomLeft, r.TopLeft };
+        public static float ToAngleDegrees(this Point p) => 90 + (float)(Math.Atan2(p.Y, p.X) * 180 / Math.PI);
         #endregion
 
         #region IRect
@@ -207,6 +205,10 @@
             return rect;
         }
         #endregion
+
+        public static List<Point> ToVertices(this IRect r) => new() { r.TopLeft, r.TopRight, r.BottomRight, r.BottomLeft };
+
+        public static List<Point> ToClosedVertices(this IRect r) => new() { r.TopLeft, r.TopRight, r.BottomRight, r.BottomLeft, r.TopLeft };
         #endregion
 
         #region Enum

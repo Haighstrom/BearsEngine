@@ -7,7 +7,7 @@
     public class Tween : AddableBase, IUpdatable
     {
         #region Constructors
-        public Tween(float duration, PersistType persistType, Action actionOnCompleted = null, Easer easer = null)
+        public Tween(float duration, PersistType persistType, Action? actionOnCompleted = null, Easer? easer = null)
         {
             TotalDuration = duration;
             Persistence = persistType;
@@ -16,9 +16,18 @@
         }
         #endregion
 
-        #region IUpdateable
+        #region Properties
+        public Action? ActionOnCompleted { get; set; }
         public bool Active { get; set; } = true;
+        public Easer? Easer { get; set; }
+        public float Elapsed { get; private set; }
+        public float PercentComplete => Progress * 100;
+        public PersistType Persistence { get; set; }
+        public float Progress { get; private set; }
+        public float TotalDuration { get; protected set; }
+        #endregion
 
+        #region Methods
         #region Update
         public virtual void Update(double elapsed)
         {
@@ -32,35 +41,6 @@
             }
             else if (Easer != null && Progress > 0)
                 Progress = Easer(Progress);
-        }
-        #endregion
-        #endregion
-
-        #region Properties
-        public Easer Easer { get; set; }
-
-        public PersistType Persistence { get; set; }
-
-        public float Elapsed { get; private set; }
-
-        public float TotalDuration { get; protected set; }
-
-        public float Progress { get; private set; }
-
-        public float PercentComplete => Progress * 100;
-
-        public Action ActionOnCompleted { get; set; }
-        #endregion
-
-        #region Methods
-        #region Start
-        public virtual void Start()
-        {
-            Elapsed = 0;
-            if (TotalDuration == 0)
-                Active = false;
-            else
-                Active = true;
         }
         #endregion
 
@@ -91,10 +71,21 @@
             Completed?.Invoke(this, EventArgs.Empty);
         }
         #endregion
+
+        #region Start
+        public virtual void Start()
+        {
+            Elapsed = 0;
+            if (TotalDuration == 0)
+                Active = false;
+            else
+                Active = true;
+        }
+        #endregion
         #endregion
 
         #region Events
-        public event EventHandler Completed;
+        public event EventHandler? Completed;
         #endregion
     }
 }

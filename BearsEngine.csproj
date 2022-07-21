@@ -14,12 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="HaighFramework">
-      <HintPath>bin\Debug\net6.0\HaighFramework.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Resources\Shaders.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

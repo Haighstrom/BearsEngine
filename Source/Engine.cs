@@ -1,11 +1,10 @@
 ﻿namespace BearsEngine;
 
 using System.Diagnostics;
-using HaighFramework.DisplayDevices;
-using HaighFramework.Input;
-using HaighFramework.Window;
-using HaighFramework;
-using HaighFramework.OpenGL4;
+using BearsEngine.DisplayDevices;
+using BearsEngine.Input;
+using BearsEngine.Win32API;
+using BearsEngine.Window;
 
 public sealed class Engine : IDisposable
 {
@@ -143,8 +142,8 @@ public sealed class Engine : IDisposable
     #region Render
     private void Render()
     {
-        OpenGL.ClearColour(HV.ScreenColour);
-        OpenGL.Clear(ClearBufferMask.ColourBufferBit | ClearBufferMask.DepthBufferBit);
+        OpenGL32.ClearColour(HV.ScreenColour);
+        OpenGL32.Clear(ClearBufferMask.ColourBufferBit | ClearBufferMask.DepthBufferBit);
 
         _scene.Render(ref HV.OrthoMatrix, ref Matrix4.Identity);
         Window.SwapBuffers();

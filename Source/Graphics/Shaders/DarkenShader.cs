@@ -1,4 +1,4 @@
-﻿using HaighFramework.OpenGL4;
+﻿using BearsEngine.Win32API;
 
 namespace BearsEngine.Graphics.Shaders;
 
@@ -18,12 +18,12 @@ public class DarkenShader : IShader
     {
         _ID = HF.Graphics.CreateShader(Resources.Shaders.vs_default, Resources.Shaders.fs_darken);
         HF.Graphics.BindShader(_ID);
-        _locationMVMatrix = OpenGL.GetUniformLocation(_ID, "MVMatrix");
-        _locationPMatrix = OpenGL.GetUniformLocation(_ID, "PMatrix");
-        _locationPosition = OpenGL.GetAttribLocation(_ID, "Position");
-        _locationColour = OpenGL.GetAttribLocation(_ID, "Colour");
-        _locationTexture = OpenGL.GetAttribLocation(_ID, "TexCoord");
-        _locationDarkenValue = OpenGL.GetUniformLocation(_ID, "DarkenValue");
+        _locationMVMatrix = OpenGL32.GetUniformLocation(_ID, "MVMatrix");
+        _locationPMatrix = OpenGL32.GetUniformLocation(_ID, "PMatrix");
+        _locationPosition = OpenGL32.GetAttribLocation(_ID, "Position");
+        _locationColour = OpenGL32.GetAttribLocation(_ID, "Colour");
+        _locationTexture = OpenGL32.GetAttribLocation(_ID, "TexCoord");
+        _locationDarkenValue = OpenGL32.GetUniformLocation(_ID, "DarkenValue");
         _initialised = true;
     }
     #endregion
@@ -48,25 +48,25 @@ public class DarkenShader : IShader
         if (_ID != HV.LastBoundShader)
             HF.Graphics.BindShader(_ID);
 
-        OpenGL.Uniform(_locationDarkenValue, DarkenValue);
+        OpenGL32.Uniform(_locationDarkenValue, DarkenValue);
 
-        OpenGL.UniformMatrix4(_locationMVMatrix, 1, false, modelView.Values);
-        OpenGL.UniformMatrix4(_locationPMatrix, 1, false, projection.Values);
+        OpenGL32.UniformMatrix4(_locationMVMatrix, 1, false, modelView.Values);
+        OpenGL32.UniformMatrix4(_locationPMatrix, 1, false, projection.Values);
 
-        OpenGL.EnableVertexAttribArray(_locationPosition);
-        OpenGL.VertexAttribPointer(_locationPosition, 2, VertexAttribPointerType.Float, false, Vertex.STRIDE, 0);
+        OpenGL32.EnableVertexAttribArray(_locationPosition);
+        OpenGL32.VertexAttribPointer(_locationPosition, 2, VertexAttribPointerType.Float, false, Vertex.STRIDE, 0);
 
-        OpenGL.EnableVertexAttribArray(_locationColour);
-        OpenGL.VertexAttribPointer(_locationColour, 4, VertexAttribPointerType.UnsignedByte, true, Vertex.STRIDE, 8);
+        OpenGL32.EnableVertexAttribArray(_locationColour);
+        OpenGL32.VertexAttribPointer(_locationColour, 4, VertexAttribPointerType.UnsignedByte, true, Vertex.STRIDE, 8);
 
-        OpenGL.EnableVertexAttribArray(_locationTexture);
-        OpenGL.VertexAttribPointer(_locationTexture, 2, VertexAttribPointerType.Float, false, Vertex.STRIDE, 12);
+        OpenGL32.EnableVertexAttribArray(_locationTexture);
+        OpenGL32.VertexAttribPointer(_locationTexture, 2, VertexAttribPointerType.Float, false, Vertex.STRIDE, 12);
 
-        OpenGL.DrawArrays(drawType, 0, verticesLength);
+        OpenGL32.DrawArrays(drawType, 0, verticesLength);
 
-        OpenGL.DisableVertexAttribArray(_locationPosition);
-        OpenGL.DisableVertexAttribArray(_locationColour);
-        OpenGL.DisableVertexAttribArray(_locationTexture);
+        OpenGL32.DisableVertexAttribArray(_locationPosition);
+        OpenGL32.DisableVertexAttribArray(_locationColour);
+        OpenGL32.DisableVertexAttribArray(_locationTexture);
     }
     #endregion
     #endregion
