@@ -38,9 +38,4 @@ public static class Win32
         Kernal32.FreeLibrary(hModule);
         return (functionPointer != IntPtr.Zero);
     }
-
-    public static uint GetUnmanagedSize<T>()
-        where T : struct => (uint)Marshal.SizeOf(default(T));
-    public static uint GetUnmanagedSize<T>(this T t)
-        where T : struct => (uint)Marshal.SizeOf(t);
 }

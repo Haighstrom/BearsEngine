@@ -57,6 +57,41 @@ internal enum User32Icons : ushort
 #endregion
 
 #region Enums
+internal enum GLAlphaFuncEnum : int
+{
+    /// <summary>
+    /// Never passes.
+    /// </summary>
+    GL_NEVER = 0x0200,
+    /// <summary>
+    /// Passes if the incoming alpha value is less than the reference value.
+    /// </summary>
+    GL_LESS = 0x0201,
+    /// <summary>
+    /// Passes if the incoming alpha value is equal to the reference value.
+    /// </summary>
+    GL_EQUAL = 0x0202,
+    /// <summary>
+    /// Passes if the incoming alpha value is less than or equal to the reference value.
+    /// </summary>
+    GL_LEQUAL = 0x0203,
+    /// <summary>
+    /// Passes if the incoming alpha value is greater than the reference value.
+    /// </summary>
+    GL_GREATER = 0x0204,
+    /// <summary>
+    /// Passes if the incoming alpha value is not equal to the reference value.
+    /// </summary>
+    GL_NOTEQUAL = 0x0205,
+    /// <summary>
+    /// Passes if the incoming alpha value is greater than or equal to the reference value.
+    /// </summary>
+    GL_GEQUAL = 0x0206,
+    /// <summary>
+    /// Always passes (initial value).
+    /// </summary>
+    GL_ALWAYS = 0x0207,
+}
 
 #region BlendScaleFactor
 /// <summary>
@@ -4256,74 +4291,6 @@ internal enum NIndex : int
 }
 #endregion
 
-//todo: merge these two
-#region PixelFormatDescriptor
-[StructLayout(LayoutKind.Sequential)]
-internal struct PixelFormatDescriptor
-{
-    internal short Size;
-    internal short Version;
-    internal FLAGS Flags;
-    internal TYPE PixelType;
-    internal byte ColorBits;
-    internal byte RedBits;
-    internal byte RedShift;
-    internal byte GreenBits;
-    internal byte GreenShift;
-    internal byte BlueBits;
-    internal byte BlueShift;
-    internal byte AlphaBits;
-    internal byte AlphaShift;
-    internal byte AccumBits;
-    internal byte AccumRedBits;
-    internal byte AccumGreenBits;
-    internal byte AccumBlueBits;
-    internal byte AccumAlphaBits;
-    internal byte DepthBits;
-    internal byte StencilBits;
-    internal byte AuxBuffers;
-    internal byte LayerType;
-    private byte Reserved;
-    internal int LayerMask;
-    internal int VisibleMask;
-    internal int DamageMask;
-
-    internal static int SizeInBytes = Marshal.SizeOf(typeof(PixelFormatDescriptor));
-
-    [Flags]
-    internal enum FLAGS : int
-    {
-        // PixelFormatDescriptor flags
-        DOUBLEBUFFER = 0x01,
-        STEREO = 0x02,
-        DRAW_TO_WINDOW = 0x04,
-        DRAW_TO_BITMAP = 0x08,
-        SUPPORT_GDI = 0x10,
-        SUPPORT_OPENGL = 0x20,
-        GENERIC_FORMAT = 0x40,
-        NEED_PALETTE = 0x80,
-        NEED_SYSTEM_PALETTE = 0x100,
-        SWAP_EXCHANGE = 0x200,
-        SWAP_COPY = 0x400,
-        SWAP_LAYER_BUFFERS = 0x800,
-        GENERIC_ACCELERATED = 0x1000,
-        SUPPORT_DIRECTDRAW = 0x2000,
-        SUPPORT_COMPOSITION = 0x8000,
-
-        // PixelFormatDescriptor flags for use in ChoosePixelFormat only
-        DEPTH_DONTCARE = unchecked(0x20000000),
-        DOUBLEBUFFER_DONTCARE = unchecked(0x40000000),
-        STEREO_DONTCARE = unchecked((int)0x80000000)
-    }
-
-    internal enum TYPE : byte
-    {
-        RGBA = 0,
-        INDEXED = 1
-    }
-}
-#endregion
-
 #region PIXELFORMATDESCRIPTOR
 /// <summary>
 /// The PIXELFORMATDESCRIPTOR structure describes the pixel format of a drawing surface
@@ -4331,61 +4298,219 @@ internal struct PixelFormatDescriptor
 [StructLayout(LayoutKind.Sequential)]
 internal class PIXELFORMATDESCRIPTOR
 {
-    internal enum LAYER_TYPE : byte { MAIN_PLANE = 0, OVERLAY_PLANE = 1, UDERLAY_PLANE = 255 };
-    internal enum PIXEL_TYPE : byte { RGBA = 0, COLORINDEX = 1 };
-    internal enum FLAGS : uint
+    #region Flags
+    // https://docs.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-pixelformatdescriptor
+    // https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-emf/1db036d6-2da8-4b92-b4f8-e9cab8cc93b7
+    [Flags]
+    internal enum Flags : uint
     {
-        DOUBLEBUFFER = 0x00000001, STEREO = 0x00000002, DRAW_TO_WINDOW = 0x00000004, DRAW_TO_BITMAP = 0x00000008,
-        SUPPORT_GDI = 0x00000010, SUPPORT_OPENGL = 0x00000020, GENERIC_FORMAT = 0x00000040,
-        NEED_PALETTE = 0x00000080, NEED_SYSTEM_PALETTE = 0x00000100,
-        SWAP_EXCHANGE = 0x00000200, SWAP_COPY = 0x00000400, SWAP_LAYER_BUFFERS = 0x00000800,
-        GENERIC_ACCELERATED = 0x00001000, SUPPORT_DIRECTDRAW = 0x00002000,
-        SUPPORT_COMPOSITION = 0x00008000,
-        DEPTH_DONTCARE = 0x20000000, DOUBLEBUFFER_DONTCARE = 0x40000000, STEREO_DONTCARE = 0x80000000
+        /// <summary>
+        /// The buffer can draw to a window or device surface.
+        /// </summary>
+        PFD_DRAW_TO_WINDOW = 0x00000004,
+        /// <summary>
+        /// The buffer can draw to a memory bitmap.
+        /// </summary>
+        PFD_DRAW_TO_BITMAP = 0x00000008,
+        /// <summary>
+        /// The buffer supports GDI drawing. This flag and PFD_DOUBLEBUFFER are mutually exclusive in the current generic implementation.
+        /// </summary>
+        PFD_SUPPORT_GDI = 0x00000010,
+        /// <summary>
+        /// The buffer supports OpenGL drawing.
+        /// </summary>
+        PFD_SUPPORT_OPENGL = 0x00000020,
+        /// <summary>
+        /// The pixel format is supported by a device driver that accelerates the generic implementation. If this flag is clear and the PFD_GENERIC_FORMAT flag is set, the pixel format is supported by the generic implementation only.
+        /// </summary>
+        PFD_GENERIC_ACCELERATED = 0x00001000,
+        /// <summary>
+        /// The pixel format is supported by the GDI software implementation, which is also known as the generic implementation. If this bit is clear, the pixel format is supported by a device driver or hardware.
+        /// </summary>
+        PFD_GENERIC_FORMAT = 0x00000040,
+        /// <summary>
+        /// The buffer uses RGBA pixels on a palette-managed device. A logical palette is required to achieve the best results for this pixel type. Colors in the palette should be specified according to the values of the cRedBits, cRedShift, cGreenBits, cGreenShift, cBluebits, and cBlueShift members. The palette should be created and realized in the device context before calling wglMakeCurrent.
+        /// </summary>
+        PFD_NEED_PALETTE = 0x00000080,
+        /// <summary>
+        /// 	Defined in the pixel format descriptors of hardware that supports one hardware palette in 256-color mode only. For such systems to use hardware acceleration, the hardware palette must be in a fixed order (for example, 3-3-2) when in RGBA mode or must match the logical palette when in color-index mode.When this flag is set, you must call SetSystemPaletteUse in your program to force a one-to-one mapping of the logical palette and the system palette. If your OpenGL hardware supports multiple hardware palettes and the device driver can allocate spare hardware palettes for OpenGL, this flag is typically clear. This flag is not set in the generic pixel formats.
+        /// </summary>
+        PFD_NEED_SYSTEM_PALETTE = 0x00000100,
+        /// <summary>
+        /// The buffer is double-buffered. This flag and PFD_SUPPORT_GDI are mutually exclusive in the current generic implementation.
+        /// </summary>
+        PFD_DOUBLEBUFFER = 0x00000001,
+        /// <summary>
+        /// The buffer is stereoscopic. This flag is not supported in the current generic implementation.
+        /// </summary>
+        PFD_STEREO = 0x00000002,
+        /// <summary>
+        /// Indicates whether a device can swap individual layer planes with pixel formats that include double-buffered overlay or underlay planes. Otherwise all layer planes are swapped together as a group. When this flag is set, wglSwapLayerBuffers is supported.
+        /// </summary>
+        PFD_SWAP_LAYER_BUFFERS = 0x00000800,
+        /// <summary>
+        /// You can specify this bit flag when calling ChoosePixelFormat. The requested pixel format can either have or not have a depth buffer. To select a pixel format without a depth buffer, you must specify this flag. The requested pixel format can be with or without a depth buffer. Otherwise, only pixel formats with a depth buffer are considered.
+        /// </summary>
+        PFD_DEPTH_DONTCARE = 0x20000000,
+        /// <summary>
+        /// You can specify this bit flag when calling ChoosePixelFormat. The requested pixel format can be either single- or double-buffered.
+        /// </summary>
+        PFD_DOUBLEBUFFER_DONTCARE = 0x40000000,
+        /// <summary>
+        /// You can specify this bit flag when calling ChoosePixelFormat. The requested pixel format can be either monoscopic or stereoscopic.
+        /// </summary>
+        PFD_STEREO_DONTCARE = 0x80000000,
+        /// <summary>
+        /// With the glAddSwapHintRectWIN extension function, this flag is included for the PIXELFORMATDESCRIPTOR pixel format structure. Specifies the content of the back buffer in the double-buffered main color plane following a buffer swap. Swapping the color buffers causes the content of the back buffer to be copied to the front buffer. The content of the back buffer is not affected by the swap. PFD_SWAP_COPY is a hint only and might not be provided by a driver.
+        /// </summary>
+        PFD_SWAP_COPY = 0x00000400,
+        /// <summary>
+        /// With the glAddSwapHintRectWIN extension function, this flag is included for the PIXELFORMATDESCRIPTOR pixel format structure. Specifies the content of the back buffer in the double-buffered main color plane following a buffer swap. Swapping the color buffers causes the exchange of the back buffer's content with the front buffer's content. Following the swap, the back buffer's content contains the front buffer's content before the swap. PFD_SWAP_EXCHANGE is a hint only and might not be provided by a driver.
+        /// </summary>
+        PFD_SWAP_EXCHANGE = 0x00000200,
+
+        // Below only available in this documentation: https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-emf/1db036d6-2da8-4b92-b4f8-e9cab8cc93b7
+
+        /// <summary>
+        /// The pixel buffer supports DirectDraw drawing, which allows applications to have low-level control of the output drawing surface.
+        /// </summary>
+        PFD_SUPPORT_DIRECTDRAW = 0x00002000,
+        /// <summary>
+        /// The pixel buffer supports Direct3D drawing, which accellerated rendering in three dimensions.
+        /// </summary>
+        PFD_DIRECT3D_ACCELERATED = 0x00004000,
+        /// <summary>
+        /// The pixel buffer supports compositing, which indicates that source pixels MAY overwrite or be combined with background pixels.
+        /// </summary>
+        PFD_SUPPORT_COMPOSITION = 0x00008000,
     };
+    #endregion
+
+    #region PixelType
+    /// <summary>
+    /// Type of pixel data
+    /// </summary>
+    internal enum PixelType : byte
+    {
+        /// <summary>
+        /// RGBA pixels. Each pixel has four components in this order: red, green, blue, and alpha.
+        /// </summary>
+        PFD_TYPE_RGBA = 0,
+        /// <summary>
+        /// Color-index pixels. Each pixel uses a color-index value.
+        /// </summary>
+        PFD_TYPE_COLORINDEX = 1
+    }
+    #endregion
 
     internal PIXELFORMATDESCRIPTOR()
     {
     }
-    internal PIXELFORMATDESCRIPTOR(FLAGS flags, PIXEL_TYPE pixelType, byte colourBits, byte alphaBits, byte depthBits, byte stencilBits, LAYER_TYPE layerType)
-    {
-        Flags = flags;
-        PixelType = pixelType;
-        ColorBits = colourBits;
-        AlphaBits = alphaBits;
-        DepthBits = depthBits;
-        StencilBits = stencilBits;
-        LayerType = layerType;
-    }
 
-    internal short Size = SizeInBytes;
-    internal short Version = 1;
-    internal FLAGS Flags = FLAGS.DOUBLEBUFFER | FLAGS.DRAW_TO_WINDOW | FLAGS.SUPPORT_OPENGL;
-    internal PIXEL_TYPE PixelType;
-    internal byte ColorBits;
-    internal byte RedBits;
-    internal byte RedShift;
-    internal byte GreenBits;
-    internal byte GreenShift;
-    internal byte BlueBits;
-    internal byte BlueShift;
-    internal byte AlphaBits;
-    internal byte AlphaShift;
-    internal byte AccumBits;
-    internal byte AccumRedBits;
-    internal byte AccumGreenBits;
-    internal byte AccumBlueBits;
-    internal byte AccumAlphaBits;
-    internal byte DepthBits;
-    internal byte StencilBits;
-    internal byte AuxBuffers;
-    internal LAYER_TYPE LayerType;
-    internal byte Reserved;
-    internal int dwLayerMask;
+    /// <summary>
+    /// Specifies the size of this data structure. This value should be set to sizeof(PIXELFORMATDESCRIPTOR).
+    /// </summary>
+    internal readonly short nSize = (short)Marshal.SizeOf<PIXELFORMATDESCRIPTOR>();
+    /// <summary>
+    /// Specifies the version of this data structure. This value should be set to 1.
+    /// </summary>
+    internal readonly short nVersion = 1;
+    /// <summary>
+    /// A set of bit flags that specify properties of the pixel buffer. The properties are generally not mutually exclusive; you can set any combination of bit flags, with the exceptions noted.
+    /// </summary>
+    internal Flags dwFlags; //FLAGS.DOUBLEBUFFER | FLAGS.DRAW_TO_WINDOW | FLAGS.SUPPORT_OPENGL
+    /// <summary>
+    /// Specifies the type of pixel data. The following types are defined.
+    /// </summary>
+    internal PixelType iPixelType;
+    /// <summary>
+    /// Specifies the number of color bitplanes in each color buffer. For RGBA pixel types, it is the size of the color buffer, excluding the alpha bitplanes. For color-index pixels, it is the size of the color-index buffer.
+    /// </summary>
+    internal byte cColorBits;
+    /// <summary>
+    /// Specifies the number of red bitplanes in each RGBA color buffer.
+    /// </summary>
+    internal byte cRedBits;
+    /// <summary>
+    /// Specifies the shift count for red bitplanes in each RGBA color buffer.
+    /// </summary>
+    internal byte cRedShift;
+    /// <summary>
+    /// Specifies the number of green bitplanes in each RGBA color buffer.
+    /// </summary>
+    internal byte cGreenBits;
+    /// <summary>
+    /// Specifies the shift count for green bitplanes in each RGBA color buffer.
+    /// </summary>
+    internal byte cGreenShift;
+    /// <summary>
+    /// Specifies the number of blue bitplanes in each RGBA color buffer.
+    /// </summary>
+    internal byte cBlueBits;
+    /// <summary>
+    /// Specifies the shift count for blue bitplanes in each RGBA color buffer.
+    /// </summary>
+    internal byte cBlueShift;
+    /// <summary>
+    /// Specifies the number of alpha bitplanes in each RGBA color buffer. Alpha bitplanes are not supported.
+    /// </summary>
+    internal byte cAlphaBits;
+    /// <summary>
+    /// Specifies the shift count for alpha bitplanes in each RGBA color buffer. Alpha bitplanes are not supported.
+    /// </summary>
+    internal byte cAlphaShift;
+    /// <summary>
+    /// Specifies the total number of bitplanes in the accumulation buffer.
+    /// </summary>
+    internal byte cAccumBits;
+    /// <summary>
+    /// Specifies the number of red bitplanes in the accumulation buffer.
+    /// </summary>
+    internal byte cAccumRedBits;
+    /// <summary>
+    /// Specifies the number of green bitplanes in the accumulation buffer.
+    /// </summary>
+    internal byte cAccumGreenBits;
+    /// <summary>
+    /// Specifies the number of blue bitplanes in the accumulation buffer.
+    /// </summary>
+    internal byte cAccumBlueBits;
+    /// <summary>
+    /// Specifies the number of alpha bitplanes in the accumulation buffer.
+    /// </summary>
+    internal byte cAccumAlphaBits;
+    /// <summary>
+    /// Specifies the depth of the depth (z-axis) buffer.
+    /// </summary>
+    internal byte cDepthBits;
+    /// <summary>
+    /// Specifies the depth of the stencil buffer.
+    /// </summary>
+    internal byte cStencilBits;
+    /// <summary>
+    /// Specifies the number of auxiliary buffers. Auxiliary buffers are not supported.
+    /// </summary>
+    internal byte cAuxBuffers;
+    /// <summary>
+    /// Ignored. Earlier implementations of OpenGL used this member, but it is no longer used.
+    /// </summary>
+    internal readonly byte iLayerType;
+    /// <summary>
+    /// Specifies the number of overlay and underlay planes. Bits 0 through 3 specify up to 15 overlay planes and bits 4 through 7 specify up to 15 underlay planes.
+    /// </summary>
+    internal readonly byte bReserved;
+    /// <summary>
+    /// Ignored. Earlier implementations of OpenGL used this member, but it is no longer used.
+    /// </summary>
+    internal readonly int dwLayerMask;
+    /// <summary>
+    /// Specifies the transparent color or index of an underlay plane. When the pixel type is RGBA, dwVisibleMask is a transparent RGB color value. When the pixel type is color index, it is a transparent index value.
+    /// </summary>
     internal int dwVisibleMask;
-    internal int dwDamageMask;
-
-    internal static short SizeInBytes = (short)Marshal.SizeOf(default(PIXELFORMATDESCRIPTOR));
+    /// <summary>
+    /// Ignored. Earlier implementations of OpenGL used this member, but it is no longer used.
+    /// </summary>
+    internal readonly int dwDamageMask;
 }
 #endregion
 

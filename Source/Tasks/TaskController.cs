@@ -3,6 +3,23 @@
     public class TaskController : AddableBase, IUpdatable
     {
         #region Constructors
+        public TaskController()
+        {
+            CurrentTask = null;
+            GetNextTask = null;
+        }
+
+        public TaskController(ITask[] tasks)
+        {
+            if (tasks.Length == 0)
+                throw new ArgumentException($"TaskController {this} had an empty list of tasks {tasks} passed to it.");
+
+            for (int i = 0; i < tasks.Length - 1; i++)
+                tasks[i].NextTask = tasks[i + 1];
+
+            CurrentTask = tasks[0];
+        }
+
         public TaskController(Func<ITask>? getNextTask = null)
             : this(null, getNextTask)
         {

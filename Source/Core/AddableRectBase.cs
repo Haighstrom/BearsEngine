@@ -1,10 +1,9 @@
 ﻿namespace BearsEngine.Worlds
 {
-    public class AddableRectBase : AddableBase, IRectAddable
+    public abstract class AddableRectBase : AddableBase, IRectAddable
     {
         private float _x, _y, _w, _h;
 
-        #region Constructors
         public AddableRectBase(IRect r)
             : this(r.X, r.Y, r.W, r.H)
         {
@@ -17,9 +16,7 @@
             _w = w;
             _h = h;
         }
-        #endregion
 
-        #region IRect
         #region X/Y/W/H/P/R
         #region X
         public virtual float X
@@ -242,7 +239,6 @@
 
             return X == other?.X && Y == other?.Y && W == other?.W && H == other?.H;
         }
-        #endregion
         #endregion
 
         protected virtual void OnPositionChanged() => PositionChanged?.Invoke(this, new PositionChangedArgs(this));

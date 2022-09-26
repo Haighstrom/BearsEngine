@@ -1,7 +1,6 @@
 ﻿using BearsEngine.Worlds.Graphics.Text;
-using BearsEngine.Worlds.UI.UIThemes;
 
-namespace BearsEngine.Worlds.UI.ValueDisplay
+namespace BearsEngine.UI
 {
     public delegate int ValueGet();
 
@@ -23,7 +22,7 @@ namespace BearsEngine.Worlds.UI.ValueDisplay
 
         public void UpdateValueText()
         {
-            _valueText.Text = _valueName + "\n" + Value().ToString();
+            _valueText.Text = _valueName + "\n" + Value().ToString(); //todo: interpolated strings is life
         }
     }
 }

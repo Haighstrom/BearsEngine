@@ -8,11 +8,23 @@ namespace BearsEngine.Win32API;
 [SuppressUnmanagedCodeSecurity]
 internal static class OpenGL32
 {
-    #region --- OpenGL Core Functions ---
+    private const string Library = "opengl32.dll";
+
     #region glAlphaFunc
+    // https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glAlphaFunc.xml
+
+    /// <summary>
+    /// Specify the alpha test function. Alpha testing is performed only in RGBA mode.
+    /// </summary>
+    /// <param name="func">Specifies the alpha comparison function. Symbolic constants GL_NEVER, GL_LESS, GL_EQUAL, GL_LEQUAL, GL_GREATER, GL_NOTEQUAL, GL_GEQUAL, and GL_ALWAYS are accepted. The initial value is GL_ALWAYS.</param>
+    /// <param name="ref">Specifies the reference value that incoming alpha values are compared to. This value is clamped to the range 0 1 , where 0 represents the lowest possible alpha value and 1 the highest possible value. The initial reference value is 0.</param>
     [DllImport("opengl32.dll")]
-    internal static extern void glAlphaFunc(int func, float @ref);
+    internal static extern void glAlphaFunc(GLAlphaFuncEnum func, float @ref);
     #endregion
+
+    // ***CLEANED UP ABOVE THIS LINE***
+
+    #region --- OpenGL Core Functions ---
 
     #region glBegin
     [DllImport("opengl32.dll")]

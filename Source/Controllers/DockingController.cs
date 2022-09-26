@@ -8,12 +8,12 @@
         #endregion
 
         #region Constructors
-        public DockingController(Rect target, Func<Rect> dockTo, DockPosition dockPosition, Point shift)
+        public DockingController(Rect target, Func<Rect> dockTo, QuadrantPosition dockPosition, Point shift)
             : this(target, dockTo, dockPosition, (int)shift.X, (int)shift.Y)
         {
         }
 
-        public DockingController(Rect target, Func<Rect> dockTo, DockPosition dockPosition, int xShift = 0, int yShift = 0)
+        public DockingController(Rect target, Func<Rect> dockTo, QuadrantPosition dockPosition, int xShift = 0, int yShift = 0)
         {
             _target = target;
             _dockTo = dockTo;
@@ -21,63 +21,56 @@
             XShift = xShift;
             YShift = yShift;
 
-            UpdatePosition();
+            Update(0);
         }
         #endregion
 
-        #region IUpdateable
-        public bool Active { get; set; } = true;
-
-        public virtual void Update(double elapsed) => UpdatePosition();
-        #endregion
-
         #region Properties
-        public DockPosition DockPosition { get; set; }
-
+        public bool Active { get; set; } = true;
+        public QuadrantPosition DockPosition { get; set; }
         public float XShift { get; set; }
-
         public float YShift { get; set; }
         #endregion
 
         #region Methods
-        #region UpdatePosition
-        private void UpdatePosition()
-        {
+        #region Update
+        public virtual void Update(double elapsed)
+        { 
             switch (DockPosition)
             {
-                case DockPosition.TopLeft:
+                case QuadrantPosition.TopLeft:
                     _target.X = _dockTo().Left + XShift;
                     _target.Y = _dockTo().Top + YShift;
                     break;
-                case DockPosition.TopMiddle:
+                case QuadrantPosition.TopMiddle:
                     _target.X = (int)(_dockTo().Centre.X - _target.W / 2) + XShift;
                     _target.Y = _dockTo().Top + YShift;
                     break;
-                case DockPosition.TopRight:
+                case QuadrantPosition.TopRight:
                     _target.X = _dockTo().Right - _target.W - XShift;
                     _target.Y = _dockTo().Top + YShift;
                     break;
-                case DockPosition.MiddleLeft:
+                case QuadrantPosition.MiddleLeft:
                     _target.X = _dockTo().Left + XShift;
                     _target.Y = (int)(_dockTo().Centre.Y - _target.H / 2) + YShift;
                     break;
-                case DockPosition.Centre:
+                case QuadrantPosition.Centre:
                     _target.X = (int)(_dockTo().Centre.X - _target.W / 2) + XShift;
                     _target.Y = (int)(_dockTo().Centre.Y - _target.H / 2) + YShift;
                     break;
-                case DockPosition.MiddleRight:
+                case QuadrantPosition.MiddleRight:
                     _target.X = _dockTo().Right - _target.W - XShift;
                     _target.Y = (int)(_dockTo().Centre.Y - _target.H / 2) + YShift;
                     break;
-                case DockPosition.BottomLeft:
+                case QuadrantPosition.BottomLeft:
                     _target.X = _dockTo().Left + XShift;
                     _target.Y = _dockTo().Bottom - _target.H - YShift;
                     break;
-                case DockPosition.BottomMiddle:
+                case QuadrantPosition.BottomMiddle:
                     _target.X = (int)(_dockTo().Centre.X - _target.W / 2) + XShift;
                     _target.Y = _dockTo().Bottom - _target.H - YShift;
                     break;
-                case DockPosition.BottomRight:
+                case QuadrantPosition.BottomRight:
                     _target.X = _dockTo().Right - _target.W - XShift;
                     _target.Y = _dockTo().Bottom - _target.H - YShift;
                     break;

@@ -191,7 +191,7 @@ namespace BearsEngine.Worlds.Cameras
         #endregion
 
         #region IContainer
-        public List<IAddable> Entities => _container.Entities;
+        public IList<IAddable> Entities => _container.Entities;
 
         public int EntityCount => _container.EntityCount;
 
@@ -240,19 +240,9 @@ namespace BearsEngine.Worlds.Cameras
 
         public void RemoveAll<T>(bool cascadeToChildren = true) where T : IAddable => _container.RemoveAll<T>(cascadeToChildren);
 
-        public void RemoveAll<T1, T2>(bool cascadeToChildren = true)
-            where T1 : IAddable
-            where T2 : IAddable
-            => _container.RemoveAll<T1, T2>(cascadeToChildren);
-
         public void RemoveAllExcept<T>(bool cascadeToChildren = true) where T : IAddable => _container.RemoveAllExcept<T>(cascadeToChildren);
 
-        public void RemoveAllExcept<T1, T2>(bool cascadeToChildren = true)
-            where T1 : IAddable
-            where T2 : IAddable
-            => _container.RemoveAllExcept<T1, T2>(cascadeToChildren);
-
-        public List<E> GetEntities<E>(bool considerChildren = true) => _container.GetEntities<E>(considerChildren);
+        public IList<E> GetEntities<E>(bool considerChildren = true) => _container.GetEntities<E>(considerChildren);
 
         public E Collide<E>(Point p, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(p, considerChildren);
 
@@ -260,11 +250,11 @@ namespace BearsEngine.Worlds.Cameras
 
         public E Collide<E>(ICollideable i, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(i, considerChildren);
 
-        public List<E> CollideAll<E>(Point p, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(p, considerChildren);
+        public IList<E> CollideAll<E>(Point p, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(p, considerChildren);
 
-        public List<E> CollideAll<E>(IRect r, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(r, considerChildren);
+        public IList<E> CollideAll<E>(IRect r, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(r, considerChildren);
 
-        public List<E> CollideAll<E>(ICollideable i, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(i, considerChildren);
+        public IList<E> CollideAll<E>(ICollideable i, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(i, considerChildren);
         #endregion
 
         #region ICamera

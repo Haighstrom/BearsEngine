@@ -1,8 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using BearsEngine.Worlds.Graphics.Text;
-using BearsEngine.Worlds.UI.UIThemes;
 
-namespace BearsEngine.Worlds.UI.Panels
+namespace BearsEngine.UI
 {
     public class Tab : Entity
     {

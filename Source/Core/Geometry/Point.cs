@@ -9,13 +9,6 @@ public struct Point : IPosition, IEquatable<Point>
 {
     #region Static
     public static readonly Point Zero = new();
-    /// <summary>
-    /// Scalar or dot product
-    /// </summary>
-    /// <param name="p1"></param>
-    /// <param name="p2"></param>
-    /// <returns></returns>
-    public static float DotProduct(Point p1, Point p2) => p1.DotProduct(p2);
     #endregion
 
     #region Fields

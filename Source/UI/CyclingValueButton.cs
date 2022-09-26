@@ -1,6 +1,4 @@
-﻿using BearsEngine.Worlds.UI.UIThemes;
-
-namespace BearsEngine.Worlds.UI;
+﻿namespace BearsEngine.UI;
 
 public class CyclingValueButton<T> : Button
     where T : IConvertible, IEquatable<T>

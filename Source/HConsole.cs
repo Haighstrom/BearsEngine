@@ -18,7 +18,7 @@ public static class HConsole
     private const string LOG_FILE_PATH = "Log.txt";
 
     //Timers dictionary
-    private static BiDictionary<string, Stopwatch> _timersDict = new();
+    private static Dictionary<string, Stopwatch> _timersDict = new();
 
     /// <summary>
     /// Set to false in eg release copies of programs to disable more verbose logging and blocking execution 
@@ -240,11 +240,10 @@ public static class HConsole
 
         double millisecs = t.ElapsedMilliseconds;
         t.Stop();
-        _timersDict.Remove(t);
+        _timersDict.Remove(operationName);
 
         if (success)
             Log(operationName + " completed in " + millisecs.ToString("F2") + " ms");
-
         else
             Log(operationName + " aborted after " + millisecs.ToString("F2") + " ms");
         

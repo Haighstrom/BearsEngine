@@ -1,8 +1,7 @@
-﻿namespace BearsEngine.Worlds.UI.Controls.Scrollbars
+﻿namespace BearsEngine.UI;
+
+public enum ScrollbarDirection
 {
-    public enum ScrollbarDirection
-    {
-        Horizontal,
-        Vertical
-    }
+    Horizontal,
+    Vertical
 }

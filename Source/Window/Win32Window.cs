@@ -44,15 +44,14 @@ public class Win32Window : IWindow
     #region SetUpPixelFormat
     private static void SetPixelFormat(IntPtr dc)
     {
-        PixelFormatDescriptor pfd = new()
+        PIXELFORMATDESCRIPTOR pfd = new()
         {
-            Flags = PixelFormatDescriptor.FLAGS.SUPPORT_OPENGL | PixelFormatDescriptor.FLAGS.DRAW_TO_WINDOW | PixelFormatDescriptor.FLAGS.DOUBLEBUFFER,
-            PixelType = PixelFormatDescriptor.TYPE.RGBA,
-            ColorBits = 24,
-            AlphaBits = 8,
-            DepthBits = 24,
-            StencilBits = 8,
-            LayerType = (byte)PIXELFORMATDESCRIPTOR.LAYER_TYPE.MAIN_PLANE,
+            dwFlags = PIXELFORMATDESCRIPTOR.Flags.PFD_SUPPORT_OPENGL | PIXELFORMATDESCRIPTOR.Flags.PFD_DRAW_TO_WINDOW | PIXELFORMATDESCRIPTOR.Flags.PFD_DOUBLEBUFFER,
+            iPixelType = PIXELFORMATDESCRIPTOR.PixelType.PFD_TYPE_RGBA,
+            cColorBits = 24,
+            cAlphaBits = 8,
+            cDepthBits = 24,
+            cStencilBits = 8,
         };
 
         int pixelFormat = GDI32.ChoosePixelFormat(dc, pfd);
@@ -134,7 +133,7 @@ public class Win32Window : IWindow
         #region Register Class
         var wcx = new WNDCLASSEX
         {
-            cbSize = Win32.GetUnmanagedSize<WNDCLASSEX>(),
+            cbSize = (uint)Marshal.SizeOf<WNDCLASSEX>(),
             style = DEFAULT_CLASS_STYLE,
             lpfnWndProc = _wndProc,
             cbClsExtra = 0,

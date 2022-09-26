@@ -1,7 +1,6 @@
 ﻿using BearsEngine.Worlds.Graphics.Text;
-using BearsEngine.Worlds.UI.UIThemes;
 
-namespace BearsEngine.Worlds.UI;
+namespace BearsEngine.UI;
 
 public class Button : Entity
 {

@@ -1,8 +1,6 @@
 ﻿using BearsEngine.Worlds.Cameras;
-using BearsEngine.Worlds.UI.Controls.Scrollbars;
-using BearsEngine.Worlds.UI.UIThemes;
 
-namespace BearsEngine.Worlds.UI.Panels
+namespace BearsEngine.UI
 {
     public class ScrollingListPanel : Entity
     {

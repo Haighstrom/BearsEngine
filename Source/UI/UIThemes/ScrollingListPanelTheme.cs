@@ -1,4 +1,4 @@
-﻿namespace BearsEngine.Worlds.UI.UIThemes
+﻿namespace BearsEngine.UI
 {
     public struct ScrollingListPanelTheme
     {

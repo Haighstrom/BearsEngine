@@ -19,7 +19,7 @@
         #region Properties
         public bool Active { get; set; } = true;
         public int EntityCount => Entities.Count;
-        public List<IAddable> Entities { get; private set; } = new List<IAddable>();
+        public IList<IAddable> Entities { get; private set; } = new List<IAddable>();
         public Point LocalMousePosition => GetLocalPosition(HI.MouseWindowP);
         public IContainer Parent { get; private set; }
         public bool Visible { get; set; } = true;
@@ -139,7 +139,7 @@
         #endregion
 
         #region CollideAll
-        public List<E> CollideAll<E>(Point p, bool considerChildren = true)
+        public IList<E> CollideAll<E>(Point p, bool considerChildren = true)
             where E : ICollideable
         {
             List<E> list = new();
@@ -159,7 +159,7 @@
             return list;
         }
 
-        public List<E> CollideAll<E>(IRect r, bool considerChildren = true)
+        public IList<E> CollideAll<E>(IRect r, bool considerChildren = true)
             where E : ICollideable
         {
             List<E> list = new();
@@ -181,7 +181,7 @@
             return list;
         }
 
-        public List<E> CollideAll<E>(ICollideable i, bool considerChildren = true)
+        public IList<E> CollideAll<E>(ICollideable i, bool considerChildren = true)
             where E : ICollideable
         {
             List<E> list = new();
@@ -202,7 +202,7 @@
         #endregion
 
         #region GetEntities
-        public List<E> GetEntities<E>(bool considerChildren = true)
+        public IList<E> GetEntities<E>(bool considerChildren = true)
         {
             var list = new List<E>();
 
@@ -239,21 +239,21 @@
         {
             IRenderableOnLayer e = (IRenderableOnLayer)sender;
 
-            RemoveRender(e);
+            RemoveRender(e, args.OldLayer);
 
             AddRender(e, args.NewLayer);
         }
         #endregion
 
         #region RemoveRender
-        private void RemoveRender(IRenderableOnLayer e)
+        private void RemoveRender(IRenderableOnLayer e, int layer)
         {
-            _entitiesToRender[e.Layer].Remove(e);
+            _entitiesToRender[layer].Remove(e);
 
-            if (_entitiesToRender[e.Layer].Count == 0)
+            if (_entitiesToRender[layer].Count == 0)
             {
-                _entitiesToRender.Remove(e.Layer);
-                _layers.Remove(e.Layer);
+                _entitiesToRender.Remove(layer);
+                _layers.Remove(layer);
                 //nb no need to sort after a remove
             }
         }
@@ -274,7 +274,7 @@
 
             if (e is IRenderableOnLayer re)
             {
-                RemoveRender(re);
+                RemoveRender(re, re.Layer);
                 re.LayerChanged -= OnIRenderableLayerChanged;
             }
 

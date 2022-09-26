@@ -3,6 +3,7 @@
 namespace BearsEngine.Win32API;
 
 // https://docs.microsoft.com/en-us/windows/win32/api/dwmapi/
+
 /// <summary>
 /// Desktop Window Manager
 /// </summary>
@@ -12,6 +13,7 @@ internal static class DWMAPI
 
     #region DwmGetWindowAttribute
     // https://docs.microsoft.com/en-us/windows/win32/api/dwmapi/nf-dwmapi-dwmgetwindowattribute
+
     /// <summary>
     /// Retrieves the current value of a specified Desktop Window Manager (DWM) attribute applied to a window.
     /// </summary>
