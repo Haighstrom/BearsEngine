@@ -146,13 +146,13 @@ public struct Matrix2
         get
         {
             if (x < 0 || x > 1 || y < 0 || y > 1)
-                throw new HException("Requested an invalid Matrix2 index:{0},{1}", x, y);
+                throw new Exception($"Requested an invalid Matrix2 index:{x},{y}");
             return _values[x * 2 + y];
         }
         set
         {
             if (x < 0 || x > 1 || y < 0 || y > 1)
-                throw new HException("Requested an invalid Matrix2 index:{0},{1}", x, y);
+                throw new Exception($"Requested an invalid Matrix2 index:{x},{y}");
             _values[x * 2 + y] = value;
         }
     }

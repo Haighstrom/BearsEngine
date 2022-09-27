@@ -58,7 +58,7 @@ namespace BearsEngine.Worlds.Graphics.Text
             var parts = fontLongName.Split(',');
 
             if (parts.Length < 2 || parts.Length > 4)
-                throw new HException("fontLongName should be 2-4 parts, actually ({0}), full request ({1})", parts.Length, fontLongName);
+                throw new ArgumentException($"fontLongName should be 2-4 parts, actually ({parts.Length}), full request ({fontLongName})");
 
             string name = fontLongName.Split(',')[0];
             float size = fontLongName.Split(',')[1].ParseTo<float>();
@@ -90,13 +90,13 @@ namespace BearsEngine.Worlds.Graphics.Text
                     var bmp = HaighIO.LoadBMP(DEFAULT_FONT_FOLDER + longName + ".png");
                     hFont = new HFont(details, bmp);
                     if (hFont.LongName != longName)
-                        throw new HException("Loaded font's details ({0}) don't match requested details ({1})", hFont.LongName, longName);
+                        throw new Exception($"Loaded font's details ({hFont.LongName}) don't match requested details ({longName})");
                     _loadedFonts.Add(longName, hFont);
                     return hFont;
                 }
                 catch (Exception e)
                 {
-                    HConsole.Warning(".details file for font {0} existed but couldn't successfully load due to exception ({1})", longName, e);
+                    HConsole.Warning($".details file for font {longName} existed but couldn't successfully load due to exception ({e})");
                 }
             }
 
@@ -182,13 +182,13 @@ namespace BearsEngine.Worlds.Graphics.Text
             //if not, use the default font
             if (font == null)
             {
-                HConsole.Warning("Font ({0}) not found. Reverting to {1}.", fontName, DEFAULT_FONT);
+                HConsole.Warning($"Font ({fontName}) not found. Reverting to {DEFAULT_FONT}.");
                 font = LoadFontPreinstalled(DEFAULT_FONT, DEFAULT_SIZE, DEFAULT_FONTSTYLE);
             }
 
             //if even this doesn't work, time to crash the program!
             if (font == null)
-                throw new HException("Neither requested font ({0}), nor default font ({1}) was available on the machine. Program terminating.", fontName, DEFAULT_FONT);
+                throw new ArgumentException($"Neither requested font ({fontName}), nor default font ({DEFAULT_FONT}) was available on the machine. Program terminating.");
 
             FontName = font.Name;
             FontSize = font.Size;
@@ -245,7 +245,7 @@ namespace BearsEngine.Worlds.Graphics.Text
                 r = HF.Graphics.NonZeroAlphaRegion(image);
 
                 if (r.W == 0 || r.H == 0)
-                    throw new HException("HFont.cs/GenerateCharacterBitmap: Font {0}, Size {1}, character 't' is giving size (W:{2},H:{3})", FontName, FontSize, r.W, r.H);
+                    throw new InvalidOperationException($"HFont.cs/GenerateCharacterBitmap: Font {FontName}, Size {FontSize}, character 't' is giving size (W:{r.W},H:{r.H})");
             }
 
             image = new Bitmap((int)r.X + (int)r.W, (int)r.Y + (int)r.H, PixelFormat.Format32bppArgb); //include alpha at left/top of image so positioning is preserved

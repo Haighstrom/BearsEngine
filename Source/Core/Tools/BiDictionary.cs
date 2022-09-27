@@ -12,7 +12,7 @@ public class BiDictionary<T1, T2>
         if (_forwardDict.ContainsKey(first) ||
             _backwardDict.ContainsKey(second))
         {
-            throw new HException("Duplicate key or value: {0}, {1}", first, second);
+            throw new Exception($"Duplicate key or value: {first}, {second}");
         }
         _forwardDict.Add(first, second);
         _backwardDict.Add(second, first);

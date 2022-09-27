@@ -46,7 +46,7 @@ namespace BearsEngine.UI
         public void AddItem(IAddable a)
         {
             if (_itemsOnPage.Contains(a))
-                throw new HException("Already added {0} to this tab.", a);
+                throw new Exception("Already added {a} to this tab.");
 
             _itemsOnPage.Add(a);
             TPParent?.Panel.Add(a);

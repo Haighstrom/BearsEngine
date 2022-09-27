@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Drawing;
+using System.ComponentModel;
 
 namespace BearsEngine.Win32API;
 
@@ -334,7 +335,7 @@ internal static class OpenGL32
     {
         IntPtr procAddress = wglGetProcAddress(functionName);
         if (procAddress == IntPtr.Zero)
-            throw new HException("Failed to load entrypoint for {0}.", functionName);
+            throw new Win32Exception($"Failed to load entrypoint for {functionName}.");
         functionPointer = (T)(object)Marshal.GetDelegateForFunctionPointer(procAddress, typeof(T));
     }
     #endregion
@@ -411,7 +412,7 @@ internal static class OpenGL32
 
         // This code only works with 32bit argb images - assume no alpha if not this format
         if (bmlock.PixelFormat != System.Drawing.Imaging.PixelFormat.Format32bppArgb)
-            throw new HException("Unsupported pixel format {0}. Should be Formar32bppArgb to use TexturePremultiplier", bmlock.PixelFormat);
+            throw new InvalidOperationException($"Unsupported pixel format {bmlock.PixelFormat}. Should be Formar32bppArgb to use TexturePremultiplier");
 
         var ptr = (byte*)bmlock.Scan0.ToPointer();
 
@@ -459,7 +460,7 @@ internal static class OpenGL32
         var rC = CreateContextAttribsARB(deviceContext, sharedContext: IntPtr.Zero, attribs);
 
         if (rC == IntPtr.Zero)
-            throw new HException("Something went wrong with wglCreateContextAttribsARB: {0}", Marshal.GetLastWin32Error());
+            throw new Win32Exception($"Something went wrong with wglCreateContextAttribsARB: {Marshal.GetLastWin32Error()}");
 
         return rC;
     }

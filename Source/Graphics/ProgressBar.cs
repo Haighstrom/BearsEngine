@@ -91,7 +91,7 @@ namespace BearsEngine.Graphics
                 if (value == _amount)
                     return;
                 if (value < 0 || value > 1)
-                    throw new HException("value {1} must be between [0,1]", value);
+                    throw new ArgumentOutOfRangeException(nameof(value), "AmountFilled must be between [0,1]");
 
                 _amount = value;
                 _verticesChanged = true;

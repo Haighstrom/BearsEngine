@@ -10,7 +10,7 @@ namespace BearsEngine.UI
         private readonly string _valueName;
         private readonly HText _valueText;
 
-        public ValueDisplay(int layer, Rect position, string graphic, UITheme theme, string valueName, ValueGet valueToTrack)
+        public ValueDisplay(int layer, IRect position, string graphic, UITheme theme, string valueName, ValueGet valueToTrack)
             : base(layer, position, graphic)
         {
             Value = valueToTrack;

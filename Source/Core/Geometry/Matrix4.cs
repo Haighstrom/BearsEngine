@@ -300,7 +300,7 @@ public struct Matrix4
             // check for singular matrix
             if (pivot == 0.0f)
             {
-                throw new HException("Matrix is singular and cannot be inverted.");
+                throw new Exception("Matrix is singular and cannot be inverted.");
             }
 
             // Scale row so it has a unit diagonal
@@ -380,13 +380,13 @@ public struct Matrix4
         get
         {
             if (x < 0 || x > 3 || y < 0 || y > 3)
-                throw new HException("Requested an invalid Matrix4 index:{0},{1}", x, y);
+                throw new Exception($"Requested an invalid Matrix4 index:{x},{y}");
             return _values[x * 4 + y];
         }
         set
         {
             if (x < 0 || x > 3 || y < 0 || y > 3)
-                throw new HException("Requested an invalid Matrix4 index:{0},{1}", x, y);
+                throw new Exception($"Requested an invalid Matrix4 index:{x},{y}");
             _values[x * 4 + y] = value;
         }
     }

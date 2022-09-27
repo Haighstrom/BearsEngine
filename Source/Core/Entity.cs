@@ -53,7 +53,7 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
     }
 
 
-    public Entity(int layer, Rect pos, params IGraphic[] graphics)
+    public Entity(int layer, IRect pos, params IGraphic[] graphics)
         : this(layer, pos.X, pos.Y, pos.W, pos.H, graphics)
     {
     }
@@ -129,7 +129,7 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
     
     public virtual Point RotationCentre => Centre;
 
-    public IRect WindowPosition => Exists ? Parent!.GetWindowPosition(this) : Rect.Empty;
+    public IRect WindowPosition => Exists ? Parent!.GetWindowPosition(this) : Rect.EmptyRect;
 
     public virtual bool Visible { get; set; } = true;
 
@@ -164,7 +164,7 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
 
     public int EntityCount => _container.EntityCount;
 
-    public Point GetWindowPosition(Point localCoords) => Parent != null ? Parent.GetWindowPosition(P + localCoords) : new Point();
+    public Point GetWindowPosition(Point localCoords) => Parent != null ? Parent.GetWindowPosition(new Point(X,Y) + localCoords) : new Point();
 
     public IRect GetWindowPosition(IRect localCoords)
     {
@@ -173,7 +173,7 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
         return new Rect(tl, br.X - tl.X, br.Y - tl.Y);
     }
 
-    public Point GetLocalPosition(Point windowCoords) => Parent.GetLocalPosition(windowCoords - P);
+    public Point GetLocalPosition(Point windowCoords) => Parent.GetLocalPosition(windowCoords - new Point(X, Y));
 
     public IRect GetLocalPosition(IRect windowCoords)
     {
@@ -262,13 +262,13 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
         MouseExited += (s, a) => stt.Disappear();
         stt.P = directionFromEntity switch
         {
-            Direction.Up => TopCentre.Shift(-stt.W / 2, -shift),
-            Direction.Right => CentreRight.Shift(shift, -stt.H / 2),
-            Direction.Down => BottomCentre.Shift(-stt.W / 2, shift),
-            Direction.Left => CentreLeft.Shift(-shift, -stt.H / 2),
-            _ => throw new HException("directionFromEntity case not handled in Entity.AddToolTip"),
+            Direction.Up => ((IRect)this).TopCentre.Shift(-stt.W / 2, -shift),
+            Direction.Right => ((IRect)this).CentreRight.Shift(shift, -stt.H / 2),
+            Direction.Down => ((IRect)this).BottomCentre.Shift(-stt.W / 2, shift),
+            Direction.Left => ((IRect)this).CentreLeft.Shift(-shift, -stt.H / 2),
+            _ => throw new Exception("directionFromEntity case not handled in Entity.AddToolTip"),
         };
-        //todo:fix HV.Screen.Add(stt);
+    //todo: fix HV.Screen.Add(stt);
     }
 
     /// <summary>

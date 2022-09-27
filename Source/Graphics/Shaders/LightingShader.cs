@@ -99,7 +99,7 @@ public class LightingShader : IShader
     public static void AddLight(LightInfo light)
     {
         if (_lights.Contains(light))
-            throw new HException("Light {0} was already added to Lighting Shader.", light);
+            throw new Exception($"Light {light} was already added to Lighting Shader.");
 
         _lights.Add(light);
     }
@@ -109,7 +109,7 @@ public class LightingShader : IShader
     public static void RemoveLight(LightInfo light)
     {
         if (!_lights.Contains(light))
-            throw new HException("Light {0} was not added to Lighting Shader.", light);
+            throw new Exception($"Light {light} was not added to Lighting Shader.");
 
         _lights.Remove(light);
     }

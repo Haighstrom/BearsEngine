@@ -48,7 +48,7 @@ public class GridLayout : Entity
         set
         {
             if (value.Count != Rows)
-                throw new HException("Row format must have same number of elements as the exisiting Row count");
+                throw new Exception("Row format must have same number of elements as the exisiting Row count");
 
             _rowFormat = value;
 
@@ -64,7 +64,7 @@ public class GridLayout : Entity
         set
         {
             if (value.Count != Columns)
-                throw new HException("Column format must have same number of elements as the exisiting Column count");
+                throw new Exception("Column format must have same number of elements as the exisiting Column count");
 
             _columnFormat = value;
 
@@ -87,7 +87,7 @@ public class GridLayout : Entity
     #endregion
 
     #region Constructors
-    public GridLayout(int layer, Rect position, List<CellFormat> rowFormat, List<CellFormat> columnFormat)
+    public GridLayout(int layer, IRect position, List<CellFormat> rowFormat, List<CellFormat> columnFormat)
         : base(layer, position)
     {
         Rows = rowFormat.Count;
@@ -99,7 +99,7 @@ public class GridLayout : Entity
         Children = new IRect[Rows, Columns];
         GridAlignments = new GridAlignment[Rows, Columns];
     }
-    public GridLayout(int layer, Rect position, int rows, int columns)
+    public GridLayout(int layer, IRect position, int rows, int columns)
         : base(layer, position)
     {
 
@@ -124,7 +124,11 @@ public class GridLayout : Entity
         GridAlignments[row, column] = gridAlignment;
 
         Children[row, column] = e;
-        e.R = GetEntityPosRect(row, column, gridAlignment, e);
+        var rect = GetEntityPosRect(row, column, gridAlignment, e);
+        e.X = rect.X;
+        e.Y = rect.Y;
+        e.W = rect.W;
+        e.H = rect.H;
 
         return e;
     }
@@ -137,7 +141,11 @@ public class GridLayout : Entity
         GridAlignments[row, column] = gridAlignment;
 
         Children[row, column] = e;
-        e.R = GetEntityPosRect(row, column, gridAlignment, e);
+        var rect = GetEntityPosRect(row, column, gridAlignment, e);
+        e.X = rect.X;
+        e.Y = rect.Y;
+        e.W = rect.W;
+        e.H = rect.H;
 
         Add(e);
     }
@@ -188,7 +196,7 @@ public class GridLayout : Entity
     /// <summary>
     /// Return GetPosRect, but also take into account the GridAlignment, for entities that do not fill the grid cell.
     /// </summary>
-    private Rect GetEntityPosRect(int rowIdx, int colIdx, GridAlignment gridAlignment, IRect entRect)
+    private IRect GetEntityPosRect(int rowIdx, int colIdx, GridAlignment gridAlignment, IRect entRect)
     {
         Rect cell = GetPosRect(rowIdx, colIdx);
         switch (gridAlignment)
@@ -275,7 +283,7 @@ public class GridLayout : Entity
     #endregion
 
     #region GetNextEntityPos
-    private Rect GetNextEntityPos(GridAlignment gridAlignment, Rect entRect) => GetEntityPosRect(NextRow, NextColumn, gridAlignment, entRect);
+    private IRect GetNextEntityPos(GridAlignment gridAlignment, IRect entRect) => GetEntityPosRect(NextRow, NextColumn, gridAlignment, entRect);
     #endregion
 
     #region GetNextPos
@@ -287,9 +295,9 @@ public class GridLayout : Entity
     {
         //Some error checking and verification
         if (rowIdx >= Rows)
-            throw new HException("Row index of GridLayout exceeds number of rows", rowIdx, Rows, this);
+            throw new Exception("Row index of GridLayout exceeds number of rows");
         if (colIdx >= Columns)
-            throw new HException("Column index of GridLayout exceeds number of columns", colIdx, Columns, this);
+            throw new Exception("Column index of GridLayout exceeds number of columns");
 
         //Start with the total size of the control
         int availableWidth = (int)W;
@@ -393,7 +401,13 @@ public class GridLayout : Entity
         for (int i = 0; i < Rows; i++)
             for (int j = 0; j < Columns; j++)
                 if (Children[i, j] != null)
-                    Children[i, j].R = GetEntityPosRect(i, j, GridAlignments[i, j], Children[i, j]);
+                {
+                    var rect = GetEntityPosRect(i, j, GridAlignments[i, j], Children[i, j]);
+                    Children[i, j].X = rect.X;
+                    Children[i, j].Y = rect.Y;
+                    Children[i, j].W = rect.W;
+                    Children[i, j].H = rect.H;
+                }
     }
     #endregion
     #endregion

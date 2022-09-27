@@ -63,7 +63,7 @@
                         Progress = Easer(Progress);
                     break;
                 default:
-                    throw new HException("Enum case {0} not dealt with in {1}", Persistence, "Tween.OnCompleted");
+                    throw new Exception($"Enum case {Persistence} not dealt with");
             }
 
             ActionOnCompleted?.Invoke();

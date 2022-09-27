@@ -21,11 +21,6 @@ public static class HConsole
     private static Dictionary<string, Stopwatch> _timersDict = new();
 
     /// <summary>
-    /// Set to false in eg release copies of programs to disable more verbose logging and blocking execution 
-    /// </summary>
-    public static bool DebugMode { get; set; } = true;
-
-    /// <summary>
     /// Default false. Set to true to cause any Warning calls to throw an exception to allow stack tracing
     /// </summary>
     public static bool ThrowErrorsOnWarnings { get; set; } = false;
@@ -197,7 +192,7 @@ public static class HConsole
         var err = OpenGL32.GetError();
         if (err != OpenGLErrorCode.NO_ERROR)
         {
-            Warning("OpenGL error in {0} : {1}", callerID, err);
+            Warning($"OpenGL error in {callerID} : {err}");
             return true;
         }
 
@@ -212,9 +207,6 @@ public static class HConsole
     /// <param name="operationName">Name of operation being timed, this needs to be supplied to StopTimer method to retrieve the timer object.</param>
     public static void StartTimer(string operationName)
     {
-        if (!DebugMode)
-            return;
-
         Stopwatch t = new();
         t.Start();
         
@@ -233,9 +225,6 @@ public static class HConsole
     /// <returns>Time elapsed in ms since StartTimer called</returns>
     public static double StopTimer(string operationName, bool success = true)
     {
-        if (!DebugMode)
-            return -1;
-
         Stopwatch t = _timersDict[operationName];
 
         double millisecs = t.ElapsedMilliseconds;
@@ -251,58 +240,22 @@ public static class HConsole
     }
     #endregion
 
-    #region Warning
-    public static void Warning(object o, params object[] args)
+    public static void Warning(string message, bool blockExecutionInDebug = false)
     {
         if (ThrowErrorsOnWarnings)
-            throw new HException("Warning: " + o.ToString(), o, args);
+            throw new ConsoleWarningException($"{message}");
 
-        Console.Write("[Warning]:");
-        Log(o, args);
+        Console.Write($"[Warning]: {message}");
+
+#if DEBUG
+        if (blockExecutionInDebug)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
+        }
+#endif
     }
-    public static void Warning(string message, params object[] args)
-    {
-        if (ThrowErrorsOnWarnings)
-            throw new HException("Warning: " + message, args);
-
-        Console.Write("[Warning]:");
-        Log(message, args);
-    }
-    #endregion
-
-    #region WarningPressKey
-    /// <summary>
-    /// A warning that will also block further execution using Console.Readkey() - if DebugMode is on.
-    /// </summary>
-    public static void WarningPressKey(object o, params object[] args)
-    {
-        if (ThrowErrorsOnWarnings)
-            throw new HException("Warning: " + o.ToString(), o, args);
-
-        Warning(o, args);
-
-        if (!DebugMode)
-            return;
-
-        Console.WriteLine();
-        Console.WriteLine("Press any key to continue");
-        Console.ReadKey();
-    }
-    /// <summary>
-    /// A warning that will also block further execution using Console.Readkey() - if DebugMode is on.
-    /// </summary>
-    public static void WarningPressKey(string message, params object[] args)
-    {
-        Warning(message, args);
-
-        if (!DebugMode)
-            return;
-
-        Console.WriteLine();
-        Console.WriteLine("Press any key to continue");
-        Console.ReadKey();
-    }
-    #endregion
 
     #region Show
     public static void Show()

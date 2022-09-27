@@ -29,7 +29,7 @@ namespace BearsEngine.Tasks.TaskExamples
                 else
                 {
                     if (_errorOnNoPath == ErrorType.Warning)
-                        HF.Log($"{_entity} could not find path from {_entity.CurrentNode} to {_destination}");
+                        HConsole.Log($"{_entity} could not find path from {_entity.CurrentNode} to {_destination}");
 
                     route = new();
                 }

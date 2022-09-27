@@ -1,15 +1,15 @@
-﻿namespace BearsEngine;
+﻿using System.Text.Json.Serialization;
+
+namespace BearsEngine;
 
 public interface IRect : IEquatable<IRect>
 {
-    #region IRect
-    #region X/Y/W/H/P/R
     public float X { get; set; }
     public float Y { get; set; }
     public float W { get; set; }
     public float H { get; set; }
 
-    #region P
+    [JsonIgnore]
     public Point P
     {
         get => new(X, Y);
@@ -19,44 +19,41 @@ public interface IRect : IEquatable<IRect>
             Y = value.Y;
         }
     }
-    #endregion
-    
-    #region R
-    public IRect R
-    {
-        get => new Rect(X, Y, W, H);
-        set
-        {
-            X = value.X;
-            Y = value.Y;
-            W = value.W;
-            H = value.H;
-        }
-    }
-    #endregion
-    #endregion
-
-    #region Left/../Bottom/Area/Size/SmallestSide/TopLeft/../BottomRight
+    [JsonIgnore]
     public float Left => X;
+    [JsonIgnore]
     public float Right => X + W;
+    [JsonIgnore]
     public float Top => Y;
+    [JsonIgnore]
     public float Bottom => Y + H;
+    [JsonIgnore]
     public float Area => W * H;
+    [JsonIgnore]
     public Point Size => new(W, H);
+    [JsonIgnore]
     public float SmallestSide => Math.Min(W, H);
+    [JsonIgnore]
     public float BiggestSide => Math.Max(W, H);
+    [JsonIgnore]
     public Point TopLeft => P;
+    [JsonIgnore]
     public Point TopCentre => new(X + W * 0.5f, Y);
+    [JsonIgnore]
     public Point TopRight => new(X + W, Y);
+    [JsonIgnore]
     public Point CentreLeft => new(X, Y + H * 0.5f);
+    [JsonIgnore]
     public Point Centre => new(X + W * 0.5f, Y + H * 0.5f);
+    [JsonIgnore]
     public Point CentreRight => new(X + W, Y + H * 0.5f);
+    [JsonIgnore]
     public Point BottomLeft => new(X, Y + H);
+    [JsonIgnore]
     public Point BottomCentre => new(X + W * 0.5f, Y + H);
+    [JsonIgnore]
     public Point BottomRight => new(X + W, Y + H);
-    #endregion
-
-    #region Zeroed/Shift/Scale/Resize/Grow
+    [JsonIgnore]
     public IRect Zeroed => new Rect(0, 0, W, H);
     public IRect Shift(Point direction, float distance) => Shift(direction.Normal * distance);
     public IRect Shift(Point direction) => Shift(direction.X, direction.Y);
@@ -67,21 +64,31 @@ public interface IRect : IEquatable<IRect>
     public IRect ScaleAround(float scaleX, float scaleY, float originX, float originY) => ResizeAround(W * scaleX, H * scaleY, originX, originY);
     public virtual IRect Resize(float newW, float newH) => new Rect(X, Y, newW, newH);
 
-    #region ResizeAround
     public IRect ResizeAround(float newW, float newH, Point origin) => ResizeAround(newW, newH, origin.X, origin.Y);
     public IRect ResizeAround(float newW, float newH, float originX, float originY)
         => new Rect(
             originX - newW * (originX - X) / W,
             originY - newH * (originY - Y) / H,
             newW, newH);
-    #endregion
+
+    public void SetPosition(float newX, float newY, float newW, float newH)
+    {
+        X = newX; 
+        Y = newY;
+        W = newW;
+        H = newH;
+    }
+    public void SetPosition(IRect newPosition)
+    {
+        X = newPosition.X;
+        Y = newPosition.Y;
+        W = newPosition.W;
+        H = newPosition.H;
+    }
 
     public IRect Grow(float margin) => Grow(margin, margin, margin, margin);
     public IRect Grow(float left, float up, float right, float down) => new Rect(X - left, Y - up, W + left + right, H + up + down);
-    #endregion
 
-    #region Intersects/Intersection/Contains/IsContainedBy
-    #region Intersects
     public bool Intersects(IRect r, bool touchingCounts = false)
     {
         if (touchingCounts)
@@ -97,9 +104,7 @@ public interface IRect : IEquatable<IRect>
                 Top < r.Bottom &&
                 Bottom > r.Top;
     }
-    #endregion
 
-    #region Intersection
     public IRect Intersection(IRect r)
     {
         Rect answer = new();
@@ -114,9 +119,6 @@ public interface IRect : IEquatable<IRect>
 
         return answer;
     }
-    #endregion
-
-    #region Contains
     public bool Contains(IRect r) => X <= r.X && Y <= r.Y && Right >= r.Right && Bottom >= r.Bottom;
 
     public bool Contains(float x, float y, float w, float h) => X <= x && Y <= y && X + H >= x + w && Y + H >= y + h;
@@ -146,15 +148,10 @@ public interface IRect : IEquatable<IRect>
         else
             return X < x && Y < y && X + W > x && Y + H > y;
     }
-    #endregion
 
-    #region IsContainedBy
     public bool IsContainedBy(IRect r) => X >= r.X && Y >= r.Y && X + W <= r.X + r.W && Y + H <= r.Y + r.H;
 
     public bool IsContainedBy(float x, float y, float w, float h) => X >= x && Y >= y && X + H <= x + h && Y + H <= y + h;
-    #endregion
-    #endregion
 
     public List<Point> ToVertices() => new() { TopLeft, TopRight, BottomRight, BottomLeft };
-    #endregion
 }

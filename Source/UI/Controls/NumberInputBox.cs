@@ -31,7 +31,7 @@ public class NumberInputBox<T> : Entity, IActivatable
     #endregion
 
     #region Constructors
-    public NumberInputBox(UITheme theme, Colour bg, int layer, Rect r, T initialValue = default)
+    public NumberInputBox(UITheme theme, Colour bg, int layer, IRect r, T initialValue = default)
         : base(layer, r, bg)
     {
         HV.Window.CharEntered += OnCharPressed;

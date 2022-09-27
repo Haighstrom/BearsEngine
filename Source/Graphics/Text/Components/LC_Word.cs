@@ -4,8 +4,8 @@
     {
         public LC_Word(string text, HFont font, Colour colour, float extraCharSpacing, float scaleX, float scaleY, bool underline, bool strikethrough)
         {
-            if (text.IsNullOrEmpty())
-                throw new HException("LCWord/ctr: Tried to create an empty word.");
+            if (string.IsNullOrWhiteSpace(text))
+                throw new ArgumentNullException(text);
 
             Text = text;
             Font = font;

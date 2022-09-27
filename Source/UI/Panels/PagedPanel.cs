@@ -17,7 +17,7 @@ namespace BearsEngine.UI
             : base(layer)
         {
             if (pages.Count == 0)
-                throw new HException("Tried to craete a PagedPanel with no pages");
+                throw new Exception("Tried to craete a PagedPanel with no pages");
 
             Add(_pageNumText = new HText(uiTheme, textPosition, ""));
 

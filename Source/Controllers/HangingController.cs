@@ -1,35 +1,24 @@
-﻿namespace BearsEngine.Worlds.Controllers
+﻿namespace BearsEngine.Worlds.Controllers;
+
+public class HangingController : AddableBase, IUpdatable
 {
-    public class HangingController : AddableBase, IUpdatable
+    private IRect _target;
+    private IRect _hangFrom;
+
+    public HangingController(IRect target, IRect hangFrom)
     {
-        #region Fields
-        private Rect _target;
-        private Rect _hangFrom;
-        #endregion
+        _target = target;
+        _hangFrom = hangFrom;
 
-        #region Constructors
-        public HangingController(Rect target, Rect hangFrom)
-        {
-            _target = target;
-            _hangFrom = hangFrom;
-
-            UpdatePosition();
-        }
-        #endregion
-
-        #region IUpdateable
-        public bool Active { get; set; } = true;
-
-        public virtual void Update(double elapsed) => UpdatePosition();
-        #endregion
-
-        #region Methods
-        #region UpdatePosition
-        private void UpdatePosition()
-        {
-            _target.Y = _hangFrom.Bottom;
-        }
-        #endregion
-        #endregion
+        UpdatePosition();
     }
+
+    public bool Active { get; set; } = true;
+
+    private void UpdatePosition()
+    {
+        _target.Y = _hangFrom.Bottom;
+    }
+
+    public virtual void Update(double elapsed) => UpdatePosition();
 }

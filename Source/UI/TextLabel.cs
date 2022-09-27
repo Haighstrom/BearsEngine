@@ -9,7 +9,7 @@ public class TextLabel : Entity
     #endregion
 
     #region Constructors
-    public TextLabel(int layer, Rect position, Colour labelColour, HFont font, string text, Colour textColour)
+    public TextLabel(int layer, IRect position, Colour labelColour, HFont font, string text, Colour textColour)
         : base(layer, position, labelColour)
     {
         Add(_hText = new HText(font, position.Zeroed, text)
@@ -19,7 +19,7 @@ public class TextLabel : Entity
             VAlignment = VAlignment.Centred,
         });
     }
-    public TextLabel(int layer, Rect position, string labelGraphic, HFont font, string text, Colour textColour)
+    public TextLabel(int layer, IRect position, string labelGraphic, HFont font, string text, Colour textColour)
         : base(layer, position, labelGraphic)
     {
         Add(_hText = new HText(font, position.Zeroed, text)

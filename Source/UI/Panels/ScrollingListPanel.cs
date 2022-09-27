@@ -8,7 +8,7 @@ namespace BearsEngine.UI
         private readonly Camera _camera;
         private readonly Scrollbar _sb;
 
-        public ScrollingListPanel(int layer, Rect listPosition, int listToScrollbarGap, int scrollbarWidth, UITheme theme, int minIncrement = 0)
+        public ScrollingListPanel(int layer, IRect listPosition, int listToScrollbarGap, int scrollbarWidth, UITheme theme, int minIncrement = 0)
             : base(layer, new Rect(listPosition.X, listPosition.Y, listPosition.W + listToScrollbarGap + scrollbarWidth, listPosition.H))
         {
             Add(_camera = new Camera(1, listPosition.Zeroed, listPosition.Zeroed) { BackgroundColour = theme.ScrollingListPanel.PanelColour });
@@ -21,7 +21,7 @@ namespace BearsEngine.UI
         public void AddItem(IRectAddable e)
         {
             if (_itemsOnPage.Contains(e))
-                throw new HException("Already added {0} to this tab.", e);
+                throw new InvalidOperationException($"Already added {e} to this tab.");
 
             _itemsOnPage.Add(e);
             _camera.Add(e);
@@ -36,7 +36,7 @@ namespace BearsEngine.UI
         public void RemoveItem(IRectAddable e)
         {
             if (!_itemsOnPage.Contains(e))
-                throw new HException("Entity {0} is not on ScrollingListPanel but was tried to be removed.", e);
+                throw new InvalidOperationException($"Entity {e} is not on ScrollingListPanel but was tried to be removed.");
 
             _itemsOnPage.Remove(e);
 

@@ -22,7 +22,7 @@ namespace BearsEngine.Graphics
         public SimpleGraphic(IShader shader, Texture texture, Vertex[] vertices)
         {
             if (vertices.Length < 3)
-                throw new HException("Cannot make a SimpleGraphic with fewer than 3 vertices");
+                throw new ArgumentException("Cannot make a SimpleGraphic with fewer than 3 vertices", nameof(vertices));
 
             Shader = shader;
             VertexBuffer = OpenGL32.GenBuffer();

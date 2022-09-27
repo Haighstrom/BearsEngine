@@ -36,7 +36,7 @@
         public void Add(IAddable e)
         {
             if (e.Parent != null)
-                HConsole.Warning("Added Entity {0} to Container {1} when it was already in Container {2}.", e, this, e.Parent);
+                HConsole.Warning($"Added Entity {e} to Container {this} when it was already in Container {e.Parent}.");
 
             e.Parent = this;
 
@@ -263,7 +263,7 @@
         public void Remove(IAddable e)
         {
             if (e.Parent != this)
-                HConsole.Warning("Requested Entity {0} to be removed from Container {1} when its Parent was {2}.", e, this, e.Parent);
+                HConsole.Warning($"Requested Entity {e} to be removed from Container {this} when its Parent was {e.Parent}.");
 
             e.Parent = null;
 

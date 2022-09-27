@@ -7,19 +7,19 @@ public class Scrollbar : Entity
     {
         #region Fields
         private readonly ScrollbarDirection _direction;
-        private Rect _fullPosition;
+        private IRect _fullPosition;
         private float _amountFilled;
         private bool _dragging;
         private float _dragStart;
         #endregion
 
         #region Constructors
-        public Bar(ScrollbarDirection direction, Rect position, int border, UITheme theme)
+        public Bar(ScrollbarDirection direction, IRect position, int border, UITheme theme)
             : this(direction, position, border, theme.Scrollbar.Bar.DefaultColour, theme.Scrollbar.Bar.HoverColour, theme.Scrollbar.Bar.PressedColour, theme.Scrollbar.Bar.UnclickableColour)
         {
         }
 
-        public Bar(ScrollbarDirection direction, Rect position, int border, Colour barColour, Colour hoverColour, Colour pressedColour, Colour unclickableColour)
+        public Bar(ScrollbarDirection direction, IRect position, int border, Colour barColour, Colour hoverColour, Colour pressedColour, Colour unclickableColour)
             : base(1, position)
         {
             HoverColour = hoverColour;
@@ -45,7 +45,7 @@ public class Scrollbar : Entity
             set
             {
                 if (value < 0 || value > 1)
-                    throw new HException("value should be [0,1]:{0}", value);
+                    throw new ArgumentOutOfRangeException($"value should be [0,1]:{value}");
 
                 _amountFilled = value;
 
@@ -60,12 +60,16 @@ public class Scrollbar : Entity
 
         public float MaxAmount => _direction == ScrollbarDirection.Horizontal ? (Right - _fullPosition.X) / _fullPosition.W : (Bottom - _fullPosition.Y) / _fullPosition.H;
 
-        internal Rect FullPosition
+        internal IRect FullPosition
         {
             get => _fullPosition;
             set
             {
-                R = _fullPosition = value;
+                _fullPosition = value;
+                X = _fullPosition.X;
+                Y = _fullPosition.Y;
+                W = _fullPosition.W;
+                H = _fullPosition.H;
 
                 RecalculateSizes();
             }
@@ -194,7 +198,7 @@ public class Scrollbar : Entity
 
     #region Constructors
     #region UITheme Based
-    public Scrollbar(int layer, Rect r, ScrollbarDirection direction, UITheme theme)
+    public Scrollbar(int layer, IRect r, ScrollbarDirection direction, UITheme theme)
         : this(layer,
               r,
               direction,
@@ -215,12 +219,12 @@ public class Scrollbar : Entity
     #endregion
 
     #region Standard
-    public Scrollbar(int layer, Rect fullPosition, ScrollbarDirection direction, Colour barBackgroundColour, Colour barDefaultColour, Colour barHoverColour, Colour barPressedColour, Colour barUnclickableButton, int edgeToBarSpace, Colour arrowBG, IGraphic minusArrow, IGraphic plusArrow, Colour arrowHoverColour, Colour arrowPressedColour, Colour arrowUnclickableColour)
+    public Scrollbar(int layer, IRect fullPosition, ScrollbarDirection direction, Colour barBackgroundColour, Colour barDefaultColour, Colour barHoverColour, Colour barPressedColour, Colour barUnclickableButton, int edgeToBarSpace, Colour arrowBG, IGraphic minusArrow, IGraphic plusArrow, Colour arrowHoverColour, Colour arrowPressedColour, Colour arrowUnclickableColour)
         : base(layer, fullPosition)
     {
         _direction = direction;
 
-        Rect sbBG, b1, b2;
+        IRect sbBG, b1, b2;
 
         if (direction == ScrollbarDirection.Horizontal)
         {

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace BearsEngine.Helpers;
+namespace BearsEngine;
 
 public static class Types
 {

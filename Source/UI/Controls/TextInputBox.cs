@@ -25,7 +25,7 @@ public class TextInputBox : Entity, IActivatable
     #endregion
 
     #region Constructors
-    public TextInputBox(UITheme theme, Colour bg, int layer, Rect r, string initialValue = "")
+    public TextInputBox(UITheme theme, Colour bg, int layer, IRect r, string initialValue = "")
         : base(layer, r, bg)
     {
         HV.Window.CharEntered += OnCharPressed;

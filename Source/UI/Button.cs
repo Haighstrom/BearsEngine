@@ -95,7 +95,7 @@ public class Button : Entity
         if (graphic != null)
             Add(BackgroundGraphic = graphic);
 
-        Add(_text = new HText(font ?? UITheme.Default.Text.Font, Zeroed, text ?? "", fontColour ?? UITheme.Default.Text.FontColour)
+        Add(_text = new HText(font ?? UITheme.Default.Text.Font, new Rect(w, h), text ?? "", fontColour ?? UITheme.Default.Text.FontColour)
         {
             HAlignment = HAlignment.Centred,
             VAlignment = VAlignment.Centred

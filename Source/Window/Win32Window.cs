@@ -455,7 +455,7 @@ public class Win32Window : IWindow
     private IntPtr CreateRenderContext(int major, int minor)
     {
         if (major < 1 || minor < 0)
-            throw new HException("invalid GL version to create: {0}.{1}.", major, minor);
+            throw new Exception("invalid GL version to create: {major}.{minor}.");
 
         HConsole.Log("Creating GL Context: Requested Version {0}.{1}", major, minor);
 

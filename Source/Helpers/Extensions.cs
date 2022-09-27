@@ -3,6 +3,7 @@
     public static class EXTENSIONS
     {
         #region object
+        public static string? ToLoggableString(this object o) => HF.ConvertToLoggableString(o);
         public static void Log(this object o) => HConsole.Log(o);
 
         public static object ToType(this object o, Type targetType) => Convert.ChangeType(o, targetType);
@@ -20,10 +21,8 @@
         #region string.ToInt32
         public static int ToInt32(this string s)
         {
-            int i;
-
-            if (!int.TryParse(s, out i))
-                throw new HException("Tried to convert a string to an int that didn't look like one: {0}", s);
+            if (!int.TryParse(s, out int i))
+                throw new ArgumentException($"Tried to convert a string to an int that didn't look like one: {s}");
 
             return i;
         }

@@ -254,7 +254,7 @@ internal static class KeyMap
             #endregion
 
             default:
-                HConsole.Warning("Unknown extended Key Scancode {0}", scancode);
+                HConsole.Warning($"Unknown extended Key Scancode {scancode}");
                 return Key.Unknown;
         }
     }

@@ -37,7 +37,7 @@ namespace BearsEngine
         public static void DeleteFile(string filePath)
         {
             if (!FileExists(filePath))
-                throw new HException("file does not exist {0}", filePath);
+                throw new Exception($"file does not exist {filePath}");
 
             File.Delete(filePath);
         }
@@ -47,7 +47,7 @@ namespace BearsEngine
         public static void DeleteDirectory(string directoryPath)
         {
             if (!DirectoryExists(directoryPath))
-                throw new HException("folder does not exist {0}", directoryPath);
+                throw new Exception($"folder does not exist {directoryPath}");
 
             int retries = 5;
             while (retries > 0)
@@ -233,7 +233,7 @@ namespace BearsEngine
                 loadStream.Close();
                 return fileLoaded;
             }
-            else throw new HException("File not found: {0}", fileName);
+            else throw new Exception("File not found: {fileName}");
         }
         #endregion
         #endregion

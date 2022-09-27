@@ -8,7 +8,7 @@ public class CollapseButton : Button
     bool _collapsed = false;
     readonly IGraphic _collapseGraphic, _expandGraphic;
 
-    public CollapseButton(int layer, Rect position, string collapseGraphic, string expandGraphic, UITheme theme, ICollapsable parent)
+    public CollapseButton(int layer, IRect position, string collapseGraphic, string expandGraphic, UITheme theme, ICollapsable parent)
         : base(layer, position, collapseGraphic, theme)
     {
         _target = parent;

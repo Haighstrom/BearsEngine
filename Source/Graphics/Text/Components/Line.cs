@@ -27,7 +27,7 @@
         public void Add(ILineComponent c)
         {
             if (_finalised)
-                throw new HException("Line Finalise but trying to add {0} to it", c);
+                throw new Exception($"Line Finalised but trying to add {c} to it");
 
             _components.Add(c);
         }
@@ -35,7 +35,7 @@
         public void Finalise(bool lastCharIsNewline)
         {
             if (_finalised)
-                throw new HException("Line Finalised Twice");
+                throw new InvalidOperationException("Line was already finalised");
 
             EndsWithNewLine = lastCharIsNewline;
 

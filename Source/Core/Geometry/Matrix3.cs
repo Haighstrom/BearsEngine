@@ -255,7 +255,7 @@ public struct Matrix3
 
             if (pivot == 0.0f)
             {
-                throw new HException("Matrix is singular and cannot be inverted.");
+                throw new InvalidOperationException("Matrix is singular and cannot be inverted.");
             }
 
             float oneOverPivot = 1.0f / pivot;
@@ -364,7 +364,7 @@ public struct Matrix3
 
             if (pivot == 0.0f)
             {
-                throw new HException("Matrix is singular and cannot be inverted.");
+                throw new InvalidOperationException("Matrix is singular and cannot be inverted.");
             }
 
             float oneOverPivot = 1.0f / pivot;
@@ -433,13 +433,15 @@ public struct Matrix3
         get
         {
             if (x < 0 || x > 2 || y < 0 || y > 2)
-                throw new HException("Requested an invalid Matrix3 index:{0},{1}", x, y);
+                throw new ArgumentException($"Requested an invalid Matrix3 index:{x},{y}");
+
             return _values[x * 3 + y];
         }
         set
         {
             if (x < 0 || x > 2 || y < 0 || y > 2)
-                throw new HException("Requested an invalid Matrix3 index:{0},{1}", x, y);
+                throw new ArgumentException($"Requested an invalid Matrix3 index:{x},{y}");
+
             _values[x * 3 + y] = value;
         }
     }

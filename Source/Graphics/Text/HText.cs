@@ -44,10 +44,10 @@ namespace BearsEngine.Worlds.Graphics.Text
         public static void AddTextCommandTag(string key, TextCommandTag tagOverride)
         {
             if (key.IndexOfAny("<>=,()".ToCharArray()) != -1)
-                throw new HException("Illegal character <>=,() in key for AutoTag {0}", key);
+                throw new Exception($"Illegal character <>=,() in key for AutoTag {key}");
 
             if (_textCommandTagKeys.ContainsKey(key.ToLower()))
-                throw new HException("{0} is a reserved tag key and cannot also be a command tag.", key);
+                throw new Exception($"{key} is a reserved tag key and cannot also be a command tag.");
 
             _textCommandTags.Add(key.ToLower(), tagOverride);
         }
@@ -338,7 +338,7 @@ namespace BearsEngine.Worlds.Graphics.Text
             set
             {
                 if (value < 0)
-                    throw new HException("cannot have a thickness of <0, requested {0}", value);
+                    throw new ArgumentOutOfRangeException(nameof(value), "cannot have a thickness of <0");
 
                 _underlineThickness = value;
                 _verticesChanged = true;
@@ -377,7 +377,7 @@ namespace BearsEngine.Worlds.Graphics.Text
             set
             {
                 if (value < 0)
-                    throw new HException("cannot have a thickness of <0, requested {0}", value);
+                    throw new ArgumentOutOfRangeException(nameof(value), "cannot have a thickness of <0");
 
                 _strikethroughThickness = value;
                 _verticesChanged = true;
@@ -425,11 +425,11 @@ namespace BearsEngine.Worlds.Graphics.Text
                 var keyValue = tagWithoutBrackets.Split('=');
 
                 if (keyValue.Length != 2)
-                    throw new HException("tag {0} should have had exactly one '=' sign but has more than one. Regex fail?", tag);
+                    throw new Exception($"tag {tag} should have had exactly one '=' sign but has more than one. Regex fail?");
 
                 if (!_textCommandTagKeys.ContainsKey(keyValue[0].ToLower()))
                 {
-                    HConsole.Warning("HText/ParseTag: ({0}) is not a valid tag value, fulltag: ({1})", keyValue[0], tag);
+                    HConsole.Warning($"HText/ParseTag: ({keyValue[0]}) is not a valid tag value, fulltag: ({tag})");
                     return null;
                 }
                 var key = _textCommandTagKeys[keyValue[0].ToLower()];
@@ -439,26 +439,19 @@ namespace BearsEngine.Worlds.Graphics.Text
 
                 try
                 {
-                    switch (key)
+                    return key switch
                     {
-                        case TextCommandType.Font:
-                            return new TextCommandTag(key, HFont.Load(valueString));
-                        case TextCommandType.Size:
-                            return new TextCommandTag(key, valueString.ParseTo<float>());
-                        case TextCommandType.FontStyle:
-                            return new TextCommandTag(key, valueString.ParseTo<System.Drawing.FontStyle>());
-                        case TextCommandType.Colour:
-                            return new TextCommandTag(key, new Colour(valueString));
-                        case TextCommandType.Strikethrough:
-                        case TextCommandType.Underline:
-                            return new TextCommandTag(key, bool.Parse(valueString));
-                        default:
-                            throw new HException("HText/ParseTag: TagType not catered for: ({0})", key);
-                    }
+                        TextCommandType.Font => new TextCommandTag(key, HFont.Load(valueString)),
+                        TextCommandType.Size => new TextCommandTag(key, valueString.ParseTo<float>()),
+                        TextCommandType.FontStyle => new TextCommandTag(key, valueString.ParseTo<System.Drawing.FontStyle>()),
+                        TextCommandType.Colour => new TextCommandTag(key, new Colour(valueString)),
+                        TextCommandType.Strikethrough or TextCommandType.Underline => new TextCommandTag(key, bool.Parse(valueString)),
+                        _ => throw new Exception($"HText/ParseTag: TagType not catered for: ({key})"),
+                    };
                 }
                 catch
                 {
-                    HConsole.Warning("HText/ParseTag: Value ({0}) is not valid with Key ({1}), fulltag: ({2})", valueString, key, tag);
+                    HConsole.Warning($"HText/ParseTag: Value ({valueString}) is not valid with Key ({key}), fulltag: ({tag})");
                     return null;
                 }
             }
@@ -468,7 +461,7 @@ namespace BearsEngine.Worlds.Graphics.Text
                     return _textCommandTags[tagWithoutBrackets.ToLower()];
                 else
                 {
-                    HConsole.Warning("HText/ParseTag: ({0}) is not a valid command value, fulltag: ({1})", tagWithoutBrackets, tag);
+                    HConsole.Warning($"HText/ParseTag: ({tagWithoutBrackets}) is not a valid command value, fulltag: ({tag})");
                     return null;
                 }
             }
@@ -489,7 +482,7 @@ namespace BearsEngine.Worlds.Graphics.Text
                 return _textCommandTags[tagWithoutBrackets].Type;
             else
             {
-                HConsole.Warning("HText/ParseCloseTag: ({0}) is not a valid tag key, fulltag: ({1})", tagWithoutBrackets, tag);
+                HConsole.Warning("HText/ParseCloseTag: ({tagWithoutBrackets}) is not a valid tag key, fulltag: ({tag})");
                 return null;
             }
         }
@@ -523,7 +516,7 @@ namespace BearsEngine.Worlds.Graphics.Text
                         result.strikethrough = (bool)t.Value;
                         break;
                     default:
-                        throw new HException("HText/GetCurrentAttributes: TagType not catered for: ({0})", t.Type);
+                        throw new Exception($"HText/GetCurrentAttributes: TagType not catered for: ({t.Type})");
                 }
             }
 
@@ -603,13 +596,13 @@ namespace BearsEngine.Worlds.Graphics.Text
                                 currentAttributes = GetCurrentAttributes(activeOverrides);
                             }
                             else
-                                HConsole.Warning("HText/SplitTextToLines: close tag ({0}) was applied but nothing to close", nextCloseTag.Value);
+                                HConsole.Warning($"HText/SplitTextToLines: close tag ({nextCloseTag.Value}) was applied but nothing to close");
                         }
                         else //remove specified tag on LIFO basis
                         {
                             var lastEntry = activeOverrides.LastOrDefault(t => t.Type == typeToRemove.Value);
                             if (lastEntry == null)
-                                HConsole.Warning("HText/SplitTextToLines: close tag ({0}) was applied but nothing to close", nextCloseTag.Value);
+                                HConsole.Warning($"HText/SplitTextToLines: close tag ({nextCloseTag.Value}) was applied but nothing to close");
                             else
                             {
                                 activeOverrides.Remove(lastEntry);
@@ -682,7 +675,7 @@ namespace BearsEngine.Worlds.Graphics.Text
             if (VAlignment != VAlignment.Full)
                 height += Math.Max(lines.Count - 1, 0) * ScaleY * ExtraLineSpacing;
             if (height > H)
-                HConsole.Warning("HText/SplitTextToLines: lines total height ({0}) is bigger than text box height ({1})", height, H);
+                HConsole.Warning($"HText/SplitTextToLines: lines total height ({height}) is bigger than text box height ({H})");
 
             if (lines.Count > 0 && lines.Max(l => l.Length > W))
                 HConsole.Warning($"HText/SplitTextToLines: line is wider ({lines.Max(l => l.Length)}) than text box width ({W})");
@@ -707,7 +700,7 @@ namespace BearsEngine.Worlds.Graphics.Text
             var vertices = new List<Vertex>();
             var lastFont = Font;
 
-            var dest = new Rect();
+            IRect dest = new Rect();
 
             float fullAlignmentLineSpacing = float.NaN;
 
@@ -726,7 +719,7 @@ namespace BearsEngine.Worlds.Graphics.Text
                     fullAlignmentLineSpacing = (H - lines.Sum(l => l.Height)) / Math.Max(lines.Count - 1, 1);
                     break;
                 default:
-                    throw new HException("HText/SetVertices: alignment {0} was not catered for.", VAlignment);
+                    throw new Exception("HText/SetVertices: alignment {VAlignment} was not catered for.");
             }
 
             float top = dest.Y;
@@ -752,7 +745,7 @@ namespace BearsEngine.Worlds.Graphics.Text
                         fullAlignmentSpaceWidth = (W - line.LengthExcludingSpaces) / line.Spaces;
                         break;
                     default:
-                        throw new HException("HText/SetVertices: alignment {0} was not catered for.", HAlignment);
+                        throw new Exception($"HText/SetVertices: alignment {HAlignment} was not catered for.");
                 }
 
                 foreach (var com in line)
@@ -783,7 +776,7 @@ namespace BearsEngine.Worlds.Graphics.Text
                             }
 
                             var c = w.Text[i];
-                            var source = w.Font.BitmapPositionNormalised(c);
+                            IRect source = w.Font.BitmapPositionNormalised(c);
                             dest.W = w.Font.BitmapPosition(c).W * ScaleX;
                             dest.H = w.Font.BitmapPosition(c).H * ScaleY;
                             float sizeDifference = line.Height - dest.H;
@@ -833,7 +826,7 @@ namespace BearsEngine.Worlds.Graphics.Text
             string text = Text.Substring(FirstCharToDraw, NumCharsToDraw);
             var len = ScaleX * Font.MeasureString(text).X;
 
-            Rect dest = new()
+            IRect dest = new Rect()
             {
                 H = ScaleY * _font.HighestChar
             };
@@ -843,14 +836,14 @@ namespace BearsEngine.Worlds.Graphics.Text
                 HAlignment.Left or HAlignment.Full => 0,
                 HAlignment.Centred => (W - len) / 2,
                 HAlignment.Right => W - len,
-                _ => throw new HException("HText/SetVertices: alignment {0} was not catered for.", HAlignment),
+                _ => throw new Exception($"HText/SetVertices: alignment {HAlignment} was not catered for."),
             };
             dest.Y = VAlignment switch //todo: was 'int'ed before to avoid looking shit with no AA - but buggers up text in cameras - complex if statement?
             {
                 VAlignment.Top or VAlignment.Full => 0,
                 VAlignment.Centred => (H - dest.H) / 2,
                 VAlignment.Bottom => H - dest.H,
-                _ => throw new HException("HText/SetVertices: alignment {0} was not catered for.", VAlignment),
+                _ => throw new Exception($"HText/SetVertices: alignment {VAlignment} was not catered for."),
             };
             if (Underline)
                 _linesToDraw.Add(new Line(Colour, UnderlineThickness, true, dest.BottomLeft.Shift(0, UnderlineOffset), dest.BottomLeft.Shift(len, UnderlineOffset)));
@@ -859,7 +852,7 @@ namespace BearsEngine.Worlds.Graphics.Text
 
             foreach (char c in text)
             {
-                var source = Font.BitmapPositionNormalised(c);
+                IRect source = Font.BitmapPositionNormalised(c);
                 dest.W = Font.BitmapPosition(c).W * ScaleX;
 
                 vertices.Add(HF.Geom.QuadToTris(
@@ -881,10 +874,10 @@ namespace BearsEngine.Worlds.Graphics.Text
 
             #region Size Warnings
             if (Font.HighestChar > H)
-                HConsole.Warning("HText/SetVerticesSimple: line height ({0}) is bigger than text box height ({1})", Font.HighestChar, H);
+                HConsole.Warning($"HText/SetVerticesSimple: line height ({Font.HighestChar}) is bigger than text box height ({H})");
 
             if (len > W)
-                HConsole.Warning("HText/SetVerticesSimple: line is longer ({0}) than text box width ({1})", len, W);
+                HConsole.Warning($"HText/SetVerticesSimple: line is longer ({len}) than text box width ({W})");
             #endregion
         }
         #endregion

@@ -3,27 +3,19 @@
     public class TabbedPanel : Entity
     {
         #region GetPanelRect
-        private static Rect GetPanelRect(IRect fullPosition, Direction orientation, int edgeToPanelGap, int tabPanelOverlap)
+        private static IRect GetPanelRect(IRect fullPosition, Direction orientation, int edgeToPanelGap, int tabPanelOverlap)
         {
-            Rect panelPos;
-            switch (orientation)
+            var panelPos = orientation switch
             {
-                case Direction.Up:
-                    panelPos = new Rect(0, edgeToPanelGap, fullPosition.W, fullPosition.H - edgeToPanelGap);
-                    break;
-                case Direction.Right:
-                    throw new NotImplementedException();
+                Direction.Up => new Rect(0, edgeToPanelGap, fullPosition.W, fullPosition.H - edgeToPanelGap),
+                Direction.Right => throw new NotImplementedException(),
                 //break;
-                case Direction.Down:
-                    throw new NotImplementedException();
+                Direction.Down => throw new NotImplementedException(),
                 //break;
-                case Direction.Left:
-                    throw new NotImplementedException();
+                Direction.Left => throw new NotImplementedException(),
                 //break;
-                default:
-                    throw new ArgumentException();
-            }
-
+                _ => throw new ArgumentException(),
+            };
             return panelPos;
         }
         #endregion
@@ -45,35 +37,35 @@
 
         #region Constructors
         #region With AddNewTab Button
-        public TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int lastTabToNewTabButtonSpace, int spaceBetweenArrows, Point tabsBackAndForwardSize, Point tabAddButtonSize, UITheme theme, string panelGFX, string tabsBackArrow, string tabsForwardArrow, string addNewTabGFX, Func<Tab> addNewTabFn)
+        public TabbedPanel(int layer, Direction orientation, IRect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int lastTabToNewTabButtonSpace, int spaceBetweenArrows, Point tabsBackAndForwardSize, Point tabAddButtonSize, UITheme theme, string panelGFX, string tabsBackArrow, string tabsForwardArrow, string addNewTabGFX, Func<Tab> addNewTabFn)
             : this(layer, orientation, fullPosition, edgeToPanelGap, tabPanelOverlap, firstTabShift, tabSpacing, lastTabToNewTabButtonSpace, spaceBetweenArrows, theme, new Panel(panelGFX, GetPanelRect(fullPosition, orientation, edgeToPanelGap, tabPanelOverlap).Size), new Image(tabsBackArrow, tabsBackAndForwardSize), new Image(tabsForwardArrow, tabsBackAndForwardSize), new Image(addNewTabGFX, tabAddButtonSize), addNewTabFn)
         {
         }
         #endregion
 
         #region With just tabs (no add, no arrows)
-        public TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, UITheme theme, string panelGFX)
+        public TabbedPanel(int layer, Direction orientation, IRect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, UITheme theme, string panelGFX)
             : this(layer, orientation, fullPosition, edgeToPanelGap, tabPanelOverlap, firstTabShift, tabSpacing, theme, new Panel(panelGFX, GetPanelRect(fullPosition, orientation, edgeToPanelGap, tabPanelOverlap).Size))
         {
         }
         #endregion
 
-        private TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int lastTabToNewTabButtonSpace, int spaceBetweenArrows, UITheme theme, IGraphic panelGFX, IRectGraphic tabsBackArrow, IRectGraphic tabsForwardArrow, IRectGraphic tabAddButtonGraphic, Func<Tab> createNewTabFn)
+        private TabbedPanel(int layer, Direction orientation, IRect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int lastTabToNewTabButtonSpace, int spaceBetweenArrows, UITheme theme, IGraphic panelGFX, IRectGraphic tabsBackArrow, IRectGraphic tabsForwardArrow, IRectGraphic tabAddButtonGraphic, Func<Tab> createNewTabFn)
             : this(layer, orientation, fullPosition, edgeToPanelGap, tabPanelOverlap, firstTabShift, tabSpacing, spaceBetweenArrows, theme, panelGFX, tabsBackArrow, tabsForwardArrow)
         {
             if (tabAddButtonGraphic == null || createNewTabFn == null)
-                throw new HException("TabbedPanel.cs ctr: either tabAddButtonGraphic or createNewTabFn is null.");
+                throw new Exception("TabbedPanel.cs ctr: either tabAddButtonGraphic or createNewTabFn is null.");
 
             _lastTabToNewTabButtonSpace = lastTabToNewTabButtonSpace;
 
             Add(_createNewTabButton = new Button(1, tabAddButtonGraphic.Shift(_lastTabToNewTabButtonSpace, (edgeToPanelGap - tabAddButtonGraphic.H) / 2), tabAddButtonGraphic, theme, () => AddTab(createNewTabFn(), true)));
         }
 
-        private TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int spaceBetweenArrows, UITheme theme, IGraphic panelGFX, IRectGraphic tabsBackArrow, IRectGraphic tabsForwardArrow)
+        private TabbedPanel(int layer, Direction orientation, IRect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int spaceBetweenArrows, UITheme theme, IGraphic panelGFX, IRectGraphic tabsBackArrow, IRectGraphic tabsForwardArrow)
             : this(layer, orientation, fullPosition, edgeToPanelGap, tabPanelOverlap, firstTabShift, tabSpacing, theme, panelGFX)
         {
             if (tabsForwardArrow == null || tabsBackArrow == null)
-                throw new HException("TabbedPanel.cs ctr: either tabsForwardArrow or tabsBackArrow is null.");
+                throw new Exception("TabbedPanel.cs ctr: either tabsForwardArrow or tabsBackArrow is null.");
 
             _spaceBetweenArrows = spaceBetweenArrows;
 
@@ -94,7 +86,7 @@
             });
         }
 
-        private TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, UITheme theme, IGraphic panelGFX)
+        private TabbedPanel(int layer, Direction orientation, IRect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, UITheme theme, IGraphic panelGFX)
             : base(layer, fullPosition)
         {
             _orientation = orientation;
@@ -197,7 +189,11 @@
         {
             W = newW;
             H = newH;
-            Panel.R = GetPanelRect(this, _orientation, _edgeToPanelGap, _tabPanelOverlap);
+            var rect = GetPanelRect(this, _orientation, _edgeToPanelGap, _tabPanelOverlap);
+            Panel.X = rect.X;
+            Panel.Y = rect.Y;
+            Panel.W = rect.W;
+            Panel.H = rect.H;
 
             if (_tabsForward != null)
             {
@@ -213,7 +209,7 @@
         public void SwitchTo(Tab t)
         {
             if (!_tabs.Contains(t))
-                throw new HException("Tabbed panel {0} does not contain Tab {1}", this, t);
+                throw new Exception($"Tabbed panel {this} does not contain Tab {t}");
 
             if (t == CurrentTab)
                 return;

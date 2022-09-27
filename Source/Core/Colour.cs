@@ -601,7 +601,7 @@ public struct Colour : IEquatable<Colour>
     public Colour(float r, float g, float b, float a = 1)
     {
         if (r < 0 || r > 1 || g < 0 || g > 1 || b < 0 || b > 1 || a < 0 || a > 1)
-            throw new HException("Arguments should be between 0 & 1. You requested: R:{0}, G:{1}, B:{2}, A:{3}", r, g, b, a);
+            throw new ArgumentOutOfRangeException($"Arguments should be between 0 & 1. You requested: R:{r}, G:{g}, B:{b}, A:{a}");
 
         R = (byte)(r * 255);
         G = (byte)(g * 255);
@@ -643,7 +643,7 @@ public struct Colour : IEquatable<Colour>
     public Colour(Colour colour, float alpha)
     {
         if (alpha < 0 || alpha > 1)
-            throw new HException("Arguments should be between 0 & 1. You requested: A:{0}", alpha);
+            throw new ArgumentOutOfRangeException($"Arguments should be between 0 & 1. You requested: A:{alpha}");
 
         R = colour.R;
         G = colour.G;
