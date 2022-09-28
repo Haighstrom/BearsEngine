@@ -1,4 +1,4 @@
 ﻿namespace BearsEngine.Worlds
 {
-    public interface IRectAddable : IRect, IAddable { }
+    public interface IRectAddable : IRectangular, IAddable { }
 }

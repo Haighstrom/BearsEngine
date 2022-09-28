@@ -21,7 +21,7 @@ public class DragableUI : Entity
 
     public bool Dragging { get; private set; } = false;
 
-    protected virtual IRect DragGrabArea => this;
+    protected virtual Rect DragGrabArea => R;
 
     #region Update
     public override void Update(double elapsed)

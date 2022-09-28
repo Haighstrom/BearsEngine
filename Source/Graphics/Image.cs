@@ -12,7 +12,7 @@ namespace BearsEngine.Graphics
 
         #region Constructors
         #region ImagePath-based
-        public Image(string imgPath, IRect r)
+        public Image(string imgPath, Rect r)
             : this(imgPath, r.X, r.Y, r.W, r.H)
         {
         }
@@ -39,7 +39,7 @@ namespace BearsEngine.Graphics
         #endregion
 
         #region Colour-based
-        public Image(Colour colour, IRect r)
+        public Image(Colour colour, Rect r)
             : this(colour, r.X, r.Y, r.W, r.H)
         {
         }
@@ -77,7 +77,7 @@ namespace BearsEngine.Graphics
         /// <summary>
         /// Create an Image of a texture with a forced size
         /// </summary>
-        public Image(Texture texture, IRect r)
+        public Image(Texture texture, Rect r)
             : this(texture, r.X, r.Y, r.W, r.H)
         {
         }
@@ -138,7 +138,7 @@ namespace BearsEngine.Graphics
             var mv = modelView;
 
             if (Angle != 0)
-                mv = Matrix4.RotateAroundPoint(ref mv, Angle, Centre.X, Centre.Y);
+                mv = Matrix4.RotateAroundPoint(ref mv, Angle, R.Centre.X, R.Centre.Y);
 
             mv = Matrix4.Translate(ref mv, X, Y, 0);
 

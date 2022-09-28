@@ -36,7 +36,7 @@ public static class Taskbar
         AutoHide = (state & (int)ABS.Autohide) == (int)ABS.Autohide;
     }
 
-    public static IRect R { get; set; }
+    public static Rect R { get; set; }
     public static TaskbarPosition Position { get; set; }
     public static bool AlwaysOnTop { get; set; }
     public static bool AutoHide { get; set; }

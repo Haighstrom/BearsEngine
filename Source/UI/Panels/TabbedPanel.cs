@@ -3,7 +3,7 @@
     public class TabbedPanel : Entity
     {
         #region GetPanelRect
-        private static IRect GetPanelRect(IRect fullPosition, Direction orientation, int edgeToPanelGap, int tabPanelOverlap)
+        private static Rect GetPanelRect(Rect fullPosition, Direction orientation, int edgeToPanelGap, int tabPanelOverlap)
         {
             var panelPos = orientation switch
             {
@@ -37,20 +37,20 @@
 
         #region Constructors
         #region With AddNewTab Button
-        public TabbedPanel(int layer, Direction orientation, IRect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int lastTabToNewTabButtonSpace, int spaceBetweenArrows, Point tabsBackAndForwardSize, Point tabAddButtonSize, UITheme theme, string panelGFX, string tabsBackArrow, string tabsForwardArrow, string addNewTabGFX, Func<Tab> addNewTabFn)
+        public TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int lastTabToNewTabButtonSpace, int spaceBetweenArrows, Point tabsBackAndForwardSize, Point tabAddButtonSize, UITheme theme, string panelGFX, string tabsBackArrow, string tabsForwardArrow, string addNewTabGFX, Func<Tab> addNewTabFn)
             : this(layer, orientation, fullPosition, edgeToPanelGap, tabPanelOverlap, firstTabShift, tabSpacing, lastTabToNewTabButtonSpace, spaceBetweenArrows, theme, new Panel(panelGFX, GetPanelRect(fullPosition, orientation, edgeToPanelGap, tabPanelOverlap).Size), new Image(tabsBackArrow, tabsBackAndForwardSize), new Image(tabsForwardArrow, tabsBackAndForwardSize), new Image(addNewTabGFX, tabAddButtonSize), addNewTabFn)
         {
         }
         #endregion
 
         #region With just tabs (no add, no arrows)
-        public TabbedPanel(int layer, Direction orientation, IRect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, UITheme theme, string panelGFX)
+        public TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, UITheme theme, string panelGFX)
             : this(layer, orientation, fullPosition, edgeToPanelGap, tabPanelOverlap, firstTabShift, tabSpacing, theme, new Panel(panelGFX, GetPanelRect(fullPosition, orientation, edgeToPanelGap, tabPanelOverlap).Size))
         {
         }
         #endregion
 
-        private TabbedPanel(int layer, Direction orientation, IRect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int lastTabToNewTabButtonSpace, int spaceBetweenArrows, UITheme theme, IGraphic panelGFX, IRectGraphic tabsBackArrow, IRectGraphic tabsForwardArrow, IRectGraphic tabAddButtonGraphic, Func<Tab> createNewTabFn)
+        private TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int lastTabToNewTabButtonSpace, int spaceBetweenArrows, UITheme theme, IGraphic panelGFX, IRectGraphic tabsBackArrow, IRectGraphic tabsForwardArrow, IRectGraphic tabAddButtonGraphic, Func<Tab> createNewTabFn)
             : this(layer, orientation, fullPosition, edgeToPanelGap, tabPanelOverlap, firstTabShift, tabSpacing, spaceBetweenArrows, theme, panelGFX, tabsBackArrow, tabsForwardArrow)
         {
             if (tabAddButtonGraphic == null || createNewTabFn == null)
@@ -58,10 +58,10 @@
 
             _lastTabToNewTabButtonSpace = lastTabToNewTabButtonSpace;
 
-            Add(_createNewTabButton = new Button(1, tabAddButtonGraphic.Shift(_lastTabToNewTabButtonSpace, (edgeToPanelGap - tabAddButtonGraphic.H) / 2), tabAddButtonGraphic, theme, () => AddTab(createNewTabFn(), true)));
+            Add(_createNewTabButton = new Button(1, tabAddButtonGraphic.R.Shift(_lastTabToNewTabButtonSpace, (edgeToPanelGap - tabAddButtonGraphic.H) / 2), tabAddButtonGraphic, theme, () => AddTab(createNewTabFn(), true)));
         }
 
-        private TabbedPanel(int layer, Direction orientation, IRect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int spaceBetweenArrows, UITheme theme, IGraphic panelGFX, IRectGraphic tabsBackArrow, IRectGraphic tabsForwardArrow)
+        private TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int spaceBetweenArrows, UITheme theme, IGraphic panelGFX, IRectGraphic tabsBackArrow, IRectGraphic tabsForwardArrow)
             : this(layer, orientation, fullPosition, edgeToPanelGap, tabPanelOverlap, firstTabShift, tabSpacing, theme, panelGFX)
         {
             if (tabsForwardArrow == null || tabsBackArrow == null)
@@ -86,7 +86,7 @@
             });
         }
 
-        private TabbedPanel(int layer, Direction orientation, IRect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, UITheme theme, IGraphic panelGFX)
+        private TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, UITheme theme, IGraphic panelGFX)
             : base(layer, fullPosition)
         {
             _orientation = orientation;
@@ -95,7 +95,7 @@
             _firstTabShift = firstTabShift;
             _tabSpacing = tabSpacing;
 
-            Add(Panel = new Entity(1, GetPanelRect(this, _orientation, _edgeToPanelGap, _tabPanelOverlap), panelGFX));
+            Add(Panel = new Entity(1, GetPanelRect(R, _orientation, _edgeToPanelGap, _tabPanelOverlap), panelGFX));
         }
         #endregion
 
@@ -108,7 +108,7 @@
 
         public Tab CurrentTab { get; private set; }
 
-        private float MaximumDistanceTabsCanBe => _tabsBack != null ? _tabsBack.Left : Panel.W - _spaceBetweenArrows;
+        private float MaximumDistanceTabsCanBe => _tabsBack != null ? _tabsBack.R.Left : Panel.W - _spaceBetweenArrows;
         #endregion
 
         #region Methods
@@ -189,7 +189,7 @@
         {
             W = newW;
             H = newH;
-            var rect = GetPanelRect(this, _orientation, _edgeToPanelGap, _tabPanelOverlap);
+            var rect = GetPanelRect(R, _orientation, _edgeToPanelGap, _tabPanelOverlap);
             Panel.X = rect.X;
             Panel.Y = rect.Y;
             Panel.W = rect.W;
@@ -243,7 +243,7 @@
                 {
                     Tabs[i].X = x;
                     x += Tabs[i].W + _tabSpacing;
-                    if (Tabs[i].Right + _lastTabToNewTabButtonSpace + _createNewTabButton?.W >= MaximumDistanceTabsCanBe)
+                    if (Tabs[i].R.Right + _lastTabToNewTabButtonSpace + _createNewTabButton?.W >= MaximumDistanceTabsCanBe)
                     {
                         Tabs[i].Visible = false;
                         Tabs[i].Active = false;
@@ -253,7 +253,7 @@
                         Tabs[i].Visible = true;
                         Tabs[i].Active = true;
                         if (_createNewTabButton != null)
-                            _createNewTabButton.X = Tabs[i].Right + _lastTabToNewTabButtonSpace;
+                            _createNewTabButton.X = Tabs[i].R.Right + _lastTabToNewTabButtonSpace;
                     }
                 }
             }
@@ -271,7 +271,7 @@
                     _tabsBack.Active = true;
                 }
 
-                if (Tabs.Count == 0 || _tabs.Last().Right + _lastTabToNewTabButtonSpace + _createNewTabButton?.W < MaximumDistanceTabsCanBe)
+                if (Tabs.Count == 0 || _tabs.Last().R.Right + _lastTabToNewTabButtonSpace + _createNewTabButton?.W < MaximumDistanceTabsCanBe)
                 {
                     _tabsForward.Visible = false;
                     _tabsForward.Active = false;
@@ -284,7 +284,7 @@
             }
 
             //if we resized or deleted a tab and now there's space to fit another tab in, move left one
-            if (_firstTabDisplayed > 0 && _tabs.Last().Right + _tabSpacing + _tabs[_firstTabDisplayed - 1].W + _lastTabToNewTabButtonSpace + _createNewTabButton?.W < MaximumDistanceTabsCanBe)
+            if (_firstTabDisplayed > 0 && _tabs.Last().R.Right + _tabSpacing + _tabs[_firstTabDisplayed - 1].W + _lastTabToNewTabButtonSpace + _createNewTabButton?.W < MaximumDistanceTabsCanBe)
             {
                 _firstTabDisplayed--;
                 RepositionTabs();
@@ -295,7 +295,7 @@
         #region TabForward
         private void TabForward()
         {
-            if (_tabs.Last().Right + _lastTabToNewTabButtonSpace + _createNewTabButton?.W < MaximumDistanceTabsCanBe)
+            if (_tabs.Last().R.Right + _lastTabToNewTabButtonSpace + _createNewTabButton?.W < MaximumDistanceTabsCanBe)
                 return;
 
             _firstTabDisplayed++;

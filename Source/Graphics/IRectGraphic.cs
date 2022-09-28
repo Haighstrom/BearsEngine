@@ -1,4 +1,4 @@
 ﻿namespace BearsEngine.Graphics
 {
-    public interface IRectGraphic : IRect, IGraphic { }
+    public interface IRectGraphic : IRectangular, IGraphic { }
 }

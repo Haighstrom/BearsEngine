@@ -66,7 +66,7 @@ public struct LineSegment : IEquatable<LineSegment>
     /// Find if a line segment intersects a rectangle, including if it is fully contained within the rect.
     /// https://stackoverflow.com/questions/16203760/how-to-check-if-line-segment-intersects-a-rectangle
     /// </summary>
-    public bool Intersects(IRect r)
+    public bool Intersects(Rect r)
     {
         if (Intersects(r.TopLeft, r.TopRight)) return true;
         if (Intersects(r.TopRight, r.BottomRight)) return true;
@@ -79,7 +79,7 @@ public struct LineSegment : IEquatable<LineSegment>
 
     public static bool Intersects(LineSegment l, Rect r) => Intersects(l.StartPoint, l.EndPoint, r);
 
-    public static bool Intersects(Point startPoint, Point endPoint, IRect r)
+    public static bool Intersects(Point startPoint, Point endPoint, Rect r)
     {
         if (LineSegmentsIntersect(startPoint, endPoint, r.TopLeft, r.TopRight)) return true;
         if (LineSegmentsIntersect(startPoint, endPoint, r.TopRight, r.BottomRight)) return true;

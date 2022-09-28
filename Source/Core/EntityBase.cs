@@ -4,7 +4,7 @@
     {
         private int _layer;
 
-        public EntityBase(int layer, IRect r)
+        public EntityBase(int layer, Rect r)
             : base(r)
         {
             Container = new Container(this);
@@ -46,13 +46,13 @@
 
         public E Collide<E>(Point p, bool considerChildren = true) where E : ICollideable => Container.Collide<E>(p, considerChildren);
 
-        public E Collide<E>(IRect r, bool considerChildren = true) where E : ICollideable => Container.Collide<E>(r, considerChildren);
+        public E Collide<E>(Rect r, bool considerChildren = true) where E : ICollideable => Container.Collide<E>(r, considerChildren);
 
         public E Collide<E>(ICollideable i, bool considerChildren = true) where E : ICollideable => Container.Collide<E>(i, considerChildren);
 
         public IList<E> CollideAll<E>(Point p, bool considerChildren = true) where E : ICollideable => Container.CollideAll<E>(p, considerChildren);
 
-        public IList<E> CollideAll<E>(IRect r, bool considerChildren = true) where E : ICollideable => Container.CollideAll<E>(r, considerChildren);
+        public IList<E> CollideAll<E>(Rect r, bool considerChildren = true) where E : ICollideable => Container.CollideAll<E>(r, considerChildren);
 
         public IList<E> CollideAll<E>(ICollideable i, bool considerChildren = true) where E : ICollideable => Container.CollideAll<E>(i, considerChildren);
 
@@ -60,11 +60,11 @@
 
         public abstract Point GetLocalPosition(Point windowCoords);
 
-        public abstract IRect GetLocalPosition(IRect windowCoords);
+        public abstract Rect GetLocalPosition(Rect windowCoords);
 
         public abstract Point GetWindowPosition(Point localCoords);
 
-        public abstract IRect GetWindowPosition(IRect localCoords);
+        public abstract Rect GetWindowPosition(Rect localCoords);
 
         public void Remove(IAddable e) => Container.Remove(e);
 

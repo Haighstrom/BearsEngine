@@ -156,7 +156,7 @@
 
         #region IRect
         #region IRect.Shift
-        public static Rect Shift(this IRect r, Direction d, float distance) => new(
+        public static Rect Shift(this Rect r, Direction d, float distance) => new(
                 r.X + (d == Direction.Right ? distance : d == Direction.Left ? -distance : 0),
                 r.Y + (d == Direction.Down ? distance : d == Direction.Up ? -distance : 0),
                 r.W,
@@ -164,7 +164,7 @@
         #endregion
 
         #region IRect.Shift
-        public static IRect Shift(this IRect r, EightWayDirection d, float distance, bool adjustDiagonalsBySqrt2)
+        public static Rect Shift(this Rect r, EightWayDirection d, float distance, bool adjustDiagonalsBySqrt2)
         {
             Rect rect = new(r);
             switch (d)
@@ -205,9 +205,9 @@
         }
         #endregion
 
-        public static List<Point> ToVertices(this IRect r) => new() { r.TopLeft, r.TopRight, r.BottomRight, r.BottomLeft };
+        public static List<Point> ToVertices(this Rect r) => new() { r.TopLeft, r.TopRight, r.BottomRight, r.BottomLeft };
 
-        public static List<Point> ToClosedVertices(this IRect r) => new() { r.TopLeft, r.TopRight, r.BottomRight, r.BottomLeft, r.TopLeft };
+        public static List<Point> ToClosedVertices(this Rect r) => new() { r.TopLeft, r.TopRight, r.BottomRight, r.BottomLeft, r.TopLeft };
         #endregion
 
         #region Enum

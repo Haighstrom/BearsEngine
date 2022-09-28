@@ -2,9 +2,9 @@
 
 namespace BearsEngine.Worlds.Cameras;
 
-public interface ICamera : IRect, IAddable, IUpdatable, IRenderableOnLayer, IContainer
+public interface ICamera : IRectangular, IAddable, IUpdatable, IRenderableOnLayer, IContainer
 {
-    IRect View { get; }
+    Rect View { get; }
 
     Colour BackgroundColour { get; set; }
 

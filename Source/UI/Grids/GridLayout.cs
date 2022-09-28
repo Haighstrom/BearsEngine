@@ -10,11 +10,11 @@ public class GridLayout : Entity
     public int[] NextIndex => FindNextEmptyCell();
     public int NextRow => NextIndex[0];
     public int NextColumn => NextIndex[1];
-    public IRect[,] Children { get; }
+    public IRectangular[,] Children { get; }
     public int Rows { get; }
     public int Columns { get; }
 
-    public IRect this[int i, int j] => Children[i, j];
+    public IRectangular this[int i, int j] => Children[i, j];
 
     public Point MinSize
         => new(
@@ -87,7 +87,7 @@ public class GridLayout : Entity
     #endregion
 
     #region Constructors
-    public GridLayout(int layer, IRect position, List<CellFormat> rowFormat, List<CellFormat> columnFormat)
+    public GridLayout(int layer, Rect position, List<CellFormat> rowFormat, List<CellFormat> columnFormat)
         : base(layer, position)
     {
         Rows = rowFormat.Count;
@@ -96,17 +96,17 @@ public class GridLayout : Entity
         _rowFormat = new List<CellFormat>(rowFormat);
         _columnFormat = new List<CellFormat>(columnFormat);
 
-        Children = new IRect[Rows, Columns];
+        Children = new IRectangular[Rows, Columns];
         GridAlignments = new GridAlignment[Rows, Columns];
     }
-    public GridLayout(int layer, IRect position, int rows, int columns)
+    public GridLayout(int layer, Rect position, int rows, int columns)
         : base(layer, position)
     {
 
         Rows = rows;
         Columns = columns;
 
-        Children = new IRect[Rows, Columns];
+        Children = new IRectangular[Rows, Columns];
         GridAlignments = new GridAlignment[Rows, Columns];
 
         SetDefaultFormats();
@@ -124,7 +124,7 @@ public class GridLayout : Entity
         GridAlignments[row, column] = gridAlignment;
 
         Children[row, column] = e;
-        var rect = GetEntityPosRect(row, column, gridAlignment, e);
+        var rect = GetEntityPosRect(row, column, gridAlignment, e.R);
         e.X = rect.X;
         e.Y = rect.Y;
         e.W = rect.W;
@@ -141,7 +141,7 @@ public class GridLayout : Entity
         GridAlignments[row, column] = gridAlignment;
 
         Children[row, column] = e;
-        var rect = GetEntityPosRect(row, column, gridAlignment, e);
+        var rect = GetEntityPosRect(row, column, gridAlignment, e.R);
         e.X = rect.X;
         e.Y = rect.Y;
         e.W = rect.W;
@@ -167,9 +167,9 @@ public class GridLayout : Entity
     #endregion
 
     #region GetEntitiesInColumn
-    public List<IRect> GetEntitiesInColumn(int col)
+    public List<IRectangular> GetEntitiesInColumn(int col)
     {
-        var l = new List<IRect>();
+        var l = new List<IRectangular>();
 
         for (int i = 0; i < Rows; i++)
             if (Children[i, col] != null)
@@ -180,9 +180,9 @@ public class GridLayout : Entity
     #endregion
 
     #region GetEntitiesInRow
-    public List<IRect> GetEntitiesInRow(int row)
+    public List<IRectangular> GetEntitiesInRow(int row)
     {
-        var l = new List<IRect>();
+        var l = new List<IRectangular>();
 
         for (int j = 0; j < Columns; j++)
             if (Children[row, j] != null)
@@ -196,7 +196,7 @@ public class GridLayout : Entity
     /// <summary>
     /// Return GetPosRect, but also take into account the GridAlignment, for entities that do not fill the grid cell.
     /// </summary>
-    private IRect GetEntityPosRect(int rowIdx, int colIdx, GridAlignment gridAlignment, IRect entRect)
+    private Rect GetEntityPosRect(int rowIdx, int colIdx, GridAlignment gridAlignment, Rect entRect)
     {
         Rect cell = GetPosRect(rowIdx, colIdx);
         switch (gridAlignment)
@@ -283,7 +283,7 @@ public class GridLayout : Entity
     #endregion
 
     #region GetNextEntityPos
-    private IRect GetNextEntityPos(GridAlignment gridAlignment, IRect entRect) => GetEntityPosRect(NextRow, NextColumn, gridAlignment, entRect);
+    private Rect GetNextEntityPos(GridAlignment gridAlignment, Rect entRect) => GetEntityPosRect(NextRow, NextColumn, gridAlignment, entRect);
     #endregion
 
     #region GetNextPos
@@ -402,7 +402,7 @@ public class GridLayout : Entity
             for (int j = 0; j < Columns; j++)
                 if (Children[i, j] != null)
                 {
-                    var rect = GetEntityPosRect(i, j, GridAlignments[i, j], Children[i, j]);
+                    var rect = GetEntityPosRect(i, j, GridAlignments[i, j], Children[i, j].R);
                     Children[i, j].X = rect.X;
                     Children[i, j].Y = rect.Y;
                     Children[i, j].W = rect.W;

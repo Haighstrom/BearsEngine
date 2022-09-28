@@ -7,19 +7,19 @@ public class Scrollbar : Entity
     {
         #region Fields
         private readonly ScrollbarDirection _direction;
-        private IRect _fullPosition;
+        private Rect _fullPosition;
         private float _amountFilled;
         private bool _dragging;
         private float _dragStart;
         #endregion
 
         #region Constructors
-        public Bar(ScrollbarDirection direction, IRect position, int border, UITheme theme)
+        public Bar(ScrollbarDirection direction, Rect position, int border, UITheme theme)
             : this(direction, position, border, theme.Scrollbar.Bar.DefaultColour, theme.Scrollbar.Bar.HoverColour, theme.Scrollbar.Bar.PressedColour, theme.Scrollbar.Bar.UnclickableColour)
         {
         }
 
-        public Bar(ScrollbarDirection direction, IRect position, int border, Colour barColour, Colour hoverColour, Colour pressedColour, Colour unclickableColour)
+        public Bar(ScrollbarDirection direction, Rect position, int border, Colour barColour, Colour hoverColour, Colour pressedColour, Colour unclickableColour)
             : base(1, position)
         {
             HoverColour = hoverColour;
@@ -58,9 +58,9 @@ public class Scrollbar : Entity
 
         public float MinAmount => _direction == ScrollbarDirection.Horizontal ? (X - _fullPosition.X) / _fullPosition.W : (Y - _fullPosition.Y) / _fullPosition.H;
 
-        public float MaxAmount => _direction == ScrollbarDirection.Horizontal ? (Right - _fullPosition.X) / _fullPosition.W : (Bottom - _fullPosition.Y) / _fullPosition.H;
+        public float MaxAmount => _direction == ScrollbarDirection.Horizontal ? (R.Right - _fullPosition.X) / _fullPosition.W : (R.Bottom - _fullPosition.Y) / _fullPosition.H;
 
-        internal IRect FullPosition
+        internal Rect FullPosition
         {
             get => _fullPosition;
             set
@@ -114,7 +114,7 @@ public class Scrollbar : Entity
 
                     X = HF.Maths.Clamp(HI.MouseWindowX - _dragStart, _fullPosition.X, _fullPosition.Right - W);
 
-                    if (MinIncrement > 0 && Right != _fullPosition.Right)
+                    if (MinIncrement > 0 && R.Right != _fullPosition.Right)
                         X -= HF.Maths.Mod(X - _fullPosition.Left, MinIncrement);
 
                     if (oldX != X)
@@ -126,7 +126,7 @@ public class Scrollbar : Entity
 
                     Y = HF.Maths.Clamp(HI.MouseWindowY - _dragStart, _fullPosition.Y, _fullPosition.Bottom - H);
 
-                    if (MinIncrement > 0 && Bottom != _fullPosition.Bottom)
+                    if (MinIncrement > 0 && R.Bottom != _fullPosition.Bottom)
                         Y -= HF.Maths.Mod(Y - _fullPosition.Top, MinIncrement);
 
                     if (oldY != Y)
@@ -160,7 +160,7 @@ public class Scrollbar : Entity
 
                 X = HF.Maths.Clamp(X + amount, _fullPosition.X, _fullPosition.Right - W);
 
-                if (MinIncrement > 0 && Right != _fullPosition.Right)
+                if (MinIncrement > 0 && R.Right != _fullPosition.Right)
                     X -= HF.Maths.Mod(X - _fullPosition.Left, MinIncrement);
 
                 if (oldX != X)
@@ -172,7 +172,7 @@ public class Scrollbar : Entity
 
                 Y = HF.Maths.Clamp(Y + amount, _fullPosition.Y, _fullPosition.Bottom - H);
 
-                if (MinIncrement > 0 && Bottom != _fullPosition.Bottom)
+                if (MinIncrement > 0 && R.Bottom != _fullPosition.Bottom)
                     Y -= HF.Maths.Mod(Y - _fullPosition.Top, MinIncrement);
 
                 if (oldY != Y)
@@ -198,7 +198,7 @@ public class Scrollbar : Entity
 
     #region Constructors
     #region UITheme Based
-    public Scrollbar(int layer, IRect r, ScrollbarDirection direction, UITheme theme)
+    public Scrollbar(int layer, Rect r, ScrollbarDirection direction, UITheme theme)
         : this(layer,
               r,
               direction,
@@ -219,12 +219,12 @@ public class Scrollbar : Entity
     #endregion
 
     #region Standard
-    public Scrollbar(int layer, IRect fullPosition, ScrollbarDirection direction, Colour barBackgroundColour, Colour barDefaultColour, Colour barHoverColour, Colour barPressedColour, Colour barUnclickableButton, int edgeToBarSpace, Colour arrowBG, IGraphic minusArrow, IGraphic plusArrow, Colour arrowHoverColour, Colour arrowPressedColour, Colour arrowUnclickableColour)
+    public Scrollbar(int layer, Rect fullPosition, ScrollbarDirection direction, Colour barBackgroundColour, Colour barDefaultColour, Colour barHoverColour, Colour barPressedColour, Colour barUnclickableButton, int edgeToBarSpace, Colour arrowBG, IGraphic minusArrow, IGraphic plusArrow, Colour arrowHoverColour, Colour arrowPressedColour, Colour arrowUnclickableColour)
         : base(layer, fullPosition)
     {
         _direction = direction;
 
-        IRect sbBG, b1, b2;
+        Rect sbBG, b1, b2;
 
         if (direction == ScrollbarDirection.Horizontal)
         {

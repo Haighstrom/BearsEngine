@@ -26,7 +26,7 @@ public class CellFormat
 
     #region Methods
     #region GetSize
-    public int GetSize(int totalSize, float totalWeights, List<IRect> childrenInRowOrCol)
+    public int GetSize(int totalSize, float totalWeights, List<IRectangular> childrenInRowOrCol)
     {
         switch (FormatMode)
         {
@@ -67,7 +67,7 @@ public class CellFormat
 
     #region GetFixedSize
     //Return Size allocated by FIt or Fixed pixel size - to calculate how much Weighted space is remaining...
-    public int GetFixedSize(List<IRect> childrenInRowOrCol)
+    public int GetFixedSize(List<IRectangular> childrenInRowOrCol)
     {
         switch (FormatMode)
         {
@@ -83,13 +83,13 @@ public class CellFormat
                 switch (GridOrientation)
                 {
                     case GridOrientation.Column:
-                        foreach (IRect e in childrenInRowOrCol)
+                        foreach (Rect e in childrenInRowOrCol)
                             if (e.W > size)
                                 size = (int)e.W;
                         break;
 
                     case GridOrientation.Row:
-                        foreach (IRect e in childrenInRowOrCol)
+                        foreach (Rect e in childrenInRowOrCol)
                             if (e.H > size)
                                 size = (int)e.H;
                         break;

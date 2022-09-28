@@ -25,7 +25,7 @@
         E Collide<E>(Point p, bool considerChildren = true)
             where E : ICollideable;
 
-        E Collide<E>(IRect r, bool considerChildren = true)
+        E Collide<E>(Rect r, bool considerChildren = true)
             where E : ICollideable;
 
         E Collide<E>(ICollideable i, bool considerChildren = true)
@@ -34,7 +34,7 @@
         IList<E> CollideAll<E>(Point p, bool considerChildren = true)
             where E : ICollideable;
 
-        IList<E> CollideAll<E>(IRect r, bool considerChildren = true)
+        IList<E> CollideAll<E>(Rect r, bool considerChildren = true)
             where E : ICollideable;
 
         IList<E> CollideAll<E>(ICollideable i, bool considerChildren = true)
@@ -42,11 +42,11 @@
 
         Point GetWindowPosition(Point localCoords);
 
-        IRect GetWindowPosition(IRect localCoords);
+        Rect GetWindowPosition(Rect localCoords);
 
         Point GetLocalPosition(Point windowCoords);
 
-        IRect GetLocalPosition(IRect windowCoords);
+        Rect GetLocalPosition(Rect windowCoords);
 
         Point LocalMousePosition { get; }
     }

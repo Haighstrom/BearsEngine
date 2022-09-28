@@ -44,9 +44,9 @@ public class WindowSettings
     /// <summary>
     /// The desired position of the window (X,Y are the top left of the window, W, H are the size of the client)
     /// </summary>
-    public IRect Position
+    public Rect Position
     {
-        get => new Rect(X, Y, Width, Height);
+        get => new(X, Y, Width, Height);
         set
         {
             X = (int)value.X;

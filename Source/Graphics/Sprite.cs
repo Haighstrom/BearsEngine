@@ -15,7 +15,7 @@ namespace BearsEngine.Graphics
         #endregion
 
         #region Constructors
-        public Sprite(string imgPath, IRect r, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
+        public Sprite(string imgPath, Rect r, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
             : this(imgPath, r.X, r.Y, r.W, r.H, spriteSheetColumns, spriteSheetRows, initialFrame)
         {
         }

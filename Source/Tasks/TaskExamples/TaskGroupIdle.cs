@@ -1,6 +1,6 @@
 ﻿using BearsEngine.Pathfinding;
 
-namespace BearsEngine.Tasks.TaskExamples;
+namespace BearsEngine.Tasks;
 
 public class TaskGroupIdle<N> : TaskGroup
     where N : INode

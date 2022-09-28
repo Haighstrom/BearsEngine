@@ -6,12 +6,12 @@
 
         #region Constructors
         #region Variable Tile Size Cameras
-        public TerrainCamera(int mapW, int mapH, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, IRect position, float tileSizeW, float tileSizeH)
+        public TerrainCamera(int mapW, int mapH, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, Rect position, float tileSizeW, float tileSizeH)
             : this(HF.Arrays.FillArray(mapW, mapH, defaultIndex), defaultIndex, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, tileSizeW, tileSizeH)
         {
         }
 
-        public TerrainCamera(int[,] map, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, IRect position, float tileSizeW, float tileSizeH)
+        public TerrainCamera(int[,] map, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, Rect position, float tileSizeW, float tileSizeH)
             : base(layer, position, tileSizeW, tileSizeH)
         {
             Add(SpriteMap = new SpriteMap(map, defaultIndex, 1, 1, terrainSpriteSheetPath, spriteSheetW, spriteSheetH));
@@ -22,12 +22,12 @@
         #endregion
 
         #region Fixed Tile Size Cameras
-        public TerrainCamera(int mapW, int mapH, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, IRect position, IRect viewport)
+        public TerrainCamera(int mapW, int mapH, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, Rect position, Rect viewport)
             : this(HF.Arrays.FillArray(mapW, mapH, defaultIndex), defaultIndex, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, viewport)
         {
         }
 
-        public TerrainCamera(int[,] map, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, IRect position, IRect viewport)
+        public TerrainCamera(int[,] map, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, Rect position, Rect viewport)
             : base(layer, position, viewport)
         {
             Add(SpriteMap = new SpriteMap(map, defaultIndex, 1, 1, terrainSpriteSheetPath, spriteSheetW, spriteSheetH));

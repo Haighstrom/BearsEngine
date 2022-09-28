@@ -157,7 +157,7 @@ namespace BearsEngine.Worlds.Cameras
 
             Matrix4 mv = modelView;
             if (Angle != 0)
-                mv = Matrix4.RotateAroundPoint(ref mv, Angle, Centre.X, Centre.Y);
+                mv = Matrix4.RotateAroundPoint(ref mv, Angle, R.Centre.X, R.Centre.Y);
             mv = Matrix4.Translate(ref mv, X, Y, 0);
 
             //Render with assigned shader
@@ -203,7 +203,7 @@ namespace BearsEngine.Worlds.Cameras
                 ));
         }
 
-        public IRect GetWindowPosition(IRect localCoords)
+        public Rect GetWindowPosition(Rect localCoords)
         {
             Point tl = GetWindowPosition(localCoords.TopLeft);
             Point br = GetWindowPosition(localCoords.BottomRight);
@@ -221,7 +221,7 @@ namespace BearsEngine.Worlds.Cameras
             return p2;
         }
 
-        public IRect GetLocalPosition(IRect windowCoords)
+        public Rect GetLocalPosition(Rect windowCoords)
         {
             Point tl = GetLocalPosition(windowCoords.TopLeft);
             Point br = GetLocalPosition(windowCoords.BottomRight);
@@ -246,20 +246,20 @@ namespace BearsEngine.Worlds.Cameras
 
         public E Collide<E>(Point p, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(p, considerChildren);
 
-        public E Collide<E>(IRect r, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(r, considerChildren);
+        public E Collide<E>(Rect r, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(r, considerChildren);
 
         public E Collide<E>(ICollideable i, bool considerChildren = true) where E : ICollideable => _container.Collide<E>(i, considerChildren);
 
         public IList<E> CollideAll<E>(Point p, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(p, considerChildren);
 
-        public IList<E> CollideAll<E>(IRect r, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(r, considerChildren);
+        public IList<E> CollideAll<E>(Rect r, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(r, considerChildren);
 
         public IList<E> CollideAll<E>(ICollideable i, bool considerChildren = true) where E : ICollideable => _container.CollideAll<E>(i, considerChildren);
         #endregion
 
         #region ICamera
         #region View
-        public virtual IRect View { get; }
+        public virtual Rect View { get; }
         #endregion
         public Colour BackgroundColour { get; set; } = Colour.White;
         public bool MouseIntersecting => View.Contains(LocalMousePosition);
@@ -394,7 +394,7 @@ namespace BearsEngine.Worlds.Cameras
         }
         #endregion
 
-        protected void OnPositionChanged() => PositionChanged?.Invoke(this, new PositionChangedArgs(this));
+        protected void OnPositionChanged() => PositionChanged?.Invoke(this, new PositionChangedArgs(R));
 
         protected void OnSizeChanged() => SizeChanged?.Invoke(this, new SizeEventArgs(W, H));
         #endregion

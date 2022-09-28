@@ -10,7 +10,7 @@ namespace BearsEngine.Graphics
         private Vertex[] _vertices;
         private bool _verticesChanged = true;
 
-        private readonly IRect
+        private readonly Rect
             TL = new Rect(0, 0, 0.3f, 0.3f),
             TM = new Rect(0.3f, 0, 0.4f, 0.3f),
             TR = new Rect(0.7f, 0, 0.3f, 0.3f),

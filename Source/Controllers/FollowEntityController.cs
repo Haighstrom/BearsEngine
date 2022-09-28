@@ -14,13 +14,13 @@ public class CameraFollowController : AddableBase, IUpdatable
 {
     #region Fields
     private readonly ICamera _camera;
-    private readonly IRect _target;
+    private readonly IRectangular _target;
     private readonly CameraFollowMode _mode;
     private readonly float _cameraMinX, _cameraMaxX, _cameraMinY, _cameraMaxY;
     #endregion
 
     #region Constructors
-    public CameraFollowController(ICamera camera, IRect target, CameraFollowMode mode, float cameraMinX, float cameraMaxX, float cameraMinY, float cameraMaxY)
+    public CameraFollowController(ICamera camera, IRectangular target, CameraFollowMode mode, float cameraMinX, float cameraMaxX, float cameraMinY, float cameraMaxY)
     {
         _camera = camera;
         _cameraMinX = cameraMinX;
@@ -36,8 +36,8 @@ public class CameraFollowController : AddableBase, IUpdatable
 
     private void SetCameraPosition()
     {
-        _camera.View.X = _target.Centre.X - _camera.View.W / 2;
-        _camera.View.Y = _target.Centre.Y - _camera.View.H / 2;
+        _camera.View.X = _target.R.Centre.X - _camera.View.W / 2;
+        _camera.View.Y = _target.R.Centre.Y - _camera.View.H / 2;
 
         if ((_mode & CameraFollowMode.CentreIfWindowBiggerThanMap) > 0)
         {

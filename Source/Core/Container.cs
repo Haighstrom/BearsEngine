@@ -95,7 +95,7 @@
             return default;
         }
 
-        public E Collide<E>(IRect r, bool considerChildren = true)
+        public E Collide<E>(Rect r, bool considerChildren = true)
             where E : ICollideable
         {
             foreach (IAddable a in Entities)
@@ -159,7 +159,7 @@
             return list;
         }
 
-        public IList<E> CollideAll<E>(IRect r, bool considerChildren = true)
+        public IList<E> CollideAll<E>(Rect r, bool considerChildren = true)
             where E : ICollideable
         {
             List<E> list = new();
@@ -225,13 +225,13 @@
         #region GetLocalPosition
         public Point GetLocalPosition(Point windowCoords) => Parent.GetLocalPosition(windowCoords);
 
-        public IRect GetLocalPosition(IRect windowCoords) => Parent.GetLocalPosition(windowCoords);
+        public Rect GetLocalPosition(Rect windowCoords) => Parent.GetLocalPosition(windowCoords);
         #endregion
 
         #region GetWindowPosition
         public Point GetWindowPosition(Point localCoords) => Parent.GetWindowPosition(localCoords);
 
-        public IRect GetWindowPosition(IRect localCoords) => Parent.GetWindowPosition(localCoords);
+        public Rect GetWindowPosition(Rect localCoords) => Parent.GetWindowPosition(localCoords);
         #endregion
 
         #region OnIRenderableLayerChanged

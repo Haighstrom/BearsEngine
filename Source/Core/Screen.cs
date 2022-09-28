@@ -42,11 +42,11 @@ namespace BearsEngine.Worlds
 
         public Point GetWindowPosition(Point localCoords) => localCoords;
 
-        public IRect GetWindowPosition(IRect localCoords) => localCoords;
+        public Rect GetWindowPosition(Rect localCoords) => localCoords;
 
         public Point GetLocalPosition(Point windowCoords) => windowCoords;
 
-        public IRect GetLocalPosition(IRect windowCoords) => windowCoords;
+        public Rect GetLocalPosition(Rect windowCoords) => windowCoords;
 
         public Point LocalMousePosition => HI.MouseWindowP;
 
@@ -72,7 +72,7 @@ namespace BearsEngine.Worlds
             where E : ICollideable
             => _container.Collide<E>(p, considerChildren);
 
-        public E Collide<E>(IRect r, bool considerChildren = true)
+        public E Collide<E>(Rect r, bool considerChildren = true)
             where E : ICollideable
             => _container.Collide<E>(r, considerChildren);
 
@@ -84,7 +84,7 @@ namespace BearsEngine.Worlds
             where E : ICollideable
             => _container.CollideAll<E>(p, considerChildren);
 
-        public IList<E> CollideAll<E>(IRect r, bool considerChildren = true)
+        public IList<E> CollideAll<E>(Rect r, bool considerChildren = true)
             where E : ICollideable
             => _container.CollideAll<E>(r, considerChildren);
 

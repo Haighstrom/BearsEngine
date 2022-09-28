@@ -4,7 +4,6 @@ namespace BearsEngine.Window;
 
 public interface IWindow : IDisposable
 {
-    #region Basic
     /// <summary>
     /// Gets whether the window has been created and has not been destroyed.
     /// False once Exit() is called.
@@ -51,9 +50,7 @@ public interface IWindow : IDisposable
     /// Triggers after the window has been closed/destroyed.
     /// </summary>
     event EventHandler Closed;
-    #endregion
 
-    #region Window Frame
     /// <summary>
     /// Gets or sets the title of the window
     /// </summary>
@@ -73,9 +70,7 @@ public interface IWindow : IDisposable
     /// Gets or sets the state of the window
     /// </summary>
     WindowState State { get; set; }
-    #endregion
 
-    #region Position
     /// <summary>
     /// The DPI scaling currently applicable to the window
     /// </summary>
@@ -83,7 +78,7 @@ public interface IWindow : IDisposable
     /// <summary>
     /// Gets or sets the position of the overall window (including borders and title bar)
     /// </summary>
-    IRect Position { get; set; }
+    Rect Position { get; set; }
 
     /// <summary>
     /// Gets or sets the X position of the top left point of the window (including borders and title bar)
@@ -113,7 +108,7 @@ public interface IWindow : IDisposable
     /// <summary>
     /// The position of the client after DPI has been considered - needed for OpenGL.Viewport
     /// </summary>
-    IRect Viewport { get; }
+    Rect Viewport { get; }
 
     /// <summary>
     /// Restricts the minimum size of the Window
@@ -144,9 +139,7 @@ public interface IWindow : IDisposable
     /// Triggers whenever the window changes size
     /// </summary>
     event EventHandler Resized;
-    #endregion
 
-    #region Focus
     /// <summary>
     /// Returns whether the window is the currently focussed window (receiving input)
     /// </summary>
@@ -161,9 +154,7 @@ public interface IWindow : IDisposable
     /// Triggers when the window's focus changes
     /// </summary>
     event EventHandler<BoolEventArgs> FocusChanged;
-    #endregion
 
-    #region Cursor
     /// <summary>
     /// Gets or sets the current mouse cursor
     /// </summary>
@@ -178,9 +169,7 @@ public interface IWindow : IDisposable
     /// Gets or sets whether the mouse cursor is locked within the window. Defaults to false.
     /// </summary>
     bool CursorLockedToWindow { get; set; }
-    #endregion
 
-    #region Keyboard Input
     /// <summary>
     /// Called whenever a character, text number or symbol, is input by the keyboard. Will not record modifier keys like shift and alt.
     /// This reflects the actual character input, ie takes into account caps lock, shift keys, numlock etc etc and will catch rapid-fire inputs from a key held down for an extended time. 
@@ -197,10 +186,7 @@ public interface IWindow : IDisposable
     /// Called whenever a keyboard key is released
     /// </summary>
     public event EventHandler<KeyboardKeyEventArgs>? KeyUp;
-    #endregion
 
-    #region OpenGL
     IntPtr DeviceContext { get; }
     IntPtr RenderContext { get; }
-    #endregion
 }

@@ -2,9 +2,9 @@
 {
     public class PositionChangedArgs : EventArgs
     {
-        public IRect NewR;
+        public Rect NewR;
 
-        public PositionChangedArgs(IRect newR)
+        public PositionChangedArgs(Rect newR)
         {
             NewR = newR;
         }

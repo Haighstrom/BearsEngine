@@ -13,7 +13,7 @@ namespace BearsEngine.Graphics
         #endregion
 
         #region Constructors
-        public Line(Colour colour, float thickness, bool thicknessInPixels, IRect rect)
+        public Line(Colour colour, float thickness, bool thicknessInPixels, Rect rect)
             : this(colour, thickness, thicknessInPixels, rect.TopLeft, rect.TopRight, rect.BottomRight, rect.BottomLeft, rect.TopLeft)
         {
         }

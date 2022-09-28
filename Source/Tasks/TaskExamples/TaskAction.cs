@@ -1,10 +1,9 @@
-﻿namespace BearsEngine.Tasks.TaskExamples
+﻿namespace BearsEngine.Tasks;
+
+public class TaskAction : Task
 {
-    public class TaskAction : Task
+    public TaskAction(Action action)
     {
-        public TaskAction(Action action)
-        {
-            ActionsOnComplete.Add(action);
-        }
+        ActionsOnComplete.Add(action);
     }
 }

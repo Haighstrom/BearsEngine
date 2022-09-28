@@ -1,34 +1,33 @@
 ﻿using BearsEngine.Pathfinding;
 
-namespace BearsEngine.Tasks.TaskExamples
+namespace BearsEngine.Tasks;
+
+public class TaskMoveOneLeashed<N> : Task
+    where N : INode
 {
-    public class TaskMoveOneLeashed<N> : Task
-        where N : INode
+    private readonly N _leashNode;
+    private readonly float _leashDistance;
+    private readonly IWaypointableAndPathable<N> _entity;
+
+    public TaskMoveOneLeashed(IWaypointableAndPathable<N> entity, N leashNode, float leashDistance)
     {
-        private readonly N _leashNode;
-        private readonly float _leashDistance;
-        private readonly IWaypointableAndPathable<N> _entity;
+        _entity = entity;
+        _leashNode = leashNode;
+        _leashDistance = leashDistance;
 
-        public TaskMoveOneLeashed(IWaypointableAndPathable<N> entity, N leashNode, float leashDistance)
+        CompletionConditions.Add(() => entity.WaypointController.ReachedDestination);
+    }
+
+    public override void Start()
+    {
+        base.Start();
+        List<N> possibleNodes = new();
+        foreach (var possibleNode in _entity.CurrentNode.ConnectedNodes)
         {
-            _entity = entity;
-            _leashNode = leashNode;
-            _leashDistance = leashDistance;
-
-            CompletionConditions.Add(() => entity.WaypointController.ReachedDestination);
+            if (Math.Max(Math.Abs(possibleNode.X - _leashNode.X), Math.Abs(possibleNode.Y - _leashNode.Y)) <= _leashDistance)
+                possibleNodes.Add((N)possibleNode);
         }
-
-        public override void Start()
-        {
-            base.Start();
-            List<N> possibleNodes = new();
-            foreach (var possibleNode in _entity.CurrentNode.ConnectedNodes)
-            {
-                if (Math.Max(Math.Abs(possibleNode.X - _leashNode.X), Math.Abs(possibleNode.Y - _leashNode.Y)) <= _leashDistance)
-                    possibleNodes.Add((N)possibleNode);
-            }
-            //todo: what if possible nodes is empty?
-            _entity.WaypointController.SetWaypoints(HF.Randomisation.Choose(possibleNodes));
-        }
+        //todo: what if possible nodes is empty?
+        _entity.WaypointController.SetWaypoints(HF.Randomisation.Choose(possibleNodes));
     }
 }

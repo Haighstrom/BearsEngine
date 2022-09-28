@@ -12,9 +12,9 @@ namespace BearsEngine.Worlds.Cameras
         private readonly CameraMSAAShader _mSAAShader;
         private Matrix4 _ortho;
         private float _tileWidth, _tileHeight;
-        private IRect _view = new Rect();
+        private Rect _view = new Rect();
 
-        private Camera(int layer, IRect position)
+        private Camera(int layer, Rect position)
             : base(layer, position)
         {
             Shader = new DefaultShader();
@@ -49,12 +49,12 @@ namespace BearsEngine.Worlds.Cameras
             //_frameBufferShaderPassID = OpenGL.GenFramebuffer();
         }
 
-        public Camera(int layer, IRect position, Point tileSize)
+        public Camera(int layer, Rect position, Point tileSize)
             : this(layer, position, tileSize.X, tileSize.Y)
         {
         }
 
-        public Camera(int layer, IRect position, float tileW, float tileH)
+        public Camera(int layer, Rect position, float tileW, float tileH)
             : this(layer, position)
         {
             FixedTileSize = true;
@@ -65,7 +65,7 @@ namespace BearsEngine.Worlds.Cameras
 
         }
 
-        public Camera(int layer, IRect position, IRect viewport)
+        public Camera(int layer, Rect position, Rect viewport)
             : this(layer, position)
         {
             FixedTileSize = false;
@@ -129,7 +129,7 @@ namespace BearsEngine.Worlds.Cameras
             }
         }
 
-        public virtual IRect View
+        public virtual Rect View
         {
             get => _view;
             set
@@ -209,7 +209,7 @@ namespace BearsEngine.Worlds.Cameras
             return p2;
         }
 
-        public override IRect GetLocalPosition(IRect windowCoords)
+        public override Rect GetLocalPosition(Rect windowCoords)
         {
             Point tl = GetLocalPosition(windowCoords.TopLeft);
             Point br = GetLocalPosition(windowCoords.BottomRight);
@@ -224,7 +224,7 @@ namespace BearsEngine.Worlds.Cameras
                 ));
         }
 
-        public override IRect GetWindowPosition(IRect localCoords)
+        public override Rect GetWindowPosition(Rect localCoords)
         {
             Point tl = GetWindowPosition(localCoords.TopLeft);
             Point br = GetWindowPosition(localCoords.BottomRight);
@@ -326,7 +326,7 @@ namespace BearsEngine.Worlds.Cameras
 
             Matrix4 mv = modelView;
             if (Angle != 0)
-                mv = Matrix4.RotateAroundPoint(ref mv, Angle, Centre.X, Centre.Y);
+                mv = Matrix4.RotateAroundPoint(ref mv, Angle, R.Centre.X, R.Centre.Y);
             mv = Matrix4.Translate(ref mv, X, Y, 0);
 
             //Render with assigned shader

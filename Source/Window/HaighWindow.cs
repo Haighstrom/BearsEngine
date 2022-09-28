@@ -60,7 +60,7 @@ public class HaighWindow : IWindow
 
     #region Position
     public float DPI { get => _implementation.DPI; }
-    public IRect Position
+    public Rect Position
     {
         get => _implementation.Position;
         set => _implementation.Position = value;
@@ -90,7 +90,7 @@ public class HaighWindow : IWindow
         get => _implementation.ClientSize;
         set => _implementation.ClientSize = value;
     }
-    public IRect Viewport => _implementation.Viewport;
+    public Rect Viewport => _implementation.Viewport;
     public Point MinClientSize
     {
         get => _implementation.MinClientSize;

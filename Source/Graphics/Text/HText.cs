@@ -82,12 +82,12 @@ namespace BearsEngine.Worlds.Graphics.Text
         #endregion
 
         #region Constructors
-        public HText(UITheme theme, IRect r, string text)
+        public HText(UITheme theme, Rect r, string text)
             : this(theme.Text, r, text)
         {
         }
 
-        public HText(TextTheme theme, IRect r, string text)
+        public HText(TextTheme theme, Rect r, string text)
             : this(theme.Font, r, text, theme.FontColour)
         {
             ScaleX = ScaleY = theme.FontScale;
@@ -95,13 +95,13 @@ namespace BearsEngine.Worlds.Graphics.Text
             VAlignment = theme.VAlignment;
         }
 
-        public HText(HFont font, IRect r, string text, Colour textColour)
+        public HText(HFont font, Rect r, string text, Colour textColour)
             : this(font, r, text)
         {
             Colour = textColour;
         }
 
-        public HText(HFont font, IRect r, string text)
+        public HText(HFont font, Rect r, string text)
             : this(new DefaultShader(), font, r.X, r.Y, r.W, r.H, text)
         {
         }
@@ -700,7 +700,7 @@ namespace BearsEngine.Worlds.Graphics.Text
             var vertices = new List<Vertex>();
             var lastFont = Font;
 
-            IRect dest = new Rect();
+            Rect dest = new Rect();
 
             float fullAlignmentLineSpacing = float.NaN;
 
@@ -776,7 +776,7 @@ namespace BearsEngine.Worlds.Graphics.Text
                             }
 
                             var c = w.Text[i];
-                            IRect source = w.Font.BitmapPositionNormalised(c);
+                            Rect source = w.Font.BitmapPositionNormalised(c);
                             dest.W = w.Font.BitmapPosition(c).W * ScaleX;
                             dest.H = w.Font.BitmapPosition(c).H * ScaleY;
                             float sizeDifference = line.Height - dest.H;
@@ -826,7 +826,7 @@ namespace BearsEngine.Worlds.Graphics.Text
             string text = Text.Substring(FirstCharToDraw, NumCharsToDraw);
             var len = ScaleX * Font.MeasureString(text).X;
 
-            IRect dest = new Rect()
+            Rect dest = new Rect()
             {
                 H = ScaleY * _font.HighestChar
             };
@@ -852,7 +852,7 @@ namespace BearsEngine.Worlds.Graphics.Text
 
             foreach (char c in text)
             {
-                IRect source = Font.BitmapPositionNormalised(c);
+                Rect source = Font.BitmapPositionNormalised(c);
                 dest.W = Font.BitmapPosition(c).W * ScaleX;
 
                 vertices.Add(HF.Geom.QuadToTris(
@@ -891,7 +891,7 @@ namespace BearsEngine.Worlds.Graphics.Text
             var mv = modelView;
 
             if (Angle != 0)
-                mv = Matrix4.RotateAroundPoint(ref mv, Angle, Centre.X, Centre.Y);
+                mv = Matrix4.RotateAroundPoint(ref mv, Angle, R.Centre.X, R.Centre.Y);
 
             mv = Matrix4.Translate(ref mv, X, Y, 0);
 

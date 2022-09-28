@@ -71,7 +71,7 @@ public class Win32Window : IWindow
     private readonly ExtendedWindowStyle _parentExStyle;
     private bool _disposed = false;
     private MSG _lpMsg;
-    private IRect _userPosition; //100% DPI visible Window Position
+    private Rect _userPosition; //100% DPI visible Window Position
     private RECT _actualPosition; //DPI-adjusted visible Window Position
     private RECT _reportedPosition; //The position SetWindowRect/GetWindowRect uses - includes invisible borders on Win10 (FU Win10)
     private Point _userClientSize; //100% DPI visible Client Size
@@ -508,7 +508,7 @@ public class Win32Window : IWindow
     /// We need to add DPI and invisible borders.
     /// _DPI, _leftInvisBorder, _topInvisBorder, _rightInvisBorder, _bottomInvisBorder must have all been set
     /// </summary>
-    private RECT ReportedParentRect_From_UserParentRect(IRect requested)
+    private RECT ReportedParentRect_From_UserParentRect(Rect requested)
     {
         RECT answer = new() { left = (int)requested.Left, top = (int)requested.Top, right = (int)requested.Right, bottom = (int)requested.Bottom };
 
@@ -525,7 +525,7 @@ public class Win32Window : IWindow
     /// <summary>
     /// Transform the parent rect down to the user coordinations by scaling down by DPI
     /// </summary>
-    private IRect UserParentRect_From_ActualParentRect(RECT rect)
+    private Rect UserParentRect_From_ActualParentRect(RECT rect)
     {
         return new Rect(
             (int)Math.Round(rect.left / DPI),
@@ -770,7 +770,7 @@ public class Win32Window : IWindow
     public float DPI { get; private set; }
 
     #region Position
-    public IRect Position
+    public Rect Position
     {
         get => _userPosition;
         set
@@ -827,7 +827,7 @@ public class Win32Window : IWindow
     }
     #endregion
 
-    public IRect Viewport => new Rect(0, 0, _actualClientPosition.Width, _actualClientPosition.Height);
+    public Rect Viewport => new Rect(0, 0, _actualClientPosition.Width, _actualClientPosition.Height);
     public Point MinClientSize { get; set; }
     public Point MaxClientSize { get; set; }
 

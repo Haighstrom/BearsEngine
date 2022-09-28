@@ -2,10 +2,10 @@
 
 public class HangingController : AddableBase, IUpdatable
 {
-    private IRect _target;
-    private IRect _hangFrom;
+    private Rect _target;
+    private Rect _hangFrom;
 
-    public HangingController(IRect target, IRect hangFrom)
+    public HangingController(Rect target, Rect hangFrom)
     {
         _target = target;
         _hangFrom = hangFrom;

@@ -153,7 +153,7 @@ namespace BearsEngine.Graphics
 
         public bool IsOnEdge(float x, float y) => x == 0 || y == 0 || x == MapW - 1 || y == MapH - 1;
 
-        public IRect DrawArea { get; set; }
+        public Rect DrawArea { get; set; }
         #endregion
 
         #region Methods

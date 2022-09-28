@@ -1,4 +1,4 @@
-﻿namespace BearsEngine.Tasks.TaskExamples;
+﻿namespace BearsEngine.Tasks;
 
 public class TaskShortestRoute : Task
 {

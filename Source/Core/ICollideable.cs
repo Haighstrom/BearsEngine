@@ -1,12 +1,12 @@
 ﻿namespace BearsEngine
 {
-    public interface ICollideable : IAddable, IRect
+    public interface ICollideable : IAddable, IRectangular
     {
-        IRect WindowPosition { get; }
+        Rect WindowPosition { get; }
         bool Collideable { get; set; }
 
         bool Collides(Point p);
-        bool Collides(IRect r);
+        bool Collides(Rect r);
         bool Collides(ICollideable i);
     }
 }

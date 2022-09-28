@@ -417,9 +417,9 @@ public static class HF
         #endregion
 
         #region GenTrianglePolygon
-        public static Polygon GenTrianglePolygon(IRect boundingRect, int border, Direction direction, Colour colour)
+        public static Polygon GenTrianglePolygon(Rect boundingRect, int border, Direction direction, Colour colour)
         {
-            IRect r = boundingRect;
+            Rect r = boundingRect;
 
             return direction switch
             {

@@ -4,7 +4,7 @@
     {
         private float _x, _y, _w, _h;
 
-        public AddableRectBase(IRect r)
+        public AddableRectBase(Rect r)
             : this(r.X, r.Y, r.W, r.H)
         {
         }
@@ -81,33 +81,26 @@
             }
         }
 
-        public float Left => X;
-        public float Right => X + W;
-        public float Top => Y;
-        public float Bottom => Y + H;
-        public Point Size => new(W, H);
-        public Point Centre => new(X + W * 0.5f, Y + H * 0.5f);
-
-        public bool Equals(IRect? other)
+        public Point Size
         {
-            if (other == null)
-                throw new ArgumentNullException(nameof(other));
-
-            return X == other?.X && Y == other?.Y && W == other?.W && H == other?.H;
+            get => new(W, H);
+            set
+            {
+                W = value.X;
+                H = value.Y;
+            }
         }
-        public void SetPosition(float newX, float newY, float newW, float newH)
+
+        public Rect R
         {
-            X = newX;
-            Y = newY;
-            W = newW;
-            H = newH;
-        }
-        public void SetPosition(IRect newPosition)
-        {
-            X = newPosition.X;
-            Y = newPosition.Y;
-            W = newPosition.W;
-            H = newPosition.H;
+            get => new(X, Y, W, H);
+            set
+            {
+                X = value.X;
+                Y = value.Y;
+                W = value.W;
+                H = value.H;
+            }
         }
 
         protected virtual void OnPositionChanged() => PositionChanged?.Invoke(this, new PositionChangedArgs(new Rect(X, Y, W, H)));

@@ -8,41 +8,41 @@ public class Button : Entity
 
     #region Constructors
     #region UITheme Based
-    public Button(int layer, IRect position, string graphic, UITheme theme, string text, Action? actionOnClicked = null)
+    public Button(int layer, Rect position, string graphic, UITheme theme, string text, Action? actionOnClicked = null)
         : this(layer, position, new Image(graphic, position.Size), theme, text, actionOnClicked)
     {
         DefaultColour = Colour.White; //ignore theme colour if we have an Image as graphic.
     }
 
-    public Button(int layer, IRect position, Colour graphic, UITheme theme, string text, Action? actionOnClicked = null)
+    public Button(int layer, Rect position, Colour graphic, UITheme theme, string text, Action? actionOnClicked = null)
         : this(layer, position, new Image(graphic, position.Size), theme, text, actionOnClicked)
     {
         DefaultColour = Colour.White; //ignore theme colour if we have an Image as graphic.
     }
 
-    public Button(int layer, IRect position, string graphic, UITheme theme, Action? actionOnClicked = null)
+    public Button(int layer, Rect position, string graphic, UITheme theme, Action? actionOnClicked = null)
         : this(layer, position, new Image(graphic, position.Size), theme, actionOnClicked)
     {
         DefaultColour = Colour.White; //ignore theme colour if we have an Image as graphic.
     }
 
-    public Button(int layer, IRect position, Colour graphic, UITheme theme, Action? actionOnClicked = null)
+    public Button(int layer, Rect position, Colour graphic, UITheme theme, Action? actionOnClicked = null)
         : this(layer, position, new Image(graphic, position.Size), theme, actionOnClicked)
     {
         DefaultColour = graphic; //ignore theme colour if colour is set
     }
 
-    public Button(int layer, IRect position, UITheme theme, Action? actionOnClicked = null)
+    public Button(int layer, Rect position, UITheme theme, Action? actionOnClicked = null)
         : this(layer, position, new Image(theme.Button.DefaultColour, position.Size), theme, actionOnClicked)
     {
     }
 
     public Button(int layer, IRectGraphic g, UITheme theme, Action? actionOnClicked = null)
-        : this(layer, g, g, theme, actionOnClicked)
+        : this(layer, g.R, g, theme, actionOnClicked)
     {
     }
 
-    public Button(int layer, IRect position, IGraphic graphic, UITheme theme, Action? actionOnClicked = null)
+    public Button(int layer, Rect position, IGraphic graphic, UITheme theme, Action? actionOnClicked = null)
         : this(layer, position.X, position.Y, position.W, position.H, graphic, null, null, null, actionOnClicked)
     {
         DefaultColour = theme.Button.DefaultColour;
@@ -51,7 +51,7 @@ public class Button : Entity
         PressedColour = theme.Button.PressedColour;
     }
 
-    public Button(int layer, IRect position, IGraphic graphic, UITheme theme, string text, Action? actionOnClicked = null)
+    public Button(int layer, Rect position, IGraphic graphic, UITheme theme, string text, Action? actionOnClicked = null)
         : this(layer, position.X, position.Y, position.W, position.H, graphic, theme.Button.Text.Font, theme.Button.Text.FontColour, text, actionOnClicked)
     {
         DefaultColour = theme.Button.DefaultColour;
@@ -62,28 +62,28 @@ public class Button : Entity
     #endregion
 
     #region Standard
-    public Button(int layer, IRect r, string graphic, Action? actionOnClicked = null)
+    public Button(int layer, Rect r, string graphic, Action? actionOnClicked = null)
         : this(layer, r, new Image(graphic, r.Size), actionOnClicked)
     {
     }
 
-    public Button(int layer, IRect r, Colour graphic, Action? actionOnClicked = null)
+    public Button(int layer, Rect r, Colour graphic, Action? actionOnClicked = null)
         : this(layer, r, new Image(graphic, r.Size), actionOnClicked)
     {
         DefaultColour = graphic; //ignore theme colour if colour is set
     }
 
-    public Button(int layer, IRect r, IGraphic? graphic = null, Action? actionOnClicked = null)
+    public Button(int layer, Rect r, IGraphic? graphic = null, Action? actionOnClicked = null)
         : this(layer, r.X, r.Y, r.W, r.H, graphic, null, null, null, actionOnClicked)
     {
     }
 
-    public Button(int layer, IRect r, Colour graphic, HFont font, Colour fontColour, string text = "", Action? actionOnClicked = null)
+    public Button(int layer, Rect r, Colour graphic, HFont font, Colour fontColour, string text = "", Action? actionOnClicked = null)
         : this(layer, r.X, r.Y, r.W, r.H, new Image(graphic, r.Size), font, fontColour, text, actionOnClicked)
     {
     }
 
-    public Button(int layer, IRect r, string graphic, HFont font, Colour fontColour, string text = "", Action? actionOnClicked = null)
+    public Button(int layer, Rect r, string graphic, HFont font, Colour fontColour, string text = "", Action? actionOnClicked = null)
         : this(layer, r.X, r.Y, r.W, r.H, new Image(graphic, r.Size), font, fontColour, text, actionOnClicked)
     {
     }

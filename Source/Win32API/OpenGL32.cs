@@ -862,7 +862,7 @@ internal static class OpenGL32
     {
         glViewport(x, y, w, h);
     }
-    public static void Viewport(IRect viewport)
+    public static void Viewport(Rect viewport)
     {
         glViewport((int)viewport.X, (int)viewport.Y, (int)viewport.W, (int)viewport.H);
     }

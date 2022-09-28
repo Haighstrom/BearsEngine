@@ -12,7 +12,7 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
     #endregion
 
     #region Constructors
-    public Entity(int layer, IRect pos, string graphicPath)
+    public Entity(int layer, Rect pos, string graphicPath)
         : this(layer, pos.X, pos.Y, pos.W, pos.H, new Image(graphicPath, pos.W, pos.H))
     {
     }
@@ -37,7 +37,7 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
     {
     }
 
-    public Entity(int layer, IRect pos, Colour colour)
+    public Entity(int layer, Rect pos, Colour colour)
         : this(layer, pos.X, pos.Y, pos.W, pos.H, new Image(colour, pos.Size))
     {
     }
@@ -53,7 +53,7 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
     }
 
 
-    public Entity(int layer, IRect pos, params IGraphic[] graphics)
+    public Entity(int layer, Rect pos, params IGraphic[] graphics)
         : this(layer, pos.X, pos.Y, pos.W, pos.H, graphics)
     {
     }
@@ -127,15 +127,15 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
     
     public bool MouseIntersecting => Exists && WindowPosition.Contains(HI.MouseWindowP);
     
-    public virtual Point RotationCentre => Centre;
+    public virtual Point RotationCentre => R.Centre;
 
-    public IRect WindowPosition => Exists ? Parent!.GetWindowPosition(this) : Rect.EmptyRect;
+    public Rect WindowPosition => Exists ? Parent!.GetWindowPosition(R) : Rect.EmptyRect;
 
     public virtual bool Visible { get; set; } = true;
 
     public virtual bool Collides(Point p) => WindowPosition.Contains(p);
 
-    public virtual bool Collides(IRect r) => WindowPosition.Intersects(r);
+    public virtual bool Collides(Rect r) => WindowPosition.Intersects(r);
 
     public virtual bool Collides(ICollideable i) => WindowPosition.Intersects(i.WindowPosition);
 
@@ -166,7 +166,7 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
 
     public Point GetWindowPosition(Point localCoords) => Parent != null ? Parent.GetWindowPosition(new Point(X,Y) + localCoords) : new Point();
 
-    public IRect GetWindowPosition(IRect localCoords)
+    public Rect GetWindowPosition(Rect localCoords)
     {
         Point tl = GetWindowPosition(localCoords.TopLeft);
         Point br = GetWindowPosition(localCoords.BottomRight);
@@ -175,7 +175,7 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
 
     public Point GetLocalPosition(Point windowCoords) => Parent.GetLocalPosition(windowCoords - new Point(X, Y));
 
-    public IRect GetLocalPosition(IRect windowCoords)
+    public Rect GetLocalPosition(Rect windowCoords)
     {
         Point tl = GetLocalPosition(windowCoords.TopLeft);
         Point br = GetLocalPosition(windowCoords.BottomRight);
@@ -203,7 +203,7 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
         where E : ICollideable
         => _container.Collide<E>(p, considerChildren);
 
-    public E Collide<E>(IRect r, bool considerChildren = true)
+    public E Collide<E>(Rect r, bool considerChildren = true)
         where E : ICollideable
         => _container.Collide<E>(r, considerChildren);
 
@@ -215,7 +215,7 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
         where E : ICollideable
         => _container.CollideAll<E>(p, considerChildren);
 
-    public IList<E> CollideAll<E>(IRect r, bool considerChildren = true)
+    public IList<E> CollideAll<E>(Rect r, bool considerChildren = true)
         where E : ICollideable
         => _container.CollideAll<E>(r, considerChildren);
 
@@ -262,10 +262,10 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
         MouseExited += (s, a) => stt.Disappear();
         stt.P = directionFromEntity switch
         {
-            Direction.Up => ((IRect)this).TopCentre.Shift(-stt.W / 2, -shift),
-            Direction.Right => ((IRect)this).CentreRight.Shift(shift, -stt.H / 2),
-            Direction.Down => ((IRect)this).BottomCentre.Shift(-stt.W / 2, shift),
-            Direction.Left => ((IRect)this).CentreLeft.Shift(-shift, -stt.H / 2),
+            Direction.Up => R.TopCentre.Shift(-stt.W / 2, -shift),
+            Direction.Right => R.CentreRight.Shift(shift, -stt.H / 2),
+            Direction.Down => R.BottomCentre.Shift(-stt.W / 2, shift),
+            Direction.Left => R.CentreLeft.Shift(-shift, -stt.H / 2),
             _ => throw new Exception("directionFromEntity case not handled in Entity.AddToolTip"),
         };
     //todo: fix HV.Screen.Add(stt);
