@@ -282,8 +282,7 @@ namespace BearsEngine.Worlds.Cameras
             MV = Matrix4.Translate(ref MV, -View.X, -View.Y, 0);
 
             //draw stuff here 
-            if (Container.Visible)
-                Container.Render(ref _ortho, ref MV);
+            base.Render(ref _ortho, ref MV);
 
             //Revert the render target 
             HV.LastBoundFrameBuffer = tempFBID;
