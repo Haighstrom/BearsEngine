@@ -17,7 +17,6 @@ namespace BearsEngine.UI
             _sb.BarPositionChanged += (s, a) => _camera.View.Y = a.MinAmount * _itemsOnPage.Last().R.Bottom;
         }
 
-        #region AddItem
         public void AddItem(IRectAddable e)
         {
             if (_itemsOnPage.Contains(e))
@@ -30,9 +29,8 @@ namespace BearsEngine.UI
 
             ArrangeItems();
         }
-        #endregion
+        
 
-        #region RemoveItem
         public void RemoveItem(IRectAddable e)
         {
             if (!_itemsOnPage.Contains(e))
@@ -45,9 +43,8 @@ namespace BearsEngine.UI
 
             ArrangeItems();
         }
-        #endregion
+        
 
-        #region ClearItems
         public void ClearItems()
         {
             for (int i = _itemsOnPage.Count - 1; i >= 0; --i)
@@ -61,9 +58,8 @@ namespace BearsEngine.UI
 
             ArrangeItems();
         }
-        #endregion
+        
 
-        #region ArrangeItems
         public void ArrangeItems()
         {
             float y = 0;
@@ -74,6 +70,6 @@ namespace BearsEngine.UI
             }
             _sb.AmountFilled = HF.Maths.Clamp(_camera.H / y, 0, 1);
         }
-        #endregion
+        
     }
 }

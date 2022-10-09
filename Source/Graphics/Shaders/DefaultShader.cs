@@ -4,7 +4,6 @@ namespace BearsEngine.Graphics.Shaders;
 
 public class DefaultShader : IShader
 {
-    #region Static
     private static bool _initialised = false;
     private static uint _ID;
     private static int _locationMVMatrix;
@@ -24,21 +23,18 @@ public class DefaultShader : IShader
         _locationTexture = OpenGL32.GetAttribLocation(_ID, "TexCoord");
         _initialised = true;
     }
-    #endregion
+    
 
-    #region Constructors
     public DefaultShader()
     {
         if (!_initialised)
             Initialise();
     }
-    #endregion
+    
 
-    #region IShader
-    #region Render
     public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PrimitiveType drawType)
     {
-        if (_ID != HV.LastBoundShader)
+        if (_ID != BE.LastBoundShader)
             HF.Graphics.BindShader(_ID);
 
         OpenGL32.UniformMatrix4(_locationMVMatrix, 1, false, modelView.Values);
@@ -59,6 +55,6 @@ public class DefaultShader : IShader
         OpenGL32.DisableVertexAttribArray(_locationColour);
         OpenGL32.DisableVertexAttribArray(_locationTexture);
     }
-    #endregion
-    #endregion
+    
+    
 }

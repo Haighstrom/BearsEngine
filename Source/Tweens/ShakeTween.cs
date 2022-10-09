@@ -21,7 +21,7 @@
             _periodCoefficientY = (float)(2 * Math.PI / periodY);
         }
 
-        public override void Update(double elapsed)
+        public override void Update(float elapsed)
         {
             base.Update(elapsed);
 

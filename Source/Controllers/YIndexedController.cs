@@ -2,12 +2,10 @@
 {
     public class YIndexedLayerController : AddableBase, IUpdatable
     {
-        #region Fields
         private readonly float _baseY;
         private readonly Entity _target;
-        #endregion
+        
 
-        #region Constructors
         public YIndexedLayerController(Entity target, float baseY)
         {
             _target = target;
@@ -15,15 +13,14 @@
 
             _target.PositionChanged += OnTargetPositionChanged;
         }
-        #endregion
+        
 
-        #region IUpdateable
         public bool Active { get; set; } = true;
 
-        public void Update(double elapsed)
+        public void Update(float elapsed)
         {
         }
-        #endregion
+        
 
         private void OnTargetPositionChanged(object? sender, PositionChangedArgs e) => _target.Layer = (int)(_baseY - e.NewR.Y);
     }

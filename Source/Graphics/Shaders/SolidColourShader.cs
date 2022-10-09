@@ -4,7 +4,6 @@ namespace BearsEngine.Graphics.Shaders;
 
 public class SolidColourShader : IShader
 {
-    #region Static
     private static bool _initialised = false;
     private static uint _ID;
     private static int _locationMVMatrix;
@@ -22,21 +21,17 @@ public class SolidColourShader : IShader
         _locationColour = OpenGL32.GetAttribLocation(_ID, "Colour");
         _initialised = true;
     }
-    #endregion
+    
 
-    #region Constructors
     public SolidColourShader()
     {
         if (!_initialised)
             Initialise();
     }
-    #endregion
-
-    #region IShader
-    #region Render
+    
     public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PrimitiveType drawType)
     {
-        if (_ID != HV.LastBoundShader)
+        if (_ID != BE.LastBoundShader)
             HF.Graphics.BindShader(_ID);
 
         OpenGL32.UniformMatrix4(_locationMVMatrix, 1, false, modelView.Values);
@@ -53,6 +48,6 @@ public class SolidColourShader : IShader
         OpenGL32.DisableVertexAttribArray(_locationPosition);
         OpenGL32.DisableVertexAttribArray(_locationColour);
     }
-    #endregion
-    #endregion
+    
+    
 }

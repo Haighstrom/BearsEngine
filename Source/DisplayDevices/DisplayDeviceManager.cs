@@ -4,31 +4,27 @@ namespace BearsEngine.DisplayDevices;
 
 public sealed class DisplayDeviceManager : IDisplayDeviceManager
 {
-    #region Fields
     private readonly List<IDisplayDevice> _availableDevices = new();
     private IDisplayDevice _primaryDevice;
-    #endregion
+    
 
-    #region Constructors
     public DisplayDeviceManager() 
     {
         RefreshDevices();
         //todo: get this working again
         //SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
     }
-    #endregion
+    
 
-    #region Private Methods
     private void OnDisplaySettingsChanged(object sender, EventArgs e)
     {
-        Console.WriteLine("Change in display settings detected. Refreshing display devices. \n");
+        Serilog.Log.Information("Change in display settings detected. Refreshing display devices. \n");
         RefreshDevices();
     }
 
-    #region RefreshDevices
     private void RefreshDevices()
     {
-        Console.WriteLine("-------Display Devices-------\n");
+        Serilog.Log.Information("-------Display Devices-------\n");
 
         //save old device list so we can copy device "original settings" if it existed before
         //this is to cover the case that user has changed resolution from this program (which will later want to be restored), and then changed windows settings, triggering this function
@@ -81,31 +77,27 @@ public sealed class DisplayDeviceManager : IDisplayDeviceManager
             _availableDevices.Add(device);
             if (isPrimary) _primaryDevice = device;
 
-            Console.WriteLine(device.ToString());
-            Console.WriteLine();
+            Serilog.Log.Information(device.ToString());
+            Serilog.Log.Information("");
         }
 
-        Console.WriteLine("-----------------------------\n");
+        Serilog.Log.Information("-----------------------------\n");
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region IDisplayDeviceManager
-    #region PrimaryDevice
     public IDisplayDevice PrimaryDevice
     {
         get { return _primaryDevice; }
     }
-    #endregion
+    
 
-    #region AvailableDevices
     public List<IDisplayDevice> AvailableDevices
     {
         get { return _availableDevices; }
     }
-    #endregion
+    
 
-    #region GetDevice
     public IDisplayDevice GetDevice(DisplayDeviceIndex index)
     {
         if (index == DisplayDeviceIndex.Primary) return _primaryDevice;
@@ -114,9 +106,8 @@ public sealed class DisplayDeviceManager : IDisplayDeviceManager
         else 
             return null;
     }
-    #endregion
+    
 
-    #region ChangeSettings
     public void ChangeSettings(IDisplayDevice device, DisplayDeviceSettings settings)
     {
         device.ChangeSettings(settings);
@@ -133,9 +124,8 @@ public sealed class DisplayDeviceManager : IDisplayDeviceManager
     {
         GetDevice(index).ChangeSettings(width, height, colourDepth, refreshRate);
     }
-    #endregion
     
-    #region ChangeResolution
+    
     public void ChangeResolution(IDisplayDevice device, int width, int height)
     {
         device.ChangeResolution(width, height);
@@ -144,9 +134,8 @@ public sealed class DisplayDeviceManager : IDisplayDeviceManager
     {
         GetDevice(index).ChangeResolution(width, height);
     }
-    #endregion
+    
 
-    #region RestoreSettings
     public void RestoreSettings()
     {
         foreach (IDisplayDevice device in _availableDevices)
@@ -161,10 +150,9 @@ public sealed class DisplayDeviceManager : IDisplayDeviceManager
     {
         GetDevice(index).RestoreSettings();
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region Dispose
     public void Dispose()
     {
         Dispose(true);
@@ -182,5 +170,5 @@ public sealed class DisplayDeviceManager : IDisplayDeviceManager
     {
         Dispose(false);
     }
-    #endregion
+    
 }

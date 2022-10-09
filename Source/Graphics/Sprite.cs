@@ -5,16 +5,14 @@ namespace BearsEngine.Graphics
 {
     public class Sprite : RectGraphicBase
     {
-        #region Fields
         private Texture _texture;
         private Vertex[] _vertices;
         private bool _verticesChanged = true;
         private Point _UV1, _UV2, _UV3, _UV4;
         private readonly float _frameW, _frameH;
         protected int _currentFrame = 0;
-        #endregion
+        
 
-        #region Constructors
         public Sprite(string imgPath, Rect r, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
             : this(imgPath, r.X, r.Y, r.W, r.H, spriteSheetColumns, spriteSheetRows, initialFrame)
         {
@@ -51,9 +49,8 @@ namespace BearsEngine.Graphics
 
             Frame = initialFrame;
         }
-        #endregion
+        
 
-        #region w
         public override float W
         {
             set
@@ -62,9 +59,8 @@ namespace BearsEngine.Graphics
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region h
         public override float H
         {
             set
@@ -73,9 +69,8 @@ namespace BearsEngine.Graphics
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region Colour
         public override Colour Colour
         {
             set
@@ -84,9 +79,8 @@ namespace BearsEngine.Graphics
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region Texture
         public Texture Texture
         {
             get => _texture;
@@ -96,13 +90,12 @@ namespace BearsEngine.Graphics
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
         public int FramesAcross { get; }
 
         public int FramesDown { get; }
 
-        #region Frame
         public int Frame
         {
             get => _currentFrame;
@@ -126,7 +119,7 @@ namespace BearsEngine.Graphics
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
         public int TotalFrames => FramesAcross * FramesDown;
 
@@ -135,7 +128,6 @@ namespace BearsEngine.Graphics
         protected float PaddingWidth => (float)HF.Graphics.TEXTURE_SPRITE_PADDING / Texture.Width;
         protected float PaddingHeight => (float)HF.Graphics.TEXTURE_SPRITE_PADDING / Texture.Height;
 
-        #region Render
         public override void Render(ref Matrix4 projection, ref Matrix4 modelView)
         {
             if (W == 0 || H == 0)
@@ -143,10 +135,10 @@ namespace BearsEngine.Graphics
 
             var mv = Matrix4.Translate(ref modelView, X, Y, 0);
 
-            if (HV.LastBoundTexture != Texture.ID)
+            if (BE.LastBoundTexture != Texture.ID)
             {
                 OpenGL32.glBindTexture(TextureTarget.Texture2D, Texture.ID);
-                HV.LastBoundTexture = Texture.ID;
+                BE.LastBoundTexture = Texture.ID;
             }
 
             BindVertexBuffer();
@@ -170,6 +162,6 @@ namespace BearsEngine.Graphics
 
             UnbindVertexBuffer();
         }
-        #endregion
+        
     }
 }

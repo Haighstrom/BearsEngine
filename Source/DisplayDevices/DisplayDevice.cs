@@ -7,11 +7,9 @@ public class DisplayDevice : IDisplayDevice
 {
     private const float MAX_REFRESH_RATE_DIFFERENCE = 3.0f;
 
-    #region Fields
     private List<DisplayDeviceSettings> _availableSettings;
-    #endregion
+    
 
-    #region Constructors
     internal DisplayDevice(string deviceID, DisplayDeviceIndex index, bool primary, DisplayDeviceSettings currentSettings, IEnumerable<DisplayDeviceSettings> availableSettings)
     {
         DeviceID = deviceID;
@@ -20,57 +18,48 @@ public class DisplayDevice : IDisplayDevice
         Settings = currentSettings;
         _availableSettings = new List<DisplayDeviceSettings>(availableSettings);
     }
-    #endregion
+    
 
-    #region Properties
     public string DeviceID { get; }
     public DisplayDeviceIndex DeviceIndex { get; }
     public bool IsPrimary { get; }
     public DisplayDeviceSettings Settings { get; private set; }
     public Rect BoundingRect => Settings.BoundingRect;
 
-    #region X
     public int X { get { return Settings.X; } }
-    #endregion
+    
 
-    #region Y
     public int Y { get { return Settings.Y; } }
-    #endregion
+    
 
-    #region Width
     public int Width
     {
         get { return Settings.Width; }
     }
-    #endregion
+    
 
-    #region Height
     public int Height
     {
         get { return Settings.Height; }
     }
-    #endregion
+    
 
-    #region ColourDepth
     public int ColourDepth
     {
         get { return Settings.ColourDepth; }
     }
-    #endregion
+    
 
-    #region RefreshRate
     public float RefreshRate
     {
         get { return Settings.RefreshRate; }
     }
-    #endregion
+    
 
-    #region OriginalSettings
     public DisplayDeviceSettings OriginalSettings { get; internal set; }
-    #endregion
-    #endregion
+    
+    
 
-    #region Methods
     public DisplayDeviceSettings GetSettings(int width, int height)
     {
         return AvailableResolutions.Single(x => x.Width == width && x.Height == height);
@@ -83,9 +72,8 @@ public class DisplayDevice : IDisplayDevice
                x.ColourDepth == colourDepth &&
                x.RefreshRate == refreshRate);
     }
-    #endregion
+    
 
-    #region Private Methods
     private bool TryChangeSettings(DisplayDeviceSettings targetSettings)
     {
         DeviceMode mode = null;
@@ -108,9 +96,8 @@ public class DisplayDevice : IDisplayDevice
     {
         return TryChangeSettings(null);
     }
-    #endregion
+    
 
-    #region IDisplayDevice
     public void ChangeSettings(int width, int height, int colourDepth, float refreshRate)
     {
         ChangeSettings(GetSettings(width, height, colourDepth, refreshRate));
@@ -157,20 +144,17 @@ public class DisplayDevice : IDisplayDevice
         get { return X + Width / 2; }
     }
 
-    #region CentreY
     public int CentreY
     {
         get { return Y + Height / 2; }
     }
-    #endregion
-    #region AvailableSettings
+    
     public ReadOnlyCollection<DisplayDeviceSettings> AvailableSettings
     {
         get { return _availableSettings.AsReadOnly(); }
     }
-    #endregion
+    
 
-    #region AvailableResolutions
     public ReadOnlyCollection<DisplayDeviceSettings> AvailableResolutions
     {
         get
@@ -200,14 +184,13 @@ public class DisplayDevice : IDisplayDevice
             return ret.AsReadOnly();
         }
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region Overrides
     public override string ToString()
     {
         return string.Format("Device {0}{1} \n\nWindows ID: {2} \n{3} \n{4} settings available", DeviceIndex, IsPrimary ? " (Primary Display)" : "", DeviceID, Settings.ToString(), AvailableSettings.Count);
     }
-    #endregion
+    
 
 }

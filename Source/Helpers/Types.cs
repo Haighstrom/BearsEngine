@@ -4,7 +4,6 @@ namespace BearsEngine;
 
 public static class Types
 {
-    #region GetUnmanagedSize
     /// <summary>
     /// Returns the unmanaged size in bytes of an object.
     /// </summary>
@@ -37,5 +36,5 @@ public static class Types
 
         return t1;
     }
-    #endregion
+    
 }

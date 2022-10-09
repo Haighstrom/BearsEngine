@@ -4,8 +4,6 @@
     {
         protected SpriteMap SpriteMap { get; private set; }
 
-        #region Constructors
-        #region Variable Tile Size Cameras
         public TerrainCamera(int mapW, int mapH, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, Rect position, float tileSizeW, float tileSizeH)
             : this(HF.Arrays.FillArray(mapW, mapH, defaultIndex), defaultIndex, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, tileSizeW, tileSizeH)
         {
@@ -19,9 +17,8 @@
             MaxX = map.GetLength(0);
             MaxY = map.GetLength(1);
         }
-        #endregion
+        
 
-        #region Fixed Tile Size Cameras
         public TerrainCamera(int mapW, int mapH, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, Rect position, Rect viewport)
             : this(HF.Arrays.FillArray(mapW, mapH, defaultIndex), defaultIndex, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, viewport)
         {
@@ -35,10 +32,9 @@
             MaxX = map.GetLength(0);
             MaxY = map.GetLength(1);
         }
-        #endregion
-        #endregion
+        
+        
 
-        #region Indexers
         public virtual int this[Point p]
         {
             get => SpriteMap[(int)p.X, (int)p.Y];
@@ -50,9 +46,8 @@
             get => SpriteMap[x, y];
             set => SpriteMap[x, y] = value;
         }
-        #endregion
+        
 
-        #region Properties
         public int[,] MapValues => SpriteMap.MapValues;
 
         public int DefaultIndex
@@ -64,16 +59,14 @@
         public int MapW => SpriteMap.MapW;
 
         public int MapH => SpriteMap.MapH;
-        #endregion
+        
 
-        #region Methods
         public override bool IsInBounds(Point p) => SpriteMap.IsInBounds(p);
 
         public override bool IsInBounds(float x, float y) => SpriteMap.IsInBounds(x, y);
 
         public override bool IsOnEdge(float x, float y) => SpriteMap.IsOnEdge(x, y);
 
-        #region Resize
         public virtual void ResizeMap(int newW, int newH)
         {
             SpriteMap.Resize(newW, newH);
@@ -89,9 +82,9 @@
             MaxX = newW;
             MaxY = newH;
         }
-        #endregion
+        
 
         public void SetAllMapValue(int newValue) => SpriteMap.SetAllMapValue(newValue);
-        #endregion
+        
     }
 }

@@ -2,7 +2,6 @@
 
 public struct UITheme
 {
-    #region Default
     public static UITheme Default => new()
     {
         Text = TextTheme.Default,
@@ -14,7 +13,7 @@ public struct UITheme
         Scrollbar = ScrollbarTheme.Default,
         ScrollingListPanel = ScrollingListPanelTheme.Default,
     };
-    #endregion
+    
 
     public TextTheme Text;
     public ButtonTheme Button;

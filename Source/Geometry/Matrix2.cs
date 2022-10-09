@@ -9,8 +9,6 @@ public struct Matrix2
     //(0  2)
     //(1  3)
 
-    #region Static
-    #region Premade Matrices
     public static Matrix2 Identity => new(1, 0, 0, 1);
     public static Matrix2 Zero => new();
 
@@ -24,19 +22,17 @@ public struct Matrix2
     {
         return new Matrix2(scaleX, 0, 0, scaleY);
     }
-    #endregion
+    
 
-    #region Add
     public static Matrix2 Add(ref Matrix2 mat1, ref Matrix2 mat2)
     {
         float[] values = mat1._values.Zip(mat2._values, (a, b) => a + b).ToArray();
         return new Matrix2(values);
     }
-    #endregion
+    
 
     public static Matrix2 Subtract(ref Matrix2 mat1, ref Matrix2 mat2) => new(mat1._values.Zip(mat2._values, (a, b) => a - b).ToArray());
 
-    #region Multiply
     public static Matrix2 Multiply(ref Matrix2 mat1, ref Matrix2 mat2)
     {
         return new Matrix2
@@ -80,25 +76,22 @@ public struct Matrix2
                 p.X * mat._values[1] + p.Y * mat._values[3]
             );
     }
-    #endregion                         
+                             
 
-    #region Rotate
     public static Matrix2 RotateAroundZ(ref Matrix2 mat, float angleInDegrees)
     {
         Matrix2 rotMat = CreateRotation(angleInDegrees);
         return Multiply(ref mat, ref rotMat);
     }        
-    #endregion
+    
 
-    #region Scale
     public static Matrix2 ScaleAroundOrigin(ref Matrix2 mat, float scaleX, float scaleY)
     {
         Matrix2 scaleMat = CreateScale(scaleX, scaleY);
         return Multiply(ref mat, ref scaleMat);
     }
-    #endregion
+    
 
-    #region Invert
     public static Matrix2 Inverse(ref Matrix2 mat)
     {
         float det = mat.Determinant;
@@ -116,14 +109,12 @@ public struct Matrix2
                 mat._values[0] * invDet
             );
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region Fields
     private float[] _values;
-    #endregion
+    
 
-    #region Constructors
     public Matrix2(float m0, float m1, float m2, float m3)
     {
         _values = new float[4] { m0, m1, m2, m3 };
@@ -138,9 +129,8 @@ public struct Matrix2
 
         _values = values;
     }
-    #endregion
+    
 
-    #region Indexers
     public float this[int x, int y]
     {
         get
@@ -156,9 +146,8 @@ public struct Matrix2
             _values[x * 2 + y] = value;
         }
     }
-    #endregion
+    
 
-    #region Properties
     /// <summary>
     /// Matrix elements, a 4 element array indexed as
     /// (0 2)
@@ -174,10 +163,8 @@ public struct Matrix2
     /// Gets the determinant of this matrix
     /// </summary>
     public float Determinant => _values[0] * _values[3] - _values[1] * _values[2];
-    #endregion
+    
 
-    #region Methods
-    #region Transpose
     /// <summary>
     /// Returns the transpose of this Matrix2 - all elements mirrored in [1 1] diagonal. The values of this instance will not be altered, returns a new matrix.
     /// </summary>
@@ -192,10 +179,7 @@ public struct Matrix2
                 _values[3]
             );
     }
-    #endregion
-    #endregion
-
-    #region Operators
+    
     /// <summary>
     /// Scalar multiplication.
     /// </summary>
@@ -237,5 +221,5 @@ public struct Matrix2
     /// <param name="right">right-hand operand</param>
     /// <returns>A new Matrix2 which holds the result of the subtraction</returns>
     public static Matrix2 operator -(Matrix2 left, Matrix2 right) => Subtract(ref left, ref right);
-    #endregion
+    
 }

@@ -12,7 +12,6 @@ namespace BearsEngine.Graphics
         private Point _UV5, _UV6, _UV7, _UV8;
         private float _amount;
 
-        #region Constructors
         public ProgressBar(string graphicPath, Point size, Point pos, float initialPercentage = 0)
             : this(graphicPath, pos.X, pos.Y, size.X, size.Y, initialPercentage)
         {
@@ -44,9 +43,8 @@ namespace BearsEngine.Graphics
             _UV3 = new Point(0, 0.5f);
             _UV4 = new Point(1, 0.5f);
         }
-        #endregion
+        
 
-        #region w
         public override float W
         {
             set
@@ -55,9 +53,8 @@ namespace BearsEngine.Graphics
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region h
         public override float H
         {
             set
@@ -66,9 +63,8 @@ namespace BearsEngine.Graphics
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region Colour
         public override Colour Colour
         {
             set
@@ -77,9 +73,8 @@ namespace BearsEngine.Graphics
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region AmountFilled
         /// <summary>
         /// [0,1]
         /// </summary>
@@ -97,9 +92,8 @@ namespace BearsEngine.Graphics
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region Render
         public override void Render(ref Matrix4 projection, ref Matrix4 modelView)
         {
             if (W == 0 || H == 0)
@@ -107,10 +101,10 @@ namespace BearsEngine.Graphics
 
             var mv = Matrix4.Translate(ref modelView, X, Y, 0);
 
-            if (HV.LastBoundTexture != _texture.ID)
+            if (BE.LastBoundTexture != _texture.ID)
             {
                 OpenGL32.glBindTexture(TextureTarget.Texture2D, _texture.ID);
-                HV.LastBoundTexture = _texture.ID;
+                BE.LastBoundTexture = _texture.ID;
             }
 
             BindVertexBuffer();
@@ -150,6 +144,6 @@ namespace BearsEngine.Graphics
 
             UnbindVertexBuffer();
         }
-        #endregion
+        
     }
 }

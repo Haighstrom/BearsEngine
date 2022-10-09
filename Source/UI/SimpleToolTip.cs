@@ -4,17 +4,14 @@ namespace BearsEngine.UI;
 
 public class SimpleToolTip : Entity
 {
-    #region Fields
     private Image _bg;
     private HText _text;
     private readonly float _borderThickness, _textToEdgeGap;
     private readonly Colour _borderColour, _backgroundColour;
     private bool _waitingToAppear = false;
     private float _timer;
-    #endregion
+    
 
-    #region Constructors
-    #region Theme Based
     public SimpleToolTip(UITheme theme, string initialText)
         : this(theme, 0, 0, initialText)
     {
@@ -24,9 +21,8 @@ public class SimpleToolTip : Entity
         : this(x, y, theme.Label.Text.Font, theme.Label.Text.FontColour, theme.Label.Panel.Border.Thickness, theme.Label.Panel.Border.Colour, theme.Label.Panel.BackgroundColour, theme.Label.EdgeToTextSpace, initialText)
     {
     }
-    #endregion
+    
 
-    #region Non Theme Based
     public SimpleToolTip(HFont font, Colour textColour, Colour borderColour, Colour backgroundColour, float borderThickness, float edgeToTextSpace)
         : this(0, 0, font, textColour, borderThickness, borderColour, backgroundColour, edgeToTextSpace, "", false)
     {
@@ -53,26 +49,23 @@ public class SimpleToolTip : Entity
         SetText(font, textColour, initialText);
         Visible = initiallyVisible;
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region Text
     public string Text
     {
         get => _text.Text;
         set => SetText(_text.Font, _text.Colour, value);
     }
-    #endregion
+    
 
     public float TimeToAppear { get; set; } = 0.4f;
 
-    #region Methods
-    #region Update
-    public override void Update(double elapsed)
+    public override void Update(float elapsed)
     {
         base.Update(elapsed);
 
-        ClampWithinWindow();
+        //ClampWithinWindow();
 
         if (_waitingToAppear)
         {
@@ -83,9 +76,8 @@ public class SimpleToolTip : Entity
             }
         }
     }
-    #endregion
+    
 
-    #region SetText
     public void SetText(HFont font, Colour textColour, string text)
     {
         int textW = (int)font.MeasureString(text).X;
@@ -107,9 +99,8 @@ public class SimpleToolTip : Entity
 
         Add(_bg, _text);
     }
-    #endregion
+    
 
-    #region CountTimerDownThenAppear
     public void CountTimerDownThenAppear()
     {
         if (!_waitingToAppear)
@@ -118,16 +109,15 @@ public class SimpleToolTip : Entity
             _timer = TimeToAppear;
         }
     }
-    #endregion
+    
 
     public void Appear() => Visible = true;
 
-    #region Disappear
     public void Disappear()
     {
         Visible = false;
         _waitingToAppear = false;
     }
-    #endregion
-    #endregion
+    
+    
 }

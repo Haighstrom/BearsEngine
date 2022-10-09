@@ -4,7 +4,6 @@ namespace BearsEngine.Graphics.Shaders;
 
 public class SpritesheetShader : IShader
 {
-    #region Static
     private static bool _initialised = false;
     private static uint _ID;
     private static int _locationMVMatrix;
@@ -32,9 +31,8 @@ public class SpritesheetShader : IShader
         _locationTileH = OpenGL32.GetUniformLocation(_ID, "TileH");
         _initialised = true;
     }
-    #endregion
+    
 
-    #region Constructors
     public SpritesheetShader(float tileW, float tileH)
     {
         if (!_initialised)
@@ -43,13 +41,11 @@ public class SpritesheetShader : IShader
         TileW = tileW;
         TileH = tileH;
     }
-    #endregion
+    
 
-    #region IShader
-    #region Render
     public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PrimitiveType drawType)
     {
-        if (_ID != HV.LastBoundShader)
+        if (_ID != BE.LastBoundShader)
             HF.Graphics.BindShader(_ID);
 
         OpenGL32.UniformMatrix4(_locationMVMatrix, 1, false, modelView.Values);
@@ -75,10 +71,9 @@ public class SpritesheetShader : IShader
         OpenGL32.DisableVertexAttribArray(_locationColour);
         OpenGL32.DisableVertexAttribArray(_locationTexture);
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region Properties
     public int IndexX { get; set; }
 
     public int IndexY { get; set; }
@@ -86,5 +81,5 @@ public class SpritesheetShader : IShader
     public float TileW { get; set; }
 
     public float TileH { get; set; }
-    #endregion
+    
 }

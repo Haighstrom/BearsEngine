@@ -5,27 +5,22 @@
 /// </summary>
 public class CellFormat
 {
-    #region Static Members
     public static CellFormat Fixed(int pixels) => new() { FormatMode = CellFormatMode.Fixed, FixedSize = pixels, Weight = 0 };
     public static CellFormat Weighted(float weight = 1f) => new() { FormatMode = CellFormatMode.Weighted, Weight = weight, FixedSize = 0 };
     public static CellFormat Fit => new() { FormatMode = CellFormatMode.Fit, Weight = 0, FixedSize = 0 };
-    #endregion
+    
 
-    #region Properties
     public CellFormatMode FormatMode { get; set; }
     public GridOrientation GridOrientation { get; set; }
     public int FixedSize { get; private set; }
     public float Weight { get; private set; }
-    #endregion
+    
 
-    #region Constructors
     private CellFormat()
     {
     }
-    #endregion
+    
 
-    #region Methods
-    #region GetSize
     public int GetSize(int totalSize, float totalWeights, List<IRectangular> childrenInRowOrCol)
     {
         switch (FormatMode)
@@ -63,9 +58,8 @@ public class CellFormat
                 throw new NotImplementedException();
         }
     }
-    #endregion
+    
 
-    #region GetFixedSize
     //Return Size allocated by FIt or Fixed pixel size - to calculate how much Weighted space is remaining...
     public int GetFixedSize(List<IRectangular> childrenInRowOrCol)
     {
@@ -104,6 +98,6 @@ public class CellFormat
                 throw new NotImplementedException();
         }
     }
-    #endregion
-    #endregion
+    
+    
 }

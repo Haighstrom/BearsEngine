@@ -8,7 +8,6 @@ namespace BearsEngine
 {
     public static class HaighIO
     {
-        #region enum CopyOptions
         [Flags]
         public enum CopyOptions : uint
         {
@@ -26,14 +25,12 @@ namespace BearsEngine
             /// </summary>
             BringAll = 6,
         }
-        #endregion
+        
 
-        #region File Operations
         public static bool FileExists(string filePath) => File.Exists(filePath);
 
         public static bool DirectoryExists(string directoryPath) => Directory.Exists(directoryPath);
 
-        #region DeleteFile
         public static void DeleteFile(string filePath)
         {
             if (!FileExists(filePath))
@@ -41,9 +38,8 @@ namespace BearsEngine
 
             File.Delete(filePath);
         }
-        #endregion
+        
 
-        #region DeleteDirectory
         public static void DeleteDirectory(string directoryPath)
         {
             if (!DirectoryExists(directoryPath))
@@ -64,15 +60,13 @@ namespace BearsEngine
                 }
             }
         }
-        #endregion
+        
 
-        #region GetDirectories
         public static List<string> GetDirectories(string path, bool includeSubDirectories) => Directory.GetDirectories(path, "*", includeSubDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).ToList();
 
         public static List<string> GetDirectories(string path, bool includeSubDirectories, string searchPattern) => Directory.GetDirectories(path, searchPattern, includeSubDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).ToList();
-        #endregion
+        
 
-        #region CopyFiles
         /// <summary>
         /// Copies all files and optionally folders from one directory to another
         /// </summary>
@@ -101,11 +95,9 @@ namespace BearsEngine
             foreach (string file in Directory.GetFiles(fromDir, "*", so))
                 File.Copy(file, Path.Combine(toDir, file.Substring(fromDir.Length + 1)), (options & CopyOptions.Overwrite) > 0);
         }
-        #endregion
-        #endregion
+        
+        
 
-        #region .txt
-        #region SaveTXT
         /// <summary>
         /// Saves a single line of text into a .txt file
         /// </summary>
@@ -131,25 +123,21 @@ namespace BearsEngine
 
             File.WriteAllLines(filename, lines);
         }
-        #endregion
+        
 
-        #region TxtToArray
         /// <summary>
         /// Puts the contents of a .txt file into an array
         /// </summary>
         public static string[] LoadTXTAsArray(string filename) => File.ReadAllLines(filename);
-        #endregion
+        
 
-        #region TxtToString
         /// <summary>
         /// Puts the contents of a .txt file into a string
         /// </summary>
         public static string LoadTXTAsString(string filename) => File.ReadAllText(filename);
-        #endregion
-        #endregion
+        
+        
 
-        #region .csv
-        #region SaveCSV
         /// <summary>
         /// Saves a 2D array to a .csv file
         /// </summary>
@@ -170,9 +158,8 @@ namespace BearsEngine
 
             File.WriteAllText(filename, csv.ToString());
         }
-        #endregion
+        
 
-        #region LoadCSV
         /// <summary>
         /// Loads a .csv file into a 2D array
         /// </summary>
@@ -194,15 +181,12 @@ namespace BearsEngine
 
             return ret;
         }
-        #endregion
-        #endregion
+        
+        
 
-        #region BMP
         public static System.Drawing.Bitmap LoadBMP(string filePath) => new(filePath);
-        #endregion
+        
 
-        #region XML
-        #region SaveXML
         /// <summary>
         /// Saves a struct to a file containing XML 
         /// </summary>
@@ -216,9 +200,8 @@ namespace BearsEngine
             writer.Serialize(file, fileToSave);
             file.Close();
         }
-        #endregion
+        
 
-        #region LoadXML
         /// <summary>
         /// Creates a struct from a file containing an XML
         /// </summary>
@@ -235,11 +218,9 @@ namespace BearsEngine
             }
             else throw new Exception("File not found: {fileName}");
         }
-        #endregion
-        #endregion
+        
+        
 
-        #region JSON
-        #region SerialiseToJSON
         /// <summary>
         /// Converts a struct to its JSON string equivalent
         /// </summary>
@@ -250,16 +231,14 @@ namespace BearsEngine
                 Converters = { new JSON.Array2DConverter() },
                 IncludeFields = true,
             });
-        #endregion
+        
 
-        #region SaveJSON
         /// <summary>
         /// Creates a text file with a single line of JSON representing a struct
         /// </summary>
         public static void SaveJSON<M>(string filename, M @object, bool indent = true) => SaveTXT(filename, SerialiseToJSON(@object, indent));
-        #endregion
+        
 
-        #region DeserialiseFromJSON
         /// <summary>
         /// Constructs an instance of a struct from its JSON string equivalent
         /// </summary>
@@ -269,21 +248,19 @@ namespace BearsEngine
                 Converters = { new JSON.Array2DConverter() },
                 IncludeFields = true,
             });
-        #endregion
+        
 
-        #region LoadJSON
         /// <summary>
         /// Creates a struct from a file containing a single line of JSON
         /// </summary>
         public static M LoadJSON<M>(string filename) => DeserialiseFromJSON<M>(LoadTXTAsString(filename));
-        #endregion
+        
 
-        #region LoadJSONFromMultilineTxt
         /// <summary>
         /// Reads lines from a txt file and deserialises each row as an individual json string
         /// </summary>
         public static List<M> LoadJSONFromMultilineTxt<M>(string filename) => LoadTXTAsArray(filename).Select(s => DeserialiseFromJSON<M>(s)).ToList()!; //todo: null check
-        #endregion
-        #endregion
+        
+        
     }
 }

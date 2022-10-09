@@ -52,16 +52,14 @@
     //    HV.OrthoMatrix = Matrix4.CreateOrtho(windowWidth, windowHeight);
     //}
 
-    #region LogPeriodicInfo
 
     //public bool DoPeriodicLogging { get; set; } = false;
     //protected virtual void LogPeriodicInfo()
     //{
     //    HConsole.Log("Updates: {0}ps, Renders: {1}ps.", UpdateFPS, RenderFPS);
     //}
-    #endregion
+    
 
-    #region Run
     //public void Run() => Run(DEFAULT_RATE);
 
     //public void Run(int frameRate) => Run(frameRate, frameRate);
@@ -183,7 +181,7 @@
     //    Scene.End();
     //    OnClose();
     //}
-    #endregion
+    
 
     //public int UpdateFPS { get; private set; }
 

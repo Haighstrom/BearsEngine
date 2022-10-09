@@ -4,15 +4,13 @@ namespace BearsEngine.UI
 {
     public class PagedPanel : Entity
     {
-        #region Fields
         private readonly List<Entity> _pages;
         private int _page;
         private readonly HText _pageNumText;
 
         private readonly Button _minusArrow, _plusArrow;
-        #endregion
+        
 
-        #region Constructors
         public PagedPanel(int layer, UITheme uiTheme, Rect textPosition, Rect arrow1Pos, Rect arrow2Pos, string arrow1GFX, string arrow2GFX, List<Entity> pages)
             : base(layer)
         {
@@ -41,10 +39,8 @@ namespace BearsEngine.UI
             Add(_plusArrow = new Button(layer, arrow2Pos, arrow2GFX, () => ChangePage(1)));
             _plusArrow.SetDefaultAutoShadingColours();
         }
-        #endregion
+        
 
-        #region Methods
-        #region ChangePage
         private void ChangePage(int delta)
         {
             int newpage = HF.Maths.Mod(_page + delta, _pages.Count);
@@ -62,7 +58,7 @@ namespace BearsEngine.UI
 
             _pageNumText.Text = _page + 1 + " / " + _pages.Count;
         }
-        #endregion
-        #endregion
+        
+        
     }
 }

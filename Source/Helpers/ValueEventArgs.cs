@@ -1,11 +1,11 @@
 ﻿namespace BearsEngine;
 
-public class ValueEventArgs<T> : EventArgs
+public class EventArgs<T> : EventArgs
 {
-    public ValueEventArgs(T value)
+    public EventArgs(T data)
     {
-        Value = value;
+        Data = data;
     }
 
-    public T Value { get; private set; }
+    public T Data { get; private set; }
 }

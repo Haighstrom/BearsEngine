@@ -25,7 +25,6 @@ public static class HConsole
     /// </summary>
     public static bool ThrowErrorsOnWarnings { get; set; } = false;
 
-    #region HandleOpenGLOutput
     public static void HandleOpenGLOutput(DebugSource source, DebugType type, uint id, DebugSeverity severity, int length, IntPtr message, IntPtr userParam)
     {
         Log("");
@@ -43,9 +42,8 @@ public static class HConsole
         Log("-------------------");
         Log("");
     }
-    #endregion
+    
 
-    #region SizeInCharacters
     public static Point SizeInCharacters
     {
         get
@@ -59,9 +57,8 @@ public static class HConsole
 
     public static int WidthInCharacters => (int)SizeInCharacters.X;
     public static int HeightInCharacters => (int)SizeInCharacters.Y;
-    #endregion
+    
 
-    #region LogToFile
     private static class Logger
     {
         private static TextWriter _current;
@@ -114,9 +111,8 @@ public static class HConsole
         Logger.Init();
     }
 
-    #endregion
+    
 
-    #region Log
     public static void Log(object o, params object[] args)
     {
         if (o == null)
@@ -157,9 +153,8 @@ public static class HConsole
             Console.WriteLine(message);
         }
     }
-    #endregion
+    
 
-    #region LogException
     /// <summary>
     /// Pass in any thrown exceptions to make them be logged to console and/or log file, and then the log file closed so it is actually written to. The stream writer only actually writes to the file when it is closed.
     /// </summary>
@@ -179,9 +174,8 @@ public static class HConsole
 
         throw e;
     }
-    #endregion
+    
 
-    #region CheckOpenGLError
     /// <summary>
     /// Perform 
     /// </summary>
@@ -198,9 +192,8 @@ public static class HConsole
 
         return false;
     }
-    #endregion
+    
 
-    #region StartTimer
     /// <summary>
     /// Start a Stopwatch timer for debugging diagnostics purposes.
     /// </summary>
@@ -214,9 +207,8 @@ public static class HConsole
 
         _timersDict.Add(operationName, t);
     }
-    #endregion
+    
 
-    #region StopTimer
     /// <summary>
     /// Stops a timer specified by operationName string matching one already started with the same name, and displays its information to the console.
     /// </summary>
@@ -238,7 +230,7 @@ public static class HConsole
         
         return millisecs;
     }
-    #endregion
+    
 
     public static void Warning(string message, bool blockExecutionInDebug = false)
     {
@@ -257,116 +249,31 @@ public static class HConsole
 #endif
     }
 
-    #region Show
-    public static void Show()
-    {
-        Kernal32.AllocConsole();
-
-        //this shite is explained here:
-        //https://developercommunity.visualstudio.com/content/problem/12166/console-output-is-gone-in-vs2017-works-fine-when-d.html
-        UnredirectConsole();
-    }
-
-    public static void Show(int x, int y, int w, int h)
-    {
-        Show();
-        MoveConsoleTo(x, y, w, h);
-    }
-    #endregion
-
-    #region Hide
     public static void Hide()
     {
         Kernal32.FreeConsole();
     }
-    #endregion
+    
 
-    #region Dispose
     public static void Dispose()
     {
         Hide();
     }
-    #endregion
+    
 
-    #region MoveConsoleTo
     public static void MoveConsoleTo(int x, int y, int w, int h)
     {
         User32.MoveWindow(Handle, x, y, w, h, true);
     }
-    #endregion
+    
 
-    #region Maximise
     public static void Maximize()
     {
         Process p = Process.GetCurrentProcess();
         User32.ShowWindow(p.MainWindowHandle, ShowWindowCommand.MAXIMIZE);
     }
-    #endregion
+    
 
-    #region UnredirectConsole
-    public static void UnredirectConsole()
-    {
-        Kernal32.SetStdHandle(HandleType.STD_OUTPUT_HANDLE, GetConsoleStandardOutput());
-        Kernal32.SetStdHandle(HandleType.STD_INPUT_HANDLE, GetConsoleStandardInput());
-        Kernal32.SetStdHandle(HandleType.STD_ERROR_HANDLE, GetConsoleStandardError());
-    }
-    #endregion
-
-    #region GetConsoleStandardInput
-    private static IntPtr GetConsoleStandardInput()
-    {
-        var handle = Kernal32.CreateFile
-            ("CONIN$"
-            , DesiredAccess.GenericRead | DesiredAccess.GenericWrite
-            , FileShare.ReadWrite
-            , IntPtr.Zero
-            , FileMode.Open
-            , FileAttributes.Normal
-            , IntPtr.Zero
-            );
-        if (handle == InvalidHandleValue)
-            return InvalidHandleValue;
-        return handle;
-    }
-    #endregion
-
-    #region GetConsoleStandardOutput
-    private static IntPtr GetConsoleStandardOutput()
-    {
-        var handle = Kernal32.CreateFile
-            ("CONOUT$"
-            , DesiredAccess.GenericWrite | DesiredAccess.GenericWrite
-            , FileShare.ReadWrite
-            , IntPtr.Zero
-            , FileMode.Open
-            , FileAttributes.Normal
-            , IntPtr.Zero
-            );
-        if (handle == InvalidHandleValue)
-            return InvalidHandleValue;
-        return handle;
-    }
-    #endregion
-
-    #region GetConsoleStandardError
-    private static IntPtr GetConsoleStandardError()
-    {
-        var handle = Kernal32.CreateFile
-            ("CONERR$"
-            , DesiredAccess.GenericWrite | DesiredAccess.GenericWrite
-            , FileShare.ReadWrite
-            , IntPtr.Zero
-            , FileMode.Open
-            , FileAttributes.Normal
-            , IntPtr.Zero
-            );
-        if (handle == InvalidHandleValue)
-            return InvalidHandleValue;
-        return handle;
-    }
-    #endregion
-
-    #region MaxWidth
     public static int MaxWidth
     {
         get
@@ -380,9 +287,8 @@ public static class HConsole
             return mInfo.Work.Width;
         }
     }
-    #endregion
+    
 
-    #region MaxHeight
     public static int MaxHeight
     {
         get
@@ -396,5 +302,5 @@ public static class HConsole
             return mInfo.Work.Height;
         }
     }
-    #endregion
+    
 }

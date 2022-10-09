@@ -2,18 +2,15 @@
 
 public class Scrollbar : Entity
 {
-    #region private class Bar
     private class Bar : Button
     {
-        #region Fields
         private readonly ScrollbarDirection _direction;
         private Rect _fullPosition;
         private float _amountFilled;
         private bool _dragging;
         private float _dragStart;
-        #endregion
+        
 
-        #region Constructors
         public Bar(ScrollbarDirection direction, Rect position, int border, UITheme theme)
             : this(direction, position, border, theme.Scrollbar.Bar.DefaultColour, theme.Scrollbar.Bar.HoverColour, theme.Scrollbar.Bar.PressedColour, theme.Scrollbar.Bar.UnclickableColour)
         {
@@ -35,10 +32,8 @@ public class Scrollbar : Entity
 
             Add(BackgroundGraphic = new Image(barColour, r));
         }
-        #endregion
+        
 
-        #region Properties
-        #region AmountFilled
         public float AmountFilled
         {
             get => _amountFilled;
@@ -52,7 +47,7 @@ public class Scrollbar : Entity
                 RecalculateSizes();
             }
         }
-        #endregion
+        
 
         public float MinIncrement { get; set; } = 0;
 
@@ -74,11 +69,9 @@ public class Scrollbar : Entity
                 RecalculateSizes();
             }
         }
-        #endregion
+        
 
-        #region Methods
-        #region OnLeftPressed
-        public override void OnLeftPressed()
+        protected override void OnLeftPressed()
         {
             base.OnLeftPressed();
 
@@ -89,18 +82,8 @@ public class Scrollbar : Entity
             else
                 _dragStart = HI.MouseWindowY - Y;
         }
-        #endregion
 
-        #region OnNoMouseEvent
-        public override void OnNoMouseEvent()
-        {
-            if (!_dragging)
-                BackgroundGraphic.Colour = DefaultColour;
-        }
-        #endregion
-
-        #region Update
-        public override void Update(double elapsed)
+        public override void Update(float elapsed)
         {
             base.Update(elapsed);
 
@@ -133,9 +116,8 @@ public class Scrollbar : Entity
                         BarPositionChanged?.Invoke(this, new ScrollbarPositionArgs(MinAmount, MaxAmount));
                 }
         }
-        #endregion
+        
 
-        #region RecalculateSizes
         internal void RecalculateSizes()
         {
             if (_direction == ScrollbarDirection.Horizontal)
@@ -149,9 +131,8 @@ public class Scrollbar : Entity
                 Y = HF.Maths.Clamp(Y, _fullPosition.Y, _fullPosition.Bottom - H);
             }
         }
-        #endregion
+        
 
-        #region MoveBy
         public void MoveBy(float amount)
         {
             if (_direction == ScrollbarDirection.Horizontal)
@@ -179,25 +160,21 @@ public class Scrollbar : Entity
                     BarPositionChanged?.Invoke(this, new ScrollbarPositionArgs(MinAmount, MaxAmount));
             }
         }
-        #endregion
-        #endregion
+        
+        
 
-        #region Events
         public event EventHandler<ScrollbarPositionArgs> BarPositionChanged;
-        #endregion
+        
     }
-    #endregion
+    
 
-    #region Fields
     private readonly ScrollbarDirection _direction;
     private readonly Image _barBG;
     private readonly Bar _bar;
     private readonly Button _minus, _plus;
     private readonly Action<int> _actionOnMove;
-    #endregion
+    
 
-    #region Constructors
-    #region UITheme Based
     public Scrollbar(int layer, Rect r, ScrollbarDirection direction, UITheme theme)
         : this(layer,
               r,
@@ -216,9 +193,8 @@ public class Scrollbar : Entity
               theme.Scrollbar.Arrow.UnclickableColour)
     {
     }
-    #endregion
+    
 
-    #region Standard
     public Scrollbar(int layer, Rect fullPosition, ScrollbarDirection direction, Colour barBackgroundColour, Colour barDefaultColour, Colour barHoverColour, Colour barPressedColour, Colour barUnclickableButton, int edgeToBarSpace, Colour arrowBG, IGraphic minusArrow, IGraphic plusArrow, Colour arrowHoverColour, Colour arrowPressedColour, Colour arrowUnclickableColour)
         : base(layer, fullPosition)
     {
@@ -260,10 +236,9 @@ public class Scrollbar : Entity
         });
         _plus.Add(new Entity(2, b2.Zeroed, arrowBG));
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region Properties
     public float AmountFilled
     {
         get => _bar.AmountFilled;
@@ -275,11 +250,8 @@ public class Scrollbar : Entity
         get => _bar.MinIncrement;
         set => _bar.MinIncrement = value;
     }
-    #endregion
-
-    #region Methods
-    #region OnLeftPressed
-    public override void OnLeftPressed()
+    
+    protected override void OnLeftPressed()
     {
         base.OnLeftClicked();
 
@@ -293,9 +265,7 @@ public class Scrollbar : Entity
         //        _bar.CurrentInterval += Math.Sign(HI.MouseWindowY - _bar.WindowPosition.Centre.Y);
         //}
     }
-    #endregion
 
-    #region Resize
     public void Resize(float length)
     {
         if (_direction == ScrollbarDirection.Horizontal)
@@ -313,7 +283,7 @@ public class Scrollbar : Entity
             _bar.FullPosition = new Rect(0, _bar.FullPosition.W, _bar.FullPosition.W, length - 2 * _bar.FullPosition.W);
         }
     }
-    #endregion
+    
 
     /// <summary>
     /// Move the scrollbar by a specified amount.
@@ -322,9 +292,8 @@ public class Scrollbar : Entity
     {
         _bar.MoveBy(amount);
     }
-    #endregion
+    
 
-    #region Events
     public event EventHandler<ScrollbarPositionArgs> BarPositionChanged;
-    #endregion
+    
 }

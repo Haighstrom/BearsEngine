@@ -5,7 +5,6 @@ namespace BearsEngine.Graphics
 {
     public class SpriteMap : AddableRectBase, IRectGraphic
     {
-        #region Fields
         private Colour _colour = Colour.White;
         private int _layer = 999;
         private readonly SpritesheetShader _shader;
@@ -15,9 +14,8 @@ namespace BearsEngine.Graphics
         private readonly float _ssTileW;
         private readonly float _ssTileH;
         private readonly int _ssColumns;
-        #endregion
+        
 
-        #region Constructors
         public SpriteMap(int mapW, int mapH, int defaultIndex, float tileW, float tileH, string spritesheetPath, int spriteSheetColumns, int spriteSheetRows)
             : this(HF.Arrays.FillArray(mapW, mapH, defaultIndex), defaultIndex, tileW, tileH, spritesheetPath, spriteSheetColumns, spriteSheetRows)
         {
@@ -43,31 +41,28 @@ namespace BearsEngine.Graphics
 
             UpdateVertices();
         }
-        #endregion
+        
 
-        #region Indexers
         public int this[int x, int y]
         {
             get => MapValues[x, y];
             set => MapValues[x, y] = value;
         }
-        #endregion
+        
 
-        #region IRenderable
         public bool Visible { get; set; } = true;
 
-        #region Render
         public void Render(ref Matrix4 projection, ref Matrix4 modelView)
         {
             var mv = Matrix4.Translate(ref modelView, X, Y, 0);
 
-            if (HV.LastBoundTexture != _texture.ID)
+            if (BE.LastBoundTexture != _texture.ID)
             {
                 OpenGL32.glBindTexture(TextureTarget.Texture2D, _texture.ID);
-                HV.LastBoundTexture = _texture.ID;
+                BE.LastBoundTexture = _texture.ID;
             }
 
-            if (HV.LastBoundVertexBuffer != _ID)
+            if (BE.LastBoundVertexBuffer != _ID)
                 Bind();
 
             Matrix4 tileMatrix = Matrix4.Identity;
@@ -84,11 +79,9 @@ namespace BearsEngine.Graphics
                     _shader.Render(ref projection, ref tileMatrix, _vertices.Length, PrimitiveType.TriangleStrip);
                 }
         }
-        #endregion
-        #endregion
+        
+        
 
-        #region IRenderableOnLayer
-        #region Layer
         public int Layer
         {
             get => _layer;
@@ -102,42 +95,37 @@ namespace BearsEngine.Graphics
                 _layer = value;
             }
         }
-        #endregion
+        
 
         public event EventHandler<LayerChangedArgs> LayerChanged = delegate { };
-        #endregion
+        
 
-        #region IGraphic
-        #region Colour
         public Colour Colour
         {
             get => _colour;
             set => _colour = value;
         }
-        #endregion
+        
 
-        #region Alpha
         public byte Alpha
         {
             get => _colour.A;
             set => _colour.A = value;
         }
-        #endregion
+        
 
         public bool ResizeWithParent { get; set; } = true;
 
-        #region Resize
         public void Resize(float xScale, float yScale)
         {
             W *= xScale;
             H *= yScale;
         }
-        #endregion
+        
 
         public bool IsOnScreen => true; //todo: HV.Window.ClientZeroed.Intersects(Parent.GetWindowPosition(DrawArea));
-        #endregion
+        
 
-        #region Properties
         public int[,] MapValues { get; set; }
         public int DefaultIndex { get; set; }
 
@@ -154,26 +142,22 @@ namespace BearsEngine.Graphics
         public bool IsOnEdge(float x, float y) => x == 0 || y == 0 || x == MapW - 1 || y == MapH - 1;
 
         public Rect DrawArea { get; set; }
-        #endregion
+        
 
-        #region Methods
-        #region Bind
         public void Bind()
         {
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, _ID);
-            HV.LastBoundVertexBuffer = _ID;
+            BE.LastBoundVertexBuffer = _ID;
         }
-        #endregion
+        
 
-        #region Unbind
         public void Unbind()
         {
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            HV.LastBoundVertexBuffer = 0;
+            BE.LastBoundVertexBuffer = 0;
         }
-        #endregion
+        
 
-        #region UpdateVertices
         private void UpdateVertices()
         {
             Bind();
@@ -187,13 +171,11 @@ namespace BearsEngine.Graphics
             OpenGL32.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * Vertex.STRIDE, _vertices, BufferUsageHint.StreamDraw);
             Unbind();
         }
-        #endregion
+        
 
-        #region SetAllMapValues
         public void SetAllMapValue(int newValue) => MapValues = HF.Arrays.FillArray(MapW, MapH, newValue);
-        #endregion
+        
 
-        #region Resize
         public void Resize(int newW, int newH) => Resize(newW, newH, DefaultIndex);
 
         public void Resize(int newW, int newH, int newIndex)
@@ -212,7 +194,7 @@ namespace BearsEngine.Graphics
 
             MapValues = newMap;
         }
-        #endregion
-        #endregion
+        
+        
     }
 }

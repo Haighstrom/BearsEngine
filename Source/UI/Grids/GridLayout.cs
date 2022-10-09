@@ -5,7 +5,6 @@
 /// </summary>
 public class GridLayout : Entity
 {
-    #region Properties
     public bool IsFull => FindNextEmptyCell() == null;
     public int[] NextIndex => FindNextEmptyCell();
     public int NextRow => NextIndex[0];
@@ -76,17 +75,15 @@ public class GridLayout : Entity
     }
 
     public GridAlignment[,] GridAlignments { get; set; }
-    #endregion
+    
 
-    #region Fields
     private int _margin = 0;
     private int _columnSpacing = 0;
     private int _rowSpacing = 0;
     private List<CellFormat> _rowFormat = new();
     private List<CellFormat> _columnFormat = new();
-    #endregion
+    
 
-    #region Constructors
     public GridLayout(int layer, Rect position, List<CellFormat> rowFormat, List<CellFormat> columnFormat)
         : base(layer, position)
     {
@@ -111,11 +108,8 @@ public class GridLayout : Entity
 
         SetDefaultFormats();
     }
-    #endregion
+    
 
-    #region Methods       
-
-    #region Add
     public E Add<E>(E e, int row, int column, GridAlignment gridAlignment = GridAlignment.Fill)
         where E : IRectAddable
     {
@@ -151,9 +145,8 @@ public class GridLayout : Entity
     }
 
     public void Add<E>(IRectAddable e) => Add(e, GridAlignment.Fill);
-    #endregion
+    
 
-    #region FindNextEmptyCell
     private int[] FindNextEmptyCell()
     {
         for (int i = 0; i < Rows; i++)
@@ -164,9 +157,8 @@ public class GridLayout : Entity
         //return null if there are not any spaces left..
         return null;
     }
-    #endregion
+    
 
-    #region GetEntitiesInColumn
     public List<IRectangular> GetEntitiesInColumn(int col)
     {
         var l = new List<IRectangular>();
@@ -177,9 +169,8 @@ public class GridLayout : Entity
 
         return l;
     }
-    #endregion
+    
 
-    #region GetEntitiesInRow
     public List<IRectangular> GetEntitiesInRow(int row)
     {
         var l = new List<IRectangular>();
@@ -190,9 +181,8 @@ public class GridLayout : Entity
 
         return l;
     }
-    #endregion
+    
 
-    #region GetEntityPosRect
     /// <summary>
     /// Return GetPosRect, but also take into account the GridAlignment, for entities that do not fill the grid cell.
     /// </summary>
@@ -280,17 +270,14 @@ public class GridLayout : Entity
         }
 
     }
-    #endregion
+    
 
-    #region GetNextEntityPos
     private Rect GetNextEntityPos(GridAlignment gridAlignment, Rect entRect) => GetEntityPosRect(NextRow, NextColumn, gridAlignment, entRect);
-    #endregion
+    
 
-    #region GetNextPos
     private Rect GetNextPos() => GetPosRect(NextRow, NextColumn);
-    #endregion
+    
 
-    #region GetPosRect
     private Rect GetPosRect(int rowIdx, int colIdx)
     {
         //Some error checking and verification
@@ -335,9 +322,8 @@ public class GridLayout : Entity
 
         return new Rect(xPos, yPos, wdth, hgt);
     }
-    #endregion
+    
 
-    #region GetTotalFixedColSize
     private int GetTotalFixedColSize()
     {
         int total = 0;
@@ -346,9 +332,8 @@ public class GridLayout : Entity
 
         return total;
     }
-    #endregion
+    
 
-    #region GetTotalFixedRowSize
     private int GetTotalFixedRowSize()
     {
         int total = 0;
@@ -357,9 +342,8 @@ public class GridLayout : Entity
 
         return total;
     }
-    #endregion
+    
 
-    #region GetTotalWeight
     private float GetTotalWeight(List<CellFormat> formats)
     {
         float total = 0;
@@ -368,18 +352,16 @@ public class GridLayout : Entity
 
         return total;
     }
-    #endregion
+    
 
-    #region OnSizeChanged
     protected override void OnSizeChanged(ResizeEventArgs args)
     {
         base.OnSizeChanged(args);
 
         UpdatePositions();
     }
-    #endregion                
+                    
 
-    #region SetDefaultFormats
     private void SetDefaultFormats()
     {
         _rowFormat = new List<CellFormat>();
@@ -390,9 +372,8 @@ public class GridLayout : Entity
         for (int j = 0; j < Columns; j++)
             _columnFormat.Add(CellFormat.Weighted(1f));
     }
-    #endregion
+    
 
-    #region UpdatePositions
     /// <summary>
     /// After any change etc, Resize everything to meet updated params
     /// </summary>
@@ -409,6 +390,6 @@ public class GridLayout : Entity
                     Children[i, j].H = rect.H;
                 }
     }
-    #endregion
-    #endregion
+    
+    
 }

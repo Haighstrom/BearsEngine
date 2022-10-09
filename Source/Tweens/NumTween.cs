@@ -13,7 +13,7 @@
             _range = endValue - startValue;
         }
 
-        public override void Update(double elapsed)
+        public override void Update(float elapsed)
         {
             base.Update(elapsed);
             Value = _startValue + _range * Progress;

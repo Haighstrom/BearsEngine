@@ -13,7 +13,7 @@
             _colourRange = new Colour(toColour.R - fromColour.R, toColour.G - fromColour.G, toColour.B - fromColour.B, toColour.A - fromColour.A);
         }
 
-        public override void Update(double elapsed)
+        public override void Update(float elapsed)
         {
             base.Update(elapsed);
 

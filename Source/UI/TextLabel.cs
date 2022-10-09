@@ -4,11 +4,9 @@ namespace BearsEngine.UI;
 
 public class TextLabel : Entity
 {
-    #region Fields
     private readonly HText _hText;
-    #endregion
+    
 
-    #region Constructors
     public TextLabel(int layer, Rect position, Colour labelColour, HFont font, string text, Colour textColour)
         : base(layer, position, labelColour)
     {
@@ -29,14 +27,13 @@ public class TextLabel : Entity
             VAlignment = VAlignment.Centred,
         });
     }
-    #endregion
+    
 
-    #region Properties
     public string Text
     {
         get => _hText.Text;
         set => _hText.Text = value;
     }
     public Colour TextColour { get { return _hText.Colour; } set { _hText.Colour = value; } }
-    #endregion
+    
 }

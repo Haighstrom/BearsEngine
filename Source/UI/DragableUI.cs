@@ -23,15 +23,16 @@ public class DragableUI : Entity
 
     protected virtual Rect DragGrabArea => R;
 
-    #region Update
-    public override void Update(double elapsed)
+    public override Rect WindowPosition => Parent!.GetWindowPosition(DragGrabArea);
+
+    public override void Update(float elapsed)
     {
         base.Update(elapsed);
 
         if (!Visible)
             return;
 
-        if (Dragable && HI.MouseLeftPressed && DragGrabArea.Contains(Parent.GetLocalPosition(HI.MouseWindowP)))
+        if (Dragable && HI.MouseLeftPressed && MouseIntersecting)
         {
             Dragging = true;
             OnStartedDragging();
@@ -51,9 +52,8 @@ public class DragableUI : Entity
             Y = HI.MouseWindowY - _dragStartY;
         }
     }
-    #endregion
+    
 
-    #region Events
     protected virtual void OnStartedDragging()
     {
         StartedDragging(this, EventArgs.Empty);
@@ -64,5 +64,5 @@ public class DragableUI : Entity
         StoppedDragging(this, EventArgs.Empty);
     }
     public event EventHandler StoppedDragging = delegate { };
-    #endregion
+    
 }

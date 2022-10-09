@@ -20,5 +20,5 @@ public class HangingController : AddableBase, IUpdatable
         _target.Y = _hangFrom.Bottom;
     }
 
-    public virtual void Update(double elapsed) => UpdatePosition();
+    public virtual void Update(float elapsed) => UpdatePosition();
 }

@@ -4,8 +4,6 @@ public class Checkbox : Button
 {
     private readonly IGraphic _tickGraphic;
 
-    #region Constructors
-    #region UITheme Based
     public Checkbox(int layer, Rect r, string tickGraphic, UITheme theme, bool startTicked)
         : this(layer, r, theme.Button.DefaultColour, tickGraphic, theme, startTicked)
     {
@@ -31,9 +29,8 @@ public class Checkbox : Button
         HoverColour = theme.Button.HoverColour;
         PressedColour = theme.Button.PressedColour;
     }
-    #endregion
+    
 
-    #region Standard
     public Checkbox(int layer, Rect r, string boxGraphic, string tickGraphic, bool startTicked)
         : this(layer, r, new Image(boxGraphic, r.Size), new Image(tickGraphic, r.Size), startTicked)
     {
@@ -51,10 +48,9 @@ public class Checkbox : Button
         Add(_tickGraphic = tickGraphic);
         _tickGraphic.Visible = startTicked;
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region Properties
     public bool IsChecked
     {
         get => _tickGraphic.Visible;
@@ -71,22 +67,20 @@ public class Checkbox : Button
                 Unchecked?.Invoke(this, EventArgs.Empty);
         }
     }
-    #endregion
 
-    #region Methods
-    public override void OnLeftDoubleClicked()
-    {
-        base.OnLeftDoubleClicked();
-        OnLeftClicked();
-    }
-    public override void OnLeftClicked()
+    //protected override void OnLeftDoubleClicked()
+    //{
+    //    base.OnLeftDoubleClicked();
+    //    OnLeftClicked();
+    //}
+
+    protected override void OnLeftClicked()
     {
         base.OnLeftClicked();
         IsChecked = !IsChecked;
     }
-    #endregion
+    
 
-    #region Events
     public event EventHandler<EventArgs> Checked, Unchecked;
-    #endregion
+    
 }

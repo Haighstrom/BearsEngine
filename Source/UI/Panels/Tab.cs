@@ -5,13 +5,11 @@ namespace BearsEngine.UI
 {
     public class Tab : Entity
     {
-        #region Fields
         private readonly IGraphic _activatedGraphic, _deactivatedGraphic;
         private readonly List<IAddable> _itemsOnPage = new();
         protected HText _title;
-        #endregion
+        
 
-        #region Constructors
         public Tab(Point size, string activatedGFX, string deactivatedGFX, UITheme theme, string tabText, int tabBorder = 0, HAlignment ha = HAlignment.Centred, VAlignment va = VAlignment.Centred)
             : this(size, activatedGFX, deactivatedGFX)
         {
@@ -35,14 +33,12 @@ namespace BearsEngine.UI
             Add(_activatedGraphic = new Image(activatedGFX, Size) { Visible = false });
             Add(_deactivatedGraphic = new Image(deactivatedGFX, Size));
         }
-        #endregion
+        
 
         public ReadOnlyCollection<IAddable> Items => _itemsOnPage.AsReadOnly();
 
         public TabbedPanel TPParent { get; internal set; }
 
-        #region Methods
-        #region AddItem
         public void AddItem(IAddable a)
         {
             if (_itemsOnPage.Contains(a))
@@ -52,9 +48,8 @@ namespace BearsEngine.UI
             TPParent?.Panel.Add(a);
             a.Removed += (o, e) => { _itemsOnPage.Remove((IAddable)o); };
         }
-        #endregion
+        
 
-        #region Activate
         protected internal virtual void Activate()
         {
             _activatedGraphic.Visible = true;
@@ -71,9 +66,8 @@ namespace BearsEngine.UI
 
             Layer = 0;
         }
-        #endregion
+        
 
-        #region Deactivate
         protected internal void Deactivate()
         {
             _activatedGraphic.Visible = false;
@@ -90,7 +84,7 @@ namespace BearsEngine.UI
 
             Layer = 2;
         }
-        #endregion
-        #endregion
+        
+        
     }
 }

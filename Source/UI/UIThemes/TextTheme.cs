@@ -4,7 +4,6 @@ namespace BearsEngine.UI;
 
 public struct TextTheme
 {
-    #region Default
     public static TextTheme Default => new()
     {
         Font = HFont.Default,
@@ -13,7 +12,7 @@ public struct TextTheme
         VAlignment = VAlignment.Top,
         FontScale = 1,
     };
-    #endregion
+    
 
     public TextTheme(TextTheme theme)
     {

@@ -6,15 +6,13 @@ namespace BearsEngine.Input;
 
 public sealed class MouseManager : IMouseManager
 {
-    #region Fields
     private readonly List<MouseState> _mice = new();
     private readonly List<string> _names = new();
     private readonly Dictionary<IntPtr, int> _regdDevices = new();
     private readonly object _syncRoot = new();
     private readonly IntPtr _msgWindowHandle;
-    #endregion
+    
 
-    #region Constructors
     public MouseManager(IntPtr messageWindowHandle)
     {
         if (messageWindowHandle == IntPtr.Zero)
@@ -24,11 +22,7 @@ public sealed class MouseManager : IMouseManager
 
         RefreshDevices();
     }
-    #endregion
-
-    #region Methods
-
-    #region GetDeviceName
+    
     static string GetDeviceName(RawInputDeviceList dev)
     {
         // get name size
@@ -43,9 +37,8 @@ public sealed class MouseManager : IMouseManager
 
         return name;
     }
-    #endregion
+    
 
-    #region FindRegistryKey
     static private RegistryKey FindRegistryKey(string name)
     {
         if (name.Length < 4)
@@ -70,9 +63,8 @@ public sealed class MouseManager : IMouseManager
         RegistryKey regkey = Registry.LocalMachine.OpenSubKey(findme);
         return regkey;
     }
-    #endregion
+    
 
-    #region RegisterRawDevice
     private void RegisterRawDevice(IntPtr window, string device)
     {
         // Mouse is 1/2 (page/id). See http://www.microsoft.com/whdc/device/input/HID_HWID.mspx
@@ -92,12 +84,7 @@ public sealed class MouseManager : IMouseManager
             Console.WriteLine("Registered Mouse {0}: {1}", _mice.Count, device);
         }
     }
-    #endregion
-
-    #endregion
-
-    #region IMouseManager
-    #region State
+    
     public MouseState State
     {
         get
@@ -117,9 +104,7 @@ public sealed class MouseManager : IMouseManager
             }
         }
     }
-    #endregion
-
-    #region GetState(int index)
+    
     public MouseState GetState(int index)
     {
         lock (_syncRoot)
@@ -130,9 +115,7 @@ public sealed class MouseManager : IMouseManager
                 return new MouseState();
         }
     }
-    #endregion
-
-    #region RefreshDevices()
+    
     public void RefreshDevices()
     {
         lock (_syncRoot)
@@ -218,9 +201,7 @@ public sealed class MouseManager : IMouseManager
 
         //Console.WriteLine();
     }
-    #endregion
-
-    #region ProcessInput(RawInput data)
+    
     internal bool ProcessInput(RawInput data)
     {
         RawMouse mData = data.Data.Mouse;
@@ -319,6 +300,6 @@ public sealed class MouseManager : IMouseManager
             return true;
         }
     }
-    #endregion
-    #endregion
+    
+    
 }

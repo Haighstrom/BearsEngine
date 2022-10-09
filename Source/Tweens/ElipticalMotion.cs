@@ -23,7 +23,7 @@
             _angleRange = 2 * (float)Math.PI;
         }
 
-        public override void Update(double elapsed)
+        public override void Update(float elapsed)
         {
             base.Update(elapsed);
 

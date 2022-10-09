@@ -7,10 +7,8 @@ namespace BearsEngine;
 [StructLayout(LayoutKind.Sequential)]
 public struct Point3 : IEquatable<Point3>
 {
-    #region Static
     public static readonly Point3 Zero = new();
 
-    #region DotProduct
     /// <summary>
     /// Scalar or dot product
     /// </summary>
@@ -21,9 +19,8 @@ public struct Point3 : IEquatable<Point3>
     {
         return p1.DotProduct(p2);
     }
-    #endregion
+    
 
-    #region CrossProduct
     /// <summary>
     /// Returns Vector or Cross Product between two Point3s, a x b
     /// </summary>
@@ -39,23 +36,20 @@ public struct Point3 : IEquatable<Point3>
                 a.x * b.y - a.y * b.x
             );
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region Fields
     private float _x, _y, _z;
-    #endregion
+    
 
-    #region Constructors
     public Point3(float x, float y, float z)
     {
         _x = x;
         _y = y;
         _z = z;
     }
-    #endregion
+    
 
-    #region Properties
     public float x { get => _x; set => _x = value; }
     public float y { get => _y; set => _y = value; }
     public float z { get => _z; set => _z = value; }
@@ -75,7 +69,6 @@ public struct Point3 : IEquatable<Point3>
     public float Length => (float)Math.Sqrt(x * x + y * y + z * z);
     public float LengthSquared => x * x + y * y + z * z;
 
-    #region Normal
     /// <summary>
     /// Returns a copy this Point, but with magnitude 1. Does not modify this Point.
     /// </summary>
@@ -91,11 +84,9 @@ public struct Point3 : IEquatable<Point3>
             return new Point3(x / l, y / l, z / l);
         }
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region Methods
-    #region Normalize
     /// <summary>
     /// Normalize this Point3 - set it to have magnitude 1. If it's length is zero, it will be set to (0,0,0,0).
     /// </summary>
@@ -113,9 +104,8 @@ public struct Point3 : IEquatable<Point3>
         y /= l;
         z /= l;
     }
-    #endregion
+    
 
-    #region Clamp
     /// <summary>
     /// Preserves direction of the Point3 but clamps its magnitude to below maxLength
     /// </summary>
@@ -133,9 +123,8 @@ public struct Point3 : IEquatable<Point3>
 
         return this;
     }
-    #endregion
+    
 
-    #region DotProduct
     /// <summary>
     /// Returns dot product (scalar product) with another point
     /// </summary>
@@ -143,9 +132,8 @@ public struct Point3 : IEquatable<Point3>
     {
         return x * other.x + y * other.y + z * other.z;
     }
-    #endregion
+    
 
-    #region CrossProduct       
     /// <summary>
     /// Returns vector product or cross product of this x b 
     /// </summary>
@@ -155,38 +143,33 @@ public struct Point3 : IEquatable<Point3>
     {
         return CrossProduct(this, b);
     }
-    #endregion
+    
 
-    #region ToPoint
     public Point ToPoint()
     {
         return new Point(x, y);
     }
-    #endregion
+    
 
-    #region ToPoint4
     public Point4 ToPoint4()
     {
         return new Point4(x, y, z, 1);
     }
-    #endregion
+    
 
-    #region ToArray
     public float[] ToArray()
     {
         return new[] { x, y, z };
     }
-    #endregion
+    
 
-    #region Equals
     public bool Equals(Point3 other)
     {
         return x == other.x && y == other.y && z == other.z;
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region Overloads / Overrides
     public static Point3 operator +(Point3 p1, Point3 p2) { return new Point3(p1.x + p2.x, p1.y + p2.y, p1.z + p2.z); }
     public static Point3 operator -(Point3 p1, Point3 p2) { return new Point3(p1.x - p2.x, p1.y - p2.y, p1.z - p2.z); }
     public static Point3 operator *(float f, Point3 p) { return new Point3(p.x * f, p.y * f, p.z * f); }
@@ -196,7 +179,6 @@ public struct Point3 : IEquatable<Point3>
     public static bool operator ==(Point3 p1, Point3 p2) { return (p1.x == p2.x && p1.y == p2.y && p1.z == p2.z); }
     public static bool operator !=(Point3 p1, Point3 p2) { return (p1.x != p2.x || p1.y != p2.y || p1.z != p2.z); }
 
-    #region Equals
     public override bool Equals(object o)
     {
         if (!(o is Point3))
@@ -204,20 +186,18 @@ public struct Point3 : IEquatable<Point3>
 
         return Equals((Point3)o);
     }
-    #endregion
+    
 
-    #region GetHashCode
     public override int GetHashCode()
     {
         return base.GetHashCode();
     }
-    #endregion
+    
 
-    #region ToString
     public override string ToString()
     {
         return "(X : " + x + " Y : " + y + " Z : " + z + ")";
     }
-    #endregion
-    #endregion
+    
+    
 }

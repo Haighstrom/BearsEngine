@@ -7,12 +7,10 @@ namespace BearsEngine.Input;
 
 public class InputDeviceManager : IInputDeviceManager
 {
-    #region Static Fields
     private static RawInput _rawInput = new(); 
     static readonly Guid DeviceInterfaceHid = new("4D1E55B2-F16F-11CF-88CB-001111000030");
-    #endregion
+    
 
-    #region Fields
     private MouseManager _mouseManager;
     private KeyboardManager _keyboardManager;
     private GamePadManager _gamePadManager;
@@ -22,9 +20,8 @@ public class InputDeviceManager : IInputDeviceManager
     private readonly AutoResetEvent _ready = new(false);
 
     private IntPtr _registrationHandle;
-    #endregion
+    
 
-    #region Constructors
     public InputDeviceManager()
     {
         _thread = new Thread(ProcessInputData);
@@ -35,9 +32,7 @@ public class InputDeviceManager : IInputDeviceManager
 
         _ready.WaitOne();
     }
-    #endregion
 
-    #region Methods
     private void ProcessInputData()
     {
         _inputWindow = new MessageOnlyWindow(WindowProcedure);
@@ -51,11 +46,11 @@ public class InputDeviceManager : IInputDeviceManager
     }
     private void CreateDrivers()
     {
-        Console.WriteLine("--------Input Devices--------\n");
+        Serilog.Log.Information("--------Input Devices--------\n");
         _mouseManager = new MouseManager(_inputWindow.Handle);
         _keyboardManager = new KeyboardManager(_inputWindow.Handle);
         _gamePadManager = new GamePadManager(_inputWindow.Handle);
-        Console.WriteLine("\n-----------------------------\n");
+        Serilog.Log.Information("\n-----------------------------\n");
 
         RegisterForRawInput();
     }
@@ -75,13 +70,11 @@ public class InputDeviceManager : IInputDeviceManager
         }
     }
 
-    #region WindowProcedure
     private IntPtr _unhandled = new(-1);
     private IntPtr WindowProcedure(IntPtr handle, WindowMessage message, IntPtr wParam, IntPtr lParam)
     {
         switch (message)
         {
-            #region WM_INPUT
             case WindowMessage.WM_INPUT:
                 int size = 0;
                 User32.GetRawInputData(lParam, GetRawInputDataEnum.INPUT, IntPtr.Zero, ref size, RawInputHeader.SIZE);
@@ -107,31 +100,27 @@ public class InputDeviceManager : IInputDeviceManager
                     }
                 }
                 break;
-            #endregion
+            
 
-            #region WM_DEVICECHANGE
             case WindowMessage.WM_DEVICECHANGE:
-                Console.WriteLine("Input Devices Change detected. Identifying new devices...");
+                Serilog.Log.Information("Input Devices Change detected. Identifying new devices...");
 
                 _mouseManager.RefreshDevices();
                 _keyboardManager.RefreshDevices();
 
                 break;
-            #endregion
+            
         }
         return _unhandled;
     }
-    #endregion
+    
 
-    #endregion
 
-    #region IInputDeviceManager
     public IMouseManager MouseManager => _mouseManager;
 
     public IKeyboardManager KeyboardManager => _keyboardManager;
-    #endregion
+    
 
-    #region IDisposable
 
     private bool _disposed;
 
@@ -167,5 +156,5 @@ public class InputDeviceManager : IInputDeviceManager
         Dispose(false);
     }
 
-    #endregion
+    
 }

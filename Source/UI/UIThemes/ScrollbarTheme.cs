@@ -2,7 +2,6 @@
 {
     public struct ScrollbarTheme
     {
-        #region Default
         public static ScrollbarTheme Default => new()
         {
             BarBackgroundColour = Colour.LightGray,
@@ -24,7 +23,7 @@
                 UnclickableColour = Colour.Gray,
             },
         };
-        #endregion
+        
 
         public Colour BarBackgroundColour, ButtonBackgroundColour;
         public int EdgeToBarSpace, EdgeToArrowSpace;

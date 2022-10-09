@@ -2,13 +2,10 @@
 {
     public class WaypointController : AddableBase, IUpdatable
     {
-        #region Fields
         private readonly IMoveable _target;
-        private Direction? _lastDirection = null;
-        private Direction? _direction = null;
-        #endregion
+        private Direction _lastDirection;
+        private Direction _direction;
 
-        #region Constructors
         public WaypointController(IMoveable target, List<IPosition> waypoints)
             :this(target)
         {
@@ -20,18 +17,16 @@
             _target = target;
             Waypoints = new List<IPosition>();
         }
-        #endregion
+        
 
-        #region Properties
         public bool Active { get; set; } = true;
         public List<IPosition> Waypoints { get; private set; }
         public IPosition CurrentPosition => _target.P;
         public IPosition NextWaypoint => !Waypoints.IsEmpty() ? Waypoints[0] : throw new Exception($"Requested WaypointController.NextWaypoint when Waypoints of {_target} is empty.");
         public bool ReachedDestination => Waypoints.IsEmpty();
-        #endregion
+        
 
-        #region Update
-        public virtual void Update(double elapsed)
+        public virtual void Update(float elapsed)
         {
             if (!ReachedDestination)
             {
@@ -68,16 +63,15 @@
                 }
             }
             else
-                _direction = null;
+                _direction = Direction.None;
 
             if (_direction != _lastDirection)
-                DirectionChanged?.Invoke(this, new ValueEventArgs<Direction?>(_direction));
+                DirectionChanged?.Invoke(this, new DirectionChangedEventArgs(_lastDirection, _direction));
 
             _lastDirection = _direction;
         }
-        #endregion
+        
 
-        #region ClearWaypoints
         public void ClearWaypoints()
         {
             if (Waypoints == null)
@@ -85,19 +79,17 @@
 
             Waypoints.Clear();
         }
-        #endregion
+        
 
-        #region SetWaypoints
         public void SetWaypoints(params IPosition[] positions) => Waypoints = positions.ToList();
         public void SetWaypoints(IEnumerable<IPosition> positions) => Waypoints = positions.ToList();
-        #endregion
+        
 
-        #region AddWaypoints
         public void AddWaypoints(params IPosition[] positions) => AddWaypoints(positions);
         public void AddWaypoints(IEnumerable<IPosition> positions) => Waypoints.AddRange(positions);
-        #endregion
+        
 
         public event EventHandler<EventArgs>? Arrived;
-        public event EventHandler<ValueEventArgs<Direction?>>? DirectionChanged;
+        public event EventHandler<DirectionChangedEventArgs>? DirectionChanged;
     }
 }

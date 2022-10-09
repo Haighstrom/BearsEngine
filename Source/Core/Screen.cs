@@ -1,132 +1,241 @@
 ﻿using BearsEngine.Win32API;
 
-namespace BearsEngine.Worlds
+namespace BearsEngine;
+
+public class Screen : IContainer, IScene
 {
-    public class Screen : IContainer, IScene
+    private bool _disposed;
+    private readonly List<IAddable> _entities = new();
+
+    public Screen()
     {
-        #region Fields
-        private readonly IContainer _container;
-        private bool _losingFocusPauses = false;
-        #endregion
+    }
 
-        #region Constructors
-        public Screen()
+    public bool Active { get; set; } = true;
+
+    public Colour BackgroundColour { get; set; } = Colour.CornflowerBlue;
+
+    public ICollection<IAddable> Entities => _entities.ToArray(); //recast to avoid collection modification
+
+    public Point LocalMousePosition => HI.MouseWindowP;
+
+    public bool Visible { get; set; } = true;
+
+    private void OnIRenderableLayerChanged(object? sender, LayerChangedArgs args)
+    {
+        SortEntities();
+    }
+
+    private void SortEntities()
+    {
+        static int GetEntityLayer(IAddable a)
         {
-            _container = new Container(this);
+            if (a is IRenderableOnLayer r)
+                return r.Layer;
+            else
+                return -1;
         }
-        #endregion
 
-        public bool Active { get; set; } = true;
+        _entities.Sort((a1, a2) => GetEntityLayer(a2).CompareTo(GetEntityLayer(a1))); //sort descending by layer
+    }
 
-        public bool Visible { get; set; } = true;
+    public void Add(IAddable e)
+    {
+        if (e.Parent is not null)
+            HConsole.Warning($"Added Entity {e} to Container {this} when it was already in Container {e.Parent}.");
 
-        public virtual void Render(ref Matrix4 projection, ref Matrix4 modelView)
+        e.Parent = this;
+
+        _entities.Add(e);
+        SortEntities();
+
+        if (e is IRenderableOnLayer r)
         {
-            OpenGL32.ClearColour(HV.ScreenColour);
-            OpenGL32.Clear(ClearBufferMask.ColourBufferBit | ClearBufferMask.DepthBufferBit);
+            r.LayerChanged += OnIRenderableLayerChanged;
+        } 
 
-            OpenGL32.Enable(EnableCap.Blend);
-            OpenGL32.glBlendFunc(BlendScaleFactor.GL_ONE, BlendScaleFactor.GL_ONE_MINUS_SRC_ALPHA);
+        e.OnAdded();
+    }
 
-            if (_container.Visible)
-                _container.Render(ref projection, ref modelView);
-        }
-        public virtual void Update(double elapsed) => _container.Update(elapsed);
+    public void Add(params IAddable[] entities)
+    {
+        foreach (var e in entities)
+            Add(e);
+    }
 
+    public virtual void End() { }
 
+    public IList<E> GetEntities<E>(bool considerChildren = true)
+    {
+        var list = new List<E>();
 
-        #region IContainer
-        public IList<IAddable> Entities => _container.Entities;
-
-        public int EntityCount => _container.EntityCount;
-
-        public Point GetWindowPosition(Point localCoords) => localCoords;
-
-        public Rect GetWindowPosition(Rect localCoords) => localCoords;
-
-        public Point GetLocalPosition(Point windowCoords) => windowCoords;
-
-        public Rect GetLocalPosition(Rect windowCoords) => windowCoords;
-
-        public Point LocalMousePosition => HI.MouseWindowP;
-
-        public void Add(IAddable e) => _container.Add(e);
-
-        public void Add(params IAddable[] entities) => _container.Add(entities);
-
-        public void Remove(IAddable e) => _container.Remove(e);
-
-        public void RemoveAll(bool cascadeToChildren = true) => _container.RemoveAll(cascadeToChildren);
-
-        public void RemoveAll<T>(bool cascadeToChildren = true)
-            where T : IAddable
-            => _container.RemoveAll<T>(cascadeToChildren);
-
-        public void RemoveAllExcept<T>(bool cascadeToChildren = true)
-            where T : IAddable
-            => _container.RemoveAllExcept<T>(cascadeToChildren);
-
-        public IList<E> GetEntities<E>(bool considerChildren = true) => _container.GetEntities<E>(considerChildren);
-
-        public E Collide<E>(Point p, bool considerChildren = true)
-            where E : ICollideable
-            => _container.Collide<E>(p, considerChildren);
-
-        public E Collide<E>(Rect r, bool considerChildren = true)
-            where E : ICollideable
-            => _container.Collide<E>(r, considerChildren);
-
-        public E Collide<E>(ICollideable i, bool considerChildren = true)
-            where E : ICollideable
-            => _container.Collide<E>(i, considerChildren);
-
-        public IList<E> CollideAll<E>(Point p, bool considerChildren = true)
-            where E : ICollideable
-            => _container.CollideAll<E>(p, considerChildren);
-
-        public IList<E> CollideAll<E>(Rect r, bool considerChildren = true)
-            where E : ICollideable
-            => _container.CollideAll<E>(r, considerChildren);
-
-        public IList<E> CollideAll<E>(ICollideable i, bool considerChildren = true)
-            where E : ICollideable
-            => _container.CollideAll<E>(i, considerChildren);
-        #endregion
-
-        public virtual void Start() { }
-
-        public virtual void End() { }
-
-        #region OnResize
-        public virtual void OnResize()
+        foreach (var a in Entities)
         {
-            OpenGL32.Viewport(HV.Window.Viewport);
-            HV.OrthoMatrix = Matrix4.CreateOrtho(HV.Window.ClientSize.X, HV.Window.ClientSize.Y);
-        }
-        #endregion
+            if (a is E e)
+                list.Add(e);
 
-        #region LosingFocusPauses
-        public bool LosingFocusPauses
-        {
-            get => _losingFocusPauses;
-            set
+            if (considerChildren)
             {
-                if (value == _losingFocusPauses)
-                {
-                    HConsole.Warning("Set Screen.LosingFocusPauses to the same value it already was: {0}", value);
-                    return;
-                }
-
-                if (value)
-                    HV.Window.FocusChanged += OnFocusChanged;
-                else
-                    HV.Window.FocusChanged -= OnFocusChanged;
-
-                _losingFocusPauses = value;
+                if (a is IContainer c)
+                    list.AddRange(c.GetEntities<E>());
             }
         }
-        #endregion
 
-        protected void OnFocusChanged(object? sender, BoolEventArgs e) => Active = e.Value;
+        return list;
+    }
+
+    public IList<E> GetEntities<E>(Point p, bool considerChildren = true)
+    {
+        List<E> list = new();
+
+        foreach (IAddable a in Entities)
+        {
+            if (a is E e && a is ICollideable col && col.Collideable && col.Collides(p))
+                list.Add(e);
+
+            if (considerChildren)
+            {
+                if (a is IContainer c)
+                    list.AddRange(c.GetEntities<E>(p));
+            }
+        }
+
+        return list;
+    }
+
+    public IList<E> GetEntities<E>(Rect r, bool considerChildren = true)
+    {
+        List<E> list = new();
+
+        foreach (IAddable a in Entities)
+        {
+            if (a is E e && a is ICollideable col && col.Collideable && col.Collides(r))
+                list.Add(e);
+
+            if (considerChildren)
+            {
+                if (a is IContainer c)
+                    list.AddRange(c.GetEntities<E>(r));
+            }
+        }
+        return list;
+    }
+
+    public IList<E> GetEntities<E>(ICollideable other, bool considerChildren = true)
+    {
+        List<E> list = new();
+
+        foreach (IAddable a in Entities)
+        {
+            if (a is E e && a is ICollideable col && col != other && col.Collideable && col.Collides(other))
+                list.Add(e);
+
+            if (considerChildren)
+            {
+                if (a is IContainer c)
+                    list.AddRange(c.GetEntities<E>(other));
+            }
+        }
+        return list;
+    }
+
+    public Point GetLocalPosition(Point windowCoords) => windowCoords;
+
+    public Rect GetLocalPosition(Rect windowCoords) => windowCoords;
+
+    public Point GetWindowPosition(Point localCoords) => localCoords;
+
+    public Rect GetWindowPosition(Rect localCoords) => localCoords;
+
+    public void Remove(IAddable e)
+    {
+        if (e.Parent != this)
+            HConsole.Warning($"Requested Entity {e} to be removed from Container {this} when its Parent was {e.Parent}.");
+
+        e.Parent = null;
+
+        _entities.Remove(e);
+
+        if (e is IRenderableOnLayer re)
+        {
+            re.LayerChanged -= OnIRenderableLayerChanged;
+        }
+
+        e.OnRemoved();
+    }
+
+    public void Remove(params IAddable[] entities)
+    {
+        foreach (IAddable e in entities)
+            Remove(e);
+    }
+
+    public void RemoveAll()
+    {
+        foreach (IAddable e in Entities)
+        {
+            Remove(e);
+        }
+    }
+
+    public virtual void Render(ref Matrix4 projection, ref Matrix4 modelView)
+    {
+        OpenGL32.ClearColour(BackgroundColour);
+        OpenGL32.Clear(ClearBufferMask.ColourBufferBit | ClearBufferMask.DepthBufferBit);
+
+        OpenGL32.Enable(EnableCap.Blend);
+        OpenGL32.glBlendFunc(BlendScaleFactor.GL_ONE, BlendScaleFactor.GL_ONE_MINUS_SRC_ALPHA);
+
+        foreach (IAddable a in Entities)
+        {
+            if (a is IRenderable r && r.Visible && a.Parent == this)
+                r.Render(ref projection, ref modelView);
+        }
+    }
+
+    public virtual void Start() { }
+
+    public virtual void Update(float elapsedTime)
+    {
+        foreach (IAddable a in Entities)
+        {
+            if (a is IUpdatable u && u.Active && a.Parent == this)
+            {
+                u.Update(elapsedTime);
+            }
+        }
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                // TODO: dispose managed state (managed objects)
+                foreach (var e in GetEntities<IDisposable>(true))
+                {
+                    e.Dispose();
+                }
+            }
+
+            // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+            // TODO: set large fields to null
+            _disposed = true;
+        }
+    }
+
+    // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+    // ~Screen()
+    // {
+    //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+    //     Dispose(disposing: false);
+    // }
+
+    public void Dispose()
+    {
+        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
     }
 }

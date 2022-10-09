@@ -2,7 +2,6 @@
 {
     public class TaskController : AddableBase, IUpdatable
     {
-        #region Constructors
         public TaskController()
         {
             CurrentTask = null;
@@ -30,14 +29,13 @@
             CurrentTask = firstTask;
             GetNextTask = getNextTask;
         }
-        #endregion
+        
 
         public virtual bool Active { get; set; } = true;
         public ITask? CurrentTask { get; set; }
         public Func<ITask>? GetNextTask { get; set; }
 
-        #region Update
-        public virtual void Update(double elapsed)
+        public virtual void Update(float elapsed)
         {
             if (Parent == null)
                 return;
@@ -56,6 +54,6 @@
             if (CurrentTask == null && GetNextTask != null)
                 CurrentTask = GetNextTask();
         }
-        #endregion
+        
     }
 }

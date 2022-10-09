@@ -3,15 +3,8 @@ using BearsEngine.Worlds.Controllers;
 
 namespace BearsEngine.Worlds;
 
-public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLayer, IClickable, ICollideable
+public class Entity : EntityBase, IClickable, ICollideable
 {
-    #region Fields
-    private bool _active = true;
-    private int _layer;
-    private readonly IContainer _container;
-    #endregion
-
-    #region Constructors
     public Entity(int layer, Rect pos, string graphicPath)
         : this(layer, pos.X, pos.Y, pos.W, pos.H, new Image(graphicPath, pos.W, pos.H))
     {
@@ -52,7 +45,6 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
     {
     }
 
-
     public Entity(int layer, Rect pos, params IGraphic[] graphics)
         : this(layer, pos.X, pos.Y, pos.W, pos.H, graphics)
     {
@@ -64,74 +56,77 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
     }
 
     public Entity(int layer = 0, float x = 0, float y = 0, float w = 0, float h = 0, params IGraphic[] graphics)
-        : base(x, y, w, h)
+        : base(layer, x, y, w, h)
     {
-        _container = new Container(this);
-
-        Layer = layer;
-
         Add(graphics);
         Add(new ClickController(this));
     }
-    #endregion
-
-    #region Properties
-    public virtual bool Active
-    {
-        get => _active;
-        set
-        {
-            if (_active == value)
-                return;
-
-            _active = value;
-
-            if (Exists)
-            {
-                if (_active)
-                    OnActivated();
-                else
-                    OnDeactivated();
-            }
-        }
-    }
-
-    /// <summary>
-    /// Angle in Degrees
-    /// </summary>
-    public float Angle { get; set; }
-    #endregion
 
     public bool Clickable { get; set; } = true;
+
     public bool Collideable { get; set; } = true;
 
     public bool Exists => Parent is not null;
+
     public IList<IGraphic> Graphics => GetEntities<IGraphic>(false);
 
     public bool IsOnScreen => Exists;//todo: HEngine2.Window.ClientSize.ToRect().Intersects(WindowPosition);
 
-    public int Layer
-    {
-        get => _layer;
-        set
-        {
-            if (_layer == value)
-                return;
+    public override Point LocalMousePosition => GetLocalPosition(HI.MouseWindowP);
 
-            int oldvalue = _layer;
-            _layer = value;
-
-            LayerChanged?.Invoke(this, new LayerChangedArgs(oldvalue, _layer));
-        }
-    }
-    
-    public bool MouseIntersecting => Exists && WindowPosition.Contains(HI.MouseWindowP);
+    public virtual bool MouseIntersecting => WindowPosition.Contains(HI.MouseWindowP);
     
     public virtual Point RotationCentre => R.Centre;
 
-    public Rect WindowPosition => Exists ? Parent!.GetWindowPosition(R) : Rect.EmptyRect;
+    public virtual Rect WindowPosition => Parent.GetWindowPosition(R);
 
-    public virtual bool Visible { get; set; } = true;
+    void IClickable.OnLeftClicked()
+    {
+        OnLeftClicked();
+        LeftClicked?.Invoke(this, EventArgs.Empty);
+    }
+
+    void IClickable.OnLeftPressed()
+    {
+        OnLeftPressed();
+        LeftPressed?.Invoke(this, EventArgs.Empty);
+    }
+
+    void IClickable.OnLeftReleased()
+    {
+        OnLeftReleased();
+        LeftReleased?.Invoke(this, EventArgs.Empty);
+    }
+
+    void IClickable.OnMouseEntered()
+    {
+        OnMouseEntered();
+        MouseEntered?.Invoke(this, EventArgs.Empty);
+    }
+
+    void IClickable.OnMouseExited()
+    {
+        OnMouseExited();
+        MouseExited?.Invoke(this, EventArgs.Empty);
+    }
+
+    void IClickable.OnMouseHovered()
+    {
+        OnMouseHovered();
+        MouseHovered?.Invoke(this, EventArgs.Empty);
+    }
+
+    protected virtual void OnLeftClicked() { }
+
+    protected virtual void OnLeftPressed() { }
+
+    protected virtual void OnLeftReleased() { }
+
+    protected virtual void OnMouseEntered() { }
+
+    protected virtual void OnMouseExited() { }
+
+    protected virtual void OnMouseHovered() { }
 
     public virtual bool Collides(Point p) => WindowPosition.Contains(p);
 
@@ -139,162 +134,35 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
 
     public virtual bool Collides(ICollideable i) => WindowPosition.Intersects(i.WindowPosition);
 
-    public virtual void Render(ref Matrix4 projection, ref Matrix4 modelView)
+    public override void Render(ref Matrix4 projection, ref Matrix4 modelView)
     {
         Matrix4 mv = modelView;
 
-        if (Angle != 0)
-            mv = Matrix4.RotateAroundPoint(ref mv, Angle, RotationCentre);
-
         mv = Matrix4.Translate(ref mv, X, Y, 0);
 
-        if (_container.Visible)
-            _container.Render(ref projection, ref mv);
+        base.Render(ref projection, ref mv);
     }
 
-    public virtual void Update(double elapsed)
-    {
-        if (Exists)
-            _container.Update(elapsed);
-    }
+    public override Point GetWindowPosition(Point localCoords) => Parent.GetWindowPosition(new Point(X, Y) + localCoords);
 
-    public event EventHandler<LayerChangedArgs> LayerChanged;
-
-    public IList<IAddable> Entities => _container.Entities;
-
-    public int EntityCount => _container.EntityCount;
-
-    public Point GetWindowPosition(Point localCoords) => Parent != null ? Parent.GetWindowPosition(new Point(X,Y) + localCoords) : new Point();
-
-    public Rect GetWindowPosition(Rect localCoords)
+    public override Rect GetWindowPosition(Rect localCoords)
     {
         Point tl = GetWindowPosition(localCoords.TopLeft);
         Point br = GetWindowPosition(localCoords.BottomRight);
         return new Rect(tl, br.X - tl.X, br.Y - tl.Y);
     }
 
-    public Point GetLocalPosition(Point windowCoords) => Parent.GetLocalPosition(windowCoords - new Point(X, Y));
+    public override Point GetLocalPosition(Point windowCoords) => Parent.GetLocalPosition(windowCoords - new Point(X, Y));
 
-    public Rect GetLocalPosition(Rect windowCoords)
+    public override Rect GetLocalPosition(Rect windowCoords)
     {
         Point tl = GetLocalPosition(windowCoords.TopLeft);
         Point br = GetLocalPosition(windowCoords.BottomRight);
         return new Rect(tl, br.X - tl.X, br.Y - tl.Y);
     }
-    public Point LocalMousePosition => GetLocalPosition(HI.MouseWindowP);
-
-    public void Add(IAddable e) => _container.Add(e);
-
-    public void Add(params IAddable[] entities) => _container.Add(entities);
-
-    public void Remove(IAddable e) => _container.Remove(e);
-
-    public void RemoveAll(bool cascadeToChildren = true) => _container.RemoveAll(cascadeToChildren);
-
-    public void RemoveAll<T>(bool cascadeToChildren = true) where T : IAddable => _container.RemoveAll<T>(cascadeToChildren);
-
-    public void RemoveAllExcept<T>(bool cascadeToChildren = true)
-        where T : IAddable
-        => _container.RemoveAllExcept<T>(cascadeToChildren);
-
-    public IList<E> GetEntities<E>(bool considerChildren = true) => _container.GetEntities<E>(considerChildren);
-
-    public E Collide<E>(Point p, bool considerChildren = true)
-        where E : ICollideable
-        => _container.Collide<E>(p, considerChildren);
-
-    public E Collide<E>(Rect r, bool considerChildren = true)
-        where E : ICollideable
-        => _container.Collide<E>(r, considerChildren);
-
-    public E Collide<E>(ICollideable i, bool considerChildren = true)
-        where E : ICollideable
-        => _container.Collide<E>(i, considerChildren);
-
-    public IList<E> CollideAll<E>(Point p, bool considerChildren = true)
-        where E : ICollideable
-        => _container.CollideAll<E>(p, considerChildren);
-
-    public IList<E> CollideAll<E>(Rect r, bool considerChildren = true)
-        where E : ICollideable
-        => _container.CollideAll<E>(r, considerChildren);
-
-    public IList<E> CollideAll<E>(ICollideable i, bool considerChildren = true)
-        where E : ICollideable
-        => _container.CollideAll<E>(i, considerChildren);
-
-    public virtual void OnMouseEnter()
-    {
-        MouseEntered?.Invoke(this, EventArgs.Empty);
-    }
-
-    public virtual void OnMouseExit()
-    {
-        MouseExited?.Invoke(this, EventArgs.Empty);
-    }
-
-    public virtual void OnLeftDown() { }
-
-    public virtual void OnLeftPressed() => LeftPressed?.Invoke(this, EventArgs.Empty);
-
-    public virtual void OnLeftReleased() => LeftReleased?.Invoke(this, EventArgs.Empty);
-
-    public virtual void OnLeftClicked() => LeftClicked?.Invoke(this, EventArgs.Empty);
-
-    public virtual void OnLeftDoubleClicked() => LeftDoubleClicked?.Invoke(this, EventArgs.Empty);
-
-    public virtual void OnRightDown() { }
-
-    public virtual void OnRightPressed() => RightPressed?.Invoke(this, EventArgs.Empty);
-
-    public virtual void OnRightReleased() => RightReleased?.Invoke(this, EventArgs.Empty);
-
-    public virtual void OnRightClicked() => RightClicked?.Invoke(this, EventArgs.Empty);
-
-    public virtual void OnHover() { }
-
-    public virtual void OnNoMouseEvent() { }
-
-    public void AddToolTip(UITheme theme, string text, Direction directionFromEntity, int shift)
-    {
-        var stt = new SimpleToolTip(theme, text);
-        MouseEntered += (s, a) => stt.CountTimerDownThenAppear();
-        MouseExited += (s, a) => stt.Disappear();
-        stt.P = directionFromEntity switch
-        {
-            Direction.Up => R.TopCentre.Shift(-stt.W / 2, -shift),
-            Direction.Right => R.CentreRight.Shift(shift, -stt.H / 2),
-            Direction.Down => R.BottomCentre.Shift(-stt.W / 2, shift),
-            Direction.Left => R.CentreLeft.Shift(-shift, -stt.H / 2),
-            _ => throw new Exception("directionFromEntity case not handled in Entity.AddToolTip"),
-        };
-    //todo: fix HV.Screen.Add(stt);
-    }
 
     /// <summary>
-    /// Moves the entity to be within the window if it isn't already
-    /// </summary>
-    protected void ClampWithinWindow()
-    {
-        throw new NotImplementedException();
-        //if (WindowPosition.Left < 0)
-        //    X = Parent.GetLocalPosition(new Point()).X;
-        //if (WindowPosition.Right > HV.Window.ClientZeroed.Right)
-        //    X = Parent.GetLocalPosition(new Point(HV.Window.ClientZeroed.Right, 0)).X - W;
-        //if (WindowPosition.Top < 0)
-        //    Y = Parent.GetLocalPosition(new Point()).Y;
-        //if (WindowPosition.Bottom > HV.Window.ClientZeroed.Bottom)
-        //    Y = Parent.GetLocalPosition(new Point(0, HV.Window.ClientZeroed.Bottom)).Y - H;
-    }
-
-    public void ClearGraphics()
-    {
-        foreach (IGraphic g in Graphics)
-            g.Remove();
-    }
-
-    /// <summary>
-    /// returns how much overshoot there was (i.e. how much asked to be moved minus what did move), will be zero if didn't reach target yet
+    /// Returns how much overshoot there was, i.e. how much asked to be moved minus what did move. Will be zero if didn't reach target yet.
     /// </summary>
     /// <param name="target"></param>
     /// <param name="amount"></param>
@@ -302,7 +170,7 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
     public virtual float MoveTowards(Point target, float amount) => MoveTowards(target.X, target.Y, amount);
 
     /// <summary>
-    /// returns how much overshoot there was (i.e. how much asked to be moved minus what did move), will be zero if didn't reach target yet
+    /// Returns how much overshoot there was, i.e. how much asked to be moved minus what did move. Will be zero if didn't reach target yet.
     /// </summary>
     /// <param name="target"></param>
     /// <param name="amount"></param>
@@ -329,29 +197,15 @@ public class Entity : AddableRectBase, IContainer, IUpdatable, IRenderableOnLaye
         return overshoot;
     }
 
-    protected virtual void OnActivated() { }
+    public event EventHandler? LeftClicked;
 
-    protected virtual void OnDeactivated() { }
+    public event EventHandler? LeftPressed;
 
-    protected override void OnSizeChanged(ResizeEventArgs args)
-    {
-        foreach (IGraphic g in Graphics)
-            if (g.ResizeWithParent)
-                g.Resize(args.NewSize.X / args.OldSize.X, args.NewSize.Y / args.OldSize.Y);
-        base.OnSizeChanged(args);
-    }
+    public event EventHandler? LeftReleased;
 
-    public event EventHandler MouseEntered;
-    public event EventHandler MouseExited;
+    public event EventHandler? MouseEntered;
 
-    public event EventHandler LeftClicked;
-    public event EventHandler LeftPressed;
-    public event EventHandler LeftReleased;
-    public event EventHandler LeftDoubleClicked;
+    public event EventHandler? MouseExited;
 
-    public event EventHandler RightClicked;
-    public event EventHandler RightPressed;
-    public event EventHandler RightReleased;
-
-    public override string ToString() => GetType().Name;
+    public event EventHandler? MouseHovered;
 }

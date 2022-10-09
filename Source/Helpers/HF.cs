@@ -6,10 +6,9 @@ using System.IO;
 using BearsEngine.Win32API;
 using System.Collections;
 
+using Encoding = System.Text.Encoding;
+
 namespace BearsEngine;
-
-using Encoding = Encoding;
-
 public static class HF
 {
     public static string? ConvertToLoggableString(object? o)
@@ -48,7 +47,6 @@ public static class HF
 
     public static class BitOps
     {
-        #region TrailingZeroCount
         //.net core3 = System.Numerics.BitwiseOperations.TrailingZeroCount(int n)
 
         static readonly int[] _DeBruijnPositions =
@@ -58,10 +56,9 @@ public static class HF
         };
 
         public static int TrailingZeroCount(int number) => _DeBruijnPositions[unchecked((uint)(number & -number) * 0x077CB531U) >> 27];
-        #endregion
+        
     }
 
-    #region Arrays
     public static class Arrays
     {
         public static T[] FillArray<T>(int size, T value)
@@ -82,12 +79,10 @@ public static class HF
             return ret;
         }
     }
-    #endregion
+    
 
-    #region Geom
     public static class Geom
     {
-        #region QuadToTris
         public static List<Vertex> QuadToTris(Vertex topLeft, Vertex topRight, Vertex bottomLeft, Vertex bottomRight)
         {
             return new List<Vertex>()
@@ -96,20 +91,18 @@ public static class HF
                 bottomLeft, topRight, bottomRight
             };
         }
-        #endregion
+        
 
-        #region AngleToPoint
         /// <summary>
         /// returns the unit Point that points in the angle requested clockwise from up
         /// </summary>
         /// <param name="angleInDegrees"></param>
         /// <returns></returns>
         public static Point AngleToPoint(float angleInDegrees) => new((float)Math.Sin(angleInDegrees * Math.PI / 180), (float)Math.Cos(angleInDegrees * Math.PI / 180));
-        #endregion
+        
     }
-    #endregion
+    
 
-    #region Graphics
     public static class Graphics
     {
         /// <summary>
@@ -117,23 +110,20 @@ public static class HF
         /// </summary>
         public const int TEXTURE_SPRITE_PADDING = 2;
 
-        #region BindShader
         public static void BindShader(uint id)
         {
             OpenGL32.UseProgram(id);
-            HV.LastBoundShader = id;
+            BE.LastBoundShader = id;
         }
-        #endregion
+        
 
-        #region UnbindShader
         public static void UnbindShader()
         {
             OpenGL32.UseProgram(0);
-            HV.LastBoundShader = 0;
+            BE.LastBoundShader = 0;
         }
-        #endregion
+        
 
-        #region CreateShader
         public static uint CreateShader(byte[] vertexSource, byte[] fragmentSource)
             => CreateShader(
                 Encoding.UTF8.GetString(vertexSource),
@@ -184,9 +174,8 @@ public static class HF
 
             return programID;
         }
-        #endregion
+        
 
-        #region CompileShader
         private static int CompileShader(uint programID, ShaderType shaderType, string shaderSrc)
         {
             int shaderID = OpenGL32.CreateShader(shaderType);
@@ -202,17 +191,15 @@ public static class HF
 
             return shaderID;
         }
-        #endregion
+        
 
-        #region DeleteShader
         public static void DeleteShader(uint id)
         {
             OpenGL32.UseProgram(0);
             OpenGL32.DeleteProgram(id);
         }
-        #endregion
+        
 
-        #region CreateFramebuffer
         public static void CreateFramebuffer(int width, int height, out uint framebufferID, out Texture framebufferTexture)
         {
             framebufferID = OpenGL32.GenFramebuffer();
@@ -226,9 +213,8 @@ public static class HF
             OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
             OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
         }
-        #endregion
+        
 
-        #region ResizeFramebuffer
         public static void ResizeFramebuffer(uint framebufferID, ref Texture framebufferTexture, int newW, int newH)
         {
             OpenGL32.DeleteTexture(framebufferTexture.ID);
@@ -242,9 +228,8 @@ public static class HF
             OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
             OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
         }
-        #endregion
+        
 
-        #region CreateMSAAFramebuffer
         public static void CreateMSAAFramebuffer(int width, int height, MSAA_Samples samples, out uint framebufferID, out Texture framebufferTexture)
         {
             //Generate FBO and texture to use with the MSAA antialising pass
@@ -260,9 +245,8 @@ public static class HF
 
             framebufferID = OpenGL32.GenFramebuffer();
         }
-        #endregion
+        
 
-        #region ResizeMSAAFramebuffer
         public static void ResizeMSAAFramebuffer(uint framebufferID, ref Texture framebufferTexture, int newW, int newH, MSAA_Samples newSamples)
         {
             OpenGL32.DeleteTexture(framebufferTexture.ID);
@@ -276,9 +260,8 @@ public static class HF
             OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
             OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
         }
-        #endregion
+        
 
-        #region GenTexture
         /// <summary>
         /// Create a Texture from an image file
         /// </summary>
@@ -300,7 +283,7 @@ public static class HF
             };
 
             OpenGL32.glBindTexture(TextureTarget.Texture2D, t.ID);
-            HV.LastBoundTexture = t.ID;
+            BE.LastBoundTexture = t.ID;
 
             OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, minMagFilter);
             OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, minMagFilter);
@@ -333,9 +316,8 @@ public static class HF
 
             return t;
         }
-        #endregion
+        
 
-        #region GenPaddedTexture    
         /// <summary>
         /// Create a Texture from an image file, and insert transparent pixel padding borers around each cell of the spritesheet to prevent artefacts
         /// </summary>
@@ -396,9 +378,8 @@ public static class HF
 
             return t;
         }
-        #endregion
+        
 
-        #region GenSquare
         public static Texture GenRectangle(int width, int height, int borderWidth, Colour outside, Colour inside)
         {
             Colour[,] pixels = new Colour[width, height];
@@ -414,9 +395,8 @@ public static class HF
 
             return GenTexture(pixels);
         }
-        #endregion
+        
 
-        #region GenTrianglePolygon
         public static Polygon GenTrianglePolygon(Rect boundingRect, int border, Direction direction, Colour colour)
         {
             Rect r = boundingRect;
@@ -430,19 +410,18 @@ public static class HF
                 _ => throw new ArgumentException($"Unexpected Direction {direction} passed to HF.Graphics.GenTrianglePolygon"),
             };
         }
-        #endregion
+        
 
-        #region LoadTexture
         /// <summary>
         /// If TextureDictionary contains the image, get it, otherwise create it and add it to the dictionary, then get it
         /// </summary>
         public static Texture LoadTexture(string path, TextureParameter minMagFilter = TextureParameter.Nearest)
         {
-            if (HV.TextureDictionary.ContainsKey(path))
-                return HV.TextureDictionary[path];
+            if (BE.TextureDictionary.ContainsKey(path))
+                return BE.TextureDictionary[path];
 
             Texture t = GenTexture(path, minMagFilter);
-            HV.TextureDictionary.Add(path, t);
+            BE.TextureDictionary.Add(path, t);
 
             return t;
         }
@@ -451,27 +430,26 @@ public static class HF
         /// </summary>
         internal static Texture LoadTexture(System.Drawing.Bitmap bufferedImage, string textureName, TextureParameter minMagFilter = TextureParameter.Nearest)
         {
-            if (HV.TextureDictionary.ContainsKey(textureName))
-                return HV.TextureDictionary[textureName];
+            if (BE.TextureDictionary.ContainsKey(textureName))
+                return BE.TextureDictionary[textureName];
 
             Texture t = GenTexture(bufferedImage, minMagFilter);
-            HV.TextureDictionary.Add(textureName, t);
+            BE.TextureDictionary.Add(textureName, t);
 
             return t;
         }
-        #endregion
+        
 
-        #region LoadSpriteTexture
         /// <summary>
         /// Creates a Texture2D by loading it from file (32bit png type), or retrieves it from the texture dictionary if it has already been loaded. Pads transparent border around the cells of a spritesheet to prevent black lines appearing at top and bottom of images etc
         /// </summary>
         internal static Texture LoadSpriteTexture(string path, int spriteRows, int spriteColumns, TextureParameter minFilter, TextureParameter maxFilter, TextureParameter wrapMode)
         {
-            if (HV.TextureDictionary.ContainsKey(path))
-                return HV.TextureDictionary[path];
+            if (BE.TextureDictionary.ContainsKey(path))
+                return BE.TextureDictionary[path];
 
             Texture t = GenPaddedTexture(path, spriteRows, spriteColumns, minFilter, maxFilter, wrapMode);
-            HV.TextureDictionary.Add(path, t);
+            BE.TextureDictionary.Add(path, t);
 
             return t;
         }
@@ -484,9 +462,8 @@ public static class HF
             return LoadSpriteTexture(path, spriteRows, spriteColumns, filter, filter, TextureParameter.ClampToEdge);
         }
 
-        #endregion
+        
 
-        #region NonZeroAlphaRegion
         public static Rect NonZeroAlphaRegion(System.Drawing.Bitmap b)
         {
             Rect r = new();
@@ -516,9 +493,8 @@ public static class HF
             }
             return r;
         }
-        #endregion
+        
 
-        #region SaveTextureToFile
         /// <summary>
         /// Save an OpenGL texture to a PNG file, with optional metadata attached
         /// </summary>
@@ -530,9 +506,8 @@ public static class HF
             System.Drawing.Bitmap b = TextureToBitmap(t);
             SaveBitmapToPNGFile(b, filePath, metadata);
         }
-        #endregion
+        
 
-        #region TextureToBitmap
         public static System.Drawing.Bitmap TextureToBitmap(Texture t)
         {
             System.Drawing.Bitmap bmp = new(t.Width, t.Height);
@@ -542,9 +517,8 @@ public static class HF
             bmp.UnlockBits(data);
             return bmp;
         }
-        #endregion
+        
 
-        #region WriteBitmapToFile
         public static void WriteBitmapToFile(System.Drawing.Bitmap b, string targetPath)
         {
             string directory = Path.GetDirectoryName(targetPath);
@@ -555,9 +529,8 @@ public static class HF
             }
             b.Save(targetPath);
         }
-        #endregion
+        
 
-        #region SaveBitmapToPNGFile
         /// <summary>
         /// Save a bitmap to a PNG file with the option to specify key-value metadata string pairs to store strings in the png.
         /// </summary>
@@ -611,15 +584,13 @@ public static class HF
             //    File.Move(destFilename, filePath);
             //}
         }
-        #endregion
+        
     }
-    #endregion
+    
 
-    #region Maths
     public static class Maths
     {
 
-        #region Angle
         /// <summary>
         /// Returns angle in degrees clockwise starting UP from P1
         /// </summary>
@@ -634,9 +605,8 @@ public static class HF
 
             return x;
         }
-        #endregion
+        
 
-        #region Clamp
         public static int Clamp(int num, int min, int max)
         {
             return Math.Max(Math.Min(num, max), min);
@@ -653,9 +623,8 @@ public static class HF
         {
             num = Math.Max(Math.Min(num, max), min);
         }
-        #endregion
+        
 
-        #region Dist
         public static float Dist(Point p1, Point p2)
         {
             return (float)Math.Sqrt((p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y));
@@ -665,9 +634,8 @@ public static class HF
             return (p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y);
         }
         public static float DistGrid(Point p1, Point p2) => Math.Abs(p1.X - p2.X) + Math.Abs(p1.Y - p2.Y);
-        #endregion
+        
 
-        #region GetDirection
         /// <summary>
         /// Gets the nearest direction in moving between two points
         /// </summary>
@@ -675,25 +643,22 @@ public static class HF
         {
             return (end - start).ToDirection();
         }
-        #endregion
+        
 
-        #region IsInt
         public static bool IsInt(string s)
         {
             return int.TryParse(s, out _);
         }
-        #endregion
+        
 
-        #region IsMultipleOf
         public static bool IsMultipleOf(int n, int mult)
         {
             while (n < 0)
                 n += mult;
             return n % mult == 0;
         }
-        #endregion
+        
 
-        #region Min
         public static float Min(params float[] numbers)
         {
             if (numbers.Length == 0)
@@ -721,9 +686,8 @@ public static class HF
 
             return ret;
         }
-        #endregion
+        
 
-        #region Max
         public static float Max(params float[] numbers)
         {
             if (numbers.Length == 0)
@@ -751,9 +715,8 @@ public static class HF
 
             return ret;
         }
-        #endregion
+        
 
-        #region Mod
         public static int Mod(int x, int m)
         {
             while (x < 0)
@@ -777,13 +740,11 @@ public static class HF
 
             return x % m;
         }
-        #endregion
+        
 
-        #region Round
         public static int Round(float value) => (int)Math.Round(value);
-        #endregion
+        
 
-        #region RectanglesIntersect
         public static bool RectanglesIntersect(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2, bool touchingCounts = false)
         {
             if (touchingCounts)
@@ -803,14 +764,12 @@ public static class HF
                 return true;
             }
         }
-        #endregion
+        
     }
-    #endregion
+    
 
-    #region Pathfinding
     public static class Pathfinding
     {
-        #region ChooseRandomRoute
         public static List<INode> ChooseRandomRoute<N>(N startNode, Func<N, bool> passableTest, int maximumSteps)
             where N : INode
         {
@@ -838,9 +797,8 @@ public static class HF
             }
             return path;
         }
-        #endregion
+        
 
-        #region GetAStarRoute
         public static List<N>? GetAStarRoute<N>(N start, N end, Func<N, bool> passableTest)
             where N : INode
         {
@@ -904,9 +862,8 @@ public static class HF
 
             return BuildPath(start, end);
         }
-        #endregion
+        
 
-        #region BuildPath
         private static List<N> BuildPath<N>(N start, N end)
             where N : INode
         {
@@ -922,13 +879,11 @@ public static class HF
 
             return path;
         }
-        #endregion
+        
 
-        #region Heuristic
         private static double Heuristic(INode node1, INode node2) => Math.Abs(node1.X - node2.X) + Math.Abs(node1.Y - node2.Y);
-        #endregion
+        
 
-        #region CompareNodeF
         private static int CompareNodeF<N>(N x, N y)
             where N : INode
         {
@@ -936,23 +891,20 @@ public static class HF
             else if (x.PF == y.PF) return 0;
             else return 1;
         }
-        #endregion
+        
     }
-    #endregion
+    
 
-    #region Randomisation
     public static class Randomisation
     {
         private static readonly Random _random = new();
 
-        #region Chance
         /// <summary>
         /// returns true with probability (chanceOutOfAHundred)%
         /// </summary>
         public static bool Chance(float chanceOutOfAHundred) => Rand(0, 100) < chanceOutOfAHundred;
-        #endregion
+        
 
-        #region Choose
         /// <summary>
         /// Returns one of a list of things, at random
         /// </summary>
@@ -961,9 +913,8 @@ public static class HF
         /// Returns one of a list of things, at random
         /// </summary>
         public static T Choose<T>(List<T> things) => things[Rand(things.Count)];
-        #endregion
+        
 
-        #region Rand
         /// <summary>
         /// Returns a double [0,max)
         /// </summary>
@@ -999,20 +950,18 @@ public static class HF
             var values = Enum.GetValues(typeof(T));
             return (T)values.GetValue(_random.Next(values.Length));
         }
-        #endregion
+        
 
         public static Colour RandColour() => new((byte)Rand(255), (byte)Rand(255), (byte)Rand(255), 255);
 
         public static Point RandPoint() => new(RandF(2) - 1, RandF(2) - 1);
 
-        #region RandDirection
         public static Direction RandDirection()
         {
             return Choose(Direction.Up, Direction.Right, Direction.Down, Direction.Left);
         }
-        #endregion
+        
 
-        #region RandF
         public static float RandF(int max) => (float)(_random.NextDouble() * max);
 
         public static float RandF(float max) => (float)(_random.NextDouble() * max);
@@ -1036,9 +985,8 @@ public static class HF
                 return max;
             return min + (float)_random.NextDouble() * (max - min);
         }
-        #endregion
+        
 
-        #region RandGaussianApprox
         public static float RandGaussianApprox(float min, float max)
         {
             if (max <= min) return max;
@@ -1050,9 +998,8 @@ public static class HF
             double zeroToOne = (zeroTo2PI + Math.Sin(zeroTo2PI)) / (2 * Math.PI);
             return min + (float)(zeroToOne * (max - min));
         }
-        #endregion
+        
 
-        #region RandUpperCaseString
         public static string RandUpperCaseString(int chars)
         {
             string def = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -1061,9 +1008,8 @@ public static class HF
                 ret.Append(def.AsSpan(_random.Next(def.Length), 1));
             return ret.ToString();
         }
-        #endregion
+        
 
-        #region RandWindowsColour
         public static Colour RandSystemColour()
         {
             List<Colour> colours = new();
@@ -1076,9 +1022,8 @@ public static class HF
             }
             return Choose(colours);
         }
-        #endregion
+        
 
-        #region Shuffle<T>
         /// <summary>
         /// Shuffle an array containing Ts
         /// </summary>
@@ -1105,16 +1050,14 @@ public static class HF
             }
             return list;
         }
-        #endregion
+        
     }
-    #endregion
+    
 
-    #region Types
     public static class Types
     {
         public static int GetSizeOf(Type t) => Marshal.SizeOf(t);
 
-        #region GetUniqueFlags
         public static IEnumerable<Enum> GetUniqueFlags(Enum flags)
         {
             ulong flag = 1;
@@ -1133,9 +1076,8 @@ public static class HF
                 }
             }
         }
-        #endregion
+        
 
-        #region PrintCSVToConsole
         public static void PrintCSVToConsole(string[,] array)
         {
             for (var j = 0; j < array.GetLength(1); j++)
@@ -1149,7 +1091,7 @@ public static class HF
             }
             Console.WriteLine();
         }
-        #endregion
+        
 
         /// <summary>
         /// returns the unique Type with the specified name in any of the loaded assemblies
@@ -1187,20 +1129,18 @@ public static class HF
                 return types.First();
         }
     }
-    #endregion
+    
 
-    #region Repeat
     public static void Repeat(Action function, int times)
     {
         for (int i = 0; i < times; ++i)
             function();
     }
-    #endregion
+    
 
-    #region Windows
     public static class Windows
     {
         public static bool RunningOnWindows => Environment.OSVersion.Platform == PlatformID.Win32NT || Environment.OSVersion.Platform == PlatformID.Win32S || Environment.OSVersion.Platform == PlatformID.Win32Windows || Environment.OSVersion.Platform == PlatformID.WinCE;
     }
-    #endregion
+    
 }

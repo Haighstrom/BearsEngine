@@ -12,7 +12,7 @@ namespace BearsEngine.Worlds.Cameras
         private readonly CameraMSAAShader _mSAAShader;
         private Matrix4 _ortho;
         private float _tileWidth, _tileHeight;
-        private Rect _view = new Rect();
+        private Rect _view = new();
 
         private Camera(int layer, Rect position)
             : base(layer, position)
@@ -188,7 +188,7 @@ namespace BearsEngine.Worlds.Cameras
             OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
 
             OpenGL32.glBindTexture(TextureTarget.Texture2D, 0);
-            HV.LastBoundTexture = 0;
+            BE.LastBoundTexture = 0;
 
             _frameBufferShaderPassID = OpenGL32.GenFramebuffer();
 
@@ -275,22 +275,23 @@ namespace BearsEngine.Worlds.Cameras
             OpenGL32.Viewport(0, 0, (int)base.W, (int)base.H);
 
             //Locally save the current render target, we will then set this camera as the current render target for child cameras, then put it back
-            uint tempFBID = HV.LastBoundFrameBuffer;
-            HV.LastBoundFrameBuffer = MSAAEnabled ? _frameBufferMSAAID : _frameBufferShaderPassID;
+            uint tempFBID = BE.LastBoundFrameBuffer;
+            BE.LastBoundFrameBuffer = MSAAEnabled ? _frameBufferMSAAID : _frameBufferShaderPassID;
 
-            Matrix4 MV = Matrix4.ScaleAroundOrigin(ref Matrix4.Identity, TileWidth, TileHeight, 0);
+            Matrix4 identity = Matrix4.Identity;
+            Matrix4 MV = Matrix4.ScaleAroundOrigin(ref identity, TileWidth, TileHeight, 0);
             MV = Matrix4.Translate(ref MV, -View.X, -View.Y, 0);
 
             //draw stuff here 
             base.Render(ref _ortho, ref MV);
 
             //Revert the render target 
-            HV.LastBoundFrameBuffer = tempFBID;
+            BE.LastBoundFrameBuffer = tempFBID;
 
             //Bind vertex buffer - optimise this later            
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, VertexBuffer);
             OpenGL32.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * Vertex.STRIDE, Vertices, BufferUsageHint.DynamicDraw);
-            HV.LastBoundVertexBuffer = VertexBuffer;
+            BE.LastBoundVertexBuffer = VertexBuffer;
 
             if (MSAAEnabled)
             {
@@ -305,14 +306,14 @@ namespace BearsEngine.Worlds.Cameras
                 OpenGL32.glBindTexture(TextureTarget.Texture2DMultisample, _frameBufferMSAATexture.ID);
 
                 //Do the MSAA render pass, drawing to the MSAATexture FBO
-                _mSAAShader.Render(ref _ortho, ref Matrix4.Identity, Vertices.Length, PrimitiveType.TriangleStrip);
+                _mSAAShader.Render(ref _ortho, ref identity, Vertices.Length, PrimitiveType.TriangleStrip);
 
                 //Unbind the FBO 
                 OpenGL32.glBindTexture(TextureTarget.Texture2DMultisample, 0);
             }
 
             //Bind the render target back to either the screen, or a camera higher up the heirachy, depending on what called this
-            OpenGL32.BindFramebuffer(FramebufferTarget.Framebuffer, HV.LastBoundFrameBuffer);
+            OpenGL32.BindFramebuffer(FramebufferTarget.Framebuffer, BE.LastBoundFrameBuffer);
 
             //Bind the FBO to be drawn
             _frameBufferShaderPassTexture.Bind();
@@ -333,7 +334,7 @@ namespace BearsEngine.Worlds.Cameras
 
             //Unbind textures            
             OpenGL32.glBindTexture(TextureTarget.Texture2D, 0);
-            HV.LastBoundTexture = 0;
+            BE.LastBoundTexture = 0;
         }
 
         public void Resize(Point newSize) => Resize(newSize.X, newSize.Y);

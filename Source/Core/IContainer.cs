@@ -1,53 +1,34 @@
-﻿namespace BearsEngine.Worlds
+﻿namespace BearsEngine;
+
+public interface IContainer
 {
-    public interface IContainer : IUpdatable, IRenderable
-    {
-        IList<IAddable> Entities { get; }
+    ICollection<IAddable> Entities { get; }
 
-        int EntityCount { get; }
+    Point LocalMousePosition { get; }
 
-        void Add(IAddable e);
+    void Add(IAddable e);
 
-        void Add(params IAddable[] entities);
+    void Add(params IAddable[] entities);
 
-        void Remove(IAddable e);
+    void Remove(IAddable e);
 
-        void RemoveAll(bool cascadeToChildren = true);
+    void Remove(params IAddable[] entities);
 
-        void RemoveAll<T>(bool cascadeToChildren = true)
-            where T : IAddable;
+    void RemoveAll();
 
-        void RemoveAllExcept<T>(bool cascadeToChildren = true)
-            where T : IAddable;
+    IList<E> GetEntities<E>(bool considerChildren = true);
 
-        IList<E> GetEntities<E>(bool considerChildren = true);
+    IList<E> GetEntities<E>(Point p, bool considerChildren = true);
 
-        E Collide<E>(Point p, bool considerChildren = true)
-            where E : ICollideable;
+    IList<E> GetEntities<E>(Rect r, bool considerChildren = true);
 
-        E Collide<E>(Rect r, bool considerChildren = true)
-            where E : ICollideable;
+    IList<E> GetEntities<E>(ICollideable i, bool considerChildren = true);
 
-        E Collide<E>(ICollideable i, bool considerChildren = true)
-            where E : ICollideable;
+    Point GetLocalPosition(Point windowCoords);
 
-        IList<E> CollideAll<E>(Point p, bool considerChildren = true)
-            where E : ICollideable;
+    Rect GetLocalPosition(Rect windowCoords);
 
-        IList<E> CollideAll<E>(Rect r, bool considerChildren = true)
-            where E : ICollideable;
+    Point GetWindowPosition(Point localCoords);
 
-        IList<E> CollideAll<E>(ICollideable i, bool considerChildren = true)
-            where E : ICollideable;
-
-        Point GetWindowPosition(Point localCoords);
-
-        Rect GetWindowPosition(Rect localCoords);
-
-        Point GetLocalPosition(Point windowCoords);
-
-        Rect GetLocalPosition(Rect windowCoords);
-
-        Point LocalMousePosition { get; }
-    }
+    Rect GetWindowPosition(Rect localCoords);
 }

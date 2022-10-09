@@ -50,7 +50,7 @@ public class CyclingValueButton<T> : Button
         }
     }
 
-    public override void OnLeftClicked()
+    protected override void OnLeftClicked()
     {
         base.OnLeftClicked();
 

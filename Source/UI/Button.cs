@@ -2,12 +2,10 @@
 
 namespace BearsEngine.UI;
 
-public class Button : Entity
+public class Button : Entity, IClickable
 {
     private readonly HText _text;
 
-    #region Constructors
-    #region UITheme Based
     public Button(int layer, Rect position, string graphic, UITheme theme, string text, Action? actionOnClicked = null)
         : this(layer, position, new Image(graphic, position.Size), theme, text, actionOnClicked)
     {
@@ -59,9 +57,8 @@ public class Button : Entity
         HoverColour = theme.Button.HoverColour;
         PressedColour = theme.Button.PressedColour;
     }
-    #endregion
+    
 
-    #region Standard
     public Button(int layer, Rect r, string graphic, Action? actionOnClicked = null)
         : this(layer, r, new Image(graphic, r.Size), actionOnClicked)
     {
@@ -87,7 +84,7 @@ public class Button : Entity
         : this(layer, r.X, r.Y, r.W, r.H, new Image(graphic, r.Size), font, fontColour, text, actionOnClicked)
     {
     }
-    #endregion
+    
 
     public Button(int layer = 0, float x = 0, float y = 0, float w = 0, float h = 0, IGraphic? graphic = null, HFont? font = null, Colour? fontColour = null, string? text = null, Action? actionOnClicked = null)
         : base(layer, x, y, w, h)
@@ -103,12 +100,13 @@ public class Button : Entity
 
         ActionOnClicked = actionOnClicked;
     }
-    #endregion
 
-    #region Properties
+
     protected IGraphic? BackgroundGraphic { get; set; }
-
+    
     public Action? ActionOnClicked { get; set; }
+
+    public bool Clickable { get; set; } = true;
 
     public Colour DefaultColour { get; set; } = Colour.White;
 
@@ -123,10 +121,8 @@ public class Button : Entity
         get => _text.Text;
         set => _text.Text = value;
     }
-    #endregion
+    
 
-    #region Methods
-    #region SetDefaultAutoShadingColours
     public void SetDefaultAutoShadingColours()
     {
         DefaultColour = Colour.White;
@@ -134,44 +130,27 @@ public class Button : Entity
         HoverColour = new Colour(255, 255, 125, 255);
         PressedColour = Colour.Yellow;
     }
-    #endregion
+    
 
-    #region OnLeftPressed
-    public override void OnLeftPressed()
+    protected virtual void OnLeftPressed()
     {
         base.OnLeftPressed();
         BackgroundGraphic.Colour = PressedColour;
     }
-    #endregion
-
-    #region OnLeftClicked
-    public override void OnLeftClicked()
+    
+    protected override void OnLeftClicked()
     {
         base.OnLeftClicked();
         ActionOnClicked?.Invoke();
         BackgroundGraphic.Colour = HoverColour;
     }
-    #endregion
 
-    #region OnHover
-    public override void OnHover()
+    protected override void OnMouseHovered()
     {
-        base.OnHover();
+        base.OnMouseHovered();
         BackgroundGraphic.Colour = HoverColour;
     }
-    #endregion
-
-    #region OnNoMouseEvent
-    public override void OnNoMouseEvent()
-    {
-        base.OnNoMouseEvent();
-        if (Clickable)
-            BackgroundGraphic.Colour = DefaultColour;
-        else
-            BackgroundGraphic.Colour = UnclickableColour;
-    }
-    #endregion
-
+    
     public void Press() => OnLeftClicked();
-    #endregion
+    
 }

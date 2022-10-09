@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace BearsEngine;
+﻿namespace BearsEngine;
 
 public interface IRectangular
 {

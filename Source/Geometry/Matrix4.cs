@@ -8,10 +8,8 @@ public struct Matrix4
     //(2  6  10 14)
     //(3  7  11 15)
 
-    #region Static
-    #region Premade Matrices
-    public static Matrix4 Identity = new(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-    public static Matrix4 Zero = new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    public static Matrix4 Identity => new(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    public static Matrix4 Zero => new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     public static Matrix4 FlipXMatrix = new(-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
     public static Matrix4 FlipYMatrix = new(1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
     public static Matrix4 FlipZMatrix = new(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1);
@@ -49,7 +47,6 @@ public struct Matrix4
 
     public static Matrix4 CreateScale(float scaleX, float scaleY, float scaleZ = 1) => new(scaleX, 0, 0, 0, 0, scaleY, 0, 0, 0, 0, scaleZ, 0, 0, 0, 0, 1);
 
-    #region CreateOrtho
     public static Matrix4 CreateOrtho(float width, float height)
     {
         Matrix4 mat = Identity;
@@ -58,9 +55,7 @@ public struct Matrix4
         mat = Translate(ref mat, -width / 2, -height / 2, 0);
         return mat;
     }
-    #endregion
-
-    #region CreateFBOOrtho
+    
     public static Matrix4 CreateFBOOrtho(float width, float height)
     {
         Matrix4 mat = Identity;
@@ -69,26 +64,18 @@ public struct Matrix4
         return mat;
     }
             
-    #endregion
-    #endregion
-
-    #region Add
     public static Matrix4 Add(ref Matrix4 mat1, ref Matrix4 mat2)
     {
         float[] values = mat1._values.Zip(mat2._values, (a, b) => a + b).ToArray();
         return new Matrix4(values);
     }
-    #endregion
-
-    #region Subtract
+    
     public static Matrix4 Subtract(ref Matrix4 mat1, ref Matrix4 mat2)
     {
         float[] values = mat1._values.Zip(mat2._values, (a, b) => a - b).ToArray();
         return new Matrix4(values);
     }
-    #endregion
 
-    #region Multiply
     public static Matrix4 Multiply(ref Matrix4 mat1, ref Matrix4 mat2)
     {
         float[] values = new float[16] {
@@ -172,17 +159,13 @@ public struct Matrix4
                 mat._values[1] * p.X + mat._values[5] * p.Y + mat._values[13]
             );
     }
-    #endregion             
-
-    #region Translate
+                 
     public static Matrix4 Translate(ref Matrix4 mat, float x, float y, float z)
     {
         Matrix4 transMat = CreateTranslation(x, y, z);
         return Multiply(ref mat, ref transMat);
     }
-    #endregion
-
-    #region Rotate
+    
     public static Matrix4 RotateAroundZ(ref Matrix4 mat, float angleInDegrees)
     {
         Matrix4 rotMat = CreateRotationAroundZAxis(angleInDegrees);
@@ -201,9 +184,7 @@ public struct Matrix4
 
         return result;
     }
-    #endregion
-
-    #region Scale
+    
     public static Matrix4 ScaleAroundOrigin(ref Matrix4 mat, float scaleX, float scaleY, float scaleZ)
     {
         Matrix4 scaleMat = CreateScale(scaleX, scaleY, scaleZ);
@@ -221,9 +202,7 @@ public struct Matrix4
 
         return result;
     }
-    #endregion
-
-    #region Flip
+    
     public static Matrix4 FlipX(ref Matrix4 mat)
     {
         return Multiply(ref mat, ref FlipXMatrix);
@@ -236,9 +215,7 @@ public struct Matrix4
     {
         return Multiply(ref mat, ref FlipZMatrix);
     }
-    #endregion
-
-    #region Inverse
+    
     public static Matrix4 Invert(Matrix4 mat)
     {
         int[] colIdx = { 0, 0, 0, 0 };
@@ -354,16 +331,10 @@ public struct Matrix4
                             inverse[3, 3]
                            );
     }
-    #endregion
+    
 
-    #endregion
-
-    #region Instance
-    #region Fields
     private float[] _values;
-    #endregion
-
-    #region Constructors
+    
     public Matrix4(float m0, float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8, float m9, float m10, float m11, float m12, float m13, float m14, float m15)
     {
         _values = new float[16] { m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15 };
@@ -372,9 +343,12 @@ public struct Matrix4
     {
         _values = values;
     }
-    #endregion
-
-    #region Indexers
+    public Matrix4(Matrix4 matrix)
+        :this()
+    {
+        _values = matrix.Values;
+    }
+    
     public float this[int x, int y]
     {
         get
@@ -390,9 +364,7 @@ public struct Matrix4
             _values[x * 4 + y] = value;
         }
     }
-    #endregion
-
-    #region Properties
+    
     /// <summary>
     /// Underlying array of matrix elements held by this matrix. Indexed as
     /// (0 4 8 12)
@@ -418,9 +390,7 @@ public struct Matrix4
               - _values[12] * _values[5] * _values[10] * _values[3] + _values[12] * _values[5] * _values[2] * _values[11] - _values[12] * _values[9] * _values[2] * _values[7] + _values[12] * _values[9] * _values[6] * _values[3];
         }
     }
-    #endregion
-
-    #region Methods
+    
     /// <summary>
     /// Returns the transpose of this Matrix4 - all elements mirrored in [1 1] diagonal. The values of this instance will not be altered, returns a new matrix.
     /// </summary>
@@ -456,10 +426,7 @@ public struct Matrix4
     {
         return Invert(this);
     }
-    #endregion
-    #endregion
-
-    #region Operators
+    
     /// <summary>
     /// Scalar multiplication.
     /// </summary>
@@ -522,12 +489,10 @@ public struct Matrix4
     /// <param name="right">right-hand operand</param>
     /// <returns>A new Matrix4 which holds the result of the subtraction</returns>
     public static Matrix4 operator -(Matrix4 left, Matrix4 right) => Subtract(ref left, ref right);
-    #endregion
-
-    #region Overloads/Overrides
+    
     public override string ToString()
     {
         return string.Format("({0} {4} {8} {12})\n({1} {5} {9} {13})\n({2} {6} {10} {14})\n({3} {7} {11} {15})\n", _values[0], _values[1], _values[2], _values[3], _values[4], _values[5], _values[6], _values[7], _values[8], _values[9], _values[10], _values[11], _values[12], _values[13], _values[14], _values[15]);
     }
-    #endregion
+    
 }

@@ -11,7 +11,6 @@ internal static class OpenGL32
 {
     private const string Library = "opengl32.dll";
 
-    #region glAlphaFunc
     // https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glAlphaFunc.xml
 
     /// <summary>
@@ -21,26 +20,22 @@ internal static class OpenGL32
     /// <param name="ref">Specifies the reference value that incoming alpha values are compared to. This value is clamped to the range 0 1 , where 0 represents the lowest possible alpha value and 1 the highest possible value. The initial reference value is 0.</param>
     [DllImport("opengl32.dll")]
     internal static extern void glAlphaFunc(GLAlphaFuncEnum func, float @ref);
-    #endregion
+    
 
     // ***CLEANED UP ABOVE THIS LINE***
 
-    #region --- OpenGL Core Functions ---
 
-    #region glBegin
     [DllImport("opengl32.dll")]
     internal static extern void glBegin(int mode);
-    #endregion
+    
 
-    #region glBindTexture
     [DllImport("opengl32.dll")]
     internal static extern void glBindTexture(int target, uint texture);
 
     [DllImport("opengl32.dll")]
     internal static extern void glBindTexture(TextureTarget target, uint texture);
-    #endregion
+    
 
-    #region glBlendFunc
     //https://registry.khronos.org/OpenGL-Refpages/gl4/html/glBlendFunc.xhtml
     /// <summary>
     /// Defines the operation of blending for all draw buffers when it is enabled.
@@ -49,288 +44,230 @@ internal static class OpenGL32
     /// <param name="dfactor">Specifies how the red, green, blue, and alpha destination blending factors are computed. The following symbolic constants are accepted: GL_ZERO, GL_ONE, GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR, GL_DST_COLOR, GL_ONE_MINUS_DST_COLOR, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA. GL_CONSTANT_COLOR, GL_ONE_MINUS_CONSTANT_COLOR, GL_CONSTANT_ALPHA, and GL_ONE_MINUS_CONSTANT_ALPHA. The initial value is GL_ZERO.</param>
     [DllImport("opengl32.dll")]
     internal static extern void glBlendFunc(BlendScaleFactor sfactor, BlendScaleFactor dfactor);
-    #endregion
+    
 
-    #region glClear
     [DllImport("opengl32.dll")]
     internal static extern void glClear(uint mask);
-    #endregion
+    
 
-    #region glClearColor
     [DllImport("opengl32.dll")]
     internal static extern void glClearColor(float red, float green, float blue, float alpha);
-    #endregion
+    
 
-    #region glColor3f
     [DllImport("opengl32.dll")]
     internal static extern void glColor3f(float red, float green, float blue);
-    #endregion
+    
 
-    #region glColor4f
     [DllImport("opengl32.dll")]
     internal static extern void glColor4f(float red, float green, float blue, float alpha);
-    #endregion
+    
 
-    #region glDeleteTextures
     [DllImport("opengl32.dll")]
     internal static extern void glDeleteTextures(int n, uint[] textures);
-    #endregion
+    
 
-    #region glDepthMask
     [DllImport("opengl32.dll")]
     internal static extern void glDepthMask(bool flag);
-    #endregion
+    
 
-    #region glDisable
     [DllImport("opengl32.dll")]
     internal static extern void glDisable(int cap);
-    #endregion
+    
 
-    #region glDisableClientState
     [DllImport("opengl32.dll")]
     internal static extern void glDisableClientState(uint array);
-    #endregion
+    
 
-    #region glDrawArrays
     [DllImport("opengl32.dll")]
     internal static extern void glDrawArrays(int mode, int first, int count);
-    #endregion
+    
 
-    #region glEnable
     [DllImport("opengl32.dll")]
     internal static extern void glEnable(int cap);
-    #endregion
+    
 
-    #region glEnableClientState
     [DllImport("opengl32.dll")]
     internal static extern void glEnableClientState(uint array);
-    #endregion
+    
 
-    #region glEnd
     [DllImport("opengl32.dll")]
     internal static extern void glEnd();
-    #endregion
+    
 
-    #region glFlush
     [DllImport("opengl32.dll")]
     public static extern void glFlush();
-    #endregion
+    
 
-    #region glFrontFace
     [DllImport("opengl32.dll")]
     internal static extern void glFrontFace(int mode);
-    #endregion
+    
 
-    #region glGetBooleanv
     [DllImport("opengl32.dll")]
     internal static extern void glGetBooleanv(int pname, [Out] out bool[] data);
-    #endregion
+    
 
-    #region glGetError
     [DllImport("opengl32.dll")]
     internal static extern uint glGetError();
-    #endregion
+    
 
-    #region glGetIntegerv
     [DllImport("opengl32.dll")]
     internal static extern void glGetIntegerv(int pname, out int result);
-    #endregion
+    
 
-    #region glGetIntegerv
     [DllImport("opengl32.dll")]
     internal static extern void glGetIntegerv(int pname, int[] result);
-    #endregion
+    
 
-    #region glGetTexImage
     [DllImport("opengl32.dll")]
     internal static extern void glGetTexImage(int target, int level, int format, int type, IntPtr pixels);
-    #endregion
+    
 
-    #region glGenTextures
     [DllImport("opengl32.dll")]
     internal static extern void glGenTextures(int n, uint[] textures);
-    #endregion
+    
 
-    #region glGetString
     [DllImport("opengl32.dll")]
     internal unsafe static extern sbyte* glGetString(uint name);
-    #endregion
+    
 
-    #region glIsEnabled
     [DllImport("opengl32.dll")]
     internal static extern byte glIsEnabled(int cap);
-    #endregion
+    
 
-    #region glLightfv
     [DllImport("opengl32.dll")]
     internal static extern void glLightfv(int light, int pname, float[] @params);
-    #endregion
+    
 
-    #region glLineWidth
     [DllImport("opengl32.dll")]
     internal static extern void glLineWidth(float width);
-    #endregion
+    
 
-    #region glLoadIdentity
     [DllImport("opengl32.dll")]
     internal static extern void glLoadIdentity();
-    #endregion
+    
 
-    #region glMaterialfv
     [DllImport("opengl32.dll")]
     internal static extern void glMaterialfv(int face, int pname, float[] @params);
-    #endregion
+    
 
-    #region glMatrixMode
     [DllImport("opengl32.dll")]
     internal static extern void glMatrixMode(int mode);
-    #endregion
+    
 
-    #region glNormal3f
     [DllImport("opengl32.dll")]
     internal static extern void glNormal3f(float nx, float ny, float nz);
-    #endregion
+    
 
-    #region glOrtho
     [DllImport("opengl32.dll")]
     internal static extern void glOrtho(double left, double right, double bottom, double top, double zNear, double zFar);
-    #endregion
+    
 
-    #region glReadPixels
     [DllImport("opengl32.dll")]
     internal static extern void glReadPixels(int x, int y, int width, int height, int format, int type, [Out] IntPtr data);
-    #endregion
+    
 
-    #region glPixelStore
     [DllImport("opengl32.dll")]
     internal static extern void glPixelStorei(int pname, int param);
-    #endregion
+    
 
-    #region glPointSize
     [DllImport("opengl32.dll")]
     internal static extern void glPointSize(float size);
-    #endregion
+    
 
-    #region glPolygonMode
     [DllImport("opengl32.dll")]
     internal static extern void glPolygonMode(int face, int mode);
-    #endregion
+    
 
-    #region glPopMatrix
     [DllImport("opengl32.dll")]
     internal static extern void glPopMatrix();
-    #endregion
+    
 
-    #region glPushMatrix
     [DllImport("opengl32.dll")]
     internal static extern void glPushMatrix();
-    #endregion
+    
 
-    #region glRotatef
     [DllImport("opengl32.dll")]
     internal static extern void glRotatef(float angle, float x, float y, float z);
-    #endregion
+    
 
-    #region glScalef
     [DllImport("opengl32.dll")]
     internal static extern void glScalef(float x, float y, float z);
-    #endregion
+    
 
-    #region glShadeModel
     [DllImport("opengl32.dll")]
     internal static extern void glShadeModel(int mode);
-    #endregion
+    
 
-    #region glTexCoord2f
     [DllImport("opengl32.dll")]
     internal static extern void glTexCoord2f(float s, float t);
-    #endregion
+    
 
-    #region glTexImage1D
     [DllImport("opengl32.dll")]
     internal static extern void glTexImage1D(int target, int level, int internalformat, int width, int border, int format, int type, IntPtr pixels);
-    #endregion
+    
 
-    #region glTexImage2D
     [DllImport("opengl32.dll")]
     internal static extern void glTexImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type, IntPtr pixels);
-    #endregion
+    
 
-    #region glTexSubImage2D
     [DllImport("opengl32.dll")]
     internal static extern void glTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, IntPtr pixels);
-    #endregion
+    
 
-    #region glTexParameteri
     [DllImport("opengl32.dll")]
     internal static extern void glTexParameteri(int target, int pname, int param);
-    #endregion
+    
 
-    #region glTranslatef
     [DllImport("opengl32.dll")]
     internal static extern void glTranslatef(float x, float y, float z);
-    #endregion
+    
 
-    #region glVertex2f
     [DllImport("opengl32.dll")]
     internal static extern void glVertex2f(float x, float y);
-    #endregion
+    
 
-    #region glVertex3f
     [DllImport("opengl32.dll")]
     internal static extern void glVertex3f(float x, float y, float z);
-    #endregion
+    
 
-    #region glVertexPointer
     [DllImport("opengl32.dll")]
     internal static extern void glVertexPointer(int size, uint type, int stride, float[] pointer);
-    #endregion
+    
 
-    #region glViewport
     [DllImport("opengl32.dll")]
     internal static extern void glViewport(int x, int y, int width, int height);
-    #endregion
-    #endregion
+    
+    
 
-    #region --- WGL Functions ---
-    #region wglCreateContext
     [DllImport("opengl32.dll")]
     internal extern static IntPtr wglCreateContext(IntPtr hDc);
-    #endregion
+    
 
-    #region wglDeleteContext
     [DllImport("opengl32.dll")]
     internal extern static bool wglDeleteContext(IntPtr hRC);
-    #endregion
+    
 
-    #region wglDescribePixelFormat
     [DllImport("opengl32.dll")]
     internal static extern int wglDescribePixelFormat(IntPtr hdc, int ipfd, uint cjpfd, [In, MarshalAs(UnmanagedType.LPStruct)] PIXELFORMATDESCRIPTOR ppfd);
-    #endregion
+    
 
-    #region wglGetCurrentContext
     [DllImport("opengl32.dll")]
     internal extern static IntPtr wglGetCurrentContext();
-    #endregion
+    
 
-    #region wglGetProcAddress
     [DllImport("opengl32.dll")]
     internal extern static IntPtr wglGetProcAddress(string lpszProc);
-    #endregion
+    
 
-    #region wglMakeCurrent
     [DllImport("opengl32.dll")]
     internal extern static bool wglMakeCurrent(IntPtr hDc, IntPtr hRC);
-    #endregion
+    
 
-    #region wglShareLists
     [DllImport("opengl32.dll")]
     internal extern static bool wglShareLists(IntPtr hglrc1, IntPtr hglrc2);
-    #endregion
-    #endregion
+    
+    
 
-    #region --- Haigh Functions ---
-    #region GetProcAddress
     private static void GetProcAddress<T>(string functionName, out T functionPointer)
     {
         IntPtr procAddress = wglGetProcAddress(functionName);
@@ -338,9 +275,8 @@ internal static class OpenGL32
             throw new Win32Exception($"Failed to load entrypoint for {functionName}.");
         functionPointer = (T)(object)Marshal.GetDelegateForFunctionPointer(procAddress, typeof(T));
     }
-    #endregion
+    
 
-    #region LoadWGLExtensions
     public static void LoadWGLExtensions()
     {
         GetProcAddress("wglGetExtensionsStringARB", out _wglGetExtensionsStringARB);
@@ -350,9 +286,8 @@ internal static class OpenGL32
         GetProcAddress("wglChoosePixelFormatARB", out _wglChoosePixelFormatARB);
         GetProcAddress("wglGetPixelFormatAttribivARB", out _wglGetPixelFormatAttribivARB);
     }
-    #endregion
+    
 
-    #region LoadOpenGL3Extensions
     /// <summary>
     /// This needs to be called after an OpenGL4 render context has been created and before any of these functions are called
     /// </summary>
@@ -400,9 +335,8 @@ internal static class OpenGL32
         GetProcAddress("glValidateProgram", out _glValidateProgram);
         GetProcAddress("glVertexAttribPointer", out _glVertexAttribPointer);
     }
-    #endregion
+    
 
-    #region PremultiplyAlpha
     public unsafe static Bitmap PremultiplyAlpha(Bitmap bitmap)
     {
         // Lock the entire bitmap for Read/Write access as we'll be reading the pixel
@@ -437,18 +371,16 @@ internal static class OpenGL32
 
         return bitmap;
     }
-    #endregion
+    
 
-    #region GetAvailableExtensions
     public static List<string> GetAvailableExtensions()
     {
         string s = GetExtensionsStringARB(User32.GetDC(IntPtr.Zero));
 
         return s == null ? new List<string>() : s.Split(' ').ToList();
     }
-    #endregion
+    
 
-    #region CreateRenderContext
     public static IntPtr CreateRenderContext(IntPtr deviceContext, (int major, int minor) openGLversion)
     {
         int[] attribs = {
@@ -464,18 +396,15 @@ internal static class OpenGL32
 
         return rC;
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region --- OpenGL Core Functions ---
-    #region Clear
     public static void Clear(ClearBufferMask mask)
     {
         glClear((uint)mask);
     }
-    #endregion
+    
 
-    #region ClearColour
     /// <summary>
     /// Components in [0,255]
     /// </summary>
@@ -488,9 +417,8 @@ internal static class OpenGL32
     {
         glClearColor(((float)colour.R) / 255, ((float)colour.G) / 255, ((float)colour.B) / 255, ((float)colour.A) / 255);
     }
-    #endregion
+    
 
-    #region Colour
     public static void Colour(Colour colour)
     {
         glColor4f(((float)colour.R) / 255, ((float)colour.G) / 255, ((float)colour.B) / 255, ((float)colour.A) / 255);
@@ -504,9 +432,8 @@ internal static class OpenGL32
     {
         glColor4f(((float)red) / 255, ((float)green) / 255, ((float)blue) / 255, ((float)alpha) / 255);
     }
-    #endregion               
+                   
 
-    #region DeleteTexture(s)
     public static void DeleteTexture(uint texture)
     {
         uint[] textures = new uint[1];
@@ -519,65 +446,56 @@ internal static class OpenGL32
 
         glDeleteTextures(n, textures);
     }
-    #endregion
+    
 
-    #region DepthMask
     public static void DepthMask(bool flag)
     {
         glDepthMask(flag);
     }
-    #endregion
+    
 
-    #region Disable
     public static void Disable(EnableCap cap)
     {
         glDisable((int)cap);
     }
-    #endregion
+    
 
-    #region DisableClientState
     public static void DisableClientState(VertexArray array)
     {
         glDisableClientState((uint)array);
     }
-    #endregion
+    
 
-    #region DrawArrays
     public static void DrawArrays(PrimitiveType mode, int first, int count)
     {
         glDrawArrays((int)mode, first, count);
     }
-    #endregion
+    
 
-    #region Enable
     public static void Enable(EnableCap cap)
     {
         glEnable((int)cap);
     }
-    #endregion
+    
 
-    #region EnableClientState
     public static void EnableClientState(VertexArray array)
     {
         glEnableClientState((uint)array);
     }
-    #endregion
+    
 
-    #region Flush
     public static void Flush()
     {
         glFlush();
     }
-    #endregion
+    
 
-    #region FrontFace
     public static void FrontFace(FrontFaceDirection mode)
     {
         glFrontFace((int)mode);
     }
-    #endregion
+    
 
-    #region GenTexture(s)
     public static uint GenTexture()
     {
         uint[] textures = new uint[1];
@@ -594,43 +512,38 @@ internal static class OpenGL32
 
         return textures;
     }
-    #endregion
+    
 
-    #region GetBool
     public static bool[] GetBool(GLEnumPName pname)
     {
         glGetBooleanv((int)pname, out bool[] bools);
 
         return bools;
     }
-    #endregion
+    
 
-    #region GetInt
     public static int GetInt(GLEnumPName pname)
     {
         glGetIntegerv((int)pname, out int i);
 
         return i;
     }
-    #endregion
+    
 
-    #region GetViewport
     public static Rect GetViewport()
     {
         int[] ints = new int[4];
         glGetIntegerv((int)GLEnumPName.Viewport, ints);
         return new Rect(ints[0], ints[1], ints[2], ints[3]);
     }
-    #endregion
+    
 
-    #region GetError
     public static OpenGLErrorCode GetError()
     {
         return (OpenGLErrorCode)glGetError();
     }
-    #endregion
+    
 
-    #region GetString
     public static string GetString(GetStringEnum name)
     {
         unsafe
@@ -638,9 +551,8 @@ internal static class OpenGL32
             return new string(glGetString((uint)name));
         }
     }
-    #endregion
+    
 
-    #region GetTexImage
     public static void GetTexImage(TextureTarget target, int level, PixelFormat format, PixelType type, IntPtr pixels)
     {
         glGetTexImage((int)target, level, (int)format, (int)type, pixels);
@@ -655,142 +567,122 @@ internal static class OpenGL32
 
         pinnedArray.Free();
     }
-    #endregion
+    
 
-    #region IsEnabled
     public static bool IsEnabled(EnableCap cap)
     {
         return glIsEnabled((int)cap) == 1;
     }
-    #endregion
+    
 
-    #region Light
     public static void Light(LightName light, LightParameter pname, float[] @params)
     {
         glLightfv((int)light, (int)pname, @params);
     }
-    #endregion
+    
 
-    #region LineWidth
     public static void LineWidth(float width)
     {
         glLineWidth(width);
     }
-    #endregion
+    
 
-    #region LoadIdentity
     public static void LoadIdentity()
     {
         glLoadIdentity();
     }
-    #endregion
+    
 
-    #region Material
     public static void Material(MaterialFace face, MaterialParameter pname, float[] @params)
     {
         glMaterialfv((int)face, (int)pname, @params);
     }
-    #endregion
+    
 
-    #region MatrixMode
     public static void MatrixMode(MatrixMode mode)
     {
         glMatrixMode((int)mode);
     }
-    #endregion
+    
 
-    #region Normal
     public static void Normal(float nx, float ny, float nz)
     {
         glNormal3f(nx, ny, nz);
     }
-    #endregion
+    
 
-    #region Ortho
     public static void Ortho(double left, double right, double bottom, double top, double zNear, double zFar)
     {
         glOrtho(left, right, bottom, top, zNear, zFar);
     }
-    #endregion
+    
 
-    #region PixelStore
     public static void PixelStore(PixelStoreParameter pname, int param)
     {
         glPixelStorei((int)pname, param);
     }
-    #endregion
+    
 
-    #region PointSize
     public static void PointSize(float size)
     {
         glPointSize(size);
     }
-    #endregion
+    
 
-    #region PolygonMode
     public static void PolygonMode(MaterialFace face, PolygonMode mode)
     {
         glPolygonMode((int)face, (int)mode);
     }
-    #endregion
+    
 
-    #region PopMatrix
     public static void PopMatrix()
     {
         glPopMatrix();
     }
-    #endregion
+    
 
-    #region PushMatrix
     public static void PushMatrix()
     {
         glPushMatrix();
     }
-    #endregion
+    
 
-    #region ReadPixels
     public static void ReadPixels(int x, int y, int w, int h, PixelFormat format, PixelType type, IntPtr data)
     {
         glReadPixels(x, y, w, h, (int)format, (int)type, data);
     }
-    #endregion
+    
 
-    #region Rotate
     public static void Rotate(float angle, float x, float y, float z)
     {
         glRotatef(angle, x, y, z);
     }
-    #endregion
+    
 
-    #region Scale
     public static void Scale(float x, float y, float z)
     {
         glScalef(x, y, z);
     }
-    #endregion
+    
 
-    #region ShadeModel
     public static void ShadeModel(ShadingModel mode)
     {
         glShadeModel((int)mode);
     }
-    #endregion
+    
 
-    #region TexCoord
     public static void TexCoord(float s, float t)
     {
         glTexCoord2f(s, t);
     }
-    #endregion
+    
 
-    #region TexImage1D
     public static void TexImage1D(TextureTarget target, int level, PixelInternalFormat internalFormat, int width, int border, PixelFormat format, PixelType type, IntPtr pixels)
     {
         glTexImage1D((int)target, level, (int)internalFormat, width, border, (int)format, (int)type, pixels);
     }
-    #endregion
+    
 
-    #region TexImage2D
     public static void TexImage2D(TextureTarget target, int level, PixelInternalFormat internalFormat, int width, int height, int border, PixelFormat format, PixelType type, IntPtr pixels)
     {
         glTexImage2D((int)target, level, (int)internalFormat, width, height, border, (int)format, (int)type, pixels);
@@ -815,30 +707,26 @@ internal static class OpenGL32
 
         pinnedArray.Free();
     }
-    #endregion
+    
 
-    #region TexSubImage2D
     public static void TexSubImage2D(TextureTarget target, int level, int xOffset, int yOffset, int width, int height, PixelFormat format, PixelType type, IntPtr pixels)
     {
         glTexSubImage2D((int)target, level, xOffset, yOffset, width, height, (int)format, (int)type, pixels);
     }
-    #endregion
+    
 
-    #region TexParameter
     public static void TexParameter(TextureTarget target, TextureParameterName pname, TextureParameter param)
     {
         glTexParameteri((int)target, (int)pname, (int)param);
     }
-    #endregion
+    
 
-    #region Translate
     public static void Translate(float x, float y, float z)
     {
         glTranslatef(x, y, z);
     }
-    #endregion
+    
 
-    #region Vertex
     public static void Vertex(float x, float y)
     {
         glVertex2f(x, y);
@@ -848,16 +736,14 @@ internal static class OpenGL32
     {
         glVertex3f(x, y, z);
     }
-    #endregion
+    
 
-    #region VertexPointer
     public static void VertexPointer(int size, DataType type, int stride, float[] pointer)
     {
         glVertexPointer(size, (uint)type, stride, pointer);
     }
-    #endregion
+    
 
-    #region Viewport
     public static void Viewport(int x, int y, int w, int h)
     {
         glViewport(x, y, w, h);
@@ -866,43 +752,37 @@ internal static class OpenGL32
     {
         glViewport((int)viewport.X, (int)viewport.Y, (int)viewport.W, (int)viewport.H);
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region --- WGL Extension Functions        
-    #region wglGetExtensionsStringARB
     private delegate string wglGetExtensionsStringARB(IntPtr hDc);
     private static wglGetExtensionsStringARB _wglGetExtensionsStringARB;
     /// <summary>
     /// wglGetExtensionStringARB
     /// </summary>
     public static string GetExtensionsStringARB(IntPtr hDc) => _wglGetExtensionsStringARB(hDc);
-    #endregion
+    
 
-    #region wglGetPixelFormatAttribivARB
     private delegate bool wglGetPixelFormatAttribivARB(IntPtr hdc, int iPixelFormat, int iLayerPlane, int nAttributes, int[] piAttributes, [Out] int[] piValues);
     private static wglGetPixelFormatAttribivARB _wglGetPixelFormatAttribivARB;
     public static bool GetPixelFormatAttribivARB(IntPtr hdc, int iPixelFormat, int iLayerPlane, int nAttributes, int[] piAttributes, [Out] int[] piValues)
         => _wglGetPixelFormatAttribivARB(hdc, iPixelFormat, iLayerPlane, nAttributes, piAttributes, piValues);
-    #endregion
+    
 
-    #region wglChoosePixelFormatARB
     private delegate bool wglChoosePixelFormatARB(IntPtr hdc, int[] piAttribIList, float[] pfAttribFList, int nMaxFormats, [Out] int[] piFormats, out int nNumFormats);
     private static wglChoosePixelFormatARB _wglChoosePixelFormatARB;
     public static bool ChoosePixelFormatARB(IntPtr hdc, int[] piAttribIList, float[] pfAttribFList, int nMaxFormats, [Out] int[] piFormats, out int nNumFormats)
         => _wglChoosePixelFormatARB(hdc, piAttribIList, pfAttribFList, nMaxFormats, piFormats, out nNumFormats);
-    #endregion
+    
 
-    #region wglCreateContextAttribsARB
     //note that this is necessarily created before LoadOpenGLExtensions is called
     private delegate IntPtr wglCreateContextAttribsARB(IntPtr hDc, IntPtr sharedContext, int[] attribList);
     private static wglCreateContextAttribsARB _wglCreateContextAttribsARB;
 
     public static IntPtr CreateContextAttribsARB(IntPtr hDc, IntPtr sharedContext, int[] attribList)
         => _wglCreateContextAttribsARB(hDc, sharedContext, attribList);
-    #endregion
+    
 
-    #region wglSwapIntervalEXT
     private delegate bool wglSwapIntervalEXT(int value);
     private static wglSwapIntervalEXT _wglSwapIntervalEXT;
     /// <summary>
@@ -911,17 +791,14 @@ internal static class OpenGL32
     /// </summary>
     /// <param name="value"></param>
     public static bool SwapIntervalEXT(int value) => _wglSwapIntervalEXT(value);
-    #endregion
+    
 
-    #region wglGetSwapIntervalEXT
     private delegate int wglGetSwapIntervalEXT();
     private static wglGetSwapIntervalEXT _wglGetSwapIntervalEXT;
     public static int GetSwapIntervalEXT() => _wglGetSwapIntervalEXT();
-    #endregion
-    #endregion
+    
+    
 
-    #region --- OpenGL 3.0 Extension Functions ---
-    #region ActiveTexture / glActiveTexture
     private delegate void DEL_glActiveTexture(int unit);
     private static DEL_glActiveTexture _glActiveTexture;
     /// <summary>
@@ -931,9 +808,8 @@ internal static class OpenGL32
     {
         _glActiveTexture((int)unit);
     }
-    #endregion
+    
 
-    #region AttachShader / glAttachShader
     private delegate void DEL_glAttachShader(uint program, int shader);
     private static DEL_glAttachShader _glAttachShader;
     /// <summary>
@@ -943,9 +819,8 @@ internal static class OpenGL32
     {
         _glAttachShader(program, shader);
     }
-    #endregion
+    
 
-    #region BindBuffer / glBindBuffer
     private delegate void DEL_glBindBuffer(int target, uint buffer);
     private static DEL_glBindBuffer _glBindBuffer;
     /// <summary>
@@ -955,9 +830,8 @@ internal static class OpenGL32
     {
         _glBindBuffer((int)target, buffer);
     }
-    #endregion
+    
 
-    #region BindFramebuffer / glBindFramebuffer
     private delegate void DEL_glBindFramebuffer(int target, uint frameBuffer);
     private static DEL_glBindFramebuffer _glBindFramebuffer;
     /// <summary>
@@ -967,9 +841,8 @@ internal static class OpenGL32
     {
         _glBindFramebuffer((int)target, frameBuffer);
     }
-    #endregion
+    
 
-    #region BindSampler / glBindSampler
     private delegate void DEL_glBindSampler(int unit, int sampler);
     private static DEL_glBindSampler _glBindSampler;
     /// <summary>
@@ -979,9 +852,8 @@ internal static class OpenGL32
     {
         _glBindSampler((int)unit, sampler);
     }
-    #endregion
+    
 
-    #region BlendFuncSeperate
     private delegate void DEL_glBlendFuncSeparate(int srcRGB, int dstRGB, int srcAlpha, int dstAlpha);
     private static DEL_glBlendFuncSeparate glBlendFuncSeparate;
 
@@ -989,9 +861,8 @@ internal static class OpenGL32
     {
         glBlendFuncSeparate((int)srcRGB, (int)dstRGB, (int)srcAlpha, (int)dstAlpha);
     }
-    #endregion
+    
 
-    #region BufferData / glBufferData
     private delegate void DEL_glBufferData(int target, IntPtr size, IntPtr data, int usage);
     private static DEL_glBufferData _glBufferData;
     /// <summary>
@@ -1007,9 +878,8 @@ internal static class OpenGL32
 
         pinnedArray.Free();
     }
-    #endregion
+    
 
-    #region CompileShader / glCompileShader
     private delegate void DEL_glCompileShader(int program);
     private static DEL_glCompileShader _glCompileShader;
     /// <summary>
@@ -1019,9 +889,8 @@ internal static class OpenGL32
     {
         _glCompileShader(program);
     }
-    #endregion
+    
 
-    #region CreateProgram / glCreateProgram
     private delegate uint DEL_glCreateProgram();
     private static DEL_glCreateProgram _glCreateProgram;
     /// <summary>
@@ -1031,9 +900,8 @@ internal static class OpenGL32
     {
         return _glCreateProgram();
     }
-    #endregion
+    
 
-    #region CreateShader / glCreateShader
     private delegate int DEL_glCreateShader(int shaderType);
     private static DEL_glCreateShader _glCreateShader;
     /// <summary>
@@ -1043,9 +911,8 @@ internal static class OpenGL32
     {
         return _glCreateShader((int)shaderType);
     }
-    #endregion
+    
 
-    #region DebugMessageCallback
     private delegate void DEL_glDebugMessageCallback(IntPtr callback, IntPtr userParam);
     private static DEL_glDebugMessageCallback _glDebugMessageCallback;
     public static void DebugMessageCallback(DebugMessageDelegate callbackFunction)
@@ -1055,9 +922,8 @@ internal static class OpenGL32
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate void DebugMessageDelegate(DebugSource source, DebugType type, uint id, DebugSeverity severity, int length, IntPtr message, IntPtr userParam);
-    #endregion
+    
 
-    #region DebugMessageControl
     private delegate void DEL_glDebugMessageControl(int source, int type, int severity, int count, uint[] ids, bool enabled);
     private static DEL_glDebugMessageControl _glDebugMessageControl;
 
@@ -1070,9 +936,8 @@ internal static class OpenGL32
     {
         DebugMessageControl(source, type, severity, 0, null, enabled);
     }
-    #endregion
+    
 
-    #region DeleteBuffer(s) / glDeleteBuffers
     private delegate void DEL_glDeleteBuffers(int n, uint[] buffers);
     private static DEL_glDeleteBuffers _glDeleteBuffers;
     /// <summary>
@@ -1093,9 +958,8 @@ internal static class OpenGL32
 
         _glDeleteBuffers(1, buffers);
     }
-    #endregion
+    
 
-    #region DeleteFramebuffers(s) / glDeleteFramebuffers
     private delegate void DEL_glDeleteFramebuffers(int n, uint[] framebuffers);
     private static DEL_glDeleteFramebuffers _glDeleteFramebuffers;
     /// <summary>
@@ -1116,9 +980,8 @@ internal static class OpenGL32
 
         _glDeleteFramebuffers(1, framebuffers);
     }
-    #endregion
+    
 
-    #region DeleteShader / glDeleteShader
     private delegate void DEL_glDeleteShader(int shader);
     private static DEL_glDeleteShader _glDeleteShader;
     /// <summary>
@@ -1128,9 +991,8 @@ internal static class OpenGL32
     {
         _glDeleteShader(shader);
     }
-    #endregion
+    
 
-    #region DeleteProgram / glDeleteProgram
     private delegate void DEL_glDeleteProgram(uint program);
     private static DEL_glDeleteProgram _glDeleteProgram;
     /// <summary>
@@ -1140,9 +1002,8 @@ internal static class OpenGL32
     {
         _glDeleteProgram(program);
     }
-    #endregion
+    
 
-    #region DetachShader / glDetachShader
     private delegate void DEL_glDetachShader(uint program, int shader);
     private static DEL_glDetachShader _glDetachShader;
     /// <summary>
@@ -1152,9 +1013,8 @@ internal static class OpenGL32
     {
         _glDetachShader(program, shader);
     }
-    #endregion
+    
 
-    #region DisableVertexAttribArray / glDisableVertexAttribArray
     private delegate void DEL_glDisableVertexAttribArray(uint index);
     private static DEL_glDisableVertexAttribArray _glDisableVertexAttribArray;
     /// <summary>
@@ -1164,9 +1024,8 @@ internal static class OpenGL32
     {
         _glDisableVertexAttribArray((uint)index);
     }
-    #endregion
+    
 
-    #region EnableVertexArray / glEnableVertexAttribArray
     private delegate void DEL_glEnableVertexAttribArray(uint index);
     private static DEL_glEnableVertexAttribArray _glEnableVertexAttribArray;
     /// <summary>
@@ -1176,9 +1035,8 @@ internal static class OpenGL32
     {
         _glEnableVertexAttribArray((uint)index);
     }
-    #endregion
+    
 
-    #region FramebufferTexture2D / glFramebufferTexture2D
     private delegate void DEL_glFramebufferTexture2D(int target, int attachment, int texTarget, uint texture, int level);
     private static DEL_glFramebufferTexture2D _glFramebufferTexture2D;
     /// <summary>
@@ -1188,9 +1046,8 @@ internal static class OpenGL32
     {
         _glFramebufferTexture2D((int)target, (int)attachment, (int)texTarget, texture, level);
     }
-    #endregion
+    
 
-    #region GenBuffer(s) / glGenBuffers
     private delegate void DEL_glGenBuffers(int n, uint[] buffers);
     private static DEL_glGenBuffers _glGenBuffers;
     /// <summary>
@@ -1215,9 +1072,8 @@ internal static class OpenGL32
 
         return buffers[0];
     }
-    #endregion
+    
 
-    #region GenFramebuffer(s) / glGenFramebuffers
     private delegate void DEL_glGenFrameBuffers(int n, uint[] buffers);
     private static DEL_glGenFrameBuffers _glGenFramebuffers;
 
@@ -1237,9 +1093,8 @@ internal static class OpenGL32
 
         return buffers[0];
     }
-    #endregion
+    
 
-    #region GetAttribLocation / glGetAttribLocation
     private delegate int DEL_glGetAttribLocation(uint programObj, string name);
     private static DEL_glGetAttribLocation _glGetAttribLocation;
     /// <summary>
@@ -1249,9 +1104,8 @@ internal static class OpenGL32
     {
         return _glGetAttribLocation(program, name);
     }
-    #endregion
+    
 
-    #region GetProgramInfoLog / glGetProgramInfoLog
     private unsafe delegate void DEL_glGetProgramInfoLog(uint program, int bufSize, out int length, StringBuilder infoLog);
     private static DEL_glGetProgramInfoLog _glGetProgramInfoLog;
     /// <summary>
@@ -1265,9 +1119,8 @@ internal static class OpenGL32
 
         return stringPtr.ToString();
     }
-    #endregion
+    
 
-    #region GetShader / glGetShaderiv
     private unsafe delegate void DEL_glGetShaderiv(uint shader, int pname, int* @params);
     private static DEL_glGetShaderiv _glGetShaderiv;
     /// <summary>
@@ -1282,9 +1135,8 @@ internal static class OpenGL32
             return i;
         }
     }
-    #endregion
+    
 
-    #region GetShaderInfoLog / glGetShaderInfoLog
     private unsafe delegate void DEL_glGetShaderInfoLog(uint shader, int bufSize, out int length, StringBuilder infoLog);
     private static DEL_glGetShaderInfoLog _glGetShaderInfoLog;
     /// <summary>
@@ -1298,9 +1150,8 @@ internal static class OpenGL32
 
         return stringPtr.ToString();
     }
-    #endregion
+    
 
-    #region GetUniformLocation / glGetUniformLocation
     private delegate int DEL_glGetUniformLocation(uint program, string name);
     private static DEL_glGetUniformLocation _glGetUniformLocation;
     /// <summary>
@@ -1310,9 +1161,8 @@ internal static class OpenGL32
     {
         return _glGetUniformLocation(program, name);
     }
-    #endregion
+    
 
-    #region LinkProgram / glLinkProgram
     private delegate void DEL_glLinkProgram(uint program);
     private static DEL_glLinkProgram _glLinkProgram;
     /// <summary>
@@ -1322,9 +1172,8 @@ internal static class OpenGL32
     {
         _glLinkProgram(program);
     }
-    #endregion
+    
 
-    #region ShaderSource / glShaderSource
     private delegate int DEL_glShaderSource(int shader, int count, string[] strings, int[] lengths);
     private static DEL_glShaderSource _glShaderSource;
     /// <summary>
@@ -1336,9 +1185,8 @@ internal static class OpenGL32
 
         return _glShaderSource(shader, 1, strings, null);
     }
-    #endregion
+    
 
-    #region TexImage2DMultisample / glTexImage2DMultisample
     private delegate int DEL_glTexImage2DMultisample(int target, int samples, int internalformat, int width, int height, bool fixedsamplelocations);
     private static DEL_glTexImage2DMultisample _glTexImage2DMultisample;
     /// <summary>
@@ -1352,9 +1200,8 @@ internal static class OpenGL32
     /// glTexImage2DMultisample
     /// </summary>
     public static void TexImage2DMultisample(TextureTargetMultisample target, MSAA_Samples samples, PixelInternalFormat internalFormat, int width, int height, bool fixedSampleLocations) => TexImage2DMultisample(target, (int)samples, internalFormat, width, height, fixedSampleLocations);
-    #endregion
+    
 
-    #region TexStorage2D / glTexStorage2D
     private delegate void DEL_glTexStorage2D(uint target, int levels, int internalFormat, int width, int height);
     private static DEL_glTexStorage2D _glTexStorage2D;
 
@@ -1362,9 +1209,8 @@ internal static class OpenGL32
     {
         _glTexStorage2D((uint)target, levels, (int)internalFormat, width, height);
     }
-    #endregion
+    
 
-    #region Uniform / glUniform1f / glUniform1i
     private delegate void DEL_glUniform1f(int location, float v0);
     private static DEL_glUniform1f _glUniform1f;
 
@@ -1385,9 +1231,8 @@ internal static class OpenGL32
     {
         _glUniform1i(location, value);
     }
-    #endregion
+    
 
-    #region Uniform2 / glUniform2f / glUniform2i
     private delegate void DEL_glUniform2f(int location, float v0, float v1);
     private static DEL_glUniform2f _glUniform2f;
 
@@ -1401,9 +1246,8 @@ internal static class OpenGL32
     {
         _glUniform2f(location, value.X, value.Y);
     }
-    #endregion
+    
 
-    #region Uniform3 / glUniform3f / glUniform3i
     private delegate void DEL_glUniform3f(int location, float v0, float v1, float v2);
     private static DEL_glUniform3f _glUniform3f;
 
@@ -1417,9 +1261,8 @@ internal static class OpenGL32
     {
         _glUniform3f(location, value.x, value.y, value.z);
     }
-    #endregion
+    
 
-    #region Uniform4 / glUniform4f / glUniform4i
     private delegate void DEL_glUniform4f(int location, float v0, float v1, float v2, float v3);
     private static DEL_glUniform4f _glUniform4f;
 
@@ -1437,9 +1280,8 @@ internal static class OpenGL32
     {
         _glUniform4f(location, value.R / 255f, value.G / 255f, value.B / 255f, value.A / 255f);
     }
-    #endregion
+    
 
-    #region UniformMatrix3 / glUniformMatrix3fv
     private unsafe delegate void DEL_glUniformMatrix3fv(int location, int count, bool transpose, float* value);
     private static DEL_glUniformMatrix3fv _glUniformMatrix3fv;
     /// <summary>
@@ -1463,9 +1305,8 @@ internal static class OpenGL32
     /// glUniformMatrix3fv
     /// </summary>
     public static void UniformMatrix3(int location, ref Matrix4 matrix) => UniformMatrix3(location, 1, false, matrix.Values);
-    #endregion
+    
 
-    #region UniformMatrix4 / glUniformMatrix4fv
     private unsafe delegate void DEL_glUniformMatrix4fv(int location, int count, bool transpose, float* value);
     private static DEL_glUniformMatrix4fv _glUniformMatrix4fv;
     /// <summary>
@@ -1489,9 +1330,8 @@ internal static class OpenGL32
     /// glUniformMatrix4fv
     /// </summary>
     public static void UniformMatrix4(int location, ref Matrix4 matrix) => UniformMatrix4(location, 1, false, matrix.Values);
-    #endregion
+    
 
-    #region UseProgram / glUseProgram
     private delegate void DEL_glUseProgram(uint program);
     private static DEL_glUseProgram _glUseProgram;
     /// <summary>
@@ -1501,9 +1341,8 @@ internal static class OpenGL32
     {
         _glUseProgram(program);
     }
-    #endregion
+    
 
-    #region ValidateProgram / glValidateProgram
     private delegate void DEL_glValidateProgram(uint program);
     private static DEL_glValidateProgram _glValidateProgram;
     /// <summary>
@@ -1513,9 +1352,8 @@ internal static class OpenGL32
     {
         _glValidateProgram(program);
     }
-    #endregion
+    
 
-    #region VertexAttribPointer / glVertexAttribPointer
     private delegate void DEL_glVertexAttribPointer(uint index, int size, int type, bool normalized, int stride, IntPtr pointer);
     private static DEL_glVertexAttribPointer _glVertexAttribPointer;
     /// <summary>
@@ -1525,6 +1363,6 @@ internal static class OpenGL32
     {
         _glVertexAttribPointer((uint)index, size, (int)type, normalised, stride, new IntPtr(offset));
     }
-    #endregion
-    #endregion
+    
+    
 }

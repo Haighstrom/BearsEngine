@@ -2,15 +2,12 @@
 using BearsEngine.UI;
 using BearsEngine.Worlds.Graphics.Text.Components;
 using BearsEngine.Graphics.Shaders;
+using Line = BearsEngine.Graphics.Line;
 
 namespace BearsEngine.Worlds.Graphics.Text
 {
-    using Line = BearsEngine.Graphics.Line;
-
     public class HText : RectGraphicBase, IDisposable
     {
-        #region Static
-        #region _textCommandTagKeys
         private static readonly Dictionary<string, TextCommandType> _textCommandTagKeys = new()
         {
             { "colour", TextCommandType.Colour },
@@ -21,9 +18,8 @@ namespace BearsEngine.Worlds.Graphics.Text
             { "underline", TextCommandType.Underline },
             { "strikethrough", TextCommandType.Strikethrough },
         };
-        #endregion
+        
 
-        #region _textCommandTags
         private static readonly Dictionary<string, TextCommandTag> _textCommandTags = new()
         {
             { "r", new TextCommandTag(TextCommandType.FontStyle, FontStyle.Regular) },
@@ -35,9 +31,8 @@ namespace BearsEngine.Worlds.Graphics.Text
             { "s", new TextCommandTag(TextCommandType.Strikethrough, true) },
             { "ns", new TextCommandTag(TextCommandType.Strikethrough, false) },
         };
-        #endregion
+        
 
-        #region AddTextCommandTag
         /// <summary>
         /// Creates a shortcut to a text command. See TextCommandTag for valid options. Do not include the enclosing brackets in the key.
         /// </summary>
@@ -51,12 +46,11 @@ namespace BearsEngine.Worlds.Graphics.Text
 
             _textCommandTags.Add(key.ToLower(), tagOverride);
         }
-        #endregion
+        
 
         public static void RemoveTextCommandTag(string key) => _textCommandTags.Remove(key.ToLower());
-        #endregion
+        
 
-        #region Fields
         private List<Line> _linesToDraw = new();
         private List<SimpleGraphic> _vertGroups = new();
         private bool _verticesChanged = true;
@@ -79,9 +73,8 @@ namespace BearsEngine.Worlds.Graphics.Text
         private bool _strikethrough = false;
         private float _strikethroughThickness = 0.5f;
         private int _strikethroughOffset = 0;
-        #endregion
+        
 
-        #region Constructors
         public HText(UITheme theme, Rect r, string text)
             : this(theme.Text, r, text)
         {
@@ -112,10 +105,8 @@ namespace BearsEngine.Worlds.Graphics.Text
             Font = font;
             Text = text ?? "";
         }
-        #endregion
+        
 
-        #region Properties
-        #region w
         public override float W
         {
             set
@@ -124,9 +115,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region h
         public override float H
         {
             set
@@ -135,9 +125,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region Colour
         public override Colour Colour
         {
             set
@@ -146,9 +135,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region Font
         public HFont Font
         {
             get => _font;
@@ -158,9 +146,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region Text
         public string Text
         {
             get => _text;
@@ -172,11 +159,10 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
         public float Angle { get; set; }
 
-        #region HorizonalAlignment
         public HAlignment HAlignment
         {
             get => _hAlignment;
@@ -186,9 +172,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region VerticalAlignment
         public VAlignment VAlignment
         {
             get => _vAlignment;
@@ -198,9 +183,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region Multiline
         /// <summary>
         /// True: text will wrap when exceeding w (if text is too big it will overrun the bottom); False: forces the text to a single line (if text is too big it will overrun the right)
         /// </summary>
@@ -213,9 +197,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region ExtraSpaceWidth
         public float ExtraSpaceWidth
         {
             get => _extraSpaceWidth;
@@ -225,9 +208,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region ExtraLineSpacing
         public float ExtraLineSpacing
         {
             get => _extraLineSpacing;
@@ -237,9 +219,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region ExtraCharacterSpacing
         public float ExtraCharacterSpacing
         {
             get => _extraCharacterSpacing;
@@ -249,9 +230,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region ScaleX
         public float ScaleX
         {
             get => _scaleX;
@@ -261,9 +241,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region ScaleY
         public float ScaleY
         {
             get => _scaleY;
@@ -273,9 +252,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region StartCharToWrite
         public int FirstCharToDraw
         {
             get => _startCharToWrite;
@@ -289,9 +267,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region NumCharsToWrite
         public int NumCharsToDraw
         {
             get => _numCharsToWrite;
@@ -302,9 +279,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region UseCommandTags
         /// <summary>
         /// If disabled, command tags will be ignored and simply written
         /// </summary>
@@ -317,9 +293,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region Underline
         public bool Underline
         {
             get => _underline;
@@ -329,9 +304,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region UnderlineThickness
         public float UnderlineThickness
         {
             get => _underlineThickness;
@@ -344,9 +318,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region UnderlineOffset
         public int UnderlineOffset
         {
             get => _underlineOffset;
@@ -356,9 +329,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region Strikethrough
         public bool Strikethrough
         {
             get => _strikethrough;
@@ -368,9 +340,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region StrikethroughThickness
         public float StrikethroughThickness
         {
             get => _strikethroughThickness;
@@ -383,9 +354,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region StrikeThroughOffset
         public int StrikethroughOffset
         {
             get => _strikethroughOffset;
@@ -395,11 +365,9 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _verticesChanged = true;
             }
         }
-        #endregion
-        #endregion
+        
+        
 
-        #region Methods
-        #region MeasureString
         public Point MeasureString(int characterIndex) => MeasureString(Text[characterIndex]);
         public Point MeasureString(char c) => MeasureString(c.ToString());
         public Point MeasureString(int first, int length) => MeasureString(Text.Substring(first, length));
@@ -413,9 +381,8 @@ namespace BearsEngine.Worlds.Graphics.Text
 
             return Font.MeasureString(s);
         }
-        #endregion
+        
 
-        #region ParseTag
         private TextCommandTag ParseTag(string tag)
         {
             var tagWithoutBrackets = tag.Substring(1, tag.Length - 2);
@@ -466,9 +433,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 }
             }
         }
-        #endregion
+        
 
-        #region ParseCloseTag
         private TextCommandType? ParseCloseTag(string tag)
         {
             var tagWithoutBrackets = tag.Substring(2, tag.Length - 3);
@@ -486,9 +452,8 @@ namespace BearsEngine.Worlds.Graphics.Text
                 return null;
             }
         }
-        #endregion
+        
 
-        #region GetCurrentAttributes
         private (HFont font, Colour colour, bool underline, bool strikethrough) GetCurrentAttributes(List<TextCommandTag> overrides)
         {
             (HFont font, Colour colour, bool underline, bool strikethrough) result = (Font, Colour, Underline, Strikethrough);
@@ -522,9 +487,8 @@ namespace BearsEngine.Worlds.Graphics.Text
 
             return result;
         }
-        #endregion
+        
 
-        #region SplitTextToLines
         private List<Components.Line> SplitTextToLines(string text)
         {
             text = text.Replace("\r\n", "\n");
@@ -670,7 +634,6 @@ namespace BearsEngine.Worlds.Graphics.Text
                 lines.Add(currentLine);
             }
 
-            #region Size warnings
             float height = lines.Sum(l => l.Height);
             if (VAlignment != VAlignment.Full)
                 height += Math.Max(lines.Count - 1, 0) * ScaleY * ExtraLineSpacing;
@@ -682,13 +645,11 @@ namespace BearsEngine.Worlds.Graphics.Text
 
             if (sizeOfLetterLongerThanWholeLine > 0)
                 HConsole.Warning($"HText/SplitTextToLines: a single letter is wider ({sizeOfLetterLongerThanWholeLine}) than the text box width ({W})");
-            #endregion
+            
 
             return lines;
         }
-        #endregion
 
-        #region SetVertices
         private void SetVertices()
         {
             var lines = SplitTextToLines(Text.Substring(FirstCharToDraw, NumCharsToDraw));
@@ -810,9 +771,8 @@ namespace BearsEngine.Worlds.Graphics.Text
             if (vertices.Count > 0)
                 _vertGroups.Add(new SimpleGraphic(new DefaultShader(), HF.Graphics.LoadTexture(lastFont.CharSpriteSheet, lastFont.LongName), vertices.ToArray()));
         }
-        #endregion
+        
 
-        #region SetVerticesSimple
         private void SetVerticesSimple()
         {
             _linesToDraw = new();
@@ -872,17 +832,15 @@ namespace BearsEngine.Worlds.Graphics.Text
             if (vertices.Count > 0)
                 _vertGroups.Add(new SimpleGraphic(new DefaultShader(), HF.Graphics.LoadTexture(Font.CharSpriteSheet, Font.LongName), vertices.ToArray()));
 
-            #region Size Warnings
             if (Font.HighestChar > H)
                 HConsole.Warning($"HText/SetVerticesSimple: line height ({Font.HighestChar}) is bigger than text box height ({H})");
 
             if (len > W)
                 HConsole.Warning($"HText/SetVerticesSimple: line is longer ({len}) than text box width ({W})");
-            #endregion
+            
         }
-        #endregion
+        
 
-        #region Render
         public override void Render(ref Matrix4 projection, ref Matrix4 modelView)
         {
             if (W == 0 || H == 0)
@@ -911,10 +869,7 @@ namespace BearsEngine.Worlds.Graphics.Text
             foreach (var l in _linesToDraw)
                 l.Render(ref projection, ref mv);
         }
-        #endregion
-        #endregion
 
-        #region IDisposable
         public void Dispose()
         {
             _font?.Dispose();
@@ -923,6 +878,5 @@ namespace BearsEngine.Worlds.Graphics.Text
             foreach (var v in _vertGroups)
                 v.Dispose();
         }
-        #endregion
     }
 }

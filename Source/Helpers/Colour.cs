@@ -6,8 +6,6 @@ namespace BearsEngine;
 [StructLayout(LayoutKind.Sequential)]
 public struct Colour : IEquatable<Colour>
 {
-    #region Static
-    #region System Colours
     /// <summary>
     /// (255, 255, 255, 0)
     /// </summary>
@@ -572,10 +570,9 @@ public struct Colour : IEquatable<Colour>
     /// (154, 205, 50, 255)
     /// </summary>
     public static Colour YellowGreen => new(154, 205, 50, 255);
-    #endregion
-    #endregion
+    
+    
 
-    #region Fields
     /// <summary>
     /// The Red colour component [0,255]
     /// </summary>
@@ -592,9 +589,8 @@ public struct Colour : IEquatable<Colour>
     /// The Alpha component [0,255]
     /// </summary>
     public byte A;
-    #endregion
+    
 
-    #region Constructors
     /// <summary>
     /// Creates a Colour from float components. The components should be between 0 and 1.
     /// </summary>
@@ -650,10 +646,8 @@ public struct Colour : IEquatable<Colour>
         B = colour.B;
         A = (byte)(alpha * 255);
     }
-    #endregion
+    
 
-    #region IEquatable
-    #region Equals
     public bool Equals(Colour other)
     {
         return R == other.R &&
@@ -661,18 +655,15 @@ public struct Colour : IEquatable<Colour>
             B == other.B &&
             A == other.A;
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region Methods
     /// <summary>
     /// Returns the same colour but with the specified alpha
     /// </summary>
     public Colour WithAlpha(byte alpha) => new(R, G, B, alpha);
-    #endregion
+    
 
-    #region Overloads / Overrides
-    #region +
     public static Colour operator +(Colour l, Colour r)
     {
         return new Colour
@@ -683,9 +674,8 @@ public struct Colour : IEquatable<Colour>
             A = (byte)Math.Min(l.A + r.A, byte.MaxValue),
         };
     }
-    #endregion
+    
 
-    #region -
     public static Colour operator -(Colour l, Colour r)
     {
         return new Colour
@@ -696,9 +686,8 @@ public struct Colour : IEquatable<Colour>
             A = (byte)Math.Max(l.A - r.A, 0),
         };
     }
-    #endregion
+    
 
-    #region *
     public static Colour operator *(Colour l, Colour r)
     {
         return new Colour
@@ -722,23 +711,20 @@ public struct Colour : IEquatable<Colour>
             A = (byte)Math.Min(Math.Max(l * r.A, 0), byte.MaxValue),
         };
     }
-    #endregion
+    
 
-    #region ==
     public static bool operator ==(Colour left, Colour right)
     {
         return left.Equals(right);
     }
-    #endregion
+    
 
-    #region !=
     public static bool operator !=(Colour left, Colour right)
     {
         return !left.Equals(right);
     }
-    #endregion
+    
 
-    #region Equals
     public override bool Equals(object obj)
     {
         if (!(obj is Colour))
@@ -746,20 +732,12 @@ public struct Colour : IEquatable<Colour>
 
         return Equals((Colour)obj);
     }
-    #endregion
+    
 
-    #region ToString
     public override string ToString()
     {
         return string.Format("(R:{0}, G:{1}, B:{2}, A:{3})", R, G, B, A);
     }
-    #endregion
-
-    #region GetHashCode
-    public override int GetHashCode()
-    {
-        return base.GetHashCode();
-    }
-    #endregion
-    #endregion
+    
+    
 }

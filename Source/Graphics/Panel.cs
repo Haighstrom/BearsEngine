@@ -5,7 +5,6 @@ namespace BearsEngine.Graphics
 {
     public class Panel : RectGraphicBase
     {
-        #region Fields
         private Texture _texture;
         private Vertex[] _vertices;
         private bool _verticesChanged = true;
@@ -20,9 +19,8 @@ namespace BearsEngine.Graphics
             BL = new Rect(0, 0.7f, 0.3f, 0.3f),
             BM = new Rect(0.3f, 0.7f, 0.4f, 0.3f),
             BR = new Rect(0.7f, 0.7f, 0.3f, 0.3f);
-        #endregion
+        
 
-        #region Constructors
         public Panel(string imgPath, Rect r)
             : this(imgPath, r.X, r.Y, r.W, r.H)
         {
@@ -38,9 +36,7 @@ namespace BearsEngine.Graphics
         {
             Texture = HF.Graphics.LoadTexture(imgPath);
         }
-        #endregion
-
-        #region w
+        
         public override float W
         {
             set
@@ -49,9 +45,8 @@ namespace BearsEngine.Graphics
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region h
         public override float H
         {
             set
@@ -60,9 +55,8 @@ namespace BearsEngine.Graphics
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region Colour
         public override Colour Colour
         {
             set
@@ -71,9 +65,8 @@ namespace BearsEngine.Graphics
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region Texture
         public Texture Texture
         {
             get => _texture;
@@ -83,9 +76,8 @@ namespace BearsEngine.Graphics
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region Render
         public override void Render(ref Matrix4 projection, ref Matrix4 modelView)
         {
             if (W == 0 || H == 0)
@@ -93,10 +85,10 @@ namespace BearsEngine.Graphics
 
             var mv = Matrix4.Translate(ref modelView, X, Y, 0);
 
-            if (HV.LastBoundTexture != Texture.ID)
+            if (BE.LastBoundTexture != Texture.ID)
             {
                 OpenGL32.glBindTexture(TextureTarget.Texture2D, Texture.ID);
-                HV.LastBoundTexture = Texture.ID;
+                BE.LastBoundTexture = Texture.ID;
             }
 
             BindVertexBuffer();
@@ -160,6 +152,6 @@ namespace BearsEngine.Graphics
 
             UnbindVertexBuffer();
         }
-        #endregion
+        
     }
 }

@@ -8,7 +8,6 @@ namespace BearsEngine.Worlds.Cameras
     /// </summary>
     public class CameraMSAAShader : IShader
     {
-        #region Static
         private static bool _initialised = false;
         private static uint _ID;
         private static int _locationMVMatrix;
@@ -28,20 +27,17 @@ namespace BearsEngine.Worlds.Cameras
             _locationSamplesUniform = OpenGL32.GetUniformLocation(_ID, "MSAASamples");
             _initialised = true;
         }
-        #endregion
+        
 
-        #region Constructors
         public CameraMSAAShader()
         {
             if (!_initialised)
                 Initialise();
         }
-        #endregion
+        
 
         public MSAA_Samples Samples { get; set; }
 
-        #region IShader
-        #region Render
         public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PrimitiveType drawType)
         {
             HF.Graphics.BindShader(_ID);
@@ -63,7 +59,7 @@ namespace BearsEngine.Worlds.Cameras
             OpenGL32.DisableVertexAttribArray(_locationPosition);
             OpenGL32.DisableVertexAttribArray(_locationTexture);
         }
-        #endregion
-        #endregion
+        
+        
     }
 }

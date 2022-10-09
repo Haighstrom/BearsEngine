@@ -4,4 +4,3 @@ global using System.Linq;
 global using BearsEngine;
 global using BearsEngine.Worlds;
 global using BearsEngine.Graphics;
-global using BearsEngine.Worlds.UI;

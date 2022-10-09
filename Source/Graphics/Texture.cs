@@ -15,10 +15,10 @@ public struct Texture
 
     public void Bind()
     {
-        if (HV.LastBoundTexture != ID)
+        if (BE.LastBoundTexture != ID)
         {
             OpenGL32.glBindTexture(TextureTarget.Texture2D, ID);
-            HV.LastBoundTexture = ID;
+            BE.LastBoundTexture = ID;
         }
     }
 }

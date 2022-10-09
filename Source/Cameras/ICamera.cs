@@ -1,12 +1,8 @@
-﻿using BearsEngine.Win32API;
-
-namespace BearsEngine.Worlds.Cameras;
+﻿namespace BearsEngine.Worlds.Cameras;
 
 public interface ICamera : IRectangular, IAddable, IUpdatable, IRenderableOnLayer, IContainer
 {
     Rect View { get; }
-
-    Colour BackgroundColour { get; set; }
 
     bool MouseIntersecting { get; }
 
@@ -15,15 +11,8 @@ public interface ICamera : IRectangular, IAddable, IUpdatable, IRenderableOnLaye
     /// </summary>
     bool MouseIsNearEdge(Direction edgeDirection, int maxDistance);
 
-    MSAA_Samples MSAASamples { get; set; }
+    void Resize(Point newSize);//todo: remove and replace with W/H overrides?
+    void Resize(float newW, float newH);//todo: remove and replace with W/H overrides?
 
-    void Resize(Point newSize);
-    void Resize(float newW, float newH);
-
-    bool IsInBounds(Point p);
-    bool IsInBounds(float x, float y);
-    bool IsOnEdge(Point p);
-    bool IsOnEdge(float x, float y);
-
-    event EventHandler ViewChanged;
+    event EventHandler? ViewChanged;
 }

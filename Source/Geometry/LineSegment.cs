@@ -8,12 +8,10 @@ namespace BearsEngine;
 [StructLayout(LayoutKind.Sequential)]
 public struct LineSegment : IEquatable<LineSegment>
 {
-    #region Fields/Autoproperties
     public Point StartPoint { get; set; }
     public Point EndPoint { get; set; }
-    #endregion
+    
 
-    #region Constructors
     public LineSegment(float startX, float startY, float endX, float endY)
         : this(new Point(startX, startY), new Point(endX, endY))
     {
@@ -24,9 +22,8 @@ public struct LineSegment : IEquatable<LineSegment>
         StartPoint = startPoint;
         EndPoint = endPoint;
     }
-    #endregion
+    
 
-    #region Properties
     public Point Direction => (EndPoint - StartPoint).Normal;
 
     /// <summary>
@@ -37,10 +34,8 @@ public struct LineSegment : IEquatable<LineSegment>
     public float Length => (EndPoint - StartPoint).Length;
 
     public float LengthSquared => (EndPoint - StartPoint).LengthSquared;
-    #endregion
+    
 
-    #region Methods
-    #region Contains
     /// <summary>
     /// Find if a Point lies on this line segment.
     /// https://stackoverflow.com/questions/328107/how-can-you-determine-a-point-is-between-two-other-points-on-a-line-segment
@@ -55,9 +50,8 @@ public struct LineSegment : IEquatable<LineSegment>
     }
 
     public bool Contains(LineSegment other) => Contains(other.StartPoint) && Contains(other.EndPoint);
-    #endregion
+    
 
-    #region Intersects
     public bool Intersects(LineSegment other) => LineSegmentsIntersect(this, other);
 
     public bool Intersects(Point lineSegmentStartPoint, Point lineSegmentEndPoint) => LineSegmentsIntersect(StartPoint, EndPoint, lineSegmentStartPoint, lineSegmentEndPoint);
@@ -90,9 +84,8 @@ public struct LineSegment : IEquatable<LineSegment>
         return r.Contains(startPoint) && r.Contains(endPoint);
     }
 
-    #endregion
+    
 
-    #region FindLineIntersection
 
     /// <summary>
     /// Returns the point at which two line segments intersect. Will return null if no interception found.
@@ -148,9 +141,8 @@ public struct LineSegment : IEquatable<LineSegment>
         // Find intersection point
         return new Point(start1.X + (r * (end1.X - start1.X)), start1.Y + (r * (end1.Y - start1.Y)));
     }
-    #endregion
+    
 
-    #region LineSegmentsIntersect
     public static bool LineSegmentsIntersect(LineSegment a, LineSegment b) => LineSegmentsIntersect(a.StartPoint, a.EndPoint, b.StartPoint, b.EndPoint);
 
     public static bool LineSegmentsIntersect(Point start1, Point end1, Point start2, Point end2)
@@ -168,10 +160,9 @@ public struct LineSegment : IEquatable<LineSegment>
 
         return r >= 0 && r <= 1 && s >= 0 && s <= 1;
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region Overloads / Overrides
     public override bool Equals(object? o)
     {
         if (o is not LineSegment)
@@ -193,5 +184,5 @@ public struct LineSegment : IEquatable<LineSegment>
     public static bool operator !=(LineSegment l1, LineSegment l2) => l1.StartPoint != l2.StartPoint || l1.EndPoint != l2.EndPoint;
 
     public override string ToString() => $"LineSegment, StartPoint : {StartPoint} EndPoint : {EndPoint}";
-    #endregion
+    
 }

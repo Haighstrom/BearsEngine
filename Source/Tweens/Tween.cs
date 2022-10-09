@@ -6,7 +6,6 @@
 
     public class Tween : AddableBase, IUpdatable
     {
-        #region Constructors
         public Tween(float duration, PersistType persistType, Action? actionOnCompleted = null, Easer? easer = null)
         {
             TotalDuration = duration;
@@ -14,9 +13,8 @@
             ActionOnCompleted = actionOnCompleted;
             Easer = easer;
         }
-        #endregion
+        
 
-        #region Properties
         public Action? ActionOnCompleted { get; set; }
         public bool Active { get; set; } = true;
         public Easer? Easer { get; set; }
@@ -25,13 +23,11 @@
         public PersistType Persistence { get; set; }
         public float Progress { get; private set; }
         public float TotalDuration { get; protected set; }
-        #endregion
+        
 
-        #region Methods
-        #region Update
-        public virtual void Update(double elapsed)
+        public virtual void Update(float elapsed)
         {
-            Elapsed += (float)HV.ElapsedGameTime;
+            Elapsed += elapsed;
             Progress = Elapsed / TotalDuration;
 
             if (Elapsed >= TotalDuration)
@@ -42,9 +38,8 @@
             else if (Easer != null && Progress > 0)
                 Progress = Easer(Progress);
         }
-        #endregion
+        
 
-        #region OnCompleted
         protected virtual void OnCompleted()
         {
             switch (Persistence)
@@ -70,9 +65,8 @@
 
             Completed?.Invoke(this, EventArgs.Empty);
         }
-        #endregion
+        
 
-        #region Start
         public virtual void Start()
         {
             Elapsed = 0;
@@ -81,11 +75,10 @@
             else
                 Active = true;
         }
-        #endregion
-        #endregion
+        
+        
 
-        #region Events
         public event EventHandler? Completed;
-        #endregion
+        
     }
 }

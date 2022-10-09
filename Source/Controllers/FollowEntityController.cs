@@ -12,14 +12,12 @@ public enum CameraFollowMode
 
 public class CameraFollowController : AddableBase, IUpdatable
 {
-    #region Fields
     private readonly ICamera _camera;
     private readonly IRectangular _target;
     private readonly CameraFollowMode _mode;
     private readonly float _cameraMinX, _cameraMaxX, _cameraMinY, _cameraMaxY;
-    #endregion
+    
 
-    #region Constructors
     public CameraFollowController(ICamera camera, IRectangular target, CameraFollowMode mode, float cameraMinX, float cameraMaxX, float cameraMinY, float cameraMaxY)
     {
         _camera = camera;
@@ -32,7 +30,7 @@ public class CameraFollowController : AddableBase, IUpdatable
 
         SetCameraPosition();
     }
-    #endregion
+    
 
     private void SetCameraPosition()
     {
@@ -69,19 +67,16 @@ public class CameraFollowController : AddableBase, IUpdatable
         _camera.View.Y += CameraAdjustY;
     }
 
-    #region IUpdateable
     public bool Active { get; set; } = true;
 
-    #region Update
-    public virtual void Update(double elapsed)
+    public virtual void Update(float elapsed)
     {
         SetCameraPosition();
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region Properties
     public float CameraAdjustX { get; set; }
     public float CameraAdjustY { get; set; }
-    #endregion
+    
 }

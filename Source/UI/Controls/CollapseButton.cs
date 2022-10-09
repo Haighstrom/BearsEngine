@@ -16,7 +16,7 @@ public class CollapseButton : Button
         _expandGraphic = new Image(expandGraphic, position.Size);
     }
 
-    public override void OnLeftClicked()
+    protected override void OnLeftClicked()
     {
         base.OnLeftClicked();
 

@@ -13,7 +13,6 @@ internal static class GDI32
 {
     private const string Library = "gdi32.dll";
 
-    #region ChoosePixelFormat
     // https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-choosepixelformat
 
     /// <summary>
@@ -47,9 +46,8 @@ internal static class GDI32
         }
         return pixelformat;
     }
-    #endregion
+    
 
-    #region CreateSolidBrush
     // https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-createsolidbrush
 
     /// <summary>
@@ -60,9 +58,8 @@ internal static class GDI32
     /// If the function fails, the return value is NULL.</returns>
     [DllImport(Library)]
     public static extern IntPtr CreateSolidBrush(uint crColor);
-    #endregion
+    
 
-    #region DeleteObject
     // https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-deleteobject
 
     /// <summary>
@@ -73,9 +70,8 @@ internal static class GDI32
     /// If the specified handle is not valid or is currently selected into a DC, the return value is zero.</returns>
     [DllImport(Library)]
     public static extern bool DeleteObject(IntPtr ho);
-    #endregion
+    
 
-    #region DescribePixelFormat
     // https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-describepixelformat
 
     /// <summary>
@@ -89,14 +85,13 @@ internal static class GDI32
     /// If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
     [DllImport(Library)]
     public static extern int DescribePixelFormat(IntPtr hdc, int iPixelFormat, int nBytes, ref PIXELFORMATDESCRIPTOR ppfd);
-    #endregion
+    
 
     // * * * CLEANED UP ABOVE THIS LINE * * *
 
 
 
 
-    #region GetDeviceCaps
     // https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getdevicecaps
 
     /// <summary>
@@ -107,26 +102,22 @@ internal static class GDI32
     /// <returns></returns>
     [DllImport(Library)]
     public static extern int GetDeviceCaps(IntPtr hDC, DeviceCaps nIndex);
-    #endregion
+    
 
-    #region SetPixelFormat
     [DllImport(Library, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool SetPixelFormat(IntPtr dc, int format, ref PIXELFORMATDESCRIPTOR pfd);
-    #endregion
+    
 
-    #region SetTextColor
     [DllImport(Library)]
     public static extern uint SetTextColor(IntPtr hdc, int crColor);
-    #endregion
+    
 
-    #region SwapBuffers
     [DllImport(Library)]
     public static extern bool SwapBuffers(IntPtr dc);
-    #endregion
+    
 
-    #region TextOut
     [DllImport(Library, CharSet = CharSet.Unicode)]
     public static extern bool TextOut(IntPtr hdc, int nXStart, int nYStart, string lpString, int cbString);
-    #endregion
+    
 }

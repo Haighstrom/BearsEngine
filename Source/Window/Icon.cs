@@ -1,14 +1,15 @@
 ﻿using BearsEngine.Win32API;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace BearsEngine.Window;
 
 public class Icon : IDisposable
 {
-    public static Icon Default => _default;
     private static readonly List<string> _bmpTypes = new() { ".bmp", ".gif", ".exif", ".jpg", ".png", ".tiff" };
-    private static readonly Icon _default = new(PredefinedIcons.IDI_APPLICATION);
+
+    public static Icon Default { get; } = new(PredefinedIcons.IDI_APPLICATION);
 
     private readonly Bitmap? _bitmap;
     private bool _disposed = false;
@@ -17,8 +18,12 @@ public class Icon : IDisposable
     {
         HIcon = User32.LoadImage(icon);
     }
+
     public Icon(Bitmap icon, Point? size = null)
     {
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            throw new InvalidOperationException("Bitmap only valid for use in Windows");
+
         _bitmap = icon;
 
         if (size != null)
@@ -26,8 +31,12 @@ public class Icon : IDisposable
 
         HIcon = _bitmap.GetHicon();
     }
+
     public Icon(string filePath)
     {
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            throw new InvalidOperationException("Bitmap only valid for use in Windows");
+
         if (!File.Exists(filePath))
             throw new FileNotFoundException($"Could not find file at {filePath}");
 
@@ -43,7 +52,6 @@ public class Icon : IDisposable
 
     internal IntPtr HIcon { get; }
 
-    #region IDisposable
     protected virtual void Dispose(bool disposedCorrectly)
     {
         if (!_disposed)
@@ -75,5 +83,4 @@ public class Icon : IDisposable
         Dispose(disposedCorrectly: true);
         GC.SuppressFinalize(this);
     }
-    #endregion
 }

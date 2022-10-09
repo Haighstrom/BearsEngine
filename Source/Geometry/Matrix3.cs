@@ -7,14 +7,11 @@ public struct Matrix3
     //(1  4  7)
     //(2  5  8)
 
-    #region Static
-
-    #region Premade Matrices
     public static Matrix3 Identity = new(1, 0, 0, 0, 1, 0, 0, 0, 1);
     public static Matrix3 Zero = new(0, 0, 0, 0, 0, 0, 0, 0, 0);
     public static Matrix3 FlipXMatrix = new(-1, 0, 0, 0, 1, 0, 0, 0, 1);
     public static Matrix3 FlipYMatrix = new(1, 0, 0, 0, -1, 0, 0, 0, 1);
-    #endregion
+    
 
     public static Matrix3 CreateTranslation(float x, float y) => new(1, 0, 0, 0, 1, 0, x, y, 1);
    
@@ -26,7 +23,6 @@ public struct Matrix3
 
     public static Matrix3 CreateScale(float scaleX, float scaleY) => new(scaleX, 0, 0, 0, scaleY, 0, 0, 0, 1);
 
-    #region CreateOrtho
     public static Matrix3 CreateOrtho(float width, float height)
     {
         Matrix3 mat = Identity;
@@ -35,9 +31,8 @@ public struct Matrix3
         mat = Translate(ref mat, -width / 2, -height / 2);
         return mat;
     }
-    #endregion
+    
 
-    #region CreateFBOOrtho
     /// <summary>
     /// Same as CreateOrtho but without the FlipY stage. Use for makign projection matrices when rendering to a framebuffer rather than screen.
     /// </summary>
@@ -47,19 +42,16 @@ public struct Matrix3
         mat = Translate(ref mat, -width / 2, -height / 2);
         return mat;
     }
-    #endregion
+    
 
-    #endregion
+    
 
-    #region Add
     public static Matrix3 Add(ref Matrix3 mat1, ref Matrix3 mat2) => new(mat1._values.Zip(mat2._values, (a, b) => a + b).ToArray());
-    #endregion
+    
 
-    #region Subtract
     public static Matrix3 Subtract(ref Matrix3 mat1, ref Matrix3 mat2) => new(mat1._values.Zip(mat2._values, (a, b) => a - b).ToArray());
-    #endregion
+    
 
-    #region Multiply
     public static Matrix3 Multiply(ref Matrix3 mat1, ref Matrix3 mat2)
     {
         return new Matrix3
@@ -125,17 +117,15 @@ public struct Matrix3
                 mat._values[8] * f
             );
     }
-    #endregion
+    
 
-    #region Translate
     public static Matrix3 Translate(ref Matrix3 mat, float x, float y)
     {
         Matrix3 transMat = CreateTranslation(x, y);
         return Multiply(ref mat, ref transMat);
     }
-    #endregion
+    
 
-    #region Rotate
 
     public static Matrix3 RotateAroundZ(ref Matrix3 mat, float angleInDegrees)
     {
@@ -158,9 +148,8 @@ public struct Matrix3
 
     public static Matrix3 RotateAroundPoint(ref Matrix3 mat, float angleInDegrees, Point p) => RotateAroundPoint(ref mat, angleInDegrees, p.X, p.Y);
   
-    #endregion
+    
 
-    #region Scale
     public static Matrix3 ScaleAroundOrigin(ref Matrix3 mat, float scaleX, float scaleY)
     {
         Matrix3 scaleMat = CreateScale(scaleX, scaleY);
@@ -178,9 +167,7 @@ public struct Matrix3
 
         return result;
     }
-    #endregion
-
-    #region Flip
+    
     public static Matrix3 FlipX(ref Matrix3 mat)
     {
         return Multiply(ref mat, ref FlipXMatrix);
@@ -189,9 +176,7 @@ public struct Matrix3
     {
         return Multiply(ref mat, ref FlipYMatrix);
     }
-    #endregion
-
-    #region Inverse
+    
     /// <summary>
     /// Returns a new Matrix3 which is the inverse of Matrix3 mat
     /// </summary>
@@ -409,14 +394,9 @@ public struct Matrix3
                 inverse[2, 2]
             );
     }
-    #endregion
-
-    #region Instance
-    #region Fields
+    
     private float[] _values;
-    #endregion
-
-    #region Constructors
+    
     public Matrix3(float m0, float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8)
     {
         _values = new float[9] { m0, m1, m2, m3, m4, m5, m6, m7, m8};
@@ -425,9 +405,7 @@ public struct Matrix3
     {
         _values = values;
     }
-    #endregion
-
-    #region Indexers
+    
     public float this[int x, int y]
     {
         get
@@ -445,9 +423,7 @@ public struct Matrix3
             _values[x * 3 + y] = value;
         }
     }
-    #endregion
-
-    #region Properties
+    
     /// <summary>
     /// Exposes the 1D array of matrix elements that make up this matrix, indexed as
     /// (0 3 6)
@@ -467,9 +443,7 @@ public struct Matrix3
                  - _values[6] * _values[4] * _values[2] - _values[0] * _values[7] * _values[5] - _values[3] * _values[1] * _values[8];
         }
     }
-    #endregion
-
-    #region Methods
+    
     /// <summary>
     ///  Returns the transpose of this Matrix3 - all elements mirrored in [1 1] diagonal. The values of this instance will not be altered, returns a new matrix.
     /// </summary>
@@ -499,11 +473,6 @@ public struct Matrix3
         return Invert(this);
     }
 
-    #endregion
-
-    #endregion
-
-    #region Operators
     /// <summary>
     /// Scalar multiplication.
     /// </summary>
@@ -554,5 +523,5 @@ public struct Matrix3
     /// <returns>A new Matrix3 which holds the result of the subtraction</returns>
     public static Matrix3 operator -(Matrix3 left, Matrix3 right) => Subtract(ref left, ref right);
 
-    #endregion
+    
 }

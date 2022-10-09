@@ -10,7 +10,6 @@ namespace BearsEngine.Worlds.Graphics.Text
 
     public class HFont : IDisposable
     {
-        #region private struct FontSave
         private struct FontSave
         {
             public string Name { get; set; }
@@ -23,9 +22,8 @@ namespace BearsEngine.Worlds.Graphics.Text
             public Dictionary<char, Rect> CharPositions { get; set; }
             public Dictionary<char, Rect> CharPositionsNormalised { get; set; }
         }
-        #endregion
+        
 
-        #region Consts
         public const string DEFAULT_FONT = "Times New Roman";
         public const float DEFAULT_SIZE = 12;
         public const FontStyle DEFAULT_FONTSTYLE = FontStyle.Regular;
@@ -33,23 +31,18 @@ namespace BearsEngine.Worlds.Graphics.Text
         private const string DEFAULT_CHARS_TO_LOAD = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 !£$%^&*()-=_+[]{};'#:@~,./<>?|`¬¦€""\";
         private const string DEFAULT_FONT_FOLDER = "Assets/Fonts/";
         private const int BITMAP_CHARS_PER_ROW = 13;
-        #endregion
+        
 
-        #region Static
-        #region Static Fields
         private static HFont _default;
         private static readonly Dictionary<string, HFont> _loadedFonts = new();
-        #endregion
+        
 
-        #region Static Properties
         /// <summary>
         /// Returns a basic Font
         /// </summary>
         public static HFont Default => _default ??= new HFont(DEFAULT_FONT, DEFAULT_SIZE);
-        #endregion
+        
 
-        #region Static Methods
-        #region Load
         /// <summary>
         /// Loads a font from a string of format "name,size" or "name,size,(int)fontstyle" or "name,size,(int)fontstyle,(int)antialiased"
         /// </summary>
@@ -105,9 +98,8 @@ namespace BearsEngine.Worlds.Graphics.Text
             _loadedFonts.Add(longName, hFont); //note that f.longname may be different due to getting replaced by TimesNewRoman if font name is bad. We'll save keys based on the requested value.
             return hFont;
         }
-        #endregion
+        
 
-        #region LoadFontPreinstalled
         private static Font LoadFontPreinstalled(string fontName, float size, FontStyle style)
         {
             var Font = new Font(fontName, size, (System.Drawing.FontStyle)style);
@@ -117,9 +109,8 @@ namespace BearsEngine.Worlds.Graphics.Text
             else
                 return null;
         }
-        #endregion
+        
 
-        #region LoadFontCustom
         private static Font LoadFontCustom(string fontPath, float size, FontStyle style)
         {
             if (!HaighIO.FileExists(fontPath))
@@ -138,38 +129,34 @@ namespace BearsEngine.Worlds.Graphics.Text
                 return new Font(pfc.Families[0], size, (System.Drawing.FontStyle)style);
             }
         }
-        #endregion
-        #endregion
-        #endregion
+        
+        
+        
 
-        #region Fields
         private readonly object _syncRoot = new();
         private bool _disposed = false;
 
         private readonly Dictionary<char, Rect> _charPositions = new();
         private readonly Dictionary<char, Rect> _charPositionsNormalised = new();
-        #endregion
+        
 
-        #region AutoProperties
         public string FontName { get; }
         public float FontSize { get; }
         public FontStyle FontStyle { get; }
         public bool AntiAliased { get; }
 
-        #region LongName
         /// <summary>
         /// Name in the format FontName,FontSize,(int)FontStyle,(int)Antialiased
         /// </summary>
         public string LongName { get; }
-        #endregion
+        
 
         public Bitmap CharSpriteSheet { get; }
         public int WidestChar { get; }
         public int HighestChar { get; }
         public int SpaceWidth { get; }
-        #endregion
+        
 
-        #region Constructors
         private HFont(string fontName, float size, FontStyle fontStyle = DEFAULT_FONTSTYLE, bool antiAliased = DEFAULT_AA, string extraCharsToLoad = "")
         {
             //if the application packaged it, use that version as priority
@@ -218,10 +205,8 @@ namespace BearsEngine.Worlds.Graphics.Text
             HighestChar = fs.HighestChar;
             SpaceWidth = fs.SpaceWidth;
         }
-        #endregion
+        
 
-        #region Methods
-        #region GenerateCharacterBitmap
         private Bitmap GenerateCharacterBitmap(char c, Font font, bool antiAliased)
         {
             Bitmap image = new((int)font.Size * 2, (int)font.Size * 2, PixelFormat.Format32bppArgb);
@@ -256,9 +241,8 @@ namespace BearsEngine.Worlds.Graphics.Text
 
             return image;
         }
-        #endregion
+        
 
-        #region GenerateCharSpritesheetAndPositions
         private (Bitmap characterSS, int widestChar, int highestChar) GenerateCharSpritesheetAndPositions(Font font, string charsToLoad)
         {
             Bitmap characterSS;
@@ -312,9 +296,8 @@ namespace BearsEngine.Worlds.Graphics.Text
 
             return (characterSS, widestChar, highestChar);
         }
-        #endregion
+        
 
-        #region SaveFont
         private void SaveFont()
         {
             if (!Directory.Exists(DEFAULT_FONT_FOLDER))
@@ -337,23 +320,20 @@ namespace BearsEngine.Worlds.Graphics.Text
             HaighIO.SaveJSON(DEFAULT_FONT_FOLDER + LongName + ".details", fs);
         }
 
-        #endregion
+        
 
-        #region BitmapPosition
         /// <summary>
         /// Position on the underlying bitmap of the character in pixels
         /// </summary>
         public Rect BitmapPosition(char c) => _charPositions[c];
-        #endregion
+        
 
-        #region BitmapPositionNormalised
         /// <summary>
         /// Position on the underlying bitmap of the character in range (0,1), for use with OpenGL textures
         /// </summary>
         public Rect BitmapPositionNormalised(char c) => _charPositionsNormalised[c];
-        #endregion
+        
 
-        #region MeasureString
         public Point MeasureString(char c) => new(_charPositions[c].W, HighestChar);
 
         public Point MeasureString(string s)
@@ -365,10 +345,9 @@ namespace BearsEngine.Worlds.Graphics.Text
 
             return new Point(length, HighestChar);
         }
-        #endregion
-        #endregion
+        
+        
 
-        #region IDisposable
         public void Dispose()
         {
             Dispose(true);
@@ -398,10 +377,9 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _disposed = true;
             }
         }
-        #endregion
+        
 
-        #region Overloads/Overrides
         public override string ToString() => "HFont: " + LongName;
-        #endregion
+        
     }
 }

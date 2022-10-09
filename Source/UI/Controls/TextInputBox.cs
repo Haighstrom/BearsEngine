@@ -8,11 +8,8 @@ public class TextInputBox : Entity, IActivatable
 {
     private enum Mode { Unfocussed, Selecting, Editing }
 
-    #region Consts
     private const float DEFAULT_CURSOR_FLASH_TIME = 0.4f;
-    #endregion
-
-    #region Fields
+    
     private readonly HText _textGraphic;
     private readonly Polygon _selection;
     private readonly Line _cursor;
@@ -22,14 +19,12 @@ public class TextInputBox : Entity, IActivatable
     private int _firstCharDisplayed = 0;
     private int _selectionStart, _cursorPosition;
     private float _cursorFlashTimer;
-    #endregion
-
-    #region Constructors
+    
     public TextInputBox(UITheme theme, Colour bg, int layer, Rect r, string initialValue = "")
         : base(layer, r, bg)
     {
-        HV.Window.CharEntered += OnCharPressed;
-        HV.Window.KeyDown += OnKeyDown;
+        BE.Window.CharEntered += OnCharPressed;
+        BE.Window.KeyDown += OnKeyDown;
 
         if (initialValue == null)
             initialValue = "";
@@ -50,30 +45,21 @@ public class TextInputBox : Entity, IActivatable
         });
         SetTextPositions();
     }
-    #endregion
 
-    #region IActivatable
-    #region Activate
     public void Activate()
     {
         Active = true;
         _textGraphic.Visible = true;
     }
-    #endregion
-
-    #region Deactivate
+    
     public void Deactivate()
     {
         Active = false;
         _textGraphic.Visible = false;
     }
-    #endregion
-    #endregion
-
-    #region Properties
+    
     public float CursorFlashTime { get; set; } = DEFAULT_CURSOR_FLASH_TIME;
 
-    #region Value
     public string Value
     {
         get => _text;
@@ -81,12 +67,10 @@ public class TextInputBox : Entity, IActivatable
         {
             _text = value;
             SetTextPositions();
-            ValueChanged?.Invoke(this, new ValueEventArgs<string>(_text));
+            ValueChanged?.Invoke(this, new InputBoxValueChangedEventArgs<string>(_text));
         }
     }
-    #endregion
-
-    #region MouseXAsTextIndex
+    
     private int MouseXAsTextIndex
     {
         get
@@ -111,19 +95,13 @@ public class TextInputBox : Entity, IActivatable
             return pos;
         }
     }
-    #endregion
-    #endregion
-
-    #region Methods
-    #region ShowCursor
+    
     private void ShowCursor()
     {
         _cursorFlashTimer = CursorFlashTime;
         _cursor.Visible = true;
     }
-    #endregion
-
-    #region SetTextPositions
+    
     private void SetTextPositions()
     {
         _cursorPosition = _selectionStart = _text.Length;
@@ -150,9 +128,7 @@ public class TextInputBox : Entity, IActivatable
         _textGraphic.Text = _text.Substring(firstChar, lastChar - firstChar);
         _cursor.OffsetX = _textGraphic.MeasureString(0, _cursorPosition - _firstCharDisplayed).X;
     }
-    #endregion
 
-    #region SetSelectionGraphic
     private void SetSelectionGraphic()
     {
         var left = _textGraphic.MeasureString(_firstCharDisplayed, HF.Maths.Max(0, _selectionStart - _firstCharDisplayed)).X;
@@ -174,9 +150,8 @@ public class TextInputBox : Entity, IActivatable
             new Point(left, bottom)
         };
     }
-    #endregion
+    
 
-    #region ConfirmEdit
     private void ConfirmEdit()
     {
         _mode = Mode.Unfocussed;
@@ -185,15 +160,12 @@ public class TextInputBox : Entity, IActivatable
 
         if (_resetValue != Value)
         {
-            if (ValueChanged != null)
-                ValueChanged(this, new ValueEventArgs<string>(Value));
-            if (ValueChangedByEditing != null)
-                ValueChangedByEditing(this, new ValueEventArgs<string>(Value));
+            ValueChanged?.Invoke(this, new InputBoxValueChangedEventArgs<string>(Value));
+            ValueChangedByEditing?.Invoke(this, new InputBoxValueChangedEventArgs<string>(Value));
         }
     }
-    #endregion
+    
 
-    #region CancelEdit
     private void CancelEdit()
     {
         _mode = Mode.Unfocussed;
@@ -202,16 +174,14 @@ public class TextInputBox : Entity, IActivatable
 
         _textGraphic.Text = _text = _resetValue;
     }
-    #endregion
+    
 
-    #region Update
-    public override void Update(double elapsed)
+    public override void Update(float elapsed)
     {
         base.Update(elapsed);
 
         switch (_mode)
         {
-            #region Mode.Unfocussed
             case Mode.Unfocussed:
                 if (HI.MouseLeftPressed && MouseIntersecting)
                 {
@@ -222,9 +192,8 @@ public class TextInputBox : Entity, IActivatable
                     _mode = Mode.Selecting;
                 }
                 break;
-            #endregion
+            
 
-            #region Mode.Selecting
             case Mode.Selecting:
                 _cursorPosition = MouseXAsTextIndex;
                 SetSelectionGraphic();
@@ -237,9 +206,8 @@ public class TextInputBox : Entity, IActivatable
                     _mode = Mode.Editing;
                 }
                 break;
-            #endregion
+            
 
-            #region Mode.Editing
             case Mode.Editing:
                 if ((_cursorFlashTimer -= (float)elapsed) < 0)
                 {
@@ -268,15 +236,14 @@ public class TextInputBox : Entity, IActivatable
                 else if (HI.MouseLeftPressed && !MouseIntersecting)
                     ConfirmEdit();
                 break;
-            #endregion
+            
 
             default:
                 throw new System.ComponentModel.InvalidEnumArgumentException();
         }
     }
-    #endregion
+    
 
-    #region OnCharPressed
     private void OnCharPressed(object? sender, KeyboardCharEventArgs e)
     {
         if (_mode != Mode.Editing)
@@ -298,9 +265,8 @@ public class TextInputBox : Entity, IActivatable
 
         SetTextPositions();
     }
-    #endregion
+    
 
-    #region OnKeyDown
     private void OnKeyDown(object? sender, KeyboardKeyEventArgs e)
     {
         if (_mode != Mode.Editing)
@@ -308,20 +274,17 @@ public class TextInputBox : Entity, IActivatable
 
         switch (e.Key)
         {
-            #region ESC
             case Key.ESC:
                 CancelEdit();
                 break;
-            #endregion
+            
 
-            #region Enter/KeypadEnter
             case Key.Enter:
             case Key.KeypadEnter:
                 ConfirmEdit();
                 break;
-            #endregion
+            
 
-            #region Backspace / Delete
             case Key.Backspace:
             case Key.Delete:
                 if (_selection.Visible) //delete selected items
@@ -344,26 +307,23 @@ public class TextInputBox : Entity, IActivatable
 
                 SetTextPositions();
                 break;
-            #endregion
+            
 
-            #region Home / Up
             case Key.Home:
             case Key.Up:
                 _selection.Visible = false;
                 _cursorPosition = 0;
                 SetTextPositions();
                 break;
-            #endregion
+            
 
-            #region End / Down
             case Key.End:
             case Key.Down:
                 _cursorPosition = _text.Length;
                 SetTextPositions();
                 break;
-            #endregion
+            
 
-            #region Left
             case Key.Left:
                 if (HI.KeyDown(Key.LeftShift) || HI.KeyDown(Key.RightShift))
                 {
@@ -396,9 +356,8 @@ public class TextInputBox : Entity, IActivatable
                     }
                 }
                 break;
-            #endregion
+            
 
-            #region Right
             case Key.Right:
                 if (HI.KeyDown(Key.LeftShift) || HI.KeyDown(Key.RightShift))
                 {
@@ -431,17 +390,16 @@ public class TextInputBox : Entity, IActivatable
                     }
                 }
                 break;
-            #endregion
+            
 
             default:
                 break;
         }
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region Events
-    public event EventHandler<ValueEventArgs<string>> ValueChanged;
-    public event EventHandler<ValueEventArgs<string>> ValueChangedByEditing;
-    #endregion
+    public event EventHandler<InputBoxValueChangedEventArgs<string>> ValueChanged;
+
+    public event EventHandler<InputBoxValueChangedEventArgs<string>> ValueChangedByEditing;
 }

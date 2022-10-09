@@ -5,20 +5,17 @@ namespace BearsEngine.Graphics
 {
     public class SimpleGraphic : IRenderable
     {
-        #region Fields
         private readonly object _syncRoot = new();
         private bool _disposed = false;
-        #endregion
+        
 
-        #region AutoProperties
         public IShader Shader { get; }
         public uint VertexBuffer { get; }
         public Texture Texture { get; }
         public Vertex[] Vertices { get; }
         public bool Visible { get; set; } = true;
-        #endregion
+        
 
-        #region Constructors
         public SimpleGraphic(IShader shader, Texture texture, Vertex[] vertices)
         {
             if (vertices.Length < 3)
@@ -32,33 +29,31 @@ namespace BearsEngine.Graphics
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, VertexBuffer);
             OpenGL32.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * Vertex.STRIDE, Vertices, BufferUsageHint.StreamDraw);
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            HV.LastBoundVertexBuffer = 0;
+            BE.LastBoundVertexBuffer = 0;
         }
-        #endregion
+        
 
-        #region Methods
         public void Render(ref Matrix4 projection, ref Matrix4 modelView)
         {
-            if (HV.LastBoundVertexBuffer != VertexBuffer)
+            if (BE.LastBoundVertexBuffer != VertexBuffer)
             {
                 OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, VertexBuffer);
-                HV.LastBoundVertexBuffer = VertexBuffer;
+                BE.LastBoundVertexBuffer = VertexBuffer;
             }
 
-            if (HV.LastBoundTexture != Texture.ID)
+            if (BE.LastBoundTexture != Texture.ID)
             {
                 OpenGL32.glBindTexture(TextureTarget.Texture2D, Texture.ID);
-                HV.LastBoundTexture = Texture.ID;
+                BE.LastBoundTexture = Texture.ID;
             }
 
             Shader.Render(ref projection, ref modelView, Vertices.Length, PrimitiveType.Triangles);
 
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            HV.LastBoundVertexBuffer = 0;
+            BE.LastBoundVertexBuffer = 0;
         }
-        #endregion
+        
 
-        #region IDisposable
         public void Dispose()
         {
             Dispose(true);
@@ -80,11 +75,11 @@ namespace BearsEngine.Graphics
                 }
                 else
                 {
-                    HConsole.Log("{0} did not dispose correctly, did you forget to call Dispose()?", GetType().FullName);
+                    HConsole.Log("{0} did not dispose correctly, did you forget to call Dispose()?", nameof(SimpleGraphic));
                 }
                 _disposed = true;
             }
         }
-        #endregion
+        
     }
 }

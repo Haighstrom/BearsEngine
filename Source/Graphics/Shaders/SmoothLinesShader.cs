@@ -4,7 +4,6 @@ namespace BearsEngine.Graphics.Shaders;
 
 public class SmoothLinesShader : IShader
 {
-    #region Static
     private static bool _initialised = false;
     private static uint _ID;
     private static int _locationMVMatrix;
@@ -26,9 +25,8 @@ public class SmoothLinesShader : IShader
         _locationThicknessInPixelsUniform = OpenGL32.GetUniformLocation(_ID, "ThicknessInPixels");
         _initialised = true;
     }
-    #endregion
+    
 
-    #region Constructors
     public SmoothLinesShader(float thickness, bool thicknessInPixels)
     {
         if (!_initialised)
@@ -36,16 +34,14 @@ public class SmoothLinesShader : IShader
         Thickness = thickness;
         ThicknessInPixels = thicknessInPixels;
     }
-    #endregion
+    
 
-    #region IShader
-    #region Render
     public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PrimitiveType drawType)
     {
         if (drawType != PrimitiveType.LineStripAdjacency)
             HConsole.Warning("Smooth lines shader is being used with PrimitiveType " + drawType + "instead of LineStripAdjacency.");
 
-        if (_ID != HV.LastBoundShader)
+        if (_ID != BE.LastBoundShader)
             HF.Graphics.BindShader(_ID);
 
         OpenGL32.UniformMatrix4(_locationMVMatrix, 1, false, modelView.Values);
@@ -65,8 +61,8 @@ public class SmoothLinesShader : IShader
         OpenGL32.DisableVertexAttribArray(_locationPosition);
         OpenGL32.DisableVertexAttribArray(_locationColour);
     }
-    #endregion
-    #endregion
+    
+    
 
     public float Thickness { get; set; }
 

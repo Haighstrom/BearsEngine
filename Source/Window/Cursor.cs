@@ -1,6 +1,7 @@
 ﻿using BearsEngine.Win32API;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace BearsEngine.Window;
 
@@ -8,12 +9,10 @@ public class Cursor : IDisposable
 {
     private static readonly List<string> _cursorTypes = new() { ".cur", ".ani" };
     private static readonly List<string> _bmpTypes = new() { ".bmp", ".gif", ".exif", ".jpg", ".png", ".tiff" };
-    private static readonly Cursor _default = new(PredefinedCursors.IDC_ARROW);
 
-    public static Cursor Default => _default;
+    public static Cursor Default { get; } = new(PredefinedCursors.IDC_ARROW);
 
-    //https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-destroycursor
-    private bool _sharedCursor;
+    private readonly bool _sharedCursor; //https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-destroycursor
     private bool _disposed = false;
 
     public Cursor(PredefinedCursors cursor)
@@ -21,9 +20,13 @@ public class Cursor : IDisposable
         HCursor = User32.LoadImage(cursor);
         _sharedCursor = true;
     }
+
     public Cursor(Bitmap cursor, int xHotspot = 0, int yHotspot = 0, Point? size = null)
     {
-        if (size != null)
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            throw new InvalidOperationException("Bitmap only valid for use in Windows");
+
+        if (size is not null)
             cursor = new Bitmap(cursor, (int)size.Value.X, (int)size.Value.Y);
 
         IntPtr imgHandle = cursor.GetHicon();
@@ -38,6 +41,7 @@ public class Cursor : IDisposable
         HCursor = User32.CreateIconIndirect(ref ii);
         _sharedCursor = false;
     }
+
     public Cursor(string filePath, int xHotspot = 0, int yHotspot = 0, Point? size = null)
     {
         if (!File.Exists(filePath))
@@ -52,6 +56,9 @@ public class Cursor : IDisposable
         }
         else if (_bmpTypes.Contains(fileExt))
         {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                throw new InvalidOperationException("Bitmap only valid for use in Windows");
+
             Bitmap img = new(filePath);
 
             if (size != null)
@@ -73,11 +80,12 @@ public class Cursor : IDisposable
             throw new ArgumentException($"filePath ({filePath})'s extension ({fileExt}) is neither valid as a cursor nor a BMP", nameof(filePath));
     }
 
-    public int XHotspot { get; }
-    public int YHotspot { get; }
     internal IntPtr HCursor { get; }
 
-    #region IDisposable
+    public int XHotspot { get; }
+
+    public int YHotspot { get; }
+
     protected virtual void Dispose(bool disposedCorrectly)
     {
         if (!_disposed)
@@ -91,7 +99,7 @@ public class Cursor : IDisposable
 
             // TODO: free unmanaged resources (unmanaged objects) and override finalizer
             // TODO: set large fields to null
-            if (!_sharedCursor)
+            if (!_sharedCursor) //https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-destroycursor
                 User32.DestroyCursor(HCursor);
 
             _disposed = true;
@@ -110,5 +118,4 @@ public class Cursor : IDisposable
         Dispose(disposedCorrectly: true);
         GC.SuppressFinalize(this);
     }
-    #endregion
 }

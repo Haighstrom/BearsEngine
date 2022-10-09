@@ -5,13 +5,10 @@ namespace BearsEngine.Graphics
 {
     public class Image : RectGraphicBase
     {
-        #region Fields
         private Vertex[] _vertices;
         private bool _verticesChanged = true;
-        #endregion
+        
 
-        #region Constructors
-        #region ImagePath-based
         public Image(string imgPath, Rect r)
             : this(imgPath, r.X, r.Y, r.W, r.H)
         {
@@ -36,9 +33,8 @@ namespace BearsEngine.Graphics
         {
             Texture = HF.Graphics.LoadTexture(imgPath);
         }
-        #endregion
+        
 
-        #region Colour-based
         public Image(Colour colour, Rect r)
             : this(colour, r.X, r.Y, r.W, r.H)
         {
@@ -64,9 +60,8 @@ namespace BearsEngine.Graphics
         {
             Colour = colour;
         }
-        #endregion
+        
 
-        #region Texture-based
         /// <summary>
         /// Create an Image of a texture with the original image size
         /// </summary>
@@ -89,10 +84,9 @@ namespace BearsEngine.Graphics
         {
             Texture = texture;
         }
-        #endregion
-        #endregion
+        
+        
 
-        #region w
         public override float W
         {
             set
@@ -101,9 +95,8 @@ namespace BearsEngine.Graphics
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region h
         public override float H
         {
             set
@@ -112,9 +105,8 @@ namespace BearsEngine.Graphics
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
-        #region Colour
         public override Colour Colour
         {
             set
@@ -123,13 +115,12 @@ namespace BearsEngine.Graphics
                 _verticesChanged = true;
             }
         }
-        #endregion
+        
 
         public Texture Texture { get; set; }
 
         public float Angle { get; set; }
 
-        #region Render
         public override void Render(ref Matrix4 projection, ref Matrix4 modelView)
         {
             if (W == 0 || H == 0)
@@ -142,10 +133,10 @@ namespace BearsEngine.Graphics
 
             mv = Matrix4.Translate(ref mv, X, Y, 0);
 
-            if (HV.LastBoundTexture != Texture.ID)
+            if (BE.LastBoundTexture != Texture.ID)
             {
                 OpenGL32.glBindTexture(TextureTarget.Texture2D, Texture.ID);
-                HV.LastBoundTexture = Texture.ID;
+                BE.LastBoundTexture = Texture.ID;
             }
 
             BindVertexBuffer();
@@ -169,6 +160,6 @@ namespace BearsEngine.Graphics
 
             UnbindVertexBuffer();
         }
-        #endregion
+        
     }
 }

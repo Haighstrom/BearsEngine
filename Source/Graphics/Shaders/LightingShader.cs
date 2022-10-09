@@ -2,7 +2,6 @@
 
 namespace BearsEngine.Graphics.Shaders;
 
-#region struct LightInfo
 public class LightInfo
 {
     public Point Position;
@@ -10,14 +9,12 @@ public class LightInfo
     public float Radius;
     public float CutoffRadius;
 }
-#endregion
+
 
 public class LightingShader : IShader
 {
     private const int MAX_LIGHTS = 25;
 
-    #region Static
-    #region Fields
     private static bool _initialised = false;
     private static uint _ID;
     private static int _locationMVMatrix;
@@ -37,25 +34,21 @@ public class LightingShader : IShader
     private static int[] _locationLights_CutoffRadiusUniformArray;
 
     private static readonly List<LightInfo> _lights = new();
-    #endregion
-    #endregion
+    
+    
 
-    #region Constructors
     public LightingShader()
     {
         if (!_initialised)
             Initialise();
     }
-    #endregion
+    
 
-    #region Properties
     public static Matrix3 mdlMatrix = Matrix3.Identity;
     public static Colour AmbientLightColour { get; set; } = Colour.Black;
     public static float Gamma { get; set; } = 1f;
-    #endregion
+    
 
-    #region Methods
-    #region Initialise
     private static void Initialise()
     {
         _ID = HF.Graphics.CreateShader(Resources.Shaders.vs_default, Resources.Shaders.fs_lighting);
@@ -75,9 +68,8 @@ public class LightingShader : IShader
 
         _initialised = true;
     }
-    #endregion
+    
 
-    #region LoadLightsArrayLocations
     private static void LoadLightsArrayLocations()
     {
         _locationLights_PosUniformArray = new int[MAX_LIGHTS];
@@ -93,9 +85,8 @@ public class LightingShader : IShader
             _locationLights_CutoffRadiusUniformArray[i] = OpenGL32.GetUniformLocation(_ID, string.Format("Lights[{0}].CutoffRadius", i));
         }
     }
-    #endregion
+    
 
-    #region AddLight
     public static void AddLight(LightInfo light)
     {
         if (_lights.Contains(light))
@@ -103,9 +94,8 @@ public class LightingShader : IShader
 
         _lights.Add(light);
     }
-    #endregion
+    
 
-    #region RemoveLight
     public static void RemoveLight(LightInfo light)
     {
         if (!_lights.Contains(light))
@@ -113,15 +103,12 @@ public class LightingShader : IShader
 
         _lights.Remove(light);
     }
-    #endregion
+    
 
-    #region ClearLights
     public static void ClearLights() => _lights.Clear();
-    #endregion
-    #endregion
+    
+    
 
-    #region IShader
-    #region Render
     public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PrimitiveType drawType)
     {
         HF.Graphics.BindShader(_ID);
@@ -151,9 +138,8 @@ public class LightingShader : IShader
         OpenGL32.DisableVertexAttribArray(_locationColour);
         OpenGL32.DisableVertexAttribArray(_locationTexture);
     }
-    #endregion
+    
 
-    #region BindLightsArrayData
     private static void BindLightsArrayData()
     {
         for (int i = 0; i < _lights.Count; i++)
@@ -164,6 +150,6 @@ public class LightingShader : IShader
             OpenGL32.Uniform(_locationLights_CutoffRadiusUniformArray[i], _lights[i].CutoffRadius);
         }
     }
-    #endregion
-    #endregion
+    
+    
 }

@@ -2,7 +2,6 @@
 {
     public class HPBar : ProgressBar
     {
-        #region Constructors
         public HPBar(string graphicPath, Rect r, float initialPercentage = 1)
             : base(graphicPath, r, initialPercentage)
         {
@@ -27,10 +26,8 @@
             : base(graphicPath, size, offset, initialPercentage)
         {
         }
-        #endregion
+        
 
-        #region Properties
-        #region AmountFilled
         public override float AmountFilled
         {
             get => base.AmountFilled;
@@ -45,13 +42,13 @@
                     Colour = LowHPColour;
             }
         }
-        #endregion
+        
 
         public float HighHPThreshold { get; set; } = 0.70f;
         public float MidHPThreshold { get; set; } = 0.30f;
         public Colour HighHPColour { get; set; } = Colour.Green;
         public Colour MidHPColour { get; set; } = Colour.Yellow;
         public Colour LowHPColour { get; set; } = Colour.Red;
-        #endregion
+        
     }
 }

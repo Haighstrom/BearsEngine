@@ -4,7 +4,6 @@ namespace BearsEngine.Graphics.Shaders;
 
 public class InvisibilityShader : IShader
 {
-    #region Static
     /// <summary>
     /// This shader reveals bjects around a single defined centre point, common to all instances. Make sure to set this each render call.
     /// </summary>
@@ -44,18 +43,15 @@ public class InvisibilityShader : IShader
 
         _initialised = true;
     }
-    #endregion
+    
 
-    #region Constructors
     public InvisibilityShader()
     {
         if (!_initialised)
             Initialise();
     }
-    #endregion
+    
 
-    #region IShader
-    #region Render
     public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PrimitiveType drawType)
     {
         HF.Graphics.BindShader(_ID);
@@ -85,6 +81,6 @@ public class InvisibilityShader : IShader
         OpenGL32.DisableVertexAttribArray(_locationColour);
         OpenGL32.DisableVertexAttribArray(_locationTexture);
     }
-    #endregion
-    #endregion
+    
+    
 }

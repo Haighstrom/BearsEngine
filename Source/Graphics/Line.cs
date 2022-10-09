@@ -5,14 +5,12 @@ namespace BearsEngine.Graphics
 {
     public class Line : AddableBase, IGraphic
     {
-        #region Fields
         private Vertex[] _vertices;
         private int _layer = 0;
         private readonly uint _ID;
         private readonly SmoothLinesShader _shader;
-        #endregion
+        
 
-        #region Constructors
         public Line(Colour colour, float thickness, bool thicknessInPixels, Rect rect)
             : this(colour, thickness, thicknessInPixels, rect.TopLeft, rect.TopRight, rect.BottomRight, rect.BottomLeft, rect.TopLeft)
         {
@@ -27,12 +25,10 @@ namespace BearsEngine.Graphics
             Colour = colour;
             Points = points.Select(p => new Point(p.X, p.Y)).ToList();
         }
-        #endregion
+        
 
-        #region IRenderable
         public bool Visible { get; set; } = true;
 
-        #region Render
         public void Render(ref Matrix4 projection, ref Matrix4 modelView)
         {
             if (Thickness == 0)
@@ -66,11 +62,9 @@ namespace BearsEngine.Graphics
             Unbind();
         }
 
-        #endregion
-        #endregion
+        
+        
 
-        #region IRenderableOnLayer
-        #region Layer
         public int Layer
         {
             get => _layer;
@@ -84,19 +78,17 @@ namespace BearsEngine.Graphics
                 _layer = value;
             }
         }
-        #endregion
+        
 
         public event EventHandler<LayerChangedArgs> LayerChanged = delegate { };
-        #endregion
+        
 
-        #region IDisposable
         public void Dispose()
         {
             throw new NotImplementedException();
         }
-        #endregion
+        
 
-        #region IGraphic
         public Colour Colour { get; set; }
 
         public byte Alpha { get; set; }
@@ -113,9 +105,8 @@ namespace BearsEngine.Graphics
         }
 
         public bool IsOnScreen => true;//todo: this thing
-        #endregion
+        
 
-        #region Properties
         public float Thickness
         {
             get => _shader.Thickness;
@@ -123,24 +114,21 @@ namespace BearsEngine.Graphics
         }
 
         public List<Point> Points { get; set; }
-        #endregion
+        
 
-        #region Methods
-        #region Bind
         public void Bind()
         {
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, _ID);
-            HV.LastBoundVertexBuffer = _ID;
+            BE.LastBoundVertexBuffer = _ID;
         }
-        #endregion
+        
 
-        #region Unbind
         public void Unbind()
         {
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            HV.LastBoundVertexBuffer = 0;
+            BE.LastBoundVertexBuffer = 0;
         }
-        #endregion
-        #endregion
+        
+        
     }
 }

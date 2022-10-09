@@ -18,7 +18,7 @@ public class TaskWait : Task
         _remainingTime = _waitTime;
     }
 
-    public override void Update(double elapsed)
+    public override void Update(float elapsed)
     {
         base.Update(elapsed);
 

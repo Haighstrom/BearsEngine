@@ -4,7 +4,6 @@ namespace BearsEngine.Input;
 
 internal static class KeyMap
 {
-    #region GetKey
     //Deprecated
     public static Key GetKey(uint scancode)
     {
@@ -117,20 +116,18 @@ internal static class KeyMap
             default: return Key.Unknown;
         }
     }
-    #endregion
+    
 
     private static Key GetExtendedKey(uint scancode)
     {
         switch (scancode)
         {
-            #region Arrow Keys
             case (22020096): return Key.Down;
             case (21692416): return Key.Left;
             case (21823488): return Key.Right;
             case (21495808): return Key.Up;
-            #endregion
+            
 
-            #region Function Keys
             case (3866624): return Key.F1;
             case (3932160): return Key.F2;
             case (3997696): return Key.F3;
@@ -143,9 +140,8 @@ internal static class KeyMap
             case (4456448): return Key.F10;
             case (5701632): return Key.F11;
             case (5767168): return Key.F12;
-            #endregion
+            
 
-            #region Letter Keys
             case (1966080): return Key.A;
             case (3145728): return Key.B;
             case (3014656): return Key.C;
@@ -172,9 +168,8 @@ internal static class KeyMap
             case (2949120): return Key.X;
             case (1376256): return Key.Y;
             case (2883584): return Key.Z;
-            #endregion
+            
 
-            #region Modifier Keys
             case (3801088): return Key.CapsLock;
             case (3670016): return Key.LeftAlt;
             case (1900544): return Key.LeftControl;
@@ -184,9 +179,8 @@ internal static class KeyMap
             case (20447232): return Key.RightAlt;
             case (18677760): return Key.RightControl;
            // case (21299200): return Key.RightShift;
-            #endregion
+            
 
-            #region Numpad/Keypad keys 
             case (5373952): return Key.Keypad0;
             case (5177344): return Key.Keypad1;
             case (5242880): return Key.Keypad2;
@@ -203,9 +197,8 @@ internal static class KeyMap
             case (3604480): return Key.KeypadMultiply;
             case (5439488): return Key.KeypadPeriod;
             case (4849664): return Key.KeypadSubtract;
-            #endregion
+            
 
-            #region Number keys - along the top of the keyboard
             case (720896): return Key.Num0;
             case (131072): return Key.Num1;
             case (196608): return Key.Num2;
@@ -216,9 +209,8 @@ internal static class KeyMap
             case (524288): return Key.Num7;
             case (589824): return Key.Num8;
             case (655360): return Key.Num9;
-            #endregion
+            
 
-            #region Special Keys
             case (917504): return Key.Backspace;
             case (22216704): return Key.Delete;
             case (65536): return Key.ESC;
@@ -232,9 +224,8 @@ internal static class KeyMap
             case (5505024): return Key.PrintScreen; //this one is haigh's keyboard apparently?
             case (3735552): return Key.Space;
             case (983040): return Key.Tab;
-            #endregion
+            
 
-            #region SymbolKeys
             case (5636096): return Key.BackSlash;
             case (3342336): return Key.Comma;
             case (851968): return Key.Equals;
@@ -251,7 +242,7 @@ internal static class KeyMap
             case (4587520): return Key.ScrollLock;
             case (2555904): return Key.Semicolon;
             case (3473408): return Key.Slash;
-            #endregion
+            
 
             default:
                 HConsole.Warning($"Unknown extended Key Scancode {scancode}");
@@ -263,14 +254,12 @@ internal static class KeyMap
     {
         switch (key)
         {
-            #region Arrow Keys
             case (Key.Down):            return 22020096;
             case (Key.Left):            return 21692416;
             case (Key.Right):           return 21823488;
             case (Key.Up):              return 21495808;
-            #endregion
+            
 
-            #region Function Keys
             case (Key.F1):              return 3866624;
             case (Key.F2):              return 3932160;
             case (Key.F3):              return 3997696;
@@ -283,9 +272,8 @@ internal static class KeyMap
             case (Key.F10):             return 4456448;
             case (Key.F11):             return 5701632;
             case (Key.F12):             return 5767168;
-            #endregion
+            
 
-            #region Letter Keys
             case (Key.A):               return 1966080;
             case (Key.B):               return 3145728;
             case (Key.C):               return 3014656;
@@ -312,9 +300,8 @@ internal static class KeyMap
             case (Key.X):               return 2949120;
             case (Key.Y):               return 1376256;
             case (Key.Z):               return 2883584;
-            #endregion
+            
 
-            #region Modifier Keys
             case (Key.CapsLock):        return 3801088;
             case (Key.LeftAlt):         return 3670016;
             case (Key.LeftControl):     return 1900544;
@@ -324,9 +311,8 @@ internal static class KeyMap
             case (Key.RightAlt):        return 20447232;
             case (Key.RightControl):    return 18677760;
             case (Key.RightShift):      return 99999999;    //Not a real value, this is a hack and is explictly handled
-            #endregion
+            
 
-            #region Numpad/Keypad keys 
             case (Key.Keypad0):         return 5373952;
             case (Key.Keypad1):         return 5177344;
             case (Key.Keypad2):         return 5242880;
@@ -343,9 +329,8 @@ internal static class KeyMap
             case (Key.KeypadMultiply):  return 3604480;
             case (Key.KeypadPeriod):    return 5439488;
             case (Key.KeypadSubtract):  return 4849664;
-            #endregion
+            
 
-            #region Number keys - along the top of the keyboard
             case (Key.Num0):            return 720896;
             case (Key.Num1):            return 131072;
             case (Key.Num2):            return 196608;
@@ -356,9 +341,8 @@ internal static class KeyMap
             case (Key.Num7):            return 524288;
             case (Key.Num8):            return 589824;
             case (Key.Num9):            return 655360;
-            #endregion
+            
 
-            #region Special Keys
             case (Key.Backspace):       return 917504;
             case (Key.Delete):          return 22216704;
             case (Key.ESC):             return 65536;
@@ -370,9 +354,8 @@ internal static class KeyMap
             case (Key.PrintScreen):     return 22282240;
             case (Key.Space):           return 3735552;
             case (Key.Tab):             return 983040;
-            #endregion
+            
 
-            #region SymbolKeys
             case (Key.BackSlash):       return 5636096;
             case (Key.Comma):           return 3342336;
             case (Key.Equals):          return 851968;
@@ -389,7 +372,7 @@ internal static class KeyMap
             case (Key.ScrollLock):      return 4587520;
             case (Key.Semicolon):       return 2555904;
             case (Key.Slash):           return 3473408;
-            #endregion
+            
              
             default:
                 return 0;
@@ -734,7 +717,7 @@ internal static class KeyMap
         }
     }
 
-    #region TranslateKey
+     
     //c.f.  https://blog.molecular-matters.com/2011/09/05/properly-handling-keyboard-input/
     internal static Key TranslateKey(short scancode, VirtualKeys vkey, bool extended0)
     {
@@ -757,5 +740,5 @@ internal static class KeyMap
 
         return key;
     }
-    #endregion
+    
 }

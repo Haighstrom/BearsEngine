@@ -7,15 +7,13 @@ namespace BearsEngine.Input;
 
 public class KeyboardManager : IKeyboardManager
 {
-    #region Fields
     private readonly List<KeyboardState> _keyboards = new();
     private readonly List<string> _names = new();
     private readonly Dictionary<IntPtr, int> _regdDevices = new();
     private readonly object _syncRoot = new();
     private readonly IntPtr _msgWindowHandle;
-    #endregion
+    
 
-    #region Constructors
     public KeyboardManager(IntPtr messageWindowHandle)
     {
         if (messageWindowHandle == IntPtr.Zero)
@@ -25,10 +23,8 @@ public class KeyboardManager : IKeyboardManager
 
         RefreshDevices();
     }
-    #endregion
+    
 
-    #region Methods
-    #region GetDeviceName
     private static string GetDeviceName(RawInputDeviceList dev)
     {
         // get name size
@@ -43,9 +39,8 @@ public class KeyboardManager : IKeyboardManager
 
         return name;
     }
-    #endregion
+    
 
-    #region FindRegistryKey
     private static RegistryKey FindRegistryKey(string name)
     {
         if (name.Length < 4)
@@ -70,9 +65,8 @@ public class KeyboardManager : IKeyboardManager
         RegistryKey regkey = Registry.LocalMachine.OpenSubKey(findme);
         return regkey;
     }
-    #endregion
+    
 
-    #region RegisterRawDevice
     private void RegisterRawDevice(IntPtr window, string device)
     {
         RawInputDevice[] rid = new RawInputDevice[1];
@@ -93,11 +87,9 @@ public class KeyboardManager : IKeyboardManager
             Console.WriteLine("Registered Keyboard {0}: {1}", _keyboards.Count, device);
         }
     }
-    #endregion
-    #endregion
+    
+    
 
-    #region IKeyboardManager
-    #region State
     public KeyboardState State
     {
         get
@@ -113,9 +105,8 @@ public class KeyboardManager : IKeyboardManager
             }
         }
     }
-    #endregion
+    
 
-    #region GetState(int index)
     public KeyboardState GetState(int index)
     {
         lock (_syncRoot)
@@ -126,9 +117,8 @@ public class KeyboardManager : IKeyboardManager
                 return new KeyboardState();
         }
     }
-    #endregion
+    
 
-    #region RefreshDevices()
     public void RefreshDevices()
     {
         lock (_syncRoot)
@@ -213,9 +203,8 @@ public class KeyboardManager : IKeyboardManager
 
         }
     }
-    #endregion
+    
 
-    #region ProcessInput(RawInput data)
     internal bool ProcessInput(RawInput data)
     {
         IntPtr dHandle = data.Header.Device;
@@ -256,7 +245,7 @@ public class KeyboardManager : IKeyboardManager
         }
     }
 
-    #endregion
+    
 
     /// <summary>
     /// Called whenever a character, text number or symbol, is input by the keyboard. Will not record modifier keys like shift and alt.
@@ -274,5 +263,5 @@ public class KeyboardManager : IKeyboardManager
     /// Called whenever a keyboard key is released
     /// </summary>
     public event EventHandler<KeyboardKeyEventArgs> KeyUp;
-    #endregion
+    
 }

@@ -2,7 +2,6 @@
 {
     public class TabbedPanel : Entity
     {
-        #region GetPanelRect
         private static Rect GetPanelRect(Rect fullPosition, Direction orientation, int edgeToPanelGap, int tabPanelOverlap)
         {
             var panelPos = orientation switch
@@ -18,9 +17,8 @@
             };
             return panelPos;
         }
-        #endregion
+        
 
-        #region Fields
         private readonly Direction _orientation;
         private readonly int _edgeToPanelGap;
         private readonly int _tabPanelOverlap;
@@ -33,22 +31,19 @@
         private readonly Button _createNewTabButton;
         private readonly List<Tab> _tabs = new();
         private int _firstTabDisplayed = 0;
-        #endregion
+        
 
-        #region Constructors
-        #region With AddNewTab Button
         public TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int lastTabToNewTabButtonSpace, int spaceBetweenArrows, Point tabsBackAndForwardSize, Point tabAddButtonSize, UITheme theme, string panelGFX, string tabsBackArrow, string tabsForwardArrow, string addNewTabGFX, Func<Tab> addNewTabFn)
             : this(layer, orientation, fullPosition, edgeToPanelGap, tabPanelOverlap, firstTabShift, tabSpacing, lastTabToNewTabButtonSpace, spaceBetweenArrows, theme, new Panel(panelGFX, GetPanelRect(fullPosition, orientation, edgeToPanelGap, tabPanelOverlap).Size), new Image(tabsBackArrow, tabsBackAndForwardSize), new Image(tabsForwardArrow, tabsBackAndForwardSize), new Image(addNewTabGFX, tabAddButtonSize), addNewTabFn)
         {
         }
-        #endregion
+        
 
-        #region With just tabs (no add, no arrows)
         public TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, UITheme theme, string panelGFX)
             : this(layer, orientation, fullPosition, edgeToPanelGap, tabPanelOverlap, firstTabShift, tabSpacing, theme, new Panel(panelGFX, GetPanelRect(fullPosition, orientation, edgeToPanelGap, tabPanelOverlap).Size))
         {
         }
-        #endregion
+        
 
         private TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, int lastTabToNewTabButtonSpace, int spaceBetweenArrows, UITheme theme, IGraphic panelGFX, IRectGraphic tabsBackArrow, IRectGraphic tabsForwardArrow, IRectGraphic tabAddButtonGraphic, Func<Tab> createNewTabFn)
             : this(layer, orientation, fullPosition, edgeToPanelGap, tabPanelOverlap, firstTabShift, tabSpacing, spaceBetweenArrows, theme, panelGFX, tabsBackArrow, tabsForwardArrow)
@@ -97,9 +92,7 @@
 
             Add(Panel = new Entity(1, GetPanelRect(R, _orientation, _edgeToPanelGap, _tabPanelOverlap), panelGFX));
         }
-        #endregion
-
-        #region Properties
+        
         public Entity Panel { get; private set; }
 
         public IReadOnlyList<Tab> Tabs => _tabs;
@@ -109,10 +102,8 @@
         public Tab CurrentTab { get; private set; }
 
         private float MaximumDistanceTabsCanBe => _tabsBack != null ? _tabsBack.R.Left : Panel.W - _spaceBetweenArrows;
-        #endregion
+        
 
-        #region Methods
-        #region AddTabs
         public void AddTabs(Tab t1, params Tab[] moreTabs)
         {
             AddTab(t1, true);
@@ -120,9 +111,7 @@
             foreach (var t in moreTabs)
                 AddTab(t, false);
         }
-        #endregion
-
-        #region AddTab
+        
         public void AddTab(Tab t, bool activate)
         {
             _tabs.Add(t);
@@ -154,9 +143,7 @@
                     RepositionTabs();
                 }
         }
-        #endregion
-
-        #region RemoveTab
+        
         public void RemoveTab(Tab tab)
         {
             tab.Deactivate();
@@ -180,9 +167,7 @@
                     CurrentTab = null;
             }
         }
-        #endregion
-
-        #region Resize
+        
         public void Resize(Point size) => Resize(size.X, size.Y);
 
         public void Resize(float newW, float newH)
@@ -203,9 +188,7 @@
 
             RepositionTabs();
         }
-        #endregion
-
-        #region SwitchTo
+        
         public void SwitchTo(Tab t)
         {
             if (!_tabs.Contains(t))
@@ -218,9 +201,7 @@
             CurrentTab = t;
             CurrentTab.Activate();
         }
-        #endregion
-
-        #region RepositionTabs
+        
         private void RepositionTabs()
         {
             //todo: different orientations
@@ -290,9 +271,7 @@
                 RepositionTabs();
             }
         }
-        #endregion
-
-        #region TabForward
+        
         private void TabForward()
         {
             if (_tabs.Last().R.Right + _lastTabToNewTabButtonSpace + _createNewTabButton?.W < MaximumDistanceTabsCanBe)
@@ -301,9 +280,7 @@
             _firstTabDisplayed++;
             RepositionTabs();
         }
-        #endregion
-
-        #region TabBack
+        
         private void TabBack()
         {
             if (_firstTabDisplayed == 0)
@@ -312,7 +289,7 @@
             _firstTabDisplayed--;
             RepositionTabs();
         }
-        #endregion
-        #endregion
+        
+        
     }
 }

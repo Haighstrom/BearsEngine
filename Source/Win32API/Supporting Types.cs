@@ -2,8 +2,6 @@
 
 namespace BearsEngine.Win32API;
 
-#region DLLResources
-#region User32Cursors
 internal enum User32Cursors : ushort
 {
     StandardArrow = 100,
@@ -41,9 +39,8 @@ internal enum User32Cursors : ushort
     SmallStarRightQuestionMark = 32668,
     Dot = 32670,
 }
-#endregion
 
-#region User32Icons
+
 internal enum User32Icons : ushort
 {
     APPLICATION = 100,
@@ -53,10 +50,9 @@ internal enum User32Icons : ushort
     INFORMATION = 104,
     SHIELD = 106,
 }
-#endregion
-#endregion
 
-#region Enums
+
+
 internal enum GLAlphaFuncEnum : int
 {
     /// <summary>
@@ -93,7 +89,6 @@ internal enum GLAlphaFuncEnum : int
     GL_ALWAYS = 0x0207,
 }
 
-#region BlendScaleFactor
 /// <summary>
 /// https://registry.khronos.org/OpenGL-Refpages/gl4/html/glBlendFunc.xhtml
 /// Specifies how the red, green, blue, and alpha source and destination blending factors are computed
@@ -121,9 +116,8 @@ public enum BlendScaleFactor : int
     GL_SRC1_ALPHA = 0x8589,
     GL_ONE_MINUS_SRC1_ALPHA = 0x88FB,
 }
-#endregion
 
-#region DeviceBroadcastType
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/dbt/ns-dbt-dev_broadcast_hdr
 /// For use with RegisterDeviceNotification
@@ -151,9 +145,8 @@ internal enum DEV_BROADCAST_HDR_dbch_devicetype
     /// </summary>
     DBT_DEVTYP_VOLUME = 0x00000002,
 }
-#endregion
 
-#region DWMWINDOWATTRIBUTE
+
 //https://docs.microsoft.com/en-us/windows/win32/api/dwmapi/ne-dwmapi-dwmwindowattribute
 internal enum DWMWINDOWATTRIBUTE : uint
 {
@@ -277,9 +270,8 @@ internal enum DWMWINDOWATTRIBUTE : uint
     /// </summary>
     DWMWA_LAST
 }
-#endregion
 
-#region LoadImage_Type
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadimagew
 /// The type of image to be loaded. For use in User32 LoadImage.
@@ -299,9 +291,8 @@ internal enum LoadImage_Type : uint
     /// </summary>
     IMAGE_ICON = 1,
 }
-#endregion
 
-#region LoadImage_FULoad
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadimagew
 /// For use in User32 LoadImage
@@ -355,7 +346,7 @@ internal enum LoadImage_FULoad : uint
     /// </summary>
     LR_VGACOLOR = 0x00000080,
 }
-#endregion
+
 
 enum MonitorDpiType
 {
@@ -380,7 +371,6 @@ internal enum DPI_AWARENESS_CONTEXT
     DPI_AWARENESS_CONTEXT_UNAWARE_GDISCALED = -5,
 }
 
-#region WindowClassStyle
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/winmsg/window-class-styles
 /// The class styles define additional elements of the window class. Two or more styles can be combined by using the bitwise OR (|) operator. To assign a style to a window class, assign the style to the style member of the WNDCLASSEX structure.
@@ -438,9 +428,8 @@ internal enum WindowClassStyle : uint
     /// </summary>
     CS_VREDRAW = 0x0001,
 }
-#endregion
 
-#region RegisterDeviceNotification_Flags
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerdevicenotificationa
 /// For use with User32 RegisterDeviceNotification
@@ -461,9 +450,8 @@ internal enum RegisterDeviceNotification_Flags
     /// </summary>
     DEVICE_NOTIFY_ALL_INTERFACE_CLASSES = 0x00000004,
 }
-#endregion
 
-#region ExtendedWindowStyle
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/winmsg/extended-window-styles
 /// </summary>
@@ -587,9 +575,8 @@ internal enum ExtendedWindowStyle : uint
     /// </summary>
     WS_EX_WINDOWEDGE = 0x00000100,
 }
-#endregion
 
-#region GetQueueStatus_Flags
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getqueuestatus
 /// For use with User32 GetQueueStatus
@@ -655,9 +642,8 @@ internal enum GetQueueStatus_Flags : uint
     /// </summary>
     QS_TIMER = 0x0010,
 }
-#endregion
 
-#region GetRawInputData_uiCommand
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getrawinputdata
 /// For use with User32 GetRawInputData
@@ -673,9 +659,8 @@ internal enum GetRawInputData_uiCommand
     /// </summary>
     RID_INPUT = 0x10000003,
 }
-#endregion
 
-#region GetSysColor_Index
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsyscolor
 /// For use with GetSysColor
@@ -833,9 +818,8 @@ internal enum GetSysColor_Index : int
     /// </summary>
     COLOR_WINDOWTEXT = 8,
 }
-#endregion
 
-#region MapVirtualKeyType
+
 /// <summary>
 /// For MapVirtualKey
 /// </summary>
@@ -852,9 +836,8 @@ internal enum MapVirtualKey_uMapType
     VirtualKeyToScanCodeExtended = 4,
 }
 
-#endregion
 
-#region PredefinedCursors
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadcursorw
 /// For use with LoadCursor or LoadImage
@@ -922,9 +905,8 @@ public enum PredefinedCursors : int
     /// </summary>
     IDC_WAIT = 32514
 }
-#endregion
 
-#region PredefinedIcons
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadiconw
 /// For use with LoadIcon / LoadImage
@@ -973,9 +955,8 @@ public enum PredefinedIcons : ushort
     /// </summary>
     IDI_WINLOGO = 32517,
 }
-#endregion
 
-#region RAWINPUTDEVICE
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-rawinputdevice
 /// Defines information for the raw input devices. For use with User32 RegisterRawInputDevices.
@@ -1018,9 +999,8 @@ internal struct RAWINPUTDEVICE
 
     internal static readonly uint s_size = (uint)Marshal.SizeOf(typeof(RAWINPUTDEVICE));
 }
-#endregion
 
-#region RAWINPUTDEVICE_dwFlags
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-rawinputdevice
 /// Mode flag that specifies how to interpret the information provided by usUsagePage and usUsage. For use with User32 RegisterRawInputDevices.
@@ -1072,9 +1052,8 @@ internal enum RAWINPUTDEVICE_dwFlags : int
     /// </summary>
     RIDEV_DEVNOTIFY = 0x00002000,
 }
-#endregion
 
-#region RAWINPUTDEVICE_usUsage
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows-hardware/drivers/hid/hid-usages#usage-id
 /// https://github.com/tpn/winsdk-10/blob/master/Include/10.0.10240.0/shared/hidusage.h
@@ -1426,9 +1405,8 @@ internal enum RAWINPUTDEVICE_usUsage : ushort
     HID_USAGE_MS_BTH_HF_DIALNUMBER = 0x21,
     HID_USAGE_MS_BTH_HF_DIALMEMORY = 0x22,
 }
-#endregion
 
-#region RAWINPUTDEVICE_usUsagePage
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows-hardware/drivers/hid/hid-usages#usage-page
 /// https://github.com/tpn/winsdk-10/blob/master/Include/10.0.10240.0/shared/hidusage.h
@@ -1498,9 +1476,8 @@ internal enum RAWINPUTDEVICE_usUsagePage : ushort
     HID_USAGE_PAGE_VENDOR_DEFINED_BEGIN = 0xFF00,
     HID_USAGE_PAGE_VENDOR_DEFINED_END = 0xFFFF,
 }
-#endregion
 
-#region RawInputDeviceInfo
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-rid_device_info
 /// Defines the raw input data coming from any device.
@@ -1542,9 +1519,8 @@ internal class RID_DEVICE_INFO
         internal RID_DEVICE_INFO_HID hid;
     };
 }
-#endregion
 
-#region GetRawInputDeviceInfo_uiCommand
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getrawinputdeviceinfoa
 /// For use with User32 GetRawInputDeviceInfo
@@ -1567,9 +1543,8 @@ internal enum GetRawInputDeviceInfo_uiCommand : uint
     /// </summary>
     RIDI_DEVICEINFO = 0x2000000b
 }
-#endregion
 
-#region RawInputDeviceType
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-rid_device_info
 /// For use with RID_DEVICE_INFO
@@ -1589,9 +1564,8 @@ internal enum RID_DEVICE_INFO_dwType : uint
     /// </summary>
     RIM_TYPEHID = 2
 }
-#endregion
 
-#region RawInputHIDDeviceInfo
+
 /// <summary>
 /// Defines the raw input data coming from the specified Human Interface Device (HID).
 /// </summary>
@@ -1621,9 +1595,8 @@ internal struct RID_DEVICE_INFO_HID
     //internal UInt16 Usage;
     internal short Usage;
 }
-#endregion
 
-#region RID_DEVICE_INFO_KEYBOARD
+
 /// <summary>
 /// Defines the raw input data coming from the specified keyboard.
 /// </summary>
@@ -1659,9 +1632,8 @@ internal struct RID_DEVICE_INFO_KEYBOARD
     internal int NumberOfKeysTotal;
 }
 
-#endregion
 
-#region RID_DEVICE_INFO_MOUSE
+
 /// <summary>
 /// Defines the raw input data coming from the specified mouse.
 /// </summary>
@@ -1692,9 +1664,8 @@ internal struct RID_DEVICE_INFO_MOUSE
     internal bool HasHorizontalWheel;
 }
 
-#endregion
 
-#region GWL
+
 /// <summary>
 /// The zero-based offset to the value to be set in SetWindowLong. Valid values are in the range zero through the number of bytes of extra window memory, minus the size of an integer. To set any other value, specify one of the following values.
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setwindowlonga
@@ -1729,9 +1700,8 @@ internal enum GWL : int
     /// </summary>
     GWL_WNDPROC = -4,
 }
-#endregion
 
-#region ShowWindow_Command
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-showwindow
 /// For use with User32 ShowWindow
@@ -1795,9 +1765,8 @@ internal enum ShowWindow_Command
     /// </summary>
     SW_FORCEMINIMIZE = 11,
 }
-#endregion
 
-#region WindowMessage
+
 /// <summary>
 /// https://docs.microsoft.com/en-gb/windows/win32/winmsg/about-messages-and-message-queues?redirectedfrom=MSDN
 /// https://docs.microsoft.com/en-us/windows/win32/winmsg/window-notifications
@@ -2819,7 +2788,7 @@ internal enum WindowMessage : int
     WM_APP = 0x00008000,
     WM_RASDIALEVENT = 0x0000CCCD,
 }
-#endregion
+
 
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-sizing
@@ -2862,7 +2831,6 @@ internal enum WM_SIZING_wParam
     //9 seems to be generated if the window gets resized by dragging the title bar when maximised
 }
 
-#region WindowStyle
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/winmsg/window-styles
 /// </summary>
@@ -2981,11 +2949,9 @@ internal enum WindowStyle : uint
     /// </summary>
     WS_VSCROLL = 0x00200000,
 }
-#endregion
-#endregion
 
-#region Structs
-#region DEV_BROADCAST_DEVICEINTERFACE
+
+
 #pragma warning disable 0649, 0169, IDE0044, IDE0051
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerdevicenotificationa
@@ -3019,9 +2985,8 @@ internal struct DEV_BROADCAST_DEVICEINTERFACE
     internal char dbcc_name;
 }
 #pragma warning restore 0649, 0169, IDE0044, IDE0051
-#endregion
 
-#region DEV_BROADCAST_HDR
+
 #pragma warning disable 0649, 0169, IDE0044, IDE0051
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerdevicenotificationa
@@ -3051,9 +3016,8 @@ internal struct DEV_BROADCAST_HDR
     private int dbcc_reserved;
 }
 #pragma warning restore 0649, 0169, IDE0044, IDE0051
-#endregion
 
-#region MINMAXINFO
+
 [StructLayout(LayoutKind.Sequential)]
 internal struct MINMAXINFO
 {
@@ -3063,9 +3027,8 @@ internal struct MINMAXINFO
     public POINT ptMinTrackSize;
     public POINT ptMaxTrackSize;
 }
-#endregion
 
-#region MSG
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-msg
 /// Contains message information from a thread's message queue.
@@ -3099,9 +3062,8 @@ internal struct MSG
     internal POINT pt;
     internal uint lPrivate;
 }
-#endregion
 
-#region RECT
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/windef/ns-windef-rect
 /// The RECT structure defines a rectangle by the coordinates of its upper-left and lower-right corners.
@@ -3115,9 +3077,8 @@ internal struct RECT
     public POINT Centre => new() { X = (right + left) / 2, Y = (bottom + top) / 2 };
     public static int UnmanagedSize => Marshal.SizeOf(default(RECT));
 }
-#endregion
 
-#region POINT
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/previous-versions/dd162805(v=vs.85)
 /// The POINT structure defines the x- and y- coordinates of a point.
@@ -3128,9 +3089,8 @@ internal struct POINT
     internal int X;
     internal int Y;
 }
-#endregion
 
-#region PeekMessage_Flags
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-peekmessagew
 /// Specifies how messages are to be handled, for use with PeekMessage.
@@ -3169,9 +3129,8 @@ internal enum PeekMessage_Flags : uint
     /// </summary>
     PM_QS_SENDMESSAGE = GetQueueStatus_Flags.QS_SENDMESSAGE << 16,
 }
-#endregion
 
-#region WINDOWINFO
+
 //https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-windowinfo
 [StructLayout(LayoutKind.Sequential)]
 struct WINDOWINFO
@@ -3193,9 +3152,8 @@ struct WINDOWINFO
     }
 
 }
-#endregion
 
-#region WNDCLASSEXW
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-wndclassexw
 /// Contains window class information. It is used with the RegisterClassEx and GetClassInfoEx  functions.
@@ -3257,11 +3215,9 @@ internal struct WNDCLASSEX
     internal IntPtr hIconSm;
 }
 
-#endregion
-#endregion
 
-#region Delegates
-#region WindowProc
+
+
 /// <summary>
 /// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/ms633573(v=vs.85)
 /// An application-defined function that processes messages sent to a window. The WNDPROC type defines a pointer to this callback function.
@@ -3273,12 +3229,11 @@ internal struct WNDCLASSEX
 /// <returns></returns>
 [UnmanagedFunctionPointer(CallingConvention.Winapi)]
 internal delegate IntPtr WNDPROC(IntPtr hwnd, WindowMessage uMsg, IntPtr wParam, IntPtr lParam);
-#endregion
-#endregion
+
+
 
 // * * * CLEANED UP ABOVE THIS LINE * * *
 
-#region TextureTarget
 /// <summary>
 /// Used in GL.Arb.CompressedTexImage1D, GL.Arb.CompressedTexImage2D and 123 other functions
 /// </summary>
@@ -3469,9 +3424,8 @@ public enum TextureTarget : int
     /// </summary>
     ProxyTexture2DMultisampleArray = 0x9103
 }
-#endregion
 
-#region ABE
+
 internal enum ABE : uint
 {
     Left = 0,
@@ -3479,9 +3433,8 @@ internal enum ABE : uint
     Right = 2,
     Bottom = 3
 }
-#endregion
 
-#region ABM
+
 internal enum ABM : uint
 {
     New = 0x00000000,
@@ -3496,18 +3449,16 @@ internal enum ABM : uint
     WindowPosChanged = 0x00000009,
     SetState = 0x0000000A,
 }
-#endregion
 
-#region ABS
+
 [Flags]
 internal enum ABS : int
 {
     Autohide = 0x0000001,
     AlwaysOnTop = 0x0000002
 }
-#endregion
 
-#region APPBARDATA
+
 [StructLayout(LayoutKind.Sequential)]
 internal struct APPBARDATA
 {
@@ -3518,9 +3469,8 @@ internal struct APPBARDATA
     public RECT rc;
     public int lParam;
 }
-#endregion
 
-#region ChangeDisplaySettingsEnum
+
 [Flags]
 internal enum ChangeDisplaySettingsEnum
 {
@@ -3529,9 +3479,8 @@ internal enum ChangeDisplaySettingsEnum
     Test = 0x00000002,
     Fullscreen = 0x00000004,
 }
-#endregion
 
-#region CreateStruct
+
 internal struct CreateStruct
 {
     internal IntPtr lpCreateParams;
@@ -3593,9 +3542,8 @@ internal struct CreateStruct
     /// </summary>
     internal int dwExStyle;
 }
-#endregion
 
-#region COLORREF
+
 [StructLayout(LayoutKind.Sequential)]
 internal struct COLORREF
 {
@@ -3603,9 +3551,8 @@ internal struct COLORREF
     public byte G;
     public byte B;
 }
-#endregion
 
-#region CONSOLE_SCREEN_BUFFER_INFO
+
 [StructLayout(LayoutKind.Sequential)]
 internal struct CONSOLE_SCREEN_BUFFER_INFO
 {
@@ -3615,9 +3562,8 @@ internal struct CONSOLE_SCREEN_BUFFER_INFO
     public SMALL_RECT srWindow;
     public COORD dwMaximumWindowSize;
 }
-#endregion
 
-#region COORD
+
 #pragma warning disable 0649
 internal struct COORD
 {
@@ -3625,9 +3571,8 @@ internal struct COORD
     public short Y;
 };
 #pragma warning disable 0649
-#endregion
 
-#region CURSORINFO
+
 /// <summary>
 /// Used in GetCursorInfo call to query if the cursor is shown or hidden
 /// </summary>
@@ -3642,9 +3587,8 @@ struct CURSORINFO
     public IntPtr hCursor;          // Handle to the cursor.
     public POINT ptScreenPos;       // A POINT structure that receives the screen coordinates of the cursor.
 }
-#endregion
 
-#region DesiredAccess
+
 [Flags]
 internal enum DesiredAccess : uint
 {
@@ -3653,9 +3597,8 @@ internal enum DesiredAccess : uint
     GenericExecute = 0x20000000,
     GenericAll = 0x10000000
 }
-#endregion
 
-#region DevBroadcastHDR
+
 #pragma warning disable 0649, 0169
 internal struct DevBroadcastHDR
 {
@@ -3666,9 +3609,8 @@ internal struct DevBroadcastHDR
     internal char dbcc_name;
 }
 #pragma warning restore 0649, 0169
-#endregion
 
-#region DeviceBroadcastType
+
 internal enum DeviceBroadcastType
 {
     OEM = 0,
@@ -3677,9 +3619,8 @@ internal enum DeviceBroadcastType
     INTERFACE = 5,
     HANDLE = 6,
 }
-#endregion
 
-#region DeviceCaps
+
 internal enum DeviceCaps : int
 {
     /// <summary>
@@ -3843,9 +3784,8 @@ internal enum DeviceCaps : int
     /// </summary>
     BLTAlignment = 119
 }
-#endregion
 
-#region DeviceMode
+
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 internal class DeviceMode
 {
@@ -3898,9 +3838,6 @@ internal class DeviceMode
     internal int PanningHeight;
 }
 
-#endregion DeviceMode class
-
-#region DeviceModeFields
 [Flags]
 internal enum DeviceModeEnum : int
 {
@@ -3911,18 +3848,16 @@ internal enum DeviceModeEnum : int
     DM_DISPLAYFLAGS = 0x00200000,
     DM_DISPLAYFREQUENCY = 0x00400000,
 }
-#endregion
 
-#region DeviceNotifications
+
 internal enum DeviceNotification
 {
     WINDOW_HANDLE = 0x00000000,
     SERVICE_HANDLE = 0x00000001,
     ALL_INTERFACE_CLASSES = 0x00000004,
 }
-#endregion
 
-#region DISPLAY_DEVICE
+
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 internal class DISPLAY_DEVICE
 {
@@ -3941,18 +3876,16 @@ internal class DISPLAY_DEVICE
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
     internal string DeviceKey;
 }
-#endregion
 
-#region DisplayDeviceSettingsChangedResult
+
 public enum DisplayDeviceSettingsChangedResult : int
 {
     DISP_CHANGE_SUCCESSFUL = 0,
     DISP_CHANGE_RESTART = 1,
     DISP_CHANGE_FAILED = -1,
 }
-#endregion
 
-#region DisplayDeviceStateFlags
+
 [Flags]
 internal enum DisplayDeviceStateFlags
 {
@@ -3971,42 +3904,37 @@ internal enum DisplayDeviceStateFlags
     Active = 0x00000001,
     Attached = 0x00000002,
 }
-#endregion
 
-#region DisplayModeSettingsEnum
+
 internal enum DisplayModeSettingsEnum
 {
     CurrentSettings = -1,
     RegistrySettings = -2
 }
-#endregion
 
-#region GetMouseMovePointResolution
+
 internal enum GetMouseMovePointResolution : uint
 {
     GMMP_USE_DISPLAY_POINTS = 1,
     GMMP_USE_HIGH_RESOLUTION_POINTS = 2,
 }
-#endregion
 
-#region GetRawInputDataEnum
+
 internal enum GetRawInputDataEnum
 {
     INPUT = 0x10000003,
     HEADER = 0x10000005
 }
-#endregion
 
-#region HandleType
+
 internal enum HandleType
 {
     STD_INPUT_HANDLE = -10,
     STD_OUTPUT_HANDLE = -11,
     STD_ERROR_HANDLE = -12
 }
-#endregion
 
-#region IconInfo
+
 [StructLayout(LayoutKind.Sequential)]
 internal struct IconInfo
 {
@@ -4016,9 +3944,8 @@ internal struct IconInfo
     public IntPtr MaskBitmap;
     public IntPtr ColorBitmap;
 };
-#endregion
 
-#region JoyCaps
+
 internal struct JoyCaps
 {
     public ushort Mid;
@@ -4084,9 +4011,8 @@ internal struct JoyCaps
         }
     }
 }
-#endregion
 
-#region JoystCapsFlags
+
 [Flags]
 internal enum JoystCapsFlags
 {
@@ -4098,9 +4024,8 @@ internal enum JoystCapsFlags
     HasPov4Dir = 0x32,
     HasPovContinuous = 0x64
 }
-#endregion
 
-#region JoyInfo
+
 internal struct JoyInfo
 {
     public int XPos;
@@ -4119,9 +4044,8 @@ internal struct JoyInfo
         }
     }
 }
-#endregion
 
-#region JoyInfoEx
+
 internal struct JoyInfoEx
 {
     public int Size;
@@ -4162,9 +4086,8 @@ internal struct JoyInfoEx
         }
     }
 }
-#endregion
 
-#region JoystickError
+
 internal enum JoystickError : uint
 {
     NoError = 0,
@@ -4174,9 +4097,8 @@ internal enum JoystickError : uint
     //MM_NoDriver = 6,
     //MM_InvalidParameter = 11
 }
-#endregion
 
-#region JoystickFlags
+
 [Flags]
 enum JoystickFlags
 {
@@ -4190,9 +4112,8 @@ enum JoystickFlags
     Buttons = 0x80,
     All = X | Y | Z | R | U | V | Pov | Buttons
 }
-#endregion
 
-#region MapVirtualKeyType
+
 /// <summary>
 /// For MapVirtualKey
 /// </summary>
@@ -4209,9 +4130,8 @@ internal enum MapVirtualKeyType
     VirtualKeyToScanCodeExtended = 4,
 }
 
-#endregion
 
-#region MonitorFrom
+
 internal enum MonitorFrom
 {
     /// <summary>
@@ -4227,9 +4147,8 @@ internal enum MonitorFrom
     /// </summary>
     Nearest = 2,
 }
-#endregion
 
-#region MonitorInfo
+
 #pragma warning disable 0649
 internal struct MonitorInfo
 {
@@ -4241,9 +4160,8 @@ internal struct MonitorInfo
     internal static readonly int UnmanagedSize = Marshal.SizeOf(default(MonitorInfo));
 }
 #pragma warning restore 0649
-#endregion
 
-#region MouseMovePoint
+
 [StructLayout(LayoutKind.Sequential)]
 public struct MouseMovePoint
 {
@@ -4269,9 +4187,8 @@ public struct MouseMovePoint
     /// </summary>
     public static readonly int SizeInBytes = Marshal.SizeOf(default(MouseMovePoint));
 }
-#endregion
 
-#region NIndex
+
 /// <summary>
 /// Used with SetWindowLong call
 /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633588(v=vs.85).aspx
@@ -4289,16 +4206,14 @@ internal enum NIndex : int
     Style = -26,
     WndProc = -24 
 }
-#endregion
 
-#region PIXELFORMATDESCRIPTOR
+
 /// <summary>
 /// The PIXELFORMATDESCRIPTOR structure describes the pixel format of a drawing surface
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
 internal class PIXELFORMATDESCRIPTOR
 {
-    #region Flags
     // https://docs.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-pixelformatdescriptor
     // https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-emf/1db036d6-2da8-4b92-b4f8-e9cab8cc93b7
     [Flags]
@@ -4384,9 +4299,8 @@ internal class PIXELFORMATDESCRIPTOR
         /// </summary>
         PFD_SUPPORT_COMPOSITION = 0x00008000,
     };
-    #endregion
+    
 
-    #region PixelType
     /// <summary>
     /// Type of pixel data
     /// </summary>
@@ -4401,7 +4315,7 @@ internal class PIXELFORMATDESCRIPTOR
         /// </summary>
         PFD_TYPE_COLORINDEX = 1
     }
-    #endregion
+    
 
     internal PIXELFORMATDESCRIPTOR()
     {
@@ -4512,9 +4426,8 @@ internal class PIXELFORMATDESCRIPTOR
     /// </summary>
     internal readonly int dwDamageMask;
 }
-#endregion
 
-#region PM
+
 [Flags]
 internal enum PM : int
 {
@@ -4522,16 +4435,14 @@ internal enum PM : int
     REMOVE = 0x0001,
     NOYIELD = 0x0002
 }
-#endregion
 
-#region RawHID
+
 [StructLayout(LayoutKind.Explicit)]
 internal struct RawHID
 {
 }
-#endregion
 
-#region RawInput
+
 #pragma warning disable 0649
 internal struct RawInput
 {
@@ -4539,9 +4450,8 @@ internal struct RawInput
     internal RawInputData Data;
 }
 #pragma warning restore 0649
-#endregion
 
-#region RawInputData
+
 [StructLayout(LayoutKind.Explicit)]
 internal struct RawInputData
 {
@@ -4552,9 +4462,8 @@ internal struct RawInputData
     [FieldOffset(0)]
     internal RawHID HID;
 }
-#endregion
 
-#region RawInputDevice
+
 /// <summary>
 /// Defines information for the raw input devices.
 /// </summary>
@@ -4585,9 +4494,8 @@ internal struct RawInputDevice
 
     internal static readonly int Size = Marshal.SizeOf(typeof(RawInputDevice));
 }
-#endregion
 
-#region RawInputDeviceFlags
+
 [Flags]
 internal enum RawInputDeviceFlags : int
 {
@@ -4640,9 +4548,8 @@ internal enum RawInputDeviceFlags : int
     DEVNOTIFY = 0x00002000,
     //EXMODEMASK      = 0x000000F0
 }
-#endregion
 
-#region RawInputDeviceInfo
+
 /// <summary>
 /// Defines the raw input data coming from any device.
 /// </summary>
@@ -4669,18 +4576,16 @@ internal class RawInputDeviceInfo
         internal RawInputHIDDeviceInfo HID;
     };
 }
-#endregion
 
-#region RawInputDeviceInfoEnum
+
 internal enum RawInputDeviceInfoEnum
 {
     PREPARSEDDATA = 0x20000005,
     DEVICENAME = 0x20000007,  // the return valus is the character length, not the byte size
     DEVICEINFO = 0x2000000b
 }
-#endregion
 
-#region RawInputDeviceList
+
 /// <summary>
 /// Contains information about a raw input device.
 /// </summary>
@@ -4698,18 +4603,16 @@ internal struct RawInputDeviceList
 
     internal static readonly int Size = Marshal.SizeOf(typeof(RawInputDeviceList));
 }
-#endregion
 
-#region RawInputDeviceType
+
 internal enum RawInputDeviceType : int
 {
     MOUSE = 0,
     KEYBOARD = 1,
     HID = 2
 }
-#endregion
 
-#region RawInputHeader
+
 [StructLayout(LayoutKind.Sequential)]
 internal struct RawInputHeader
 {
@@ -4732,9 +4635,8 @@ internal struct RawInputHeader
 
     internal static int SIZE = Marshal.SizeOf(typeof(RawInputHeader));
 }
-#endregion
 
-#region RawInputHIDDeviceInfo
+
 /// <summary>
 /// Defines the raw input data coming from the specified Human Interface Device (HID).
 /// </summary>
@@ -4764,9 +4666,8 @@ internal struct RawInputHIDDeviceInfo
     //internal UInt16 Usage;
     internal short Usage;
 }
-#endregion
 
-#region RawInputKeyboardDataFlags
+
 internal enum RawInputKeyboardDataFlags : short
 {
     MAKE = 0,
@@ -4777,9 +4678,8 @@ internal enum RawInputKeyboardDataFlags : short
     TERMSRV_SHADOW = 0x10
 }
 
-#endregion
 
-#region RawInputKeyboardDeviceInfo
+
 /// <summary>
 /// Defines the raw input data coming from the specified keyboard.
 /// </summary>
@@ -4815,9 +4715,8 @@ internal struct RawInputKeyboardDeviceInfo
     internal int NumberOfKeysTotal;
 }
 
-#endregion
 
-#region RawInputMouseDeviceInfo
+
 /// <summary>
 /// Defines the raw input data coming from the specified mouse.
 /// </summary>
@@ -4848,9 +4747,8 @@ internal struct RawInputMouseDeviceInfo
     internal bool HasHorizontalWheel;
 }
 
-#endregion
 
-#region RawInputMouseState
+
 [Flags]
 internal enum RawInputMouseState : ushort
 {
@@ -4877,9 +4775,8 @@ internal enum RawInputMouseState : ushort
     HWHEEL = 0x0800,
 }
 
-#endregion
 
-#region RawKeyboard
+
 [StructLayout(LayoutKind.Sequential)]
 internal struct RawKeyboard
 {
@@ -4918,9 +4815,8 @@ internal struct RawKeyboard
     //internal ULONG ExtraInformation;
     internal int ExtraInformation;
 }
-#endregion
 
-#region RawMouse
+
 [StructLayout(LayoutKind.Explicit)]
 internal struct RawMouse
 {
@@ -4971,9 +4867,8 @@ internal struct RawMouse
     [FieldOffset(20)]
     internal uint ExtraInformation;
 }
-#endregion
 
-#region RawMouseFlags
+
 
 /// <summary>
 /// Mouse indicator flags (found in winuser.h).
@@ -4999,9 +4894,8 @@ internal enum RawMouseFlags : ushort
     MOUSE_ATTRIBUTES_CHANGED = 0x04,
 }
 
-#endregion
 
-#region SetWindowPosFlags
+
 [Flags]
 internal enum SetWindowPosFlags : int
 {
@@ -5072,9 +4966,8 @@ internal enum SetWindowPosFlags : int
     ASYNCWINDOWPOS = 0x4000
 }
 
-#endregion
 
-#region ShowWindowCommand
+
 internal enum ShowWindowCommand
 {
     /// <summary>
@@ -5136,9 +5029,8 @@ internal enum ShowWindowCommand
     //SHOW_FULLSCREEN    = 3,
     //SHOW_OPENNOACTIVATE= 4,
 }
-#endregion
 
-#region SizeMessage
+
 internal enum SizeMessage
 {
     MAXHIDE = 4,
@@ -5147,9 +5039,8 @@ internal enum SizeMessage
     MINIMIZED = 1,
     RESTORED = 0
 }
-#endregion
 
-#region SMALL_RECT
+
 [StructLayout(LayoutKind.Sequential)]
 internal struct SMALL_RECT
 {
@@ -5157,23 +5048,21 @@ internal struct SMALL_RECT
     internal int Width => Right - Left;
     internal int Height => Bottom - Top;
 }
-#endregion
 
-#region StyleStruct
+
 internal struct StyleStruct
 {
     public WindowStyle Old;
     public WindowStyle New;
 }
-#endregion
 
-#region ExtendedStyleStruct
+
 internal struct ExtendedStyleStruct
 {
     public ExtendedWindowStyle Old;
     public ExtendedWindowStyle New;
 }
-#endregion
+
 
 //todo: complete this
 internal enum SystemErrorCode : uint
@@ -5196,12 +5085,10 @@ internal enum SystemErrorCode : uint
     ERROR_INVALID_PIXEL_FORMAT = 2000
 }
 
-#region TimerProc
 [UnmanagedFunctionPointer(CallingConvention.Winapi)]
 internal delegate void TimerProc(IntPtr hwnd, WindowMessage uMsg, UIntPtr idEvent, int dwTime);
-#endregion
 
-#region TrackMouseEventFlags
+
 [Flags]
 internal enum TrackMouseEventFlags : uint
 {
@@ -5211,9 +5098,8 @@ internal enum TrackMouseEventFlags : uint
     QUERY = 0x40000000,
     CANCEL = 0x80000000,
 }
-#endregion
 
-#region TrackMouseEventStructure
+
 #pragma warning disable 0649
 internal struct TrackMouseEventStructure
 {
@@ -5225,9 +5111,8 @@ internal struct TrackMouseEventStructure
     internal static readonly int SizeInBytes = Marshal.SizeOf(typeof(TrackMouseEventStructure));
 }
 #pragma warning restore 0649
-#endregion
 
-#region VirtualKeys
+
 internal enum VirtualKeys : short
 {
     /*
@@ -5516,9 +5401,8 @@ internal enum VirtualKeys : short
 
     Last
 }
-#endregion
 
-#region WindowPosition
+
 [StructLayout(LayoutKind.Sequential)]
 internal struct WindowPosition
 {
@@ -5554,9 +5438,8 @@ internal struct WindowPosition
     [MarshalAs(UnmanagedType.U4)]
     internal SetWindowPosFlags flags;
 }
-#endregion
 
-#region AlphaFunction
+
 public enum AlphaFunction : int
 {
     /// <summary>
@@ -5592,9 +5475,8 @@ public enum AlphaFunction : int
     /// </summary>
     Always = 0x0207,
 }
-#endregion
 
-#region BufferTarget
+
 public enum BufferTarget : int
 {
     /// <summary>
@@ -5654,9 +5536,8 @@ public enum BufferTarget : int
     /// </summary>
     AtomicCounterBuffer = 0x92C0,
 }
-#endregion
 
-#region BufferUsageHint
+
 public enum BufferUsageHint : int
 {
     /// <summary>
@@ -5696,9 +5577,8 @@ public enum BufferUsageHint : int
     /// </summary>
     DynamicCopy = 0x88EA,
 }
-#endregion
 
-#region ClearBufferMask
+
 public enum ClearBufferMask : uint
 {
     /// <summary>
@@ -5718,9 +5598,8 @@ public enum ClearBufferMask : uint
     /// </summary>
     ColourBufferBit = 0x00004000
 }
-#endregion
 
-#region DataType
+
 [Flags]
 public enum DataType : uint
 {
@@ -5769,9 +5648,8 @@ public enum DataType : uint
     /// </summary>
     Double = 0x140A
 }
-#endregion
 
-#region DebugSeverity
+
 /// <summary>
 /// GL_DEBUG_SEVERITY_HIGH and friends, for calls to glDebugMessageCallback and related error handling
 /// </summary>
@@ -5802,9 +5680,8 @@ public enum DebugSeverity : int
     /// </summary>
     Notification = 0x826B,
 }
-#endregion
 
-#region DebugSource
+
 /// <summary>
 /// GL_DEBUG_SOURCE_API and friends, for calls to glDebugMessageCallback and related error handling
 /// </summary>
@@ -5840,9 +5717,8 @@ public enum DebugSource : int
     /// </summary>
     Other = 0x824B,
 }
-#endregion
 
-#region DebugType
+
 /// <summary>
 /// GL_DEBUG_TYPE_ERROR and friends, for calls to glDebugMessageCallback and related error handling
 /// </summary>
@@ -5898,9 +5774,8 @@ public enum DebugType : int
     /// </summary>
     //PushGroup = 0x824B      unknown value      
 }
-#endregion
 
-#region EnableCap
+
 public enum EnableCap : int
 {
     /// <summary>
@@ -6484,9 +6359,8 @@ public enum EnableCap : int
     /// </summary>
     DebugOutput = 0x92E0,
 }
-#endregion
 
-#region FramebufferAttachment
+
 public enum FramebufferAttachment : int
 {
     /// <summary>
@@ -6682,9 +6556,8 @@ public enum FramebufferAttachment : int
     /// </summary>
     StencilAttachmentExt = 0x8D20
 }
-#endregion
 
-#region FramebufferTarget
+
 public enum FramebufferTarget : int
 {
     /// <summary>
@@ -6704,9 +6577,8 @@ public enum FramebufferTarget : int
     /// </summary>
     FramebufferExt = 0x8D40,
 }
-#endregion
 
-#region FrontFaceDirection
+
 public enum FrontFaceDirection : int
 {
     /// <summary>
@@ -6718,9 +6590,8 @@ public enum FrontFaceDirection : int
     /// </summary>
     Ccw = 0x0901,
 }
-#endregion
 
-#region GetPName
+
 public enum GLEnumPName : int
 {
     /// <summary>
@@ -9164,9 +9035,8 @@ public enum GLEnumPName : int
     /// </summary>
     MaxComputeImageUniforms = 0x91BD,
 }
-#endregion
 
-#region GetString
+
 public enum GetStringEnum : uint
 {
     /// <summary>
@@ -9190,9 +9060,8 @@ public enum GetStringEnum : uint
     /// </summary>
     ShadingLanguageVersion = 0x8B8C
 }
-#endregion
 
-#region LightName
+
 public enum LightName : int
 {
     /// <summary>
@@ -9260,9 +9129,8 @@ public enum LightName : int
     /// </summary>
     FragmentLight7Sgix = 0x8413,
 }
-#endregion
 
-#region LightParameter
+
 public enum LightParameter : int
 {
     /// <summary>
@@ -9306,9 +9174,8 @@ public enum LightParameter : int
     /// </summary>
     QuadraticAttenuation = 0x1209,
 }
-#endregion
 
-#region MaterialFace
+
 /// <summary>
 /// Used in GL.ColorMaterial, GL.GetMaterial and 8 other functions
 /// </summary>
@@ -9327,9 +9194,8 @@ public enum MaterialFace : int
     /// </summary>
     FrontAndBack = 0x0408,
 }
-#endregion
 
-#region MaterialParameter
+
 public enum MaterialParameter : int
 {
     /// <summary>
@@ -9361,9 +9227,8 @@ public enum MaterialParameter : int
     /// </summary>
     ColorIndexes = 0x1603,
 }
-#endregion
 
-#region MatrixMode
+
 public enum MatrixMode : int
 {
     /// <summary>
@@ -9379,9 +9244,8 @@ public enum MatrixMode : int
     /// </summary>
     Texture = 0x1702,
 }
-#endregion
 
-#region MSAA_Samples
+
 public enum MSAA_Samples
 {
     Disabled = 0,
@@ -9390,9 +9254,8 @@ public enum MSAA_Samples
     x8 = 8,
     x16 = 16
 }
-#endregion
 
-#region OpenGLErrorCode
+
 public enum OpenGLErrorCode : uint
 {
     NO_ERROR = 0,
@@ -9406,9 +9269,8 @@ public enum OpenGLErrorCode : uint
     CONTEXT_LOST = 1287,
     TABLE_TOO_LARGE = 32817
 }
-#endregion
 
-#region PixelInternalFormat
+
 public enum PixelInternalFormat : int
 {
     /// <summary>
@@ -10088,9 +9950,8 @@ public enum PixelInternalFormat : int
     /// </summary>
     Four = 4,
 }
-#endregion
 
-#region PixelFormat
+
 public enum PixelFormat : int
 {
     ColorIndex = 0X1900,
@@ -10123,9 +9984,8 @@ public enum PixelFormat : int
     BgrInteger = 0X8d9a,
     BgraInteger = 0X8d9b,
 }
-#endregion
 
-#region PixelStoreParameter
+
 public enum PixelStoreParameter : int
 {
     GL_UNPACK_SWAP_BYTES = 0x0CF0,
@@ -10176,9 +10036,8 @@ public enum PixelStoreParameter : int
     GL_PACK_COMPRESSED_BLOCK_DEPTH = 0x912D,
     GL_PACK_COMPRESSED_BLOCK_SIZE = 0x912E
 }
-#endregion
 
-#region PixelType
+
 public enum PixelType : int
 {
     Byte = 0X1400,
@@ -10212,9 +10071,8 @@ public enum PixelType : int
     UnsignedInt5999Rev = 0X8c3e,
     Float32UnsignedInt248Rev = 0X8Dad,
 }
-#endregion
 
-#region PolygonMode
+
 public enum PolygonMode : int
 {
     /// <summary>
@@ -10230,9 +10088,8 @@ public enum PolygonMode : int
     /// </summary>
     Fill = 0x1B02,
 }
-#endregion
 
-#region PrimitiveType
+
 public enum PrimitiveType : int
 {
     /// <summary>
@@ -10288,9 +10145,8 @@ public enum PrimitiveType : int
     /// </summary>
     Patches = 14
 }
-#endregion
 
-#region RgbaColor
+
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 internal struct RgbaColor
 {
@@ -10300,9 +10156,8 @@ internal struct RgbaColor
     public byte Red;
     public byte Alpha;
 }
-#endregion
 
-#region ShadingModel
+
 public enum ShadingModel : int
 {
     /// <summary>
@@ -10314,9 +10169,8 @@ public enum ShadingModel : int
     /// </summary>
     Smooth = 0x1D01,
 }
-#endregion
 
-#region ShaderParameter
+
 public enum ShaderParameter : int
 {
     /// <summary>
@@ -10340,9 +10194,8 @@ public enum ShaderParameter : int
     /// </summary>
     ShaderSourceLength = 0x8B88,
 }
-#endregion
 
-#region ShaderType
+
 public enum ShaderType : int
 {
     FragmentShader = 0x8B30,
@@ -10352,9 +10205,8 @@ public enum ShaderType : int
     TessControlShader = 0x8E88,
     ComputeShader = 0x91B9,
 }
-#endregion
 
-#region TexInternalFormat
+
 public enum TexInternalFormat : int
 {
     /// <summary>
@@ -10478,12 +10330,10 @@ public enum TexInternalFormat : int
     /// </summary>
     RGBA8I = 0x8D8E
 }
-#endregion
 
-#region TextureParameter
+
 public enum TextureParameter : int
 {
-    #region TextureWrapS/T
     /// <summary>
     /// GL_REPEAT: Used with TextureParameterName TextureWrapS / TextureWrapT
     /// </summary>
@@ -10516,9 +10366,8 @@ public enum TextureParameter : int
     /// GL_MIRRORED_REPEAT: Used with TextureParameterName TextureWrapS / TextureWrapT
     /// </summary>
     MirroredRepeat = 0x8370,
-    #endregion
+    
 
-    #region TextureMag/MinFilter
     /// <summary>
     /// GL_NEAREST: Used with TextureParameterName TextureMagFilter / TextureMinFilter
     /// </summary>
@@ -10599,11 +10448,10 @@ public enum TextureParameter : int
     /// Original was GL_LINEAR_CLIPMAP_NEAREST_SGIX = 0x844F
     /// </summary>
     LinearClipmapNearestSGIX = 0x844F,
-    #endregion
+    
 }
-#endregion
 
-#region TextureParameterName
+
 public enum TextureParameterName : int
 {
     /// <summary>
@@ -10807,9 +10655,8 @@ public enum TextureParameterName : int
     /// </summary>
     TextureSwizzleRgba = 0x8E46,
 }
-#endregion
 
-#region TextureTargetMultisample
+
 public enum TextureTargetMultisample : int
 {
     /// <summary>
@@ -10829,9 +10676,8 @@ public enum TextureTargetMultisample : int
     /// </summary>
     ProxyTexture2DMultisampleArray = 0x9103,
 }
-#endregion
 
-#region TextureUnit
+
 public enum TextureUnit
 {
     Texture0 = 33984,
@@ -10867,9 +10713,8 @@ public enum TextureUnit
     Texture30 = 34014,
     Texture31 = 34015,
 }
-#endregion
 
-#region VertexArray
+
 [Flags]
 public enum VertexArray : uint
 {
@@ -11034,9 +10879,8 @@ public enum VertexArray : uint
     /// </summary>
     T4F_C4F_N3F_V4F = 0x2A2D,
 }
-#endregion
 
-#region VertexAttribPointerType
+
 public enum VertexAttribPointerType : int
 {
     Byte = 5120,
@@ -11052,19 +10896,17 @@ public enum VertexAttribPointerType : int
     UnsignedInt2101010Rev = 33640,
     Int2101010Rev = 36255,
 }
-#endregion
 
-#region VSyncMode
+
 public enum VSyncMode : int
 {
     On = 1,
     Off = 0,
     Adaptive = -1
 }
-#endregion
+
 
 //todo: force the relevant function to take this enum (tricky because it's an array of ints, and half need to stay ints)
-#region ArbCreateContext
 public enum ArbCreateContext
 {
     CoreProfileBit = 0x0001,
@@ -11078,7 +10920,7 @@ public enum ArbCreateContext
     ErrorInvalidVersion = 0x2095,
     ProfileMask = 0x9126,
 }
-#endregion
+
 
 public enum ARB_multisample
 {

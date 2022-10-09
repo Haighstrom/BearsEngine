@@ -4,7 +4,6 @@ namespace BearsEngine.Graphics.Shaders;
 
 public class DarkenShader : IShader
 {
-    #region Static
     private static bool _initialised = false;
     private static uint _ID;
     private static int _locationMVMatrix;
@@ -26,26 +25,23 @@ public class DarkenShader : IShader
         _locationDarkenValue = OpenGL32.GetUniformLocation(_ID, "DarkenValue");
         _initialised = true;
     }
-    #endregion
+    
 
-    #region Constructors
     public DarkenShader()
     {
         if (!_initialised)
             Initialise();
     }
-    #endregion
+    
 
     /// <summary>
     /// 0-1 (0 = black, 1 = normal colour)
     /// </summary>
     public static float DarkenValue { get; set; } = 1f;
 
-    #region IShader
-    #region Render
     public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PrimitiveType drawType)
     {
-        if (_ID != HV.LastBoundShader)
+        if (_ID != BE.LastBoundShader)
             HF.Graphics.BindShader(_ID);
 
         OpenGL32.Uniform(_locationDarkenValue, DarkenValue);
@@ -68,6 +64,6 @@ public class DarkenShader : IShader
         OpenGL32.DisableVertexAttribArray(_locationColour);
         OpenGL32.DisableVertexAttribArray(_locationTexture);
     }
-    #endregion
-    #endregion
+    
+    
 }

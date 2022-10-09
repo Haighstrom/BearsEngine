@@ -2,12 +2,10 @@
 {
     public class DockingController : AddableBase, IUpdatable
     {
-        #region Fields
         private Rect _target;
         private readonly Func<Rect> _dockTo;
-        #endregion
+        
 
-        #region Constructors
         public DockingController(Rect target, Func<Rect> dockTo, QuadrantPosition dockPosition, Point shift)
             : this(target, dockTo, dockPosition, (int)shift.X, (int)shift.Y)
         {
@@ -23,18 +21,15 @@
 
             Update(0);
         }
-        #endregion
+        
 
-        #region Properties
         public bool Active { get; set; } = true;
         public QuadrantPosition DockPosition { get; set; }
         public float XShift { get; set; }
         public float YShift { get; set; }
-        #endregion
+        
 
-        #region Methods
-        #region Update
-        public virtual void Update(double elapsed)
+        public virtual void Update(float elapsedTime)
         { 
             switch (DockPosition)
             {
@@ -76,7 +71,7 @@
                     break;
             }
         }
-        #endregion
-        #endregion
+        
+        
     }
 }

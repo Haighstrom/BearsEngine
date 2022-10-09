@@ -2,16 +2,13 @@
 {
     internal class Line
     {
-        #region Fields
         private bool _finalised = false;
         private readonly List<ILineComponent> _components = new();
-        #endregion
+        
 
-        #region AutoProperties
         public bool EndsWithNewLine { get; private set; }
-        #endregion
+        
 
-        #region Properties
         public bool IsEmpty => _components.Count == 0;
 
         public int Spaces => _components.Where(c => c is LC_Space).Count();
@@ -21,9 +18,8 @@
         public float LengthExcludingSpaces => _components.Where(c => c is LC_Word).Sum(w => w.Length);
 
         public float Height => _components.Max(c => c.Height);
-        #endregion
+        
 
-        #region Methods
         public void Add(ILineComponent c)
         {
             if (_finalised)
@@ -47,6 +43,6 @@
         }
 
         public IEnumerator<ILineComponent> GetEnumerator() => _components.GetEnumerator();
-        #endregion
+        
     }
 }

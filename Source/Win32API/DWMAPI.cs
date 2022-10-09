@@ -11,7 +11,6 @@ internal static class DWMAPI
 {
     private const string Library = "dwmapi.dll";
 
-    #region DwmGetWindowAttribute
     // https://docs.microsoft.com/en-us/windows/win32/api/dwmapi/nf-dwmapi-dwmgetwindowattribute
 
     /// <summary>
@@ -35,9 +34,8 @@ internal static class DWMAPI
     /// <returns>If the function succeeds, it returns S_OK (0). Otherwise, it returns an HRESULT error code.</returns>
     [DllImport(Library)]
     public static extern int DwmGetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, out RECT pvAttribute, int cbAttribute);
-    #endregion
+    
 
-    #region DwmSetWindowAttribute
     // https://docs.microsoft.com/en-us/windows/win32/api/dwmapi/nf-dwmapi-dwmsetwindowattribute
 
     /// <summary>
@@ -61,5 +59,5 @@ internal static class DWMAPI
     /// <returns>If the function succeeds, it returns S_OK (0). Otherwise, it returns an HRESULT error code.</returns>
     [DllImport(Library)]
     public static extern int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, bool pvAttribute, int cbAttribute);
-    #endregion
+    
 }

@@ -7,18 +7,15 @@ namespace BearsEngine.Input;
 
 public class GamePadManager : IGamePadManager
 {
-    #region Fields
     private readonly List<GamePadState> _gamePadStates = new();
     private readonly List<string> _names = new();
     private readonly Dictionary<IntPtr, int> _regdDevices = new();
     private readonly object _syncRoot = new();
     private readonly IntPtr _msgWindowHandle;
-    #endregion
+    
 
-    #region Properties
-    #endregion
+    
 
-    #region Constructors
     public GamePadManager(IntPtr messageWindowHandle)
     {
         if (messageWindowHandle == IntPtr.Zero)
@@ -28,9 +25,8 @@ public class GamePadManager : IGamePadManager
 
         RefreshDevices();
     }
-    #endregion
+    
 
-    #region FindRegistryKey
     private static RegistryKey FindRegistryKey(string name)
     {
         if (name.Length < 4)
@@ -55,9 +51,8 @@ public class GamePadManager : IGamePadManager
         RegistryKey regkey = Registry.LocalMachine.OpenSubKey(findme);
         return regkey;
     }
-    #endregion
+    
 
-    #region GetDeviceName
     private static string GetDeviceName(RawInputDeviceList dev)
     {
         // get name size
@@ -72,9 +67,8 @@ public class GamePadManager : IGamePadManager
 
         return name;
     }
-    #endregion
+    
 
-    #region RefreshDevices()
     public void RefreshDevices()
     {
         lock (_syncRoot)
@@ -162,9 +156,8 @@ public class GamePadManager : IGamePadManager
 
         }
     }
-    #endregion
+    
 
-    #region RegisterRawDevice
     private void RegisterRawDevice(IntPtr window, string device)
     {
         RawInputDevice[] rid = new RawInputDevice[1];
@@ -185,5 +178,5 @@ public class GamePadManager : IGamePadManager
             Console.WriteLine("Registered GamePad {0}: {1}", _gamePadStates.Count, device);
         }
     }
-    #endregion
+    
 }

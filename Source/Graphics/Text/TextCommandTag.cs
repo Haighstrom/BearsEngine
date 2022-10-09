@@ -1,11 +1,10 @@
 ﻿namespace BearsEngine.Worlds.Graphics.Text
 {
-    #region public enum TextCommandType
     /// <summary>
     /// Type of TextCommand - indicates the aspect of text that will be amended
     /// </summary>
     public enum TextCommandType { Font, Size, FontStyle, Colour, Underline, Strikethrough }
-    #endregion
+    
 
     public class TextCommandTag
     {
