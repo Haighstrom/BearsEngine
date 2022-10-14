@@ -6,8 +6,6 @@ namespace BearsEngine;
 
 public static class BE
 {
-    private const float MinFrameTime = 0.5f;
-
     private static bool _runCalled;
     private static IEngine? _engine;
 

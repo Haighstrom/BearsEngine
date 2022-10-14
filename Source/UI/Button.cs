@@ -57,7 +57,6 @@ public class Button : Entity, IClickable
         HoverColour = theme.Button.HoverColour;
         PressedColour = theme.Button.PressedColour;
     }
-    
 
     public Button(int layer, Rect r, string graphic, Action? actionOnClicked = null)
         : this(layer, r, new Image(graphic, r.Size), actionOnClicked)
@@ -84,7 +83,6 @@ public class Button : Entity, IClickable
         : this(layer, r.X, r.Y, r.W, r.H, new Image(graphic, r.Size), font, fontColour, text, actionOnClicked)
     {
     }
-    
 
     public Button(int layer = 0, float x = 0, float y = 0, float w = 0, float h = 0, IGraphic? graphic = null, HFont? font = null, Colour? fontColour = null, string? text = null, Action? actionOnClicked = null)
         : base(layer, x, y, w, h)
@@ -101,12 +99,9 @@ public class Button : Entity, IClickable
         ActionOnClicked = actionOnClicked;
     }
 
-
     protected IGraphic? BackgroundGraphic { get; set; }
     
     public Action? ActionOnClicked { get; set; }
-
-    public bool Clickable { get; set; } = true;
 
     public Colour DefaultColour { get; set; } = Colour.White;
 
@@ -122,20 +117,12 @@ public class Button : Entity, IClickable
         set => _text.Text = value;
     }
     
-
     public void SetDefaultAutoShadingColours()
     {
         DefaultColour = Colour.White;
         UnclickableColour = Colour.DarkGray;
         HoverColour = new Colour(255, 255, 125, 255);
         PressedColour = Colour.Yellow;
-    }
-    
-
-    protected virtual void OnLeftPressed()
-    {
-        base.OnLeftPressed();
-        BackgroundGraphic.Colour = PressedColour;
     }
     
     protected override void OnLeftClicked()
@@ -145,12 +132,23 @@ public class Button : Entity, IClickable
         BackgroundGraphic.Colour = HoverColour;
     }
 
-    protected override void OnMouseHovered()
+    protected override void OnLeftPressed()
     {
-        base.OnMouseHovered();
-        BackgroundGraphic.Colour = HoverColour;
+        base.OnLeftPressed();
+        BackgroundGraphic.Colour = PressedColour;
     }
     
+    protected override void OnMouseEntered()
+    {
+        base.OnMouseEntered();
+        BackgroundGraphic.Colour = HoverColour;
+    }
+
+    protected override void OnNoMouseEvent()
+    {
+        base.OnNoMouseEvent();
+        BackgroundGraphic.Colour = DefaultColour;
+    }
+
     public void Press() => OnLeftClicked();
-    
 }

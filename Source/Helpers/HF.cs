@@ -91,7 +91,6 @@ public static class HF
                 bottomLeft, topRight, bottomRight
             };
         }
-        
 
         /// <summary>
         /// returns the unit Point that points in the angle requested clockwise from up
@@ -99,7 +98,6 @@ public static class HF
         /// <param name="angleInDegrees"></param>
         /// <returns></returns>
         public static Point AngleToPoint(float angleInDegrees) => new((float)Math.Sin(angleInDegrees * Math.PI / 180), (float)Math.Cos(angleInDegrees * Math.PI / 180));
-        
     }
     
 
@@ -115,14 +113,12 @@ public static class HF
             OpenGL32.UseProgram(id);
             BE.LastBoundShader = id;
         }
-        
 
         public static void UnbindShader()
         {
             OpenGL32.UseProgram(0);
             BE.LastBoundShader = 0;
         }
-        
 
         public static uint CreateShader(byte[] vertexSource, byte[] fragmentSource)
             => CreateShader(
@@ -174,7 +170,6 @@ public static class HF
 
             return programID;
         }
-        
 
         private static int CompileShader(uint programID, ShaderType shaderType, string shaderSrc)
         {
@@ -191,14 +186,12 @@ public static class HF
 
             return shaderID;
         }
-        
 
         public static void DeleteShader(uint id)
         {
             OpenGL32.UseProgram(0);
             OpenGL32.DeleteProgram(id);
         }
-        
 
         public static void CreateFramebuffer(int width, int height, out uint framebufferID, out Texture framebufferTexture)
         {
@@ -213,7 +206,6 @@ public static class HF
             OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
             OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
         }
-        
 
         public static void ResizeFramebuffer(uint framebufferID, ref Texture framebufferTexture, int newW, int newH)
         {
@@ -228,7 +220,6 @@ public static class HF
             OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
             OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
         }
-        
 
         public static void CreateMSAAFramebuffer(int width, int height, MSAA_Samples samples, out uint framebufferID, out Texture framebufferTexture)
         {
@@ -246,7 +237,6 @@ public static class HF
             framebufferID = OpenGL32.GenFramebuffer();
         }
         
-
         public static void ResizeMSAAFramebuffer(uint framebufferID, ref Texture framebufferTexture, int newW, int newH, MSAA_Samples newSamples)
         {
             OpenGL32.DeleteTexture(framebufferTexture.ID);
@@ -261,7 +251,6 @@ public static class HF
             OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
         }
         
-
         /// <summary>
         /// Create a Texture from an image file
         /// </summary>
@@ -1135,12 +1124,6 @@ public static class HF
     {
         for (int i = 0; i < times; ++i)
             function();
-    }
-    
-
-    public static class Windows
-    {
-        public static bool RunningOnWindows => Environment.OSVersion.Platform == PlatformID.Win32NT || Environment.OSVersion.Platform == PlatformID.Win32S || Environment.OSVersion.Platform == PlatformID.Win32Windows || Environment.OSVersion.Platform == PlatformID.WinCE;
     }
     
 }

@@ -2,10 +2,81 @@ namespace BearsEngine;
 
 internal class ClickController : AddableBase, IUpdatable
 {
-    internal enum ClickState { None, Hovering, LeftPressedDown }
+    private enum ClickState
+    {
+        None,
+        Hovering,
+        PushedAndHovered,
+        PushedNotHovered
+    }
+
+    private static readonly List<IClickable> _leftPressedRequests = new();
+    private static readonly List<IClickable> _leftReleasedRequests = new();
+    private static readonly List<IClickable> _leftClickedRequests = new();
+    private static readonly List<IClickable> _mouseEnteredRequests = new();
+    private static readonly List<IClickable> _mouseHoveredRequests = new();
+
+    public static void RequestOnLeftPressed(IClickable c)
+    {
+        _leftPressedRequests.Add(c);
+    }
+
+    public static void RequestOnLeftReleased(IClickable c)
+    {
+        _leftReleasedRequests.Add(c);
+    }
+
+    public static void RequestOnLeftClicked(IClickable c)
+    {
+        _leftClickedRequests.Add(c);
+    }
+
+    public static void RequestOnMouseEntered(IClickable c)
+    {
+        _mouseEnteredRequests.Add(c);
+    }
+
+    public static void RequestOnMouseHovered(IClickable c)
+    {
+        _mouseHoveredRequests.Add(c);
+    }
+
+    public static void DetermineMouseEventOutcomes()
+    {
+        if (_leftPressedRequests.Any())
+        {
+            _leftPressedRequests.Last().OnLeftPressed();
+            _leftPressedRequests.Clear();
+        }
+
+        if (_leftReleasedRequests.Any())
+        {
+            _leftReleasedRequests.Last().OnLeftReleased();
+            _leftReleasedRequests.Clear();
+        }
+
+        if (_leftClickedRequests.Any())
+        {
+            _leftClickedRequests.Last().OnLeftClicked();
+            _leftClickedRequests.Clear();
+        }
+
+        if (_mouseEnteredRequests.Any())
+        {
+            _mouseEnteredRequests.Last().OnMouseEntered();
+            _mouseEnteredRequests.Clear();
+        }
+
+        if (_mouseHoveredRequests.Any())
+        {
+            _mouseHoveredRequests.Last().OnMouseHovered();
+            _mouseHoveredRequests.Clear();
+        }
+    }
 
     private readonly IClickable _target;
     private ClickState _state = ClickState.None;
+    private float _timeToTriggerOnHovered = 0;
 
     public ClickController(IClickable target)
     {
@@ -14,40 +85,77 @@ internal class ClickController : AddableBase, IUpdatable
 
     public bool Active { get; set; } = true;
 
-    private void HandleClickStateNone()
-    {
-        if (_target.MouseIntersecting)
-        {
-            _state = ClickState.Hovering;
-            _target.OnMouseEntered();
-        }
-    }
-
-    private void HandleClickStateHovering()
+    private void HandleClickStateHovering(float elapsed)
     {
         if (!_target.MouseIntersecting)
         {
             _state = ClickState.None;
             _target.OnMouseExited();
+            _target.OnNoMouseEvent();
         }
         else if (HI.MouseLeftPressed)
         {
-            _state = ClickState.LeftPressedDown;
-            _target.OnLeftPressed();
+            _state = ClickState.PushedAndHovered;
+            RequestOnLeftPressed(_target);
+        }
+        else if (_timeToTriggerOnHovered > 0)
+        {
+            _timeToTriggerOnHovered -= elapsed;
+
+            if (_timeToTriggerOnHovered <= 0)
+            {
+                RequestOnMouseHovered(_target);
+            }
         }
     }
 
-    private void HandleClickStateLeftPressedDown()
+    private void HandleClickStateNone()
+    {
+        if (_target.MouseIntersecting)
+        {
+            _state = ClickState.Hovering;
+            _timeToTriggerOnHovered = _target.TimeToHover;
+            RequestOnMouseEntered(_target);
+        }
+    }
+
+    private void HandleClickStatePushedAndHovered(float elapsed)
     {
         if (HI.MouseLeftReleased)
         {
             _state = ClickState.None;
-            _target.OnLeftReleased();
-            _target.OnLeftClicked();
+            RequestOnLeftReleased(_target);
+            RequestOnLeftClicked(_target);
+        }
+        else if (!_target.MouseIntersecting)
+        {
+            _state = ClickState.PushedNotHovered;
+        }
+        else if (_timeToTriggerOnHovered > 0)
+        {
+            _timeToTriggerOnHovered -= elapsed;
+            if (_timeToTriggerOnHovered <= 0)
+            {
+                RequestOnMouseHovered(_target);
+            }
         }
     }
 
-    public void Update(float elapsedTime)
+    private void HandleClickStatePushedNotHovered()
+    {
+        if (HI.MouseLeftReleased)
+        {
+            _state = ClickState.None;
+            _target.OnNoMouseEvent();
+        }
+        else if (_target.MouseIntersecting)
+        {
+            _state = ClickState.PushedAndHovered;
+            _timeToTriggerOnHovered = _target.TimeToHover;
+        }
+    }
+
+    public void Update(float elapsed)
     {
         switch (_state)
         {
@@ -55,13 +163,16 @@ internal class ClickController : AddableBase, IUpdatable
                 HandleClickStateNone();
                 break;
             case ClickState.Hovering:
-                HandleClickStateHovering();
+                HandleClickStateHovering(elapsed);
                 break;
-            case ClickState.LeftPressedDown:
-                HandleClickStateLeftPressedDown();
+            case ClickState.PushedAndHovered:
+                HandleClickStatePushedAndHovered(elapsed);
+                break;
+            case ClickState.PushedNotHovered:
+                HandleClickStatePushedNotHovered();
                 break;
             default:
-                throw new InvalidOperationException($"Enum value ({_state}) not handled.");
+                throw new InvalidOperationException($"State of ({_state}) was not handled.");
         }
     }
 }

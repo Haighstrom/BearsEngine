@@ -5,6 +5,8 @@ namespace BearsEngine.Worlds;
 
 public class Entity : EntityBase, IClickable, ICollideable
 {
+    private const float DefaultHoverTime = 2f;
+
     public Entity(int layer, Rect pos, string graphicPath)
         : this(layer, pos.X, pos.Y, pos.W, pos.H, new Image(graphicPath, pos.W, pos.H))
     {
@@ -78,6 +80,8 @@ public class Entity : EntityBase, IClickable, ICollideable
     
     public virtual Point RotationCentre => R.Centre;
 
+    public float TimeToHover { get; set; } = DefaultHoverTime;
+
     public virtual Rect WindowPosition => Parent.GetWindowPosition(R);
 
     void IClickable.OnLeftClicked()
@@ -116,6 +120,12 @@ public class Entity : EntityBase, IClickable, ICollideable
         MouseHovered?.Invoke(this, EventArgs.Empty);
     }
 
+    void IClickable.OnNoMouseEvent()
+    {
+        OnNoMouseEvent();
+        NoMouseEvent?.Invoke(this, EventArgs.Empty);
+    }
+
     protected virtual void OnLeftClicked() { }
 
     protected virtual void OnLeftPressed() { }
@@ -127,6 +137,8 @@ public class Entity : EntityBase, IClickable, ICollideable
     protected virtual void OnMouseExited() { }
 
     protected virtual void OnMouseHovered() { }
+
+    protected virtual void OnNoMouseEvent() { }
 
     public virtual bool Collides(Point p) => WindowPosition.Contains(p);
 
@@ -208,4 +220,6 @@ public class Entity : EntityBase, IClickable, ICollideable
     public event EventHandler? MouseExited;
 
     public event EventHandler? MouseHovered;
+
+    public event EventHandler? NoMouseEvent;
 }

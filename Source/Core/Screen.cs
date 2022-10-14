@@ -204,6 +204,8 @@ public class Screen : IContainer, IScene
                 u.Update(elapsedTime);
             }
         }
+
+        ClickController.DetermineMouseEventOutcomes();
     }
 
     protected virtual void Dispose(bool disposing)
