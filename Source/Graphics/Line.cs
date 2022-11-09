@@ -9,7 +9,6 @@ namespace BearsEngine.Graphics
         private int _layer = 0;
         private readonly uint _ID;
         private readonly SmoothLinesShader _shader;
-        
 
         public Line(Colour colour, float thickness, bool thicknessInPixels, Rect rect)
             : this(colour, thickness, thicknessInPixels, rect.TopLeft, rect.TopRight, rect.BottomRight, rect.BottomLeft, rect.TopLeft)
@@ -25,13 +24,12 @@ namespace BearsEngine.Graphics
             Colour = colour;
             Points = points.Select(p => new Point(p.X, p.Y)).ToList();
         }
-        
 
         public bool Visible { get; set; } = true;
 
         public void Render(ref Matrix4 projection, ref Matrix4 modelView)
         {
-            if (Thickness == 0)
+            if (Thickness == 0 || Points.Count <= 1)
                 return;
 
             Bind();
@@ -62,9 +60,6 @@ namespace BearsEngine.Graphics
             Unbind();
         }
 
-        
-        
-
         public int Layer
         {
             get => _layer;
@@ -78,16 +73,13 @@ namespace BearsEngine.Graphics
                 _layer = value;
             }
         }
-        
 
         public event EventHandler<LayerChangedArgs> LayerChanged = delegate { };
-        
 
         public void Dispose()
         {
             throw new NotImplementedException();
         }
-        
 
         public Colour Colour { get; set; }
 
@@ -106,29 +98,23 @@ namespace BearsEngine.Graphics
 
         public bool IsOnScreen => true;//todo: this thing
         
-
         public float Thickness
         {
             get => _shader.Thickness;
             set => _shader.Thickness = value;
         }
 
-        public List<Point> Points { get; set; }
+        public IList<Point> Points { get; set; }
         
-
         public void Bind()
         {
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, _ID);
             BE.LastBoundVertexBuffer = _ID;
         }
-        
-
         public void Unbind()
         {
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, 0);
             BE.LastBoundVertexBuffer = 0;
         }
-        
-        
     }
 }

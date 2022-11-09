@@ -10,10 +10,10 @@
         public static T ParseTo<T>(this object obj) => (T)Convert.ChangeType(obj, typeof(T));
         
 
-        public static bool IsMultipleOf(this int i, int n) => HF.Maths.IsMultipleOf(i, n);
+        public static bool IsMultipleOf(this int i, int n) => Maths.IsMultipleOf(i, n);
         
 
-        public static bool IsInt(this string s) => HF.Maths.IsInt(s);
+        public static bool IsInt(this string s) => Maths.IsInt(s);
 
         public static int ToInt32(this string s)
         {
@@ -193,7 +193,7 @@
         
 
         public static Direction Opposite(this Direction d) => (Direction)(((int)d + 2) % 4);
-        public static Direction Rotate(this Direction d, int rotateTimes) => (Direction)HF.Maths.Mod((int)d + rotateTimes, 4);
+        public static Direction Rotate(this Direction d, int rotateTimes) => (Direction)Maths.Mod((int)d + rotateTimes, 4);
         
     }
 }

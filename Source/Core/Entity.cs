@@ -1,7 +1,4 @@
-﻿using BearsEngine.UI;
-using BearsEngine.Worlds.Controllers;
-
-namespace BearsEngine.Worlds;
+﻿namespace BearsEngine.Worlds;
 
 public class Entity : EntityBase, IClickable, ICollideable
 {
@@ -44,6 +41,11 @@ public class Entity : EntityBase, IClickable, ICollideable
 
     public Entity(int layer, float x, float y, float w, float h, Colour colour)
         : this(layer, x, y, w, h, new Image(colour, w, h))
+    {
+    }
+
+    public Entity(int layer, float x, float y, Point size, params IGraphic[] graphics)
+        : this(layer, x, y, size.X, size.Y, graphics)
     {
     }
 

@@ -95,10 +95,10 @@ public class Scrollbar : Entity
                 {
                     var oldX = X;
 
-                    X = HF.Maths.Clamp(HI.MouseWindowX - _dragStart, _fullPosition.X, _fullPosition.Right - W);
+                    X = Maths.Clamp(HI.MouseWindowX - _dragStart, _fullPosition.X, _fullPosition.Right - W);
 
                     if (MinIncrement > 0 && R.Right != _fullPosition.Right)
-                        X -= HF.Maths.Mod(X - _fullPosition.Left, MinIncrement);
+                        X -= Maths.Mod(X - _fullPosition.Left, MinIncrement);
 
                     if (oldX != X)
                         BarPositionChanged?.Invoke(this, new ScrollbarPositionArgs(MinAmount, MaxAmount));
@@ -107,10 +107,10 @@ public class Scrollbar : Entity
                 {
                     var oldY = Y;
 
-                    Y = HF.Maths.Clamp(HI.MouseWindowY - _dragStart, _fullPosition.Y, _fullPosition.Bottom - H);
+                    Y = Maths.Clamp(HI.MouseWindowY - _dragStart, _fullPosition.Y, _fullPosition.Bottom - H);
 
                     if (MinIncrement > 0 && R.Bottom != _fullPosition.Bottom)
-                        Y -= HF.Maths.Mod(Y - _fullPosition.Top, MinIncrement);
+                        Y -= Maths.Mod(Y - _fullPosition.Top, MinIncrement);
 
                     if (oldY != Y)
                         BarPositionChanged?.Invoke(this, new ScrollbarPositionArgs(MinAmount, MaxAmount));
@@ -123,12 +123,12 @@ public class Scrollbar : Entity
             if (_direction == ScrollbarDirection.Horizontal)
             {
                 ((IRectGraphic)BackgroundGraphic).W = W = _fullPosition.W * _amountFilled;
-                X = HF.Maths.Clamp(X, _fullPosition.X, _fullPosition.Right - W);
+                X = Maths.Clamp(X, _fullPosition.X, _fullPosition.Right - W);
             }
             else
             {
                 ((IRectGraphic)BackgroundGraphic).H = H = _fullPosition.H * _amountFilled;
-                Y = HF.Maths.Clamp(Y, _fullPosition.Y, _fullPosition.Bottom - H);
+                Y = Maths.Clamp(Y, _fullPosition.Y, _fullPosition.Bottom - H);
             }
         }
         
@@ -139,10 +139,10 @@ public class Scrollbar : Entity
             {
                 var oldX = X;
 
-                X = HF.Maths.Clamp(X + amount, _fullPosition.X, _fullPosition.Right - W);
+                X = Maths.Clamp(X + amount, _fullPosition.X, _fullPosition.Right - W);
 
                 if (MinIncrement > 0 && R.Right != _fullPosition.Right)
-                    X -= HF.Maths.Mod(X - _fullPosition.Left, MinIncrement);
+                    X -= Maths.Mod(X - _fullPosition.Left, MinIncrement);
 
                 if (oldX != X)
                     BarPositionChanged?.Invoke(this, new ScrollbarPositionArgs(MinAmount, MaxAmount));
@@ -151,10 +151,10 @@ public class Scrollbar : Entity
             {
                 var oldY = Y;
 
-                Y = HF.Maths.Clamp(Y + amount, _fullPosition.Y, _fullPosition.Bottom - H);
+                Y = Maths.Clamp(Y + amount, _fullPosition.Y, _fullPosition.Bottom - H);
 
                 if (MinIncrement > 0 && R.Bottom != _fullPosition.Bottom)
-                    Y -= HF.Maths.Mod(Y - _fullPosition.Top, MinIncrement);
+                    Y -= Maths.Mod(Y - _fullPosition.Top, MinIncrement);
 
                 if (oldY != Y)
                     BarPositionChanged?.Invoke(this, new ScrollbarPositionArgs(MinAmount, MaxAmount));

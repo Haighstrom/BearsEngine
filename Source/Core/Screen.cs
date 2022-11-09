@@ -4,7 +4,8 @@ namespace BearsEngine;
 
 public class Screen : IContainer, IScene
 {
-    private bool _disposed;
+    private bool _disposed = false;
+    private bool _entitiesNeedSorting = false;
     private readonly List<IAddable> _entities = new();
 
     public Screen()
@@ -23,7 +24,7 @@ public class Screen : IContainer, IScene
 
     private void OnIRenderableLayerChanged(object? sender, LayerChangedArgs args)
     {
-        SortEntities();
+        _entitiesNeedSorting = true;
     }
 
     private void SortEntities()
@@ -47,7 +48,7 @@ public class Screen : IContainer, IScene
         e.Parent = this;
 
         _entities.Add(e);
-        SortEntities();
+        _entitiesNeedSorting = true;
 
         if (e is IRenderableOnLayer r)
         {
@@ -164,12 +165,6 @@ public class Screen : IContainer, IScene
         e.OnRemoved();
     }
 
-    public void Remove(params IAddable[] entities)
-    {
-        foreach (IAddable e in entities)
-            Remove(e);
-    }
-
     public void RemoveAll()
     {
         foreach (IAddable e in Entities)
@@ -180,6 +175,13 @@ public class Screen : IContainer, IScene
 
     public virtual void Render(ref Matrix4 projection, ref Matrix4 modelView)
     {
+        //should this be here? i don't like logic in render, but if render is called before update after the list changes...
+        if (_entitiesNeedSorting)
+        {
+            SortEntities();
+            _entitiesNeedSorting = false;
+        }
+
         OpenGL32.ClearColour(BackgroundColour);
         OpenGL32.Clear(ClearBufferMask.ColourBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -197,6 +199,12 @@ public class Screen : IContainer, IScene
 
     public virtual void Update(float elapsedTime)
     {
+        if (_entitiesNeedSorting)
+        {
+            SortEntities();
+            _entitiesNeedSorting = false;
+        }
+
         foreach (IAddable a in Entities)
         {
             if (a is IUpdatable u && u.Active && a.Parent == this)

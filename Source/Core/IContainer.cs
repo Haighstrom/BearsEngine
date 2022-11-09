@@ -12,8 +12,6 @@ public interface IContainer
 
     void Remove(IAddable e);
 
-    void Remove(params IAddable[] entities);
-
     void RemoveAll();
 
     IList<E> GetEntities<E>(bool considerChildren = true);

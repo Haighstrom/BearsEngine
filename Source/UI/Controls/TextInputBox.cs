@@ -131,7 +131,7 @@ public class TextInputBox : Entity, IActivatable
 
     private void SetSelectionGraphic()
     {
-        var left = _textGraphic.MeasureString(_firstCharDisplayed, HF.Maths.Max(0, _selectionStart - _firstCharDisplayed)).X;
+        var left = _textGraphic.MeasureString(_firstCharDisplayed, Maths.Max(0, _selectionStart - _firstCharDisplayed)).X;
         var right = _textGraphic.MeasureString(_firstCharDisplayed, _cursorPosition - _firstCharDisplayed).X;
         if (right < left) //does this actually matter?
         {
@@ -252,8 +252,8 @@ public class TextInputBox : Entity, IActivatable
         //delete selected items
         if (_selection.Visible)
         {
-            int a = HF.Maths.Min(_selectionStart, _cursorPosition);
-            int b = HF.Maths.Max(_selectionStart, _cursorPosition);
+            int a = Maths.Min(_selectionStart, _cursorPosition);
+            int b = Maths.Max(_selectionStart, _cursorPosition);
 
             _text = _text.Substring(0, a) + _text.Substring(b);
             _cursorPosition = a;
@@ -294,7 +294,7 @@ public class TextInputBox : Entity, IActivatable
                     else
                         _text = _text.Substring(0, _cursorPosition) + _text.Substring(_selectionStart);
 
-                    _cursorPosition = HF.Maths.Min(_selectionStart, _cursorPosition);
+                    _cursorPosition = Maths.Min(_selectionStart, _cursorPosition);
                     _selection.Visible = false;
                 }
                 else if (e.Key == Key.Backspace && _cursorPosition > 0)

@@ -183,12 +183,6 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
         e.OnRemoved();
     }
 
-    public void Remove(params IAddable[] entities)
-    {
-        foreach (IAddable e in entities)
-            Remove(e);
-    }
-
     public void RemoveAll()
     {
         foreach (IAddable e in Entities.ToList())

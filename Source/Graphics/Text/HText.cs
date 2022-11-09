@@ -259,7 +259,7 @@ namespace BearsEngine.Worlds.Graphics.Text
             get => _startCharToWrite;
             set
             {
-                _startCharToWrite = HF.Maths.Clamp(value, 0, Text.Length);
+                _startCharToWrite = Maths.Clamp(value, 0, Text.Length);
 
                 if (value + NumCharsToDraw > Text.Length)
                     NumCharsToDraw = Text.Length - value;
@@ -274,7 +274,7 @@ namespace BearsEngine.Worlds.Graphics.Text
             get => _numCharsToWrite;
             set
             {
-                _numCharsToWrite = HF.Maths.Clamp(value, 0, Text.Length - _startCharToWrite);
+                _numCharsToWrite = Maths.Clamp(value, 0, Text.Length - _startCharToWrite);
 
                 _verticesChanged = true;
             }

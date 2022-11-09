@@ -68,7 +68,7 @@ namespace BearsEngine.UI
                 e.Y = y;
                 y += e.H;
             }
-            _sb.AmountFilled = HF.Maths.Clamp(_camera.H / y, 0, 1);
+            _sb.AmountFilled = Maths.Clamp(_camera.H / y, 0, 1);
         }
         
     }

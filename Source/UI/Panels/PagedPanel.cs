@@ -43,7 +43,7 @@ namespace BearsEngine.UI
 
         private void ChangePage(int delta)
         {
-            int newpage = HF.Maths.Mod(_page + delta, _pages.Count);
+            int newpage = Maths.Mod(_page + delta, _pages.Count);
 
             if (_page == newpage)
                 return;

@@ -104,9 +104,9 @@ namespace BearsEngine.Graphics
                 if (value == _currentFrame)
                     return;
 
-                _currentFrame = HF.Maths.Mod(value, TotalFrames);
+                _currentFrame = Maths.Mod(value, TotalFrames);
 
-                int indexX = HF.Maths.Mod(_currentFrame, FramesAcross);
+                int indexX = Maths.Mod(_currentFrame, FramesAcross);
                 int indexY = _currentFrame / FramesAcross;
 
                 _UV1.X = PaddingWidth + indexX * (_frameW + PaddingWidth);

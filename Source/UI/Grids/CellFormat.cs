@@ -29,7 +29,7 @@ public class CellFormat
                 return FixedSize;
 
             case CellFormatMode.Weighted:
-                return HF.Maths.Round(totalSize * Weight / totalWeights);
+                return Maths.Round(totalSize * Weight / totalWeights);
 
             case CellFormatMode.Fit:
                 int size = 0;

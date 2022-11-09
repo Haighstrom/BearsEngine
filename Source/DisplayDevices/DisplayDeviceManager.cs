@@ -7,7 +7,6 @@ public sealed class DisplayDeviceManager : IDisplayDeviceManager
     private readonly List<IDisplayDevice> _availableDevices = new();
     private IDisplayDevice _primaryDevice;
     
-
     public DisplayDeviceManager() 
     {
         RefreshDevices();
@@ -15,7 +14,6 @@ public sealed class DisplayDeviceManager : IDisplayDeviceManager
         //SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
     }
     
-
     private void OnDisplaySettingsChanged(object sender, EventArgs e)
     {
         Serilog.Log.Information("Change in display settings detected. Refreshing display devices. \n");
@@ -150,8 +148,6 @@ public sealed class DisplayDeviceManager : IDisplayDeviceManager
     {
         GetDevice(index).RestoreSettings();
     }
-    
-    
 
     public void Dispose()
     {
@@ -170,5 +166,4 @@ public sealed class DisplayDeviceManager : IDisplayDeviceManager
     {
         Dispose(false);
     }
-    
 }

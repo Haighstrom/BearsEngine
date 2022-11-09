@@ -55,7 +55,7 @@
                     }
                     else
                     {
-                        _playIndex = HF.Maths.Mod(_playIndex + 1, _framesToPlay.Length);
+                        _playIndex = Maths.Mod(_playIndex + 1, _framesToPlay.Length);
                         Frame = _framesToPlay[_playIndex];
                         _timeToNextFrame += AnimStepTime;
                     }
