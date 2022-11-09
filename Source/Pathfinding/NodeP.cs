@@ -3,13 +3,13 @@
 /// <summary>
 /// Node with a parameter to indicate the "pass type" - for an Pathable to determine if it can pass thorugh it
 /// </summary>
-public class Node<P> : Node
+public class Node<TEnum> : Node where TEnum : Enum
 {
-    public Node(int x, int y, P passType)
+    public Node(int x, int y, TEnum passType)
         : base(x, y)
     {
         PassType = passType;
     }
 
-    public P PassType { get; set; }
+    public TEnum PassType { get; set; }
 }

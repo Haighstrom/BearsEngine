@@ -1,17 +1,14 @@
 ﻿namespace BearsEngine.Pathfinding;
 
-public interface INode : IPosition
+public interface INode : IPosition, IEquatable<INode>
 {
-    List<INode> ConnectedNodes { get; }
+    IList<INode> ConnectedNodes { get; }
 
-    INode ParentNode { get; set; }
-    double PF { get; set; }
-    double PG { get; set; }
-    double PH { get; set; }
-}
+    INode? ParentNode { get; set; }
 
-public static class NodeExts
-{
-    public static bool Equals(this INode n1, INode? n2) => n1.X == n2?.X && n1.Y == n2.Y;
-    public static bool Equals(this INode n1, IPosition? n2) => n1.X == n2?.X && n1.Y == n2.Y;
+    float AStarFValue { get; set; }
+
+    float AStarGValue { get; set; }
+
+    float AStarHValue { get; set; }
 }

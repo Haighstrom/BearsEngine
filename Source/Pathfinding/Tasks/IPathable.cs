@@ -4,5 +4,5 @@ public interface IPathable<N>
     where N : INode
 {
     N CurrentNode { get; }
-    bool CanPathThrough(N node);
+    bool CanPathThrough(N fromNode, N intoNode);
 }

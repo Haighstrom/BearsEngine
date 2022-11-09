@@ -12,10 +12,32 @@ public class Node : INode
     }
 
     public float X { get; set; }
+
     public float Y { get; set; }
-    public List<INode> ConnectedNodes { get; set; } = new List<INode>();
-    public INode ParentNode { get; set; }
-    public double PF { get; set; }
-    public double PG { get; set; }
-    public double PH { get; set; }
+
+    public IList<INode> ConnectedNodes { get; set; } = new List<INode>();
+
+    public INode? ParentNode { get; set; }
+
+    public float AStarFValue { get; set; }
+
+    public float AStarGValue { get; set; }
+
+    public float AStarHValue { get; set; }
+
+    public bool Equals(IPosition? other)
+    {
+        if (other is null)
+            return false;
+
+        return X == other.X && Y == other.Y;
+    }
+
+    public bool Equals(INode? other)
+    {
+        if (other is null)
+            return false;
+
+        return X == other.X && Y == other.Y;
+    }
 }
