@@ -80,7 +80,6 @@ public static class HF
         }
     }
     
-
     public static class Geom
     {
         public static List<Vertex> QuadToTris(Vertex topLeft, Vertex topRight, Vertex bottomLeft, Vertex bottomRight)
@@ -99,7 +98,6 @@ public static class HF
         /// <returns></returns>
         public static Point AngleToPoint(float angleInDegrees) => new((float)Math.Sin(angleInDegrees * Math.PI / 180), (float)Math.Cos(angleInDegrees * Math.PI / 180));
     }
-    
 
     public static class Graphics
     {
@@ -576,314 +574,6 @@ public static class HF
         
     }
     
-
-    public static class Maths
-    {
-
-        /// <summary>
-        /// Returns angle in degrees clockwise starting UP from P1
-        /// </summary>
-        public static double Angle(Point p1, Point p2)
-        {
-            var x = Math.Atan2(p2.X - p1.X, p1.Y - p2.Y);
-
-            x = x / Math.PI * 180;
-
-            if (x < 0)
-                x += 360;
-
-            return x;
-        }
-        
-
-        public static int Clamp(int num, int min, int max)
-        {
-            return Math.Max(Math.Min(num, max), min);
-        }
-        public static float Clamp(float num, float min, float max)
-        {
-            return Math.Max(Math.Min(num, max), min);
-        }
-        public static void Clamp(ref float num, float min, float max)
-        {
-            num = Math.Max(Math.Min(num, max), min);
-        }
-        public static void Clamp(ref int num, int min, int max)
-        {
-            num = Math.Max(Math.Min(num, max), min);
-        }
-        
-
-        public static float Dist(Point p1, Point p2)
-        {
-            return (float)Math.Sqrt((p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y));
-        }
-        public static float DistSquared(Point p1, Point p2)
-        {
-            return (p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y);
-        }
-        public static float DistGrid(Point p1, Point p2) => Math.Abs(p1.X - p2.X) + Math.Abs(p1.Y - p2.Y);
-        
-
-        /// <summary>
-        /// Gets the nearest direction in moving between two points
-        /// </summary>
-        public static Direction GetDirection(Point start, Point end)
-        {
-            return (end - start).ToDirection();
-        }
-        
-
-        public static bool IsInt(string s)
-        {
-            return int.TryParse(s, out _);
-        }
-        
-
-        public static bool IsMultipleOf(int n, int mult)
-        {
-            while (n < 0)
-                n += mult;
-            return n % mult == 0;
-        }
-        
-
-        public static float Min(params float[] numbers)
-        {
-            if (numbers.Length == 0)
-                throw new ArgumentException("Min requires at least 1 number passing to it");
-
-            var ret = numbers[0];
-
-            for (int i = 0; i < numbers.Length; ++i)
-                if (numbers[i] < ret)
-                    ret = numbers[i];
-
-            return ret;
-        }
-
-        public static int Min(params int[] numbers)
-        {
-            if (numbers.Length == 0)
-                throw new ArgumentException("Min requires at least 1 number passing to it");
-
-            var ret = numbers[0];
-
-            for (int i = 0; i < numbers.Length; ++i)
-                if (numbers[i] < ret)
-                    ret = numbers[i];
-
-            return ret;
-        }
-        
-
-        public static float Max(params float[] numbers)
-        {
-            if (numbers.Length == 0)
-                throw new ArgumentException("Min requires at least 1 number passing to it");
-
-            var ret = numbers[0];
-
-            for (int i = 0; i < numbers.Length; ++i)
-                if (numbers[i] > ret)
-                    ret = numbers[i];
-
-            return ret;
-        }
-
-        public static int Max(params int[] numbers)
-        {
-            if (numbers.Length == 0)
-                throw new ArgumentException("Min requires at least 1 number passing to it");
-
-            var ret = numbers[0];
-
-            for (int i = 0; i < numbers.Length; ++i)
-                if (numbers[i] > ret)
-                    ret = numbers[i];
-
-            return ret;
-        }
-        
-
-        public static int Mod(int x, int m)
-        {
-            while (x < 0)
-                x += m;
-
-            return x % m;
-        }
-
-        public static float Mod(float x, float m)
-        {
-            while (x < 0)
-                x += m;
-
-            return x % m;
-        }
-
-        public static double Mod(double x, double m)
-        {
-            while (x < 0)
-                x += m;
-
-            return x % m;
-        }
-        
-
-        public static int Round(float value) => (int)Math.Round(value);
-        
-
-        public static bool RectanglesIntersect(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2, bool touchingCounts = false)
-        {
-            if (touchingCounts)
-            {
-                if (x1 > x2 + w2) return false;
-                if (x1 + w1 < x2) return false;
-                if (y1 > y2 + h2) return false;
-                if (y1 + h1 < y2) return false;
-                return true;
-            }
-            else
-            {
-                if (x1 >= x2 + w2) return false;
-                if (x1 + w1 <= x2) return false;
-                if (y1 >= y2 + h2) return false;
-                if (y1 + h1 <= y2) return false;
-                return true;
-            }
-        }
-        
-    }
-    
-
-    public static class Pathfinding
-    {
-        public static List<INode> ChooseRandomRoute<N>(N startNode, Func<N, bool> passableTest, int maximumSteps)
-            where N : INode
-        {
-            int steps = 0;
-            List<N> openNodes = new();
-            openNodes.Add(startNode);
-            List<INode> path = new();
-            N currentNode;
-
-            while (steps <= maximumSteps)
-            {
-                currentNode = openNodes[Randomisation.Rand(openNodes.Count)];
-                //replace open nodes with current node's connections, skipping any already in path
-                openNodes.Clear();
-                foreach (N n in currentNode.ConnectedNodes)
-                {
-                    if (passableTest(n) && !path.Contains(n))
-                        openNodes.Insert(Randomisation.Rand(0, openNodes.Count), n);
-                }
-
-                path.Add(currentNode);
-                steps++;
-                if (openNodes.Count == 0)
-                    break;
-            }
-            return path;
-        }
-        
-
-        public static List<N>? GetAStarRoute<N>(N start, N end, Func<N, bool> passableTest)
-            where N : INode
-        {
-            List<N> openNodes = new();
-            List<N> closedNodes = new();
-
-            N currentNode = start;
-            N testNode;
-
-            float f, g, h;
-
-            currentNode.PG = 0;
-            currentNode.PH = Heuristic(currentNode, end);
-            currentNode.PF = currentNode.PG + currentNode.PH;
-
-            while (!currentNode.Equals(end))
-            {
-                for (int i = 0; i < currentNode.ConnectedNodes.Count; ++i)
-                {
-                    testNode = (N)currentNode.ConnectedNodes[i];
-
-                    if (testNode.Equals(currentNode) || !passableTest(testNode))
-                        continue;
-
-                    g = (float)currentNode.PG + 1;
-                    h = (float)Heuristic(testNode, end);
-                    f = g + h;
-
-                    if (openNodes.Contains(testNode) || closedNodes.Contains(testNode))
-                    {
-                        if (testNode.PF > f)
-                        {
-                            testNode.PF = f;
-                            testNode.PG = g;
-                            testNode.PH = h;
-                            testNode.ParentNode = currentNode;
-                        }
-                    }
-                    else
-                    {
-                        testNode.PF = f;
-                        testNode.PG = g;
-                        testNode.PH = h;
-                        testNode.ParentNode = currentNode;
-                        openNodes.Add(testNode);
-                    }
-
-                }
-                closedNodes.Add(currentNode);
-
-                //HANDLE FAILURE TO FIND PATH
-                if (openNodes.Count == 0)
-                {
-                    return null;
-                }
-
-                openNodes.Sort(CompareNodeF);
-                currentNode = openNodes[0];
-                openNodes.RemoveAt(0);
-            }
-
-            return BuildPath(start, end);
-        }
-        
-
-        private static List<N> BuildPath<N>(N start, N end)
-            where N : INode
-        {
-            List<N> path = new();
-            N node = end;
-            path.Add(node);
-            while (!(node.X == start.X && node.Y == start.Y))
-            {
-                node = (N)node.ParentNode;
-
-                path.Insert(0, node);
-            }
-
-            return path;
-        }
-        
-
-        private static double Heuristic(INode node1, INode node2) => Math.Abs(node1.X - node2.X) + Math.Abs(node1.Y - node2.Y);
-        
-
-        private static int CompareNodeF<N>(N x, N y)
-            where N : INode
-        {
-            if (x.PF < y.PF) return -1;
-            else if (x.PF == y.PF) return 0;
-            else return 1;
-        }
-        
-    }
-    
-
     public static class Randomisation
     {
         private static readonly Random _random = new();
@@ -1041,7 +731,133 @@ public static class HF
         }
         
     }
-    
+
+    public static class Pathfinding
+    {
+        public static List<INode> ChooseRandomRoute<N>(N startNode, Func<N, bool> passableTest, int maximumSteps)
+            where N : INode
+        {
+            int steps = 0;
+            List<N> openNodes = new();
+            openNodes.Add(startNode);
+            List<INode> path = new();
+            N currentNode;
+
+            while (steps <= maximumSteps)
+            {
+                currentNode = openNodes[Randomisation.Rand(openNodes.Count)];
+                //replace open nodes with current node's connections, skipping any already in path
+                openNodes.Clear();
+                foreach (N n in currentNode.ConnectedNodes)
+                {
+                    if (passableTest(n) && !path.Contains(n))
+                        openNodes.Insert(Randomisation.Rand(0, openNodes.Count), n);
+                }
+
+                path.Add(currentNode);
+                steps++;
+                if (openNodes.Count == 0)
+                    break;
+            }
+            return path;
+        }
+
+        public static List<N>? GetAStarRoute<N>(N start, N end, Func<N, bool> passableTest)
+            where N : INode
+        {
+            List<N> openNodes = new();
+            List<N> closedNodes = new();
+
+            N currentNode = start;
+            N testNode;
+
+            float f, g, h;
+
+            currentNode.AStarGValue = 0;
+            currentNode.AStarHValue = Heuristic(currentNode, end);
+            currentNode.AStarFValue = currentNode.AStarGValue + currentNode.AStarHValue;
+
+            while (!currentNode.Equals(end))
+            {
+                for (int i = 0; i < currentNode.ConnectedNodes.Count; ++i)
+                {
+                    testNode = (N)currentNode.ConnectedNodes[i];
+
+                    if (testNode.Equals(currentNode) || !passableTest(testNode))
+                        continue;
+
+                    g = (float)currentNode.AStarGValue + 1;
+                    h = (float)Heuristic(testNode, end);
+                    f = g + h;
+
+                    if (openNodes.Contains(testNode) || closedNodes.Contains(testNode))
+                    {
+                        if (testNode.AStarFValue > f)
+                        {
+                            testNode.AStarFValue = f;
+                            testNode.AStarGValue = g;
+                            testNode.AStarHValue = h;
+                            testNode.ParentNode = currentNode;
+                        }
+                    }
+                    else
+                    {
+                        testNode.AStarFValue = f;
+                        testNode.AStarGValue = g;
+                        testNode.AStarHValue = h;
+                        testNode.ParentNode = currentNode;
+                        openNodes.Add(testNode);
+                    }
+
+                }
+                closedNodes.Add(currentNode);
+
+                //HANDLE FAILURE TO FIND PATH
+                if (openNodes.Count == 0)
+                {
+                    return null;
+                }
+
+                openNodes.Sort(CompareNodeF);
+                currentNode = openNodes[0];
+                openNodes.RemoveAt(0);
+            }
+
+            return BuildPath(start, end);
+        }
+
+
+        private static List<N> BuildPath<N>(N start, N end)
+            where N : INode
+        {
+            List<N> path = new();
+            N node = end;
+            path.Add(node);
+            while (!(node.X == start.X && node.Y == start.Y))
+            {
+                node = (N)node.ParentNode!;
+
+                path.Insert(0, node);
+            }
+
+            return path;
+        }
+
+
+        private static float Heuristic(INode node1, INode node2) => Math.Abs(node1.X - node2.X) + Math.Abs(node1.Y - node2.Y);
+
+
+        private static int CompareNodeF<N>(N x, N y)
+            where N : INode
+        {
+            if (x.AStarFValue < y.AStarFValue) 
+                return -1;
+            else if (x.AStarFValue == y.AStarFValue) 
+                return 0;
+            else 
+                return 1;
+        }
+    }
 
     public static class Types
     {
