@@ -18,7 +18,7 @@ internal static class OpenGL32
     /// </summary>
     /// <param name="func">Specifies the alpha comparison function. Symbolic constants GL_NEVER, GL_LESS, GL_EQUAL, GL_LEQUAL, GL_GREATER, GL_NOTEQUAL, GL_GEQUAL, and GL_ALWAYS are accepted. The initial value is GL_ALWAYS.</param>
     /// <param name="ref">Specifies the reference value that incoming alpha values are compared to. This value is clamped to the range 0 1 , where 0 represents the lowest possible alpha value and 1 the highest possible value. The initial reference value is 0.</param>
-    [DllImport("opengl32.dll")]
+    [DllImport(Library)]
     internal static extern void glAlphaFunc(GLAlphaFuncEnum func, float @ref);
     
 
@@ -339,6 +339,8 @@ internal static class OpenGL32
 
     public unsafe static Bitmap PremultiplyAlpha(Bitmap bitmap)
     {
+        //todo: put some tries here as this fucks up sometimes
+
         // Lock the entire bitmap for Read/Write access as we'll be reading the pixel
         // colour values and altering them in-place.
         var bmlock = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
