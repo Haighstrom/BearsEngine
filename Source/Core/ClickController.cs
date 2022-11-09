@@ -93,6 +93,10 @@ internal class ClickController : AddableBase, IUpdatable
             _target.OnMouseExited();
             _target.OnNoMouseEvent();
         }
+        else if (HI.MouseLeftReleased)
+        {
+            RequestOnLeftReleased(_target);
+        }
         else if (HI.MouseLeftPressed)
         {
             _state = ClickState.PushedAndHovered;
