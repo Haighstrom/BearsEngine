@@ -108,6 +108,11 @@ public abstract class AddableRectBase : AddableBase, IRectAddable
     protected virtual void OnPositionChanged() => PositionChanged?.Invoke(this, new PositionChangedArgs(new Rect(X, Y, W, H)));
     protected virtual void OnSizeChanged(ResizeEventArgs args) => SizeChanged?.Invoke(this, args);
 
+    public bool Equals(IPosition? other)
+    {
+        throw new NotImplementedException();
+    }
+
     public event EventHandler<PositionChangedArgs>? PositionChanged;
     public event EventHandler<ResizeEventArgs>? SizeChanged;
 }

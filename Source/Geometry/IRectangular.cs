@@ -1,9 +1,9 @@
 ﻿namespace BearsEngine;
 
-public interface IRectangular
+public interface IRectangular : IPosition
 {
-    public float X { get; set; }
-    public float Y { get; set; }
+    public new float X { get; set; }
+    public new float Y { get; set; }
     public float W { get; set; }
     public float H { get; set; }
     public Point P { get; set; }
