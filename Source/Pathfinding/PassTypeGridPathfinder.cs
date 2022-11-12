@@ -1,12 +1,12 @@
+using System.Xml.Linq;
+
 namespace BearsEngine.Pathfinding;
 
-public class PassTypeGridPathfinder<TEnum> : IPathfinder<Node<TEnum>> where TEnum : Enum
+public class GridPathfinder<TPassEnum> : IPathfinder<PathfindNode<TPassEnum>> where TPassEnum : Enum
 {
-    private static readonly Func<INode, INode, float> DefaultHeuristic = (n1, n2) => Math.Abs(n1.X - n2.X) + Math.Abs(n1.Y - n2.Y);
+    private readonly PathfindNode<TPassEnum>[,] _nodegrid;
 
-    private readonly Node<TEnum>[,] _nodegrid;
-
-    public PassTypeGridPathfinder(int width, int height, Func<int,int,TEnum> getPassType)
+    public GridPathfinder(int width, int height, Func<int,int,TPassEnum> getPassType)
         : this(width, height)
     {
         for (int i = 0; i < width; i++)
@@ -16,31 +16,31 @@ public class PassTypeGridPathfinder<TEnum> : IPathfinder<Node<TEnum>> where TEnu
             }
     }
 
-    public PassTypeGridPathfinder(int width, int height)
+    public GridPathfinder(int width, int height)
     {
-        _nodegrid = new Node<TEnum>[width, height];
+        _nodegrid = new PathfindNode<TPassEnum>[width, height];
 
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++)
             {
-                _nodegrid[i, j] = new Node<TEnum>(i, j, (TEnum)Convert.ChangeType(0, typeof(TEnum)));
+                _nodegrid[i, j] = new PathfindNode<TPassEnum>(i, j, (TPassEnum)Convert.ChangeType(0, typeof(TPassEnum)));
             }
 
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++)
             {
-                if (IsValidNodePosition(i - 1, j))
+                if (IsValidGridPosition(i - 1, j))
                     _nodegrid[i, j].ConnectedNodes.Add(_nodegrid[i - 1, j]);
-                if (IsValidNodePosition(i + 1, j))
+                if (IsValidGridPosition(i + 1, j))
                     _nodegrid[i, j].ConnectedNodes.Add(_nodegrid[i + 1, j]);
-                if (IsValidNodePosition(i, j - 1))
+                if (IsValidGridPosition(i, j - 1))
                     _nodegrid[i, j].ConnectedNodes.Add(_nodegrid[i, j - 1]);
-                if (IsValidNodePosition(i, j + 1))
+                if (IsValidGridPosition(i, j + 1))
                     _nodegrid[i, j].ConnectedNodes.Add(_nodegrid[i, j + 1]);
             }
     }
 
-    public Node<TEnum> this[int x, int y]
+    public PathfindNode<TPassEnum> this[int x, int y]
     {
         get => _nodegrid[x, y];
     }
@@ -49,13 +49,7 @@ public class PassTypeGridPathfinder<TEnum> : IPathfinder<Node<TEnum>> where TEnu
 
     public int Width => _nodegrid.GetLength(0);
 
-    private bool IsValidNodePosition(int x, int y) => x >= 0 && y >= 0 && x < Width && y < Height;
-
-    public IList<Node<TEnum>>? GetAStarRoute(Node<TEnum> start, Node<TEnum> end, Func<Node<TEnum>, Node<TEnum>, bool> passableTest, Func<Node<TEnum>, Node<TEnum>, float> heuristic)
-    {
-        throw new NotImplementedException();
-    }
-    public IList<Node<TEnum>>? GetAStarRoute(Node<TEnum> start, Node<TEnum> end, Func<Node<TEnum>, Node<TEnum>, bool> passableTest)
+    public IList<PathfindNode<TPassEnum>>? FindPath(PathfindNode<TPassEnum> start, PathfindNode<TPassEnum> end, Func<PathfindNode<TPassEnum>, PathfindNode<TPassEnum>, bool> passableTest)
     {
         if (!IsValidGridPosition(start.X, start.Y))
             throw new ArgumentOutOfRangeException(nameof(start));
@@ -64,12 +58,12 @@ public class PassTypeGridPathfinder<TEnum> : IPathfinder<Node<TEnum>> where TEnu
             throw new ArgumentOutOfRangeException(nameof(end));
 
         if (start.Equals(end))
-            return new List<Node<TEnum>>() { end };
+            return new List<PathfindNode<TPassEnum>>() { end };
 
         throw new NotImplementedException();
     }
 
-    public IList<Node<TEnum>>? GetRandomRoute(Node<TEnum> start, int steps, Func<Node<TEnum>, Node<TEnum>, bool> passableTest)
+    public IList<PathfindNode<TPassEnum>>? FindRandomPath(PathfindNode<TPassEnum> start, Func<PathfindNode<TPassEnum>, PathfindNode<TPassEnum>, bool> passableTest, int steps, bool canBacktrack)
     {
         throw new NotImplementedException();
     }

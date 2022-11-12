@@ -3,7 +3,7 @@
 namespace BearsEngine.Tasks;
 
 public class TaskMoveOneLeashed<N> : Task
-    where N : INode
+    where N : INode<N>, IPosition
 {
     private readonly N _leashNode;
     private readonly float _leashDistance;
@@ -25,7 +25,7 @@ public class TaskMoveOneLeashed<N> : Task
         foreach (var possibleNode in _entity.CurrentNode.ConnectedNodes)
         {
             if (Math.Max(Math.Abs(possibleNode.X - _leashNode.X), Math.Abs(possibleNode.Y - _leashNode.Y)) <= _leashDistance)
-                possibleNodes.Add((N)possibleNode);
+                possibleNodes.Add(possibleNode);
         }
         //todo: what if possible nodes is empty?
         _entity.WaypointController.SetWaypoints(HF.Randomisation.Choose(possibleNodes));

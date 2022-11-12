@@ -1,14 +1,10 @@
 ﻿namespace BearsEngine.Pathfinding;
 
-public interface INode : IPosition, IEquatable<INode>
+/// <summary>
+/// A basic node for building graphs
+/// </summary>
+/// <typeparam name="TNode"></typeparam>
+public interface INode<TNode> : IEquatable<TNode> where TNode : INode<TNode>
 {
-    IList<INode> ConnectedNodes { get; }
-
-    INode? ParentNode { get; set; }
-
-    float AStarFValue { get; set; }
-
-    float AStarGValue { get; set; }
-
-    float AStarHValue { get; set; }
+    IList<TNode> ConnectedNodes { get; }
 }

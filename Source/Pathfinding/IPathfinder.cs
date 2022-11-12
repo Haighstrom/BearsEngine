@@ -1,8 +1,10 @@
-﻿namespace BearsEngine.Pathfinding;
+﻿using System.Xml.Linq;
 
-public interface IPathfinder<N> where N : IPosition
+namespace BearsEngine.Pathfinding;
+
+public interface IPathfinder<TNode> where TNode : IPathfindNode<TNode>
 {
-    IList<N>? GetAStarRoute(N start, N end, Func<N, N, bool> passableTest, Func<N, N, float> heuristic);
-    IList<N>? GetAStarRoute(N start, N end, Func<N, N, bool> passableTest);
-    IList<N>? GetRandomRoute(N start, int steps, Func<N, N, bool> passableTest);
+    IList<TNode>? FindPath(TNode start, TNode end, Func<TNode, TNode, bool> passableTest);
+
+    IList<TNode>? FindRandomPath(TNode start, Func<TNode, TNode, bool> passableTest, int steps, bool canBacktrack);
 }

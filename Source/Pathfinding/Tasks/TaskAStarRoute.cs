@@ -3,8 +3,7 @@ using Serilog;
 
 namespace BearsEngine.Pathfinding;
 
-public class TaskAStarRoute<N> : Task
-    where N : INode
+public class TaskAStarRoute<N> : Task where N : IPathfindNode<N>, IPosition
 {
     private readonly IPathfinder<N> _pathfinder;
     private readonly IWaypointableAndPathable<N> _entity;
@@ -22,7 +21,7 @@ public class TaskAStarRoute<N> : Task
     {
         base.Start();
 
-        var route = _pathfinder.GetAStarRoute(_entity.CurrentNode, _destination, _entity.CanPathThrough);
+        var route = _pathfinder.FindPath(_entity.CurrentNode, _destination, _entity.CanPathThrough);
 
         if (route == null)
         {

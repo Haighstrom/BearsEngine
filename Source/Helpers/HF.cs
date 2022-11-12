@@ -732,132 +732,132 @@ public static class HF
         
     }
 
-    public static class Pathfinding
-    {
-        public static List<INode> ChooseRandomRoute<N>(N startNode, Func<N, bool> passableTest, int maximumSteps)
-            where N : INode
-        {
-            int steps = 0;
-            List<N> openNodes = new();
-            openNodes.Add(startNode);
-            List<INode> path = new();
-            N currentNode;
+    //public static class Pathfinding
+    //{
+    //    public static List<INode> ChooseRandomRoute<N>(N startNode, Func<N, bool> passableTest, int maximumSteps)
+    //        where N : INode
+    //    {
+    //        int steps = 0;
+    //        List<N> openNodes = new();
+    //        openNodes.Add(startNode);
+    //        List<INode> path = new();
+    //        N currentNode;
 
-            while (steps <= maximumSteps)
-            {
-                currentNode = openNodes[Randomisation.Rand(openNodes.Count)];
-                //replace open nodes with current node's connections, skipping any already in path
-                openNodes.Clear();
-                foreach (N n in currentNode.ConnectedNodes)
-                {
-                    if (passableTest(n) && !path.Contains(n))
-                        openNodes.Insert(Randomisation.Rand(0, openNodes.Count), n);
-                }
+    //        while (steps <= maximumSteps)
+    //        {
+    //            currentNode = openNodes[Randomisation.Rand(openNodes.Count)];
+    //            //replace open nodes with current node's connections, skipping any already in path
+    //            openNodes.Clear();
+    //            foreach (N n in currentNode.ConnectedNodes)
+    //            {
+    //                if (passableTest(n) && !path.Contains(n))
+    //                    openNodes.Insert(Randomisation.Rand(0, openNodes.Count), n);
+    //            }
 
-                path.Add(currentNode);
-                steps++;
-                if (openNodes.Count == 0)
-                    break;
-            }
-            return path;
-        }
+    //            path.Add(currentNode);
+    //            steps++;
+    //            if (openNodes.Count == 0)
+    //                break;
+    //        }
+    //        return path;
+    //    }
 
-        public static List<N>? GetAStarRoute<N>(N start, N end, Func<N, bool> passableTest)
-            where N : INode
-        {
-            List<N> openNodes = new();
-            List<N> closedNodes = new();
+    //    public static List<N>? GetAStarRoute<N>(N start, N end, Func<N, bool> passableTest)
+    //        where N : INode
+    //    {
+    //        List<N> openNodes = new();
+    //        List<N> closedNodes = new();
 
-            N currentNode = start;
-            N testNode;
+    //        N currentNode = start;
+    //        N testNode;
 
-            float f, g, h;
+    //        float f, g, h;
 
-            currentNode.AStarGValue = 0;
-            currentNode.AStarHValue = Heuristic(currentNode, end);
-            currentNode.AStarFValue = currentNode.AStarGValue + currentNode.AStarHValue;
+    //        currentNode.AStarGValue = 0;
+    //        currentNode.AStarHValue = Heuristic(currentNode, end);
+    //        currentNode.AStarFValue = currentNode.AStarGValue + currentNode.AStarHValue;
 
-            while (!currentNode.Equals(end))
-            {
-                for (int i = 0; i < currentNode.ConnectedNodes.Count; ++i)
-                {
-                    testNode = (N)currentNode.ConnectedNodes[i];
+    //        while (!currentNode.Equals(end))
+    //        {
+    //            for (int i = 0; i < currentNode.ConnectedNodes.Count; ++i)
+    //            {
+    //                testNode = (N)currentNode.ConnectedNodes[i];
 
-                    if (testNode.Equals(currentNode) || !passableTest(testNode))
-                        continue;
+    //                if (testNode.Equals(currentNode) || !passableTest(testNode))
+    //                    continue;
 
-                    g = (float)currentNode.AStarGValue + 1;
-                    h = (float)Heuristic(testNode, end);
-                    f = g + h;
+    //                g = (float)currentNode.AStarGValue + 1;
+    //                h = (float)Heuristic(testNode, end);
+    //                f = g + h;
 
-                    if (openNodes.Contains(testNode) || closedNodes.Contains(testNode))
-                    {
-                        if (testNode.AStarFValue > f)
-                        {
-                            testNode.AStarFValue = f;
-                            testNode.AStarGValue = g;
-                            testNode.AStarHValue = h;
-                            testNode.ParentNode = currentNode;
-                        }
-                    }
-                    else
-                    {
-                        testNode.AStarFValue = f;
-                        testNode.AStarGValue = g;
-                        testNode.AStarHValue = h;
-                        testNode.ParentNode = currentNode;
-                        openNodes.Add(testNode);
-                    }
+    //                if (openNodes.Contains(testNode) || closedNodes.Contains(testNode))
+    //                {
+    //                    if (testNode.AStarFValue > f)
+    //                    {
+    //                        testNode.AStarFValue = f;
+    //                        testNode.AStarGValue = g;
+    //                        testNode.AStarHValue = h;
+    //                        testNode.ParentNode = currentNode;
+    //                    }
+    //                }
+    //                else
+    //                {
+    //                    testNode.AStarFValue = f;
+    //                    testNode.AStarGValue = g;
+    //                    testNode.AStarHValue = h;
+    //                    testNode.ParentNode = currentNode;
+    //                    openNodes.Add(testNode);
+    //                }
 
-                }
-                closedNodes.Add(currentNode);
+    //            }
+    //            closedNodes.Add(currentNode);
 
-                //HANDLE FAILURE TO FIND PATH
-                if (openNodes.Count == 0)
-                {
-                    return null;
-                }
+    //            //HANDLE FAILURE TO FIND PATH
+    //            if (openNodes.Count == 0)
+    //            {
+    //                return null;
+    //            }
 
-                openNodes.Sort(CompareNodeF);
-                currentNode = openNodes[0];
-                openNodes.RemoveAt(0);
-            }
+    //            openNodes.Sort(CompareNodeF);
+    //            currentNode = openNodes[0];
+    //            openNodes.RemoveAt(0);
+    //        }
 
-            return BuildPath(start, end);
-        }
-
-
-        private static List<N> BuildPath<N>(N start, N end)
-            where N : INode
-        {
-            List<N> path = new();
-            N node = end;
-            path.Add(node);
-            while (!(node.X == start.X && node.Y == start.Y))
-            {
-                node = (N)node.ParentNode!;
-
-                path.Insert(0, node);
-            }
-
-            return path;
-        }
+    //        return BuildPath(start, end);
+    //    }
 
 
-        private static float Heuristic(INode node1, INode node2) => Math.Abs(node1.X - node2.X) + Math.Abs(node1.Y - node2.Y);
+    //    private static List<N> BuildPath<N>(N start, N end)
+    //        where N : INode
+    //    {
+    //        List<N> path = new();
+    //        N node = end;
+    //        path.Add(node);
+    //        while (!(node.X == start.X && node.Y == start.Y))
+    //        {
+    //            node = (N)node.ParentNode!;
+
+    //            path.Insert(0, node);
+    //        }
+
+    //        return path;
+    //    }
 
 
-        private static int CompareNodeF<N>(N x, N y)
-            where N : INode
-        {
-            if (x.AStarFValue < y.AStarFValue) 
-                return -1;
-            else if (x.AStarFValue == y.AStarFValue) 
-                return 0;
-            else 
-                return 1;
-        }
-    }
+    //    private static float Heuristic(INode node1, INode node2) => Math.Abs(node1.X - node2.X) + Math.Abs(node1.Y - node2.Y);
+
+
+    //    private static int CompareNodeF<N>(N x, N y)
+    //        where N : INode
+    //    {
+    //        if (x.AStarFValue < y.AStarFValue) 
+    //            return -1;
+    //        else if (x.AStarFValue == y.AStarFValue) 
+    //            return 0;
+    //        else 
+    //            return 1;
+    //    }
+    //}
 
     public static class Types
     {

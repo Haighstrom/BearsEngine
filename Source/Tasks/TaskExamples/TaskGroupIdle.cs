@@ -2,11 +2,10 @@
 
 namespace BearsEngine.Tasks;
 
-public class TaskGroupIdle<N> : TaskGroup
-    where N : INode
+public class TaskGroupIdle<N> : TaskGroup where N : IPathfindNode<N>, IPosition
 {
-    public TaskGroupIdle(IPathfinder<N> pathfinder, IWaypointableAndPathable<N> entity, int maxSteps, float waitTime)
-        : base(new TaskRandomRoute<N>(pathfinder, entity, maxSteps), new TaskWait(waitTime))
+    public TaskGroupIdle(IPathfinder<N> pathfinder, IWaypointableAndPathable<N> entity, int maxSteps, bool canBacktrack, float waitTime)
+        : base(new TaskRandomRoute<N>(pathfinder, entity, maxSteps, canBacktrack), new TaskWait(waitTime))
     {
     }
 }

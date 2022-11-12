@@ -1,8 +1,9 @@
 ﻿namespace BearsEngine.Pathfinding;
 
-public enum PathSolveStatus
+public enum SolveStatus
 {
-    Incomplete,
+    NotStarted,
+    InProgress,
     Success,
     Failure
 }

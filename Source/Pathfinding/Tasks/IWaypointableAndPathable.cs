@@ -1,6 +1,6 @@
 ﻿namespace BearsEngine.Pathfinding;
 
 public interface IWaypointableAndPathable<N> : IWaypointable, IPathable<N>
-    where N : INode
+    where N : INode<N>
 {
 }
