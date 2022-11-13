@@ -65,7 +65,7 @@
             else
                 _direction = Direction.None;
 
-            if (_direction != _lastDirection)
+            if (_direction != _lastDirection && _direction != Direction.None) //todo: are we happy with the second condition? without it the unsuspecting consumer ends up making their guy look left, because None = -1 = 3 = left.
                 DirectionChanged?.Invoke(this, new DirectionChangedEventArgs(_lastDirection, _direction));
 
             _lastDirection = _direction;
