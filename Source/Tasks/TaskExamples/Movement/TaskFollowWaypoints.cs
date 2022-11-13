@@ -3,15 +3,24 @@
 public class TaskFollowWaypoints : Task
 {
     private readonly IWaypointable _entity;
-    private readonly List<IPosition> _waypoints;
+    private readonly IEnumerable<IPosition> _waypoints;
 
-    public TaskFollowWaypoints(IWaypointable entity, List<IPosition> waypoints)
+    public TaskFollowWaypoints(IWaypointable entity, IEnumerable<IPosition> waypoints)
     {
         _entity = entity;
         _waypoints = waypoints;
 
         CompletionConditions.Add(() => entity.WaypointController.ReachedDestination);
     }
+
+    public TaskFollowWaypoints(IWaypointable entity, params IPosition[] waypoints)
+    {
+        _entity = entity;
+        _waypoints = waypoints;
+
+        CompletionConditions.Add(() => entity.WaypointController.ReachedDestination);
+    }
+
     public override void Start()
     {
         base.Start();

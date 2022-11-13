@@ -22,7 +22,7 @@ public class AStarSolver<N> : IPathSolver<N> where N : IPathfindNode<N>
         _passableTest = passableTest;
         _heuristic = heuristic;
 
-        ExploreNextNode();
+        IdentifyOpenNodes();
     }
 
     /// <summary>
@@ -32,7 +32,7 @@ public class AStarSolver<N> : IPathSolver<N> where N : IPathfindNode<N>
 
     public IList<N> Path => _pathbuilder.BuildPath(_start, _currentNode);
 
-    private void ExploreNextNode()
+    private void IdentifyOpenNodes()
     {
         foreach (N testNode in _currentNode.ConnectedNodes)
         {
@@ -69,7 +69,7 @@ public class AStarSolver<N> : IPathSolver<N> where N : IPathfindNode<N>
         _currentNode = _openNodes[^1];
         _openNodes.RemoveAt(_openNodes.Count - 1);
 
-        ExploreNextNode();
+        IdentifyOpenNodes();
 
         if (_currentNode.Equals(_end))
             return _state = SolveStatus.Success;

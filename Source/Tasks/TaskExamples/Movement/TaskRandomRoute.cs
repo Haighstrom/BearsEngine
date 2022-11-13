@@ -24,6 +24,8 @@ public class TaskRandomRoute<N> : Task where N : IPathfindNode<N>, IPosition
         base.Start();
 
         var route = _pathfinder.FindRandomPath(_entity.CurrentNode, _entity.CanPathThrough, _maxSteps, _canBacktrack);
+        if (route == null)
+            throw new Exception();
         _entity.WaypointController.SetWaypoints(route.Select(n => (IPosition)new Point(n.X, n.Y)));
     }
 }

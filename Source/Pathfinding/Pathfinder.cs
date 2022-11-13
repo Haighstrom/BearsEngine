@@ -18,31 +18,12 @@ public class Pathfinder<N> : IPathfinder<N> where N : IPathfindNode<N>, IPositio
             return null;
     }
 
-    public IList<N> FindRandomPath(N startNode, Func<N,N, bool> passableTest, int maximumSteps, bool canBacktrack)
+    public IList<N> FindRandomPath(N startNode, Func<N,N, bool> passableTest, int targetSteps, bool canBacktrack)
     {
-        int stepsTaken = 0;
+        RandomPathSolver<N> solver = new(startNode, passableTest, targetSteps, canBacktrack);
 
-        List<N> openNodes = new() { startNode };
-        List<N> path = new();
+        solver.TrySolve();
 
-        while (stepsTaken <= maximumSteps)
-        {
-            N currentNode = openNodes[HF.Randomisation.Rand(openNodes.Count)];
-            path.Add(currentNode);
-
-            //replace open nodes with current node's connections, skipping any already in path
-            openNodes.Clear();
-
-            foreach (N n in currentNode.ConnectedNodes)
-            {
-                if (passableTest(currentNode, n) && !path.Contains(n))
-                    openNodes.Insert(HF.Randomisation.Rand(0, openNodes.Count), n);
-            }
-
-            stepsTaken++;
-            if (openNodes.Count == 0)
-                break;
-        }
-        return path;
+        return solver.Path;
     }
 }
