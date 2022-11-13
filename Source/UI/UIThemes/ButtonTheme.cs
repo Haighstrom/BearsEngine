@@ -10,7 +10,6 @@
             UnclickableColour = Colour.DarkGray,
             Text = TextTheme.Default,
         };
-        
 
         public Colour DefaultColour, HoverColour, PressedColour, UnclickableColour;
         public TextTheme Text;
