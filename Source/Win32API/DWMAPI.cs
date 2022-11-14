@@ -2,16 +2,12 @@
 
 namespace BearsEngine.Win32API;
 
-// https://docs.microsoft.com/en-us/windows/win32/api/dwmapi/
-
 /// <summary>
-/// Desktop Window Manager
+/// Desktop Window Manager https://docs.microsoft.com/en-us/windows/win32/api/dwmapi/
 /// </summary>
 internal static class DWMAPI
 {
     private const string Library = "dwmapi.dll";
-
-    // https://docs.microsoft.com/en-us/windows/win32/api/dwmapi/nf-dwmapi-dwmgetwindowattribute
 
     /// <summary>
     /// Retrieves the current value of a specified Desktop Window Manager (DWM) attribute applied to a window.
@@ -23,7 +19,7 @@ internal static class DWMAPI
     /// <returns>If the function succeeds, it returns S_OK (0). Otherwise, it returns an HRESULT error code.</returns>
     [DllImport(Library)]
     public static extern int DwmGetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, out bool pvAttribute, int cbAttribute);
-
+    
     /// <summary>
     /// Retrieves the current value of a specified Desktop Window Manager (DWM) attribute applied to a window.
     /// </summary>
@@ -35,8 +31,6 @@ internal static class DWMAPI
     [DllImport(Library)]
     public static extern int DwmGetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, out RECT pvAttribute, int cbAttribute);
     
-
-    // https://docs.microsoft.com/en-us/windows/win32/api/dwmapi/nf-dwmapi-dwmsetwindowattribute
 
     /// <summary>
     /// Sets the value of Desktop Window Manager (DWM) non-client rendering attributes for a window.
@@ -59,5 +53,4 @@ internal static class DWMAPI
     /// <returns>If the function succeeds, it returns S_OK (0). Otherwise, it returns an HRESULT error code.</returns>
     [DllImport(Library)]
     public static extern int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, bool pvAttribute, int cbAttribute);
-    
 }

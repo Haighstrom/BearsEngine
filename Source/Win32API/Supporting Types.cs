@@ -40,7 +40,6 @@ internal enum User32Cursors : ushort
     Dot = 32670,
 }
 
-
 internal enum User32Icons : ushort
 {
     APPLICATION = 100,
@@ -50,8 +49,6 @@ internal enum User32Icons : ushort
     INFORMATION = 104,
     SHIELD = 106,
 }
-
-
 
 internal enum GLAlphaFuncEnum : int
 {
@@ -271,7 +268,6 @@ internal enum DWMWINDOWATTRIBUTE : uint
     DWMWA_LAST
 }
 
-
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadimagew
 /// The type of image to be loaded. For use in User32 LoadImage.
@@ -291,7 +287,6 @@ internal enum LoadImage_Type : uint
     /// </summary>
     IMAGE_ICON = 1,
 }
-
 
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadimagew
@@ -346,7 +341,6 @@ internal enum LoadImage_FULoad : uint
     /// </summary>
     LR_VGACOLOR = 0x00000080,
 }
-
 
 enum MonitorDpiType
 {
@@ -576,7 +570,6 @@ internal enum ExtendedWindowStyle : uint
     WS_EX_WINDOWEDGE = 0x00000100,
 }
 
-
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getqueuestatus
 /// For use with User32 GetQueueStatus
@@ -643,7 +636,6 @@ internal enum GetQueueStatus_Flags : uint
     QS_TIMER = 0x0010,
 }
 
-
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getrawinputdata
 /// For use with User32 GetRawInputData
@@ -659,7 +651,6 @@ internal enum GetRawInputData_uiCommand
     /// </summary>
     RID_INPUT = 0x10000003,
 }
-
 
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsyscolor
@@ -819,7 +810,6 @@ internal enum GetSysColor_Index : int
     COLOR_WINDOWTEXT = 8,
 }
 
-
 /// <summary>
 /// For MapVirtualKey
 /// </summary>
@@ -835,8 +825,6 @@ internal enum MapVirtualKey_uMapType
     ScanCodeToVirtualKeyExtended = 3,
     VirtualKeyToScanCodeExtended = 4,
 }
-
-
 
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadcursorw
@@ -906,7 +894,6 @@ public enum PredefinedCursors : int
     IDC_WAIT = 32514
 }
 
-
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadiconw
 /// For use with LoadIcon / LoadImage
@@ -956,7 +943,6 @@ public enum PredefinedIcons : ushort
     IDI_WINLOGO = 32517,
 }
 
-
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-rawinputdevice
 /// Defines information for the raw input devices. For use with User32 RegisterRawInputDevices.
@@ -999,7 +985,6 @@ internal struct RAWINPUTDEVICE
 
     internal static readonly uint s_size = (uint)Marshal.SizeOf(typeof(RAWINPUTDEVICE));
 }
-
 
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-rawinputdevice
@@ -1052,7 +1037,6 @@ internal enum RAWINPUTDEVICE_dwFlags : int
     /// </summary>
     RIDEV_DEVNOTIFY = 0x00002000,
 }
-
 
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows-hardware/drivers/hid/hid-usages#usage-id
@@ -1406,7 +1390,6 @@ internal enum RAWINPUTDEVICE_usUsage : ushort
     HID_USAGE_MS_BTH_HF_DIALMEMORY = 0x22,
 }
 
-
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows-hardware/drivers/hid/hid-usages#usage-page
 /// https://github.com/tpn/winsdk-10/blob/master/Include/10.0.10240.0/shared/hidusage.h
@@ -1477,7 +1460,6 @@ internal enum RAWINPUTDEVICE_usUsagePage : ushort
     HID_USAGE_PAGE_VENDOR_DEFINED_END = 0xFFFF,
 }
 
-
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-rid_device_info
 /// Defines the raw input data coming from any device.
@@ -1520,7 +1502,6 @@ internal class RID_DEVICE_INFO
     };
 }
 
-
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getrawinputdeviceinfoa
 /// For use with User32 GetRawInputDeviceInfo
@@ -1544,7 +1525,6 @@ internal enum GetRawInputDeviceInfo_uiCommand : uint
     RIDI_DEVICEINFO = 0x2000000b
 }
 
-
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-rid_device_info
 /// For use with RID_DEVICE_INFO
@@ -1564,7 +1544,6 @@ internal enum RID_DEVICE_INFO_dwType : uint
     /// </summary>
     RIM_TYPEHID = 2
 }
-
 
 /// <summary>
 /// Defines the raw input data coming from the specified Human Interface Device (HID).
@@ -1595,7 +1574,6 @@ internal struct RID_DEVICE_INFO_HID
     //internal UInt16 Usage;
     internal short Usage;
 }
-
 
 /// <summary>
 /// Defines the raw input data coming from the specified keyboard.
@@ -1632,8 +1610,6 @@ internal struct RID_DEVICE_INFO_KEYBOARD
     internal int NumberOfKeysTotal;
 }
 
-
-
 /// <summary>
 /// Defines the raw input data coming from the specified mouse.
 /// </summary>
@@ -1663,8 +1639,6 @@ internal struct RID_DEVICE_INFO_MOUSE
     /// </remarks>
     internal bool HasHorizontalWheel;
 }
-
-
 
 /// <summary>
 /// The zero-based offset to the value to be set in SetWindowLong. Valid values are in the range zero through the number of bytes of extra window memory, minus the size of an integer. To set any other value, specify one of the following values.
@@ -1700,7 +1674,6 @@ internal enum GWL : int
     /// </summary>
     GWL_WNDPROC = -4,
 }
-
 
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-showwindow
@@ -1765,7 +1738,6 @@ internal enum ShowWindow_Command
     /// </summary>
     SW_FORCEMINIMIZE = 11,
 }
-
 
 /// <summary>
 /// https://docs.microsoft.com/en-gb/windows/win32/winmsg/about-messages-and-message-queues?redirectedfrom=MSDN
@@ -2789,7 +2761,6 @@ internal enum WindowMessage : int
     WM_RASDIALEVENT = 0x0000CCCD,
 }
 
-
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-sizing
 /// The edge of the window that is being sized. Provided by wParam within a WM_SIZING message.
@@ -2950,8 +2921,6 @@ internal enum WindowStyle : uint
     WS_VSCROLL = 0x00200000,
 }
 
-
-
 #pragma warning disable 0649, 0169, IDE0044, IDE0051
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerdevicenotificationa
@@ -2986,7 +2955,6 @@ internal struct DEV_BROADCAST_DEVICEINTERFACE
 }
 #pragma warning restore 0649, 0169, IDE0044, IDE0051
 
-
 #pragma warning disable 0649, 0169, IDE0044, IDE0051
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerdevicenotificationa
@@ -3017,7 +2985,6 @@ internal struct DEV_BROADCAST_HDR
 }
 #pragma warning restore 0649, 0169, IDE0044, IDE0051
 
-
 [StructLayout(LayoutKind.Sequential)]
 internal struct MINMAXINFO
 {
@@ -3027,7 +2994,6 @@ internal struct MINMAXINFO
     public POINT ptMinTrackSize;
     public POINT ptMaxTrackSize;
 }
-
 
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-msg
@@ -3063,7 +3029,6 @@ internal struct MSG
     internal uint lPrivate;
 }
 
-
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/windef/ns-windef-rect
 /// The RECT structure defines a rectangle by the coordinates of its upper-left and lower-right corners.
@@ -3078,7 +3043,6 @@ internal struct RECT
     public static int UnmanagedSize => Marshal.SizeOf(default(RECT));
 }
 
-
 /// <summary>
 /// https://docs.microsoft.com/en-us/previous-versions/dd162805(v=vs.85)
 /// The POINT structure defines the x- and y- coordinates of a point.
@@ -3089,7 +3053,6 @@ internal struct POINT
     internal int X;
     internal int Y;
 }
-
 
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-peekmessagew
@@ -3129,7 +3092,6 @@ internal enum PeekMessage_Flags : uint
     /// </summary>
     PM_QS_SENDMESSAGE = GetQueueStatus_Flags.QS_SENDMESSAGE << 16,
 }
-
 
 //https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-windowinfo
 [StructLayout(LayoutKind.Sequential)]
@@ -3215,9 +3177,6 @@ internal struct WNDCLASSEX
     internal IntPtr hIconSm;
 }
 
-
-
-
 /// <summary>
 /// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/ms633573(v=vs.85)
 /// An application-defined function that processes messages sent to a window. The WNDPROC type defines a pointer to this callback function.
@@ -3229,10 +3188,6 @@ internal struct WNDCLASSEX
 /// <returns></returns>
 [UnmanagedFunctionPointer(CallingConvention.Winapi)]
 internal delegate IntPtr WNDPROC(IntPtr hwnd, WindowMessage uMsg, IntPtr wParam, IntPtr lParam);
-
-
-
-// * * * CLEANED UP ABOVE THIS LINE * * *
 
 /// <summary>
 /// Used in GL.Arb.CompressedTexImage1D, GL.Arb.CompressedTexImage2D and 123 other functions
@@ -3425,7 +3380,6 @@ public enum TextureTarget : int
     ProxyTexture2DMultisampleArray = 0x9103
 }
 
-
 internal enum ABE : uint
 {
     Left = 0,
@@ -3433,7 +3387,6 @@ internal enum ABE : uint
     Right = 2,
     Bottom = 3
 }
-
 
 internal enum ABM : uint
 {
@@ -3450,14 +3403,12 @@ internal enum ABM : uint
     SetState = 0x0000000A,
 }
 
-
 [Flags]
 internal enum ABS : int
 {
     Autohide = 0x0000001,
     AlwaysOnTop = 0x0000002
 }
-
 
 [StructLayout(LayoutKind.Sequential)]
 internal struct APPBARDATA
@@ -3470,7 +3421,6 @@ internal struct APPBARDATA
     public int lParam;
 }
 
-
 [Flags]
 internal enum ChangeDisplaySettingsEnum
 {
@@ -3479,7 +3429,6 @@ internal enum ChangeDisplaySettingsEnum
     Test = 0x00000002,
     Fullscreen = 0x00000004,
 }
-
 
 internal struct CreateStruct
 {
@@ -3543,7 +3492,6 @@ internal struct CreateStruct
     internal int dwExStyle;
 }
 
-
 [StructLayout(LayoutKind.Sequential)]
 internal struct COLORREF
 {
@@ -3551,7 +3499,6 @@ internal struct COLORREF
     public byte G;
     public byte B;
 }
-
 
 [StructLayout(LayoutKind.Sequential)]
 internal struct CONSOLE_SCREEN_BUFFER_INFO
@@ -3563,7 +3510,6 @@ internal struct CONSOLE_SCREEN_BUFFER_INFO
     public COORD dwMaximumWindowSize;
 }
 
-
 #pragma warning disable 0649
 internal struct COORD
 {
@@ -3571,7 +3517,6 @@ internal struct COORD
     public short Y;
 };
 #pragma warning disable 0649
-
 
 /// <summary>
 /// Used in GetCursorInfo call to query if the cursor is shown or hidden
@@ -3588,7 +3533,6 @@ struct CURSORINFO
     public POINT ptScreenPos;       // A POINT structure that receives the screen coordinates of the cursor.
 }
 
-
 [Flags]
 internal enum DesiredAccess : uint
 {
@@ -3597,7 +3541,6 @@ internal enum DesiredAccess : uint
     GenericExecute = 0x20000000,
     GenericAll = 0x10000000
 }
-
 
 #pragma warning disable 0649, 0169
 internal struct DevBroadcastHDR
@@ -3610,7 +3553,6 @@ internal struct DevBroadcastHDR
 }
 #pragma warning restore 0649, 0169
 
-
 internal enum DeviceBroadcastType
 {
     OEM = 0,
@@ -3618,171 +3560,6 @@ internal enum DeviceBroadcastType
     PORT = 3,
     INTERFACE = 5,
     HANDLE = 6,
-}
-
-
-internal enum DeviceCaps : int
-{
-    /// <summary>
-    /// DRIVERVERSION: Device driver version
-    /// </summary>
-    DriverVersion = 0,
-    /// <summary>
-    /// TECHNOLOGY: Device classification
-    /// </summary>
-    Technology = 2,
-    /// <summary>
-    /// HORZSIZE: Horizontal size in millimeters
-    /// </summary>
-    HorzSize = 4,
-    /// <summary>
-    /// VERTSIZE: Vertical size in millimeters
-    /// </summary>
-    VertSize = 6,
-    /// <summary>
-    /// HORZRES: Horizontal width in pixels
-    /// </summary>
-    HorzRes = 8,
-    /// <summary>
-    /// VERTRES: Vertical height in pixels
-    /// </summary>
-    VertRes = 10,
-    /// <summary>
-    /// BITSPIXEL: Number of bits per pixel
-    /// </summary>
-    BitsPixel = 12,
-    /// <summary>
-    /// PLANES: Number of planes
-    /// </summary>
-    Planes = 14,
-    /// <summary>
-    /// NUMBRUSHES: Number of brushes the device has
-    /// </summary>
-    NumBrushes = 16,
-    /// <summary>
-    /// NUMPENS: Number of pens the device has
-    /// </summary>
-    NumPens = 18,
-    /// <summary>
-    /// NUMMARKERS: Number of markers the device has
-    /// </summary>
-    NumMarkers = 20,
-    /// <summary>
-    /// NUMFONTS: Number of fonts the device has
-    /// </summary>
-    NumFonts = 22,
-    /// <summary>
-    /// NUMCOLORS: Number of colors the device supports
-    /// </summary>
-    NumColours = 24,
-    /// <summary>
-    /// PDEVICESIZE: Size required for device descriptor
-    /// </summary>
-    PDeviceSize = 26,
-    /// <summary>
-    /// CURVECAPS: Curve capabilities
-    /// </summary>
-    CurveCaps = 28,
-    /// <summary>
-    /// LINECAPS: Line capabilities
-    /// </summary>
-    LineCaps = 30,
-    /// <summary>
-    /// POLYGONALCAPS: Polygonal capabilities
-    /// </summary>
-    Polygonalcaps = 32,
-    /// <summary>
-    /// TEXTCAPS: Text capabilities
-    /// </summary>
-    TextCaps = 34,
-    /// <summary>
-    /// CLIPCAPS: Clipping capabilities
-    /// </summary>
-    ClipCaps = 36,
-    /// <summary>
-    /// RASTERCAPS: Bitblt capabilities
-    /// </summary>
-    RasterCaps = 38,
-    /// <summary>
-    /// ASPECTX: Length of the X leg
-    /// </summary>
-    AspectX = 40,
-    /// <summary>
-    /// ASPECTY: Length of the Y leg
-    /// </summary>
-    AspectY = 42,
-    /// <summary>
-    /// ASPECTXY: Length of the hypotenuse
-    /// </summary>
-    AspectXY = 44,
-    /// <summary>
-    /// SHADEBLENDCAPS: Shading and Blending caps
-    /// </summary>
-    ShadeBlendCaps = 45,
-
-    /// <summary>
-    /// LOGPIXELSX: Logical pixels inch in X
-    /// </summary>
-    LogPixelsX = 88,
-    /// <summary>
-    /// LOGPIXELSY: Logical pixels inch in Y
-    /// </summary>
-    LogPixelsY = 90,
-
-    /// <summary>
-    /// SIZEPALETTE: Number of entries in physical palette
-    /// </summary>
-    SizePalette = 104,
-    /// <summary>
-    /// NUMRESERVED: Number of reserved entries in palette
-    /// </summary>
-    NumReserved = 106,
-    /// <summary>
-    /// COLORRES: Actual color resolution
-    /// </summary>
-    ColourRes = 108,
-
-    /// <summary>
-    /// PHYSICALWIDTH: Physical Width in device units
-    /// </summary>
-    PhysicalWidth = 110,
-    /// <summary>
-    /// PHYSICALHEIGHT: Physical Height in device units
-    /// </summary>
-    PhysicalHeight = 111,
-    /// <summary>
-    /// PHYSICALOFFSETX: Physical Printable Area x margin
-    /// </summary>
-    PhysicalOffsetX = 112,
-    /// <summary>
-    /// PHYSICALOFFSETY: Physical Printable Area y margin
-    /// </summary>
-    PhysicalOffsetY = 113,
-    /// <summary>
-    /// SCALINGFACTORX: Scaling factor x
-    /// </summary>
-    ScalingFactorX = 114,
-    /// <summary>
-    /// SCALINGFACTORY: Scaling factor y
-    /// </summary>
-    ScalingFactorY = 115,
-
-    /// <summary>
-    /// VREFRESH: Current vertical refresh rate of the display device (for displays only) in Hz
-    /// </summary>
-    VRefresh = 116,
-    /// <summary>
-    /// DESKTOPVERTRES: Vertical height of entire desktop in pixels
-    /// </summary>
-    DesktopVertRes = 117,
-    /// <summary>
-    /// DESKTOPHORZRES: Horizontal width of entire desktop in pixels
-    /// </summary>
-    DesktopHorzRes = 118,
-    /// <summary>
-    /// BLTALIGNMENT: Preferred blt alignment
-    /// </summary>
-    BLTAlignment = 119
 }
 
 
@@ -3849,14 +3626,12 @@ internal enum DeviceModeEnum : int
     DM_DISPLAYFREQUENCY = 0x00400000,
 }
 
-
 internal enum DeviceNotification
 {
     WINDOW_HANDLE = 0x00000000,
     SERVICE_HANDLE = 0x00000001,
     ALL_INTERFACE_CLASSES = 0x00000004,
 }
-
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 internal class DISPLAY_DEVICE
@@ -3877,14 +3652,12 @@ internal class DISPLAY_DEVICE
     internal string DeviceKey;
 }
 
-
 public enum DisplayDeviceSettingsChangedResult : int
 {
     DISP_CHANGE_SUCCESSFUL = 0,
     DISP_CHANGE_RESTART = 1,
     DISP_CHANGE_FAILED = -1,
 }
-
 
 [Flags]
 internal enum DisplayDeviceStateFlags
@@ -3905,13 +3678,11 @@ internal enum DisplayDeviceStateFlags
     Attached = 0x00000002,
 }
 
-
 internal enum DisplayModeSettingsEnum
 {
     CurrentSettings = -1,
     RegistrySettings = -2
 }
-
 
 internal enum GetMouseMovePointResolution : uint
 {
@@ -3919,13 +3690,11 @@ internal enum GetMouseMovePointResolution : uint
     GMMP_USE_HIGH_RESOLUTION_POINTS = 2,
 }
 
-
 internal enum GetRawInputDataEnum
 {
     INPUT = 0x10000003,
     HEADER = 0x10000005
 }
-
 
 internal enum HandleType
 {
@@ -3933,7 +3702,6 @@ internal enum HandleType
     STD_OUTPUT_HANDLE = -11,
     STD_ERROR_HANDLE = -12
 }
-
 
 [StructLayout(LayoutKind.Sequential)]
 internal struct IconInfo
@@ -3944,7 +3712,6 @@ internal struct IconInfo
     public IntPtr MaskBitmap;
     public IntPtr ColorBitmap;
 };
-
 
 internal struct JoyCaps
 {
@@ -4012,7 +3779,6 @@ internal struct JoyCaps
     }
 }
 
-
 [Flags]
 internal enum JoystCapsFlags
 {
@@ -4024,7 +3790,6 @@ internal enum JoystCapsFlags
     HasPov4Dir = 0x32,
     HasPovContinuous = 0x64
 }
-
 
 internal struct JoyInfo
 {
@@ -4087,7 +3852,6 @@ internal struct JoyInfoEx
     }
 }
 
-
 internal enum JoystickError : uint
 {
     NoError = 0,
@@ -4097,7 +3861,6 @@ internal enum JoystickError : uint
     //MM_NoDriver = 6,
     //MM_InvalidParameter = 11
 }
-
 
 [Flags]
 enum JoystickFlags
@@ -4112,7 +3875,6 @@ enum JoystickFlags
     Buttons = 0x80,
     All = X | Y | Z | R | U | V | Pov | Buttons
 }
-
 
 /// <summary>
 /// For MapVirtualKey
@@ -4130,8 +3892,6 @@ internal enum MapVirtualKeyType
     VirtualKeyToScanCodeExtended = 4,
 }
 
-
-
 internal enum MonitorFrom
 {
     /// <summary>
@@ -4148,7 +3908,6 @@ internal enum MonitorFrom
     Nearest = 2,
 }
 
-
 #pragma warning disable 0649
 internal struct MonitorInfo
 {
@@ -4160,7 +3919,6 @@ internal struct MonitorInfo
     internal static readonly int UnmanagedSize = Marshal.SizeOf(default(MonitorInfo));
 }
 #pragma warning restore 0649
-
 
 [StructLayout(LayoutKind.Sequential)]
 public struct MouseMovePoint
@@ -4188,7 +3946,6 @@ public struct MouseMovePoint
     public static readonly int SizeInBytes = Marshal.SizeOf(default(MouseMovePoint));
 }
 
-
 /// <summary>
 /// Used with SetWindowLong call
 /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633588(v=vs.85).aspx
@@ -4207,227 +3964,6 @@ internal enum NIndex : int
     WndProc = -24 
 }
 
-
-/// <summary>
-/// The PIXELFORMATDESCRIPTOR structure describes the pixel format of a drawing surface
-/// </summary>
-[StructLayout(LayoutKind.Sequential)]
-internal class PIXELFORMATDESCRIPTOR
-{
-    // https://docs.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-pixelformatdescriptor
-    // https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-emf/1db036d6-2da8-4b92-b4f8-e9cab8cc93b7
-    [Flags]
-    internal enum Flags : uint
-    {
-        /// <summary>
-        /// The buffer can draw to a window or device surface.
-        /// </summary>
-        PFD_DRAW_TO_WINDOW = 0x00000004,
-        /// <summary>
-        /// The buffer can draw to a memory bitmap.
-        /// </summary>
-        PFD_DRAW_TO_BITMAP = 0x00000008,
-        /// <summary>
-        /// The buffer supports GDI drawing. This flag and PFD_DOUBLEBUFFER are mutually exclusive in the current generic implementation.
-        /// </summary>
-        PFD_SUPPORT_GDI = 0x00000010,
-        /// <summary>
-        /// The buffer supports OpenGL drawing.
-        /// </summary>
-        PFD_SUPPORT_OPENGL = 0x00000020,
-        /// <summary>
-        /// The pixel format is supported by a device driver that accelerates the generic implementation. If this flag is clear and the PFD_GENERIC_FORMAT flag is set, the pixel format is supported by the generic implementation only.
-        /// </summary>
-        PFD_GENERIC_ACCELERATED = 0x00001000,
-        /// <summary>
-        /// The pixel format is supported by the GDI software implementation, which is also known as the generic implementation. If this bit is clear, the pixel format is supported by a device driver or hardware.
-        /// </summary>
-        PFD_GENERIC_FORMAT = 0x00000040,
-        /// <summary>
-        /// The buffer uses RGBA pixels on a palette-managed device. A logical palette is required to achieve the best results for this pixel type. Colors in the palette should be specified according to the values of the cRedBits, cRedShift, cGreenBits, cGreenShift, cBluebits, and cBlueShift members. The palette should be created and realized in the device context before calling wglMakeCurrent.
-        /// </summary>
-        PFD_NEED_PALETTE = 0x00000080,
-        /// <summary>
-        /// 	Defined in the pixel format descriptors of hardware that supports one hardware palette in 256-color mode only. For such systems to use hardware acceleration, the hardware palette must be in a fixed order (for example, 3-3-2) when in RGBA mode or must match the logical palette when in color-index mode.When this flag is set, you must call SetSystemPaletteUse in your program to force a one-to-one mapping of the logical palette and the system palette. If your OpenGL hardware supports multiple hardware palettes and the device driver can allocate spare hardware palettes for OpenGL, this flag is typically clear. This flag is not set in the generic pixel formats.
-        /// </summary>
-        PFD_NEED_SYSTEM_PALETTE = 0x00000100,
-        /// <summary>
-        /// The buffer is double-buffered. This flag and PFD_SUPPORT_GDI are mutually exclusive in the current generic implementation.
-        /// </summary>
-        PFD_DOUBLEBUFFER = 0x00000001,
-        /// <summary>
-        /// The buffer is stereoscopic. This flag is not supported in the current generic implementation.
-        /// </summary>
-        PFD_STEREO = 0x00000002,
-        /// <summary>
-        /// Indicates whether a device can swap individual layer planes with pixel formats that include double-buffered overlay or underlay planes. Otherwise all layer planes are swapped together as a group. When this flag is set, wglSwapLayerBuffers is supported.
-        /// </summary>
-        PFD_SWAP_LAYER_BUFFERS = 0x00000800,
-        /// <summary>
-        /// You can specify this bit flag when calling ChoosePixelFormat. The requested pixel format can either have or not have a depth buffer. To select a pixel format without a depth buffer, you must specify this flag. The requested pixel format can be with or without a depth buffer. Otherwise, only pixel formats with a depth buffer are considered.
-        /// </summary>
-        PFD_DEPTH_DONTCARE = 0x20000000,
-        /// <summary>
-        /// You can specify this bit flag when calling ChoosePixelFormat. The requested pixel format can be either single- or double-buffered.
-        /// </summary>
-        PFD_DOUBLEBUFFER_DONTCARE = 0x40000000,
-        /// <summary>
-        /// You can specify this bit flag when calling ChoosePixelFormat. The requested pixel format can be either monoscopic or stereoscopic.
-        /// </summary>
-        PFD_STEREO_DONTCARE = 0x80000000,
-        /// <summary>
-        /// With the glAddSwapHintRectWIN extension function, this flag is included for the PIXELFORMATDESCRIPTOR pixel format structure. Specifies the content of the back buffer in the double-buffered main color plane following a buffer swap. Swapping the color buffers causes the content of the back buffer to be copied to the front buffer. The content of the back buffer is not affected by the swap. PFD_SWAP_COPY is a hint only and might not be provided by a driver.
-        /// </summary>
-        PFD_SWAP_COPY = 0x00000400,
-        /// <summary>
-        /// With the glAddSwapHintRectWIN extension function, this flag is included for the PIXELFORMATDESCRIPTOR pixel format structure. Specifies the content of the back buffer in the double-buffered main color plane following a buffer swap. Swapping the color buffers causes the exchange of the back buffer's content with the front buffer's content. Following the swap, the back buffer's content contains the front buffer's content before the swap. PFD_SWAP_EXCHANGE is a hint only and might not be provided by a driver.
-        /// </summary>
-        PFD_SWAP_EXCHANGE = 0x00000200,
-
-        // Below only available in this documentation: https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-emf/1db036d6-2da8-4b92-b4f8-e9cab8cc93b7
-
-        /// <summary>
-        /// The pixel buffer supports DirectDraw drawing, which allows applications to have low-level control of the output drawing surface.
-        /// </summary>
-        PFD_SUPPORT_DIRECTDRAW = 0x00002000,
-        /// <summary>
-        /// The pixel buffer supports Direct3D drawing, which accellerated rendering in three dimensions.
-        /// </summary>
-        PFD_DIRECT3D_ACCELERATED = 0x00004000,
-        /// <summary>
-        /// The pixel buffer supports compositing, which indicates that source pixels MAY overwrite or be combined with background pixels.
-        /// </summary>
-        PFD_SUPPORT_COMPOSITION = 0x00008000,
-    };
-    
-
-    /// <summary>
-    /// Type of pixel data
-    /// </summary>
-    internal enum PixelType : byte
-    {
-        /// <summary>
-        /// RGBA pixels. Each pixel has four components in this order: red, green, blue, and alpha.
-        /// </summary>
-        PFD_TYPE_RGBA = 0,
-        /// <summary>
-        /// Color-index pixels. Each pixel uses a color-index value.
-        /// </summary>
-        PFD_TYPE_COLORINDEX = 1
-    }
-    
-
-    internal PIXELFORMATDESCRIPTOR()
-    {
-    }
-
-    /// <summary>
-    /// Specifies the size of this data structure. This value should be set to sizeof(PIXELFORMATDESCRIPTOR).
-    /// </summary>
-    internal readonly short nSize = (short)Marshal.SizeOf<PIXELFORMATDESCRIPTOR>();
-    /// <summary>
-    /// Specifies the version of this data structure. This value should be set to 1.
-    /// </summary>
-    internal readonly short nVersion = 1;
-    /// <summary>
-    /// A set of bit flags that specify properties of the pixel buffer. The properties are generally not mutually exclusive; you can set any combination of bit flags, with the exceptions noted.
-    /// </summary>
-    internal Flags dwFlags; //FLAGS.DOUBLEBUFFER | FLAGS.DRAW_TO_WINDOW | FLAGS.SUPPORT_OPENGL
-    /// <summary>
-    /// Specifies the type of pixel data. The following types are defined.
-    /// </summary>
-    internal PixelType iPixelType;
-    /// <summary>
-    /// Specifies the number of color bitplanes in each color buffer. For RGBA pixel types, it is the size of the color buffer, excluding the alpha bitplanes. For color-index pixels, it is the size of the color-index buffer.
-    /// </summary>
-    internal byte cColorBits;
-    /// <summary>
-    /// Specifies the number of red bitplanes in each RGBA color buffer.
-    /// </summary>
-    internal byte cRedBits;
-    /// <summary>
-    /// Specifies the shift count for red bitplanes in each RGBA color buffer.
-    /// </summary>
-    internal byte cRedShift;
-    /// <summary>
-    /// Specifies the number of green bitplanes in each RGBA color buffer.
-    /// </summary>
-    internal byte cGreenBits;
-    /// <summary>
-    /// Specifies the shift count for green bitplanes in each RGBA color buffer.
-    /// </summary>
-    internal byte cGreenShift;
-    /// <summary>
-    /// Specifies the number of blue bitplanes in each RGBA color buffer.
-    /// </summary>
-    internal byte cBlueBits;
-    /// <summary>
-    /// Specifies the shift count for blue bitplanes in each RGBA color buffer.
-    /// </summary>
-    internal byte cBlueShift;
-    /// <summary>
-    /// Specifies the number of alpha bitplanes in each RGBA color buffer. Alpha bitplanes are not supported.
-    /// </summary>
-    internal byte cAlphaBits;
-    /// <summary>
-    /// Specifies the shift count for alpha bitplanes in each RGBA color buffer. Alpha bitplanes are not supported.
-    /// </summary>
-    internal byte cAlphaShift;
-    /// <summary>
-    /// Specifies the total number of bitplanes in the accumulation buffer.
-    /// </summary>
-    internal byte cAccumBits;
-    /// <summary>
-    /// Specifies the number of red bitplanes in the accumulation buffer.
-    /// </summary>
-    internal byte cAccumRedBits;
-    /// <summary>
-    /// Specifies the number of green bitplanes in the accumulation buffer.
-    /// </summary>
-    internal byte cAccumGreenBits;
-    /// <summary>
-    /// Specifies the number of blue bitplanes in the accumulation buffer.
-    /// </summary>
-    internal byte cAccumBlueBits;
-    /// <summary>
-    /// Specifies the number of alpha bitplanes in the accumulation buffer.
-    /// </summary>
-    internal byte cAccumAlphaBits;
-    /// <summary>
-    /// Specifies the depth of the depth (z-axis) buffer.
-    /// </summary>
-    internal byte cDepthBits;
-    /// <summary>
-    /// Specifies the depth of the stencil buffer.
-    /// </summary>
-    internal byte cStencilBits;
-    /// <summary>
-    /// Specifies the number of auxiliary buffers. Auxiliary buffers are not supported.
-    /// </summary>
-    internal byte cAuxBuffers;
-    /// <summary>
-    /// Ignored. Earlier implementations of OpenGL used this member, but it is no longer used.
-    /// </summary>
-    internal readonly byte iLayerType;
-    /// <summary>
-    /// Specifies the number of overlay and underlay planes. Bits 0 through 3 specify up to 15 overlay planes and bits 4 through 7 specify up to 15 underlay planes.
-    /// </summary>
-    internal readonly byte bReserved;
-    /// <summary>
-    /// Ignored. Earlier implementations of OpenGL used this member, but it is no longer used.
-    /// </summary>
-    internal readonly int dwLayerMask;
-    /// <summary>
-    /// Specifies the transparent color or index of an underlay plane. When the pixel type is RGBA, dwVisibleMask is a transparent RGB color value. When the pixel type is color index, it is a transparent index value.
-    /// </summary>
-    internal int dwVisibleMask;
-    /// <summary>
-    /// Ignored. Earlier implementations of OpenGL used this member, but it is no longer used.
-    /// </summary>
-    internal readonly int dwDamageMask;
-}
-
-
 [Flags]
 internal enum PM : int
 {
@@ -4436,12 +3972,10 @@ internal enum PM : int
     NOYIELD = 0x0002
 }
 
-
 [StructLayout(LayoutKind.Explicit)]
 internal struct RawHID
 {
 }
-
 
 #pragma warning disable 0649
 internal struct RawInput
@@ -4450,7 +3984,6 @@ internal struct RawInput
     internal RawInputData Data;
 }
 #pragma warning restore 0649
-
 
 [StructLayout(LayoutKind.Explicit)]
 internal struct RawInputData
@@ -4462,7 +3995,6 @@ internal struct RawInputData
     [FieldOffset(0)]
     internal RawHID HID;
 }
-
 
 /// <summary>
 /// Defines information for the raw input devices.
@@ -4494,7 +4026,6 @@ internal struct RawInputDevice
 
     internal static readonly int Size = Marshal.SizeOf(typeof(RawInputDevice));
 }
-
 
 [Flags]
 internal enum RawInputDeviceFlags : int
@@ -4549,7 +4080,6 @@ internal enum RawInputDeviceFlags : int
     //EXMODEMASK      = 0x000000F0
 }
 
-
 /// <summary>
 /// Defines the raw input data coming from any device.
 /// </summary>
@@ -4577,14 +4107,12 @@ internal class RawInputDeviceInfo
     };
 }
 
-
 internal enum RawInputDeviceInfoEnum
 {
     PREPARSEDDATA = 0x20000005,
     DEVICENAME = 0x20000007,  // the return valus is the character length, not the byte size
     DEVICEINFO = 0x2000000b
 }
-
 
 /// <summary>
 /// Contains information about a raw input device.
@@ -4604,14 +4132,12 @@ internal struct RawInputDeviceList
     internal static readonly int Size = Marshal.SizeOf(typeof(RawInputDeviceList));
 }
 
-
 internal enum RawInputDeviceType : int
 {
     MOUSE = 0,
     KEYBOARD = 1,
     HID = 2
 }
-
 
 [StructLayout(LayoutKind.Sequential)]
 internal struct RawInputHeader
@@ -4635,7 +4161,6 @@ internal struct RawInputHeader
 
     internal static int SIZE = Marshal.SizeOf(typeof(RawInputHeader));
 }
-
 
 /// <summary>
 /// Defines the raw input data coming from the specified Human Interface Device (HID).
@@ -4667,7 +4192,6 @@ internal struct RawInputHIDDeviceInfo
     internal short Usage;
 }
 
-
 internal enum RawInputKeyboardDataFlags : short
 {
     MAKE = 0,
@@ -4677,8 +4201,6 @@ internal enum RawInputKeyboardDataFlags : short
     TERMSRV_SET_LED = 8,
     TERMSRV_SHADOW = 0x10
 }
-
-
 
 /// <summary>
 /// Defines the raw input data coming from the specified keyboard.
@@ -4715,8 +4237,6 @@ internal struct RawInputKeyboardDeviceInfo
     internal int NumberOfKeysTotal;
 }
 
-
-
 /// <summary>
 /// Defines the raw input data coming from the specified mouse.
 /// </summary>
@@ -4747,8 +4267,6 @@ internal struct RawInputMouseDeviceInfo
     internal bool HasHorizontalWheel;
 }
 
-
-
 [Flags]
 internal enum RawInputMouseState : ushort
 {
@@ -4774,8 +4292,6 @@ internal enum RawInputMouseState : ushort
     WHEEL = 0x0400,
     HWHEEL = 0x0800,
 }
-
-
 
 [StructLayout(LayoutKind.Sequential)]
 internal struct RawKeyboard
@@ -4815,7 +4331,6 @@ internal struct RawKeyboard
     //internal ULONG ExtraInformation;
     internal int ExtraInformation;
 }
-
 
 [StructLayout(LayoutKind.Explicit)]
 internal struct RawMouse
@@ -4868,8 +4383,6 @@ internal struct RawMouse
     internal uint ExtraInformation;
 }
 
-
-
 /// <summary>
 /// Mouse indicator flags (found in winuser.h).
 /// </summary>
@@ -4893,8 +4406,6 @@ internal enum RawMouseFlags : ushort
     /// </summary>
     MOUSE_ATTRIBUTES_CHANGED = 0x04,
 }
-
-
 
 [Flags]
 internal enum SetWindowPosFlags : int
@@ -4966,8 +4477,6 @@ internal enum SetWindowPosFlags : int
     ASYNCWINDOWPOS = 0x4000
 }
 
-
-
 internal enum ShowWindowCommand
 {
     /// <summary>
@@ -5030,7 +4539,6 @@ internal enum ShowWindowCommand
     //SHOW_OPENNOACTIVATE= 4,
 }
 
-
 internal enum SizeMessage
 {
     MAXHIDE = 4,
@@ -5040,7 +4548,6 @@ internal enum SizeMessage
     RESTORED = 0
 }
 
-
 [StructLayout(LayoutKind.Sequential)]
 internal struct SMALL_RECT
 {
@@ -5049,20 +4556,17 @@ internal struct SMALL_RECT
     internal int Height => Bottom - Top;
 }
 
-
 internal struct StyleStruct
 {
     public WindowStyle Old;
     public WindowStyle New;
 }
 
-
 internal struct ExtendedStyleStruct
 {
     public ExtendedWindowStyle Old;
     public ExtendedWindowStyle New;
 }
-
 
 //todo: complete this
 internal enum SystemErrorCode : uint
@@ -5088,7 +4592,6 @@ internal enum SystemErrorCode : uint
 [UnmanagedFunctionPointer(CallingConvention.Winapi)]
 internal delegate void TimerProc(IntPtr hwnd, WindowMessage uMsg, UIntPtr idEvent, int dwTime);
 
-
 [Flags]
 internal enum TrackMouseEventFlags : uint
 {
@@ -5098,7 +4601,6 @@ internal enum TrackMouseEventFlags : uint
     QUERY = 0x40000000,
     CANCEL = 0x80000000,
 }
-
 
 #pragma warning disable 0649
 internal struct TrackMouseEventStructure
@@ -5111,7 +4613,6 @@ internal struct TrackMouseEventStructure
     internal static readonly int SizeInBytes = Marshal.SizeOf(typeof(TrackMouseEventStructure));
 }
 #pragma warning restore 0649
-
 
 internal enum VirtualKeys : short
 {
@@ -5402,7 +4903,6 @@ internal enum VirtualKeys : short
     Last
 }
 
-
 [StructLayout(LayoutKind.Sequential)]
 internal struct WindowPosition
 {
@@ -5439,7 +4939,6 @@ internal struct WindowPosition
     internal SetWindowPosFlags flags;
 }
 
-
 public enum AlphaFunction : int
 {
     /// <summary>
@@ -5475,7 +4974,6 @@ public enum AlphaFunction : int
     /// </summary>
     Always = 0x0207,
 }
-
 
 public enum BufferTarget : int
 {
@@ -5537,7 +5035,6 @@ public enum BufferTarget : int
     AtomicCounterBuffer = 0x92C0,
 }
 
-
 public enum BufferUsageHint : int
 {
     /// <summary>
@@ -5578,7 +5075,6 @@ public enum BufferUsageHint : int
     DynamicCopy = 0x88EA,
 }
 
-
 public enum ClearBufferMask : uint
 {
     /// <summary>
@@ -5598,7 +5094,6 @@ public enum ClearBufferMask : uint
     /// </summary>
     ColourBufferBit = 0x00004000
 }
-
 
 [Flags]
 public enum DataType : uint
@@ -5649,7 +5144,6 @@ public enum DataType : uint
     Double = 0x140A
 }
 
-
 /// <summary>
 /// GL_DEBUG_SEVERITY_HIGH and friends, for calls to glDebugMessageCallback and related error handling
 /// </summary>
@@ -5680,7 +5174,6 @@ public enum DebugSeverity : int
     /// </summary>
     Notification = 0x826B,
 }
-
 
 /// <summary>
 /// GL_DEBUG_SOURCE_API and friends, for calls to glDebugMessageCallback and related error handling
@@ -5717,7 +5210,6 @@ public enum DebugSource : int
     /// </summary>
     Other = 0x824B,
 }
-
 
 /// <summary>
 /// GL_DEBUG_TYPE_ERROR and friends, for calls to glDebugMessageCallback and related error handling
@@ -5774,7 +5266,6 @@ public enum DebugType : int
     /// </summary>
     //PushGroup = 0x824B      unknown value      
 }
-
 
 public enum EnableCap : int
 {
@@ -6360,7 +5851,6 @@ public enum EnableCap : int
     DebugOutput = 0x92E0,
 }
 
-
 public enum FramebufferAttachment : int
 {
     /// <summary>
@@ -6557,7 +6047,6 @@ public enum FramebufferAttachment : int
     StencilAttachmentExt = 0x8D20
 }
 
-
 public enum FramebufferTarget : int
 {
     /// <summary>
@@ -6578,7 +6067,6 @@ public enum FramebufferTarget : int
     FramebufferExt = 0x8D40,
 }
 
-
 public enum FrontFaceDirection : int
 {
     /// <summary>
@@ -6590,7 +6078,6 @@ public enum FrontFaceDirection : int
     /// </summary>
     Ccw = 0x0901,
 }
-
 
 public enum GLEnumPName : int
 {
@@ -9036,7 +8523,6 @@ public enum GLEnumPName : int
     MaxComputeImageUniforms = 0x91BD,
 }
 
-
 public enum GetStringEnum : uint
 {
     /// <summary>
@@ -9060,7 +8546,6 @@ public enum GetStringEnum : uint
     /// </summary>
     ShadingLanguageVersion = 0x8B8C
 }
-
 
 public enum LightName : int
 {
@@ -9130,7 +8615,6 @@ public enum LightName : int
     FragmentLight7Sgix = 0x8413,
 }
 
-
 public enum LightParameter : int
 {
     /// <summary>
@@ -9175,7 +8659,6 @@ public enum LightParameter : int
     QuadraticAttenuation = 0x1209,
 }
 
-
 /// <summary>
 /// Used in GL.ColorMaterial, GL.GetMaterial and 8 other functions
 /// </summary>
@@ -9194,7 +8677,6 @@ public enum MaterialFace : int
     /// </summary>
     FrontAndBack = 0x0408,
 }
-
 
 public enum MaterialParameter : int
 {
@@ -9228,7 +8710,6 @@ public enum MaterialParameter : int
     ColorIndexes = 0x1603,
 }
 
-
 public enum MatrixMode : int
 {
     /// <summary>
@@ -9245,7 +8726,6 @@ public enum MatrixMode : int
     Texture = 0x1702,
 }
 
-
 public enum MSAA_Samples
 {
     Disabled = 0,
@@ -9254,7 +8734,6 @@ public enum MSAA_Samples
     x8 = 8,
     x16 = 16
 }
-
 
 public enum OpenGLErrorCode : uint
 {
@@ -9269,7 +8748,6 @@ public enum OpenGLErrorCode : uint
     CONTEXT_LOST = 1287,
     TABLE_TOO_LARGE = 32817
 }
-
 
 public enum PixelInternalFormat : int
 {
@@ -9951,7 +9429,6 @@ public enum PixelInternalFormat : int
     Four = 4,
 }
 
-
 public enum PixelFormat : int
 {
     ColorIndex = 0X1900,
@@ -9984,7 +9461,6 @@ public enum PixelFormat : int
     BgrInteger = 0X8d9a,
     BgraInteger = 0X8d9b,
 }
-
 
 public enum PixelStoreParameter : int
 {
@@ -10037,7 +9513,6 @@ public enum PixelStoreParameter : int
     GL_PACK_COMPRESSED_BLOCK_SIZE = 0x912E
 }
 
-
 public enum PixelType : int
 {
     Byte = 0X1400,
@@ -10072,7 +9547,6 @@ public enum PixelType : int
     Float32UnsignedInt248Rev = 0X8Dad,
 }
 
-
 public enum PolygonMode : int
 {
     /// <summary>
@@ -10088,7 +9562,6 @@ public enum PolygonMode : int
     /// </summary>
     Fill = 0x1B02,
 }
-
 
 public enum PrimitiveType : int
 {
@@ -10146,7 +9619,6 @@ public enum PrimitiveType : int
     Patches = 14
 }
 
-
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 internal struct RgbaColor
 {
@@ -10156,7 +9628,6 @@ internal struct RgbaColor
     public byte Red;
     public byte Alpha;
 }
-
 
 public enum ShadingModel : int
 {
@@ -10169,7 +9640,6 @@ public enum ShadingModel : int
     /// </summary>
     Smooth = 0x1D01,
 }
-
 
 public enum ShaderParameter : int
 {
@@ -10195,7 +9665,6 @@ public enum ShaderParameter : int
     ShaderSourceLength = 0x8B88,
 }
 
-
 public enum ShaderType : int
 {
     FragmentShader = 0x8B30,
@@ -10205,7 +9674,6 @@ public enum ShaderType : int
     TessControlShader = 0x8E88,
     ComputeShader = 0x91B9,
 }
-
 
 public enum TexInternalFormat : int
 {
@@ -10331,7 +9799,6 @@ public enum TexInternalFormat : int
     RGBA8I = 0x8D8E
 }
 
-
 public enum TextureParameter : int
 {
     /// <summary>
@@ -10450,7 +9917,6 @@ public enum TextureParameter : int
     LinearClipmapNearestSGIX = 0x844F,
     
 }
-
 
 public enum TextureParameterName : int
 {
@@ -10656,7 +10122,6 @@ public enum TextureParameterName : int
     TextureSwizzleRgba = 0x8E46,
 }
 
-
 public enum TextureTargetMultisample : int
 {
     /// <summary>
@@ -10676,7 +10141,6 @@ public enum TextureTargetMultisample : int
     /// </summary>
     ProxyTexture2DMultisampleArray = 0x9103,
 }
-
 
 public enum TextureUnit
 {
@@ -10713,7 +10177,6 @@ public enum TextureUnit
     Texture30 = 34014,
     Texture31 = 34015,
 }
-
 
 [Flags]
 public enum VertexArray : uint
@@ -10880,7 +10343,6 @@ public enum VertexArray : uint
     T4F_C4F_N3F_V4F = 0x2A2D,
 }
 
-
 public enum VertexAttribPointerType : int
 {
     Byte = 5120,
@@ -10897,14 +10359,12 @@ public enum VertexAttribPointerType : int
     Int2101010Rev = 36255,
 }
 
-
 public enum VSyncMode : int
 {
     On = 1,
     Off = 0,
     Adaptive = -1
 }
-
 
 //todo: force the relevant function to take this enum (tricky because it's an array of ints, and half need to stay ints)
 public enum ArbCreateContext
@@ -10920,7 +10380,6 @@ public enum ArbCreateContext
     ErrorInvalidVersion = 0x2095,
     ProfileMask = 0x9126,
 }
-
 
 public enum ARB_multisample
 {

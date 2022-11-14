@@ -101,7 +101,7 @@ public class Win32Window : IWindow
         else
             User32.SetProcessDPIAware();
 
-        DPI = GDI32.GetDeviceCaps(User32.GetDC(IntPtr.Zero), DeviceCaps.LogPixelsX) / 96f;
+        DPI = GDI32.GetDeviceCaps(User32.GetDC(IntPtr.Zero), GetDeviceCapsIndex.LOGPIXELSX) / 96f;
 
         if (settings.MinClientSize.X < 0 || settings.MinClientSize.Y < 0 || settings.MaxClientSize.X < 0 || settings.MaxClientSize.Y < 0 || settings.Width < 0 || settings.Height < 0)
             throw new Exception($"Settings requested a negative size: ({settings})");
