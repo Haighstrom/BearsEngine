@@ -37,7 +37,12 @@
             : this(layer, orientation, fullPosition, edgeToPanelGap, tabPanelOverlap, firstTabShift, tabSpacing, lastTabToNewTabButtonSpace, spaceBetweenArrows, theme, new Panel(panelGFX, GetPanelRect(fullPosition, orientation, edgeToPanelGap, tabPanelOverlap).Size), new Image(tabsBackArrow, tabsBackAndForwardSize), new Image(tabsForwardArrow, tabsBackAndForwardSize), new Image(addNewTabGFX, tabAddButtonSize), addNewTabFn)
         {
         }
-        
+
+
+        public TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, UITheme theme)
+            : this(layer, orientation, fullPosition, edgeToPanelGap, tabPanelOverlap, firstTabShift, tabSpacing, theme, new Image(theme.TabbedPanel.Panel.BackgroundColour, GetPanelRect(fullPosition, orientation, edgeToPanelGap, tabPanelOverlap).Size))
+        {
+        }
 
         public TabbedPanel(int layer, Direction orientation, Rect fullPosition, int edgeToPanelGap, int tabPanelOverlap, int firstTabShift, int tabSpacing, UITheme theme, string panelGFX)
             : this(layer, orientation, fullPosition, edgeToPanelGap, tabPanelOverlap, firstTabShift, tabSpacing, theme, new Panel(panelGFX, GetPanelRect(fullPosition, orientation, edgeToPanelGap, tabPanelOverlap).Size))

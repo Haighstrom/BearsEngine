@@ -5,9 +5,12 @@
         public static TabbedPanelTheme Default => new()
         {
             Panel = PanelTheme.Default,
+            ActivatedTabColour = Colour.PeachPuff,
+            DeactivatedTabColour = Colour.CadetBlue,
         };
         
 
         public PanelTheme Panel;
+        public Colour ActivatedTabColour, DeactivatedTabColour;
     }
 }
