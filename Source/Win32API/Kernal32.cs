@@ -4,16 +4,25 @@ using System.Security;
 
 namespace BearsEngine.Win32API;
 
+/// <summary>
+/// Low-level operating system functions for memory management and resource handling.
+/// </summary>
 [SuppressUnmanagedCodeSecurity]
 internal static class Kernal32
 {
-    //https://docs.microsoft.com/en-us/windows/console/allocconsole
     /// <summary>
     /// Allocates a new console for the calling process.
     /// </summary>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
     [DllImport("kernel32.dll", SetLastError = true)]
-    [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool AllocConsole();
+
+    /// <summary>
+    /// Detaches the calling process from its console.
+    /// </summary>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport("kernel32.dll", SetLastError = true)]
+    public static extern bool FreeConsole();
 
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getmodulehandlew
@@ -28,7 +37,6 @@ internal static class Kernal32
     [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     public static extern IntPtr GetModuleHandle(string lpModuleName);
     
-
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibraryw
     /// Loads the specified module into the address space of the calling process. The specified module may cause other modules to be loaded.
@@ -43,71 +51,43 @@ internal static class Kernal32
     [DllImport("kernel32.dll")]
     public static extern IntPtr LoadLibrary(string lpLibFileName);
     
-
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-setlasterror
     /// Sets the last-error code for the calling thread.
     /// </summary>
     /// <param name="dwErrCode">The last-error code for the thread.</param>
     [DllImport("kernel32.dll")]
-    internal static extern void SetLastError(int dwErrCode);
-    
+    public static extern void SetLastError(int dwErrCode);
 
     // * * * CLEANED UP ABOVE THIS LINE * * *
 
-    [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    public static extern IntPtr CreateFile(
-         [MarshalAs(UnmanagedType.LPTStr)] string lpFilename,
-         [MarshalAs(UnmanagedType.U4)] DesiredAccess dwDesiredAccess,
-         [MarshalAs(UnmanagedType.U4)] FileShare dwShareMode,
-         IntPtr lpSecurityAttributes, // optional SECURITY_ATTRIBUTES struct or IntPtr.Zero
-         [MarshalAs(UnmanagedType.U4)] FileMode dwCreationDisposition,
-         [MarshalAs(UnmanagedType.U4)] FileAttributes dwFlagsAndAttributes,
-         IntPtr hTemplateFile);
-    
-
-    /// <summary>
-    /// Detaches this application from the console (if this is the only application using it, it will close)
-    /// </summary>
-    [DllImport("kernel32.dll", SetLastError = true)]
-    [return: MarshalAsAttribute(UnmanagedType.Bool)]
-    public static extern bool FreeConsole();
-    
-
     [DllImport("kernel32.dll")]
     internal static extern bool FreeLibrary(IntPtr handle);
-    
 
     [DllImport("kernel32.dll")]
     internal static extern bool GetConsoleScreenBufferInfo(
         IntPtr hConsoleOutput,
         out CONSOLE_SCREEN_BUFFER_INFO lpConsoleScreenBufferInfo
         );
-    
 
     [DllImport("kernel32.dll", SetLastError = true)]
     public static extern IntPtr GetConsoleWindow();
-    
 
     [DllImport("kernel32.dll")]
     internal static extern IntPtr GetProcAddress(IntPtr handle, string funcname);
 
     [DllImport("kernel32.dll")]
     internal static extern IntPtr GetProcAddress(IntPtr handle, IntPtr funcname);
-    
 
     [DllImport("kernel32.dll", SetLastError = true)]
     public static extern IntPtr GetStdHandle(HandleType nStdHandle);
-    
 
     [DllImport("kernel32.dll")]
     internal static extern bool SetConsoleScreenBufferSize(
       IntPtr hConsoleOutput,
       COORD size
     );
-    
 
     [DllImport("kernel32.dll", SetLastError = true)]
     public static extern bool SetStdHandle(HandleType nStdHandle, IntPtr hHandle);
-    
 }

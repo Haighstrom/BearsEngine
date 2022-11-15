@@ -4,7 +4,7 @@ using System.Security;
 namespace BearsEngine.Win32API;
 
 /// <summary>
-/// Windows Graphic Design Interface https://docs.microsoft.com/en-us/windows/win32/gdi/windows-gdi
+/// Graphics Device Interface (GDI) functions for device output, such as those for drawing and font management. https://docs.microsoft.com/en-us/windows/win32/gdi/windows-gdi
 /// </summary>
 [SuppressUnmanagedCodeSecurity]
 internal static class GDI32

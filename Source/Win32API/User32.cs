@@ -4,6 +4,9 @@ using System.Text;
 
 namespace BearsEngine.Win32API;
 
+/// <summary>
+/// Windows management functions for message handling, timers, menus, and communications.
+/// </summary>
 [SuppressUnmanagedCodeSecurity]
 internal static class User32
 {
