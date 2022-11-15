@@ -342,13 +342,6 @@ internal enum LoadImage_FULoad : uint
     LR_VGACOLOR = 0x00000080,
 }
 
-enum MonitorDpiType
-{
-    MDT_EFFECTIVE_DPI = 0,
-    MDT_ANGULAR_DPI = 1,
-    MDT_RAW_DPI = 2,
-    MDT_DEFAULT = MDT_EFFECTIVE_DPI,
-}
 internal enum PROCESS_DPI_AWARENESS
 {
     Process_DPI_Unaware = 0,
@@ -3380,45 +3373,11 @@ public enum TextureTarget : int
     ProxyTexture2DMultisampleArray = 0x9103
 }
 
-internal enum ABE : uint
-{
-    Left = 0,
-    Top = 1,
-    Right = 2,
-    Bottom = 3
-}
-
-internal enum ABM : uint
-{
-    New = 0x00000000,
-    Remove = 0x00000001,
-    QueryPos = 0x00000002,
-    SetPos = 0x00000003,
-    GetState = 0x00000004,
-    GetTaskbarPos = 0x00000005,
-    Activate = 0x00000006,
-    GetAutoHideBar = 0x00000007,
-    SetAutoHideBar = 0x00000008,
-    WindowPosChanged = 0x00000009,
-    SetState = 0x0000000A,
-}
-
 [Flags]
 internal enum ABS : int
 {
     Autohide = 0x0000001,
     AlwaysOnTop = 0x0000002
-}
-
-[StructLayout(LayoutKind.Sequential)]
-internal struct APPBARDATA
-{
-    public uint cbSize;
-    public IntPtr hWnd;
-    public uint uCallbackMessage;
-    public ABE uEdge;
-    public RECT rc;
-    public int lParam;
 }
 
 [Flags]
@@ -3691,167 +3650,59 @@ internal struct IconInfo
     public IntPtr ColorBitmap;
 };
 
-internal struct JoyCaps
+[StructLayout(LayoutKind.Sequential)]
+internal struct LPJOYINFOEX
 {
-    public ushort Mid;
-    public ushort ProductId;
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-    public string ProductName;
-    public int XMin;
-    public int XMax;
-    public int YMin;
-    public int YMax;
-    public int ZMin;
-    public int ZMax;
-    public int NumButtons;
-    public int PeriodMin;
-    public int PeriodMax;
-    public int RMin;
-    public int RMax;
-    public int UMin;
-    public int UMax;
-    public int VMin;
-    public int VMax;
-    public JoystCapsFlags Capabilities;
-    public int MaxAxes;
-    public int NumAxes;
-    public int MaxButtons;
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-    public string RegKey;
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-    public string OemVxD;
-
-    public static readonly int SizeInBytes;
-
-    static JoyCaps()
-    {
-        SizeInBytes = Marshal.SizeOf(default(JoyCaps));
-    }
-
-    public int GetMin(int i)
-    {
-        switch (i)
-        {
-            case 0: return XMin;
-            case 1: return YMin;
-            case 2: return ZMin;
-            case 3: return RMin;
-            case 4: return UMin;
-            case 5: return VMin;
-            default: return 0;
-        }
-    }
-
-    public int GetMax(int i)
-    {
-        switch (i)
-        {
-            case 0: return XMax;
-            case 1: return YMax;
-            case 2: return ZMax;
-            case 3: return RMax;
-            case 4: return UMax;
-            case 5: return VMax;
-            default: return 0;
-        }
-    }
-}
-
-[Flags]
-internal enum JoystCapsFlags
-{
-    HasZ = 0x1,
-    HasR = 0x2,
-    HasU = 0x4,
-    HasV = 0x8,
-    HasPov = 0x16,
-    HasPov4Dir = 0x32,
-    HasPovContinuous = 0x64
-}
-
-internal struct JoyInfo
-{
-    public int XPos;
-    public int YPos;
-    public int ZPos;
-    public uint Buttons;
-
-    public int GetAxis(int i)
-    {
-        switch (i)
-        {
-            case 0: return XPos;
-            case 1: return YPos;
-            case 2: return ZPos;
-            default: return 0;
-        }
-    }
-}
-
-
-internal struct JoyInfoEx
-{
-    public int Size;
+    public int dwSize;
     [MarshalAs(UnmanagedType.I4)]
-    public JoystickFlags Flags;
-    public int XPos;
-    public int YPos;
-    public int ZPos;
-    public int RPos;
-    public int UPos;
-    public int VPos;
-    public uint Buttons;
-    public uint ButtonNumber;
-    public int Pov;
-#pragma warning disable 0169
-    uint Reserved1;
-    uint Reserved2;
-#pragma warning restore 0169
+    public JoystickFlags dwFlags; //todo: finish this
+    public int dwXpos;
+    public int dwYpos;
+    public int dwZpos;
+    public int dwRpos;
+    public int dwUpos;
+    public int dwVpos;
+    public uint dwButtons;
+    public uint dwButtonNumber;
+    public int dwPOV;
+    private readonly uint dwReserved1;
+    private readonly uint dwReserved2;
 
     public static readonly int SizeInBytes;
 
-    static JoyInfoEx()
+    static LPJOYINFOEX()
     {
-        SizeInBytes = Marshal.SizeOf(default(JoyInfoEx));
+        SizeInBytes = Marshal.SizeOf(default(LPJOYINFOEX));
     }
 
     public int GetAxis(int i)
     {
         switch (i)
         {
-            case 0: return XPos;
-            case 1: return YPos;
-            case 2: return ZPos;
-            case 3: return RPos;
-            case 4: return UPos;
-            case 5: return VPos;
+            case 0: return dwXpos;
+            case 1: return dwYpos;
+            case 2: return dwZpos;
+            case 3: return dwRpos;
+            case 4: return dwUpos;
+            case 5: return dwVpos;
             default: return 0;
         }
     }
 }
 
-internal enum JoystickError : uint
-{
-    NoError = 0,
-    InvalidParameters = 165,
-    NoCanDo = 166,
-    Unplugged = 167
-    //MM_NoDriver = 6,
-    //MM_InvalidParameter = 11
-}
-
 [Flags]
-enum JoystickFlags
+internal enum JoystickFlags
 {
+    //todo: finish this https://learn.microsoft.com/en-us/previous-versions/ms709358(v=vs.85)
     X = 0x1,
     Y = 0x2,
     Z = 0x4,
     R = 0x8,
     U = 0x10,
     V = 0x20,
-    Pov = 0x40,
-    Buttons = 0x80,
-    All = X | Y | Z | R | U | V | Pov | Buttons
+    JOY_RETURNPOV = 0x40,
+    JOY_RETURNBUTTONS = 0x80,
+    JOY_RETURNALL = X | Y | Z | R | U | V | JOY_RETURNPOV | JOY_RETURNBUTTONS
 }
 
 /// <summary>

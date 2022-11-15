@@ -22,7 +22,7 @@ public static class Taskbar
         APPBARDATA data = new();
         data.cbSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(APPBARDATA));
         data.hWnd = taskbarHandle;
-        IntPtr result = Shell32.SHAppBarMessage(ABM.GetTaskbarPos, ref data);
+        IntPtr result = Shell32.SHAppBarMessage(AppBarMessage.GetTaskbarPos, ref data);
         if (result == IntPtr.Zero)
             throw new InvalidOperationException();
 
@@ -30,7 +30,7 @@ public static class Taskbar
         R = new Rect(data.rc.left, data.rc.top, data.rc.right - data.rc.left, data.rc.bottom - data.rc.top);
 
         data.cbSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(APPBARDATA));
-        result = Shell32.SHAppBarMessage(ABM.GetState, ref data);
+        result = Shell32.SHAppBarMessage(AppBarMessage.GetState, ref data);
         int state = result.ToInt32();
         AlwaysOnTop = (state & (int)ABS.AlwaysOnTop) == (int)ABS.AlwaysOnTop;
         AutoHide = (state & (int)ABS.Autohide) == (int)ABS.Autohide;

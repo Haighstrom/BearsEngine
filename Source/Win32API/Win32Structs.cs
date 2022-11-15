@@ -3,6 +3,45 @@
 namespace BearsEngine.Win32API;
 
 /// <summary>
+/// Contains information about a system appbar message.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct APPBARDATA
+{
+    /// <summary>
+    /// The size of the structure, in bytes.
+    /// </summary>
+    public uint cbSize;
+
+    /// <summary>
+    /// The handle to the appbar window. Not all messages use this member. See the individual message page to see if you need to provide an hWind value.
+    /// </summary>
+    public IntPtr hWnd;
+
+    /// <summary>
+    /// An application-defined message identifier. The application uses the specified identifier for notification messages that it sends to the appbar identified by the hWnd member. This member is used when sending the ABM_NEW message.
+    /// </summary>
+    public uint uCallbackMessage;
+
+    /// <summary>
+    /// A value that specifies an edge of the screen. This member is used when sending one of these messages: ABM_GETAUTOHIDEBAR, ABM_SETAUTOHIDEBAR, ABM_GETAUTOHIDEBAREX, ABM_SETAUTOHIDEBAREX, ABM_QUERYPOS, ABM_SETPOS
+    /// </summary>
+    public APPBARDATA_uEdge uEdge;
+
+    /// <summary>
+    /// A RECT structure whose use varies depending on the message:
+    /// ABM_GETTASKBARPOS, ABM_QUERYPOS, ABM_SETPOS: The bounding rectangle, in screen coordinates, of an appbar or the Windows taskbar.
+    /// ABM_GETAUTOHIDEBAREX, ABM_SETAUTOHIDEBAREX: The monitor on which the operation is being performed. This information can be retrieved through the GetMonitorInfo function.
+    /// </summary>
+    public RECT rc;
+
+    /// <summary>
+    /// A message-dependent value. This member is used with these messages: ABM_SETAUTOHIDEBAR ABM_SETAUTOHIDEBAREX ABM_SETSTATE. See the individual message pages for details.
+    /// </summary>
+    public int lParam;
+}
+
+/// <summary>
 /// Contains information about a console screen buffer. https://learn.microsoft.com/en-us/windows/console/console-screen-buffer-info-str
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
@@ -49,6 +88,204 @@ internal struct COORD
     /// </summary>
     public short Y;
 };
+
+/// <summary>
+/// The JOYCAPS structure contains information about the joystick capabilities.
+/// </summary>
+internal struct JOYCAPS
+{
+    /// <summary>
+    /// Manufacturer identifier. Manufacturer identifiers are defined in Manufacturer and Product Identifiers.
+    /// </summary>
+    public ushort wMid;
+
+    /// <summary>
+    /// Product identifier. Product identifiers are defined in Manufacturer and Product Identifiers.
+    /// </summary>
+    public ushort wPid;
+
+    /// <summary>
+    /// Null-terminated string containing the joystick product name.
+    /// </summary>
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+    public string szPname;
+
+    /// <summary>
+    /// Minimum X-coordinate.
+    /// </summary>
+    public int wXmin;
+
+    /// <summary>
+    /// Maximum X-coordinate.
+    /// </summary>
+    public int wXmax;
+
+    /// <summary>
+    /// Minimum Y-coordinate.
+    /// </summary>
+    public int wYmin;
+
+    /// <summary>
+    /// Maximum Y-coordinate.
+    /// </summary>
+    public int wYmax;
+
+    /// <summary>
+    /// Minimum Z-coordinate.
+    /// </summary>
+    public int wZmin;
+
+    /// <summary>
+    /// Maximum Z-coordinate.
+    /// </summary>
+    public int wZmax;
+
+    /// <summary>
+    /// Number of joystick buttons.
+    /// </summary>
+    public int wNumButtons;
+
+    /// <summary>
+    /// Smallest polling frequency supported when captured by the joySetCapture function.
+    /// </summary>
+    public int wPeriodMin;
+
+    /// <summary>
+    /// Largest polling frequency supported when captured by joySetCapture.
+    /// </summary>
+    public int wPeriodMax;
+
+    /// <summary>
+    /// Minimum rudder value. The rudder is a fourth axis of movement.
+    /// </summary>
+    public int wRmin;
+
+    /// <summary>
+    /// Maximum rudder value. The rudder is a fourth axis of movement.
+    /// </summary>
+    public int wRmax;
+
+    /// <summary>
+    /// Minimum u-coordinate (fifth axis) values.
+    /// </summary>
+    public int wUmin;
+
+    /// <summary>
+    /// Maximum u-coordinate (fifth axis) values.
+    /// </summary>
+    public int wUmax;
+
+    /// <summary>
+    /// Minimum v-coordinate (sixth axis) values.
+    /// </summary>
+    public int wVmin;
+
+    /// <summary>
+    /// Maximum v-coordinate (sixth axis) values.
+    /// </summary>
+    public int wVmax;
+
+    /// <summary>
+    /// Joystick capabilities
+    /// </summary>
+    public JOYCAPS_Caps wCaps;
+
+    /// <summary>
+    /// Maximum number of axes supported by the joystick.
+    /// </summary>
+    public int wMaxAxes;
+
+    /// <summary>
+    /// Number of axes currently in use by the joystick.
+    /// </summary>
+    public int wNumAxes;
+
+    /// <summary>
+    /// Maximum number of buttons supported by the joystick.
+    /// </summary>
+    public int wMaxButtons;
+
+    /// <summary>
+    /// Null-terminated string containing the registry key for the joystick.
+    /// </summary>
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+    public string szRegKey;
+
+    /// <summary>
+    /// Null-terminated string identifying the joystick driver OEM.
+    /// </summary>
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+    public string szOEMVxD;
+
+    public static readonly int SizeInBytes;
+
+    static JOYCAPS()
+    {
+        SizeInBytes = Marshal.SizeOf(default(JOYCAPS));
+    }
+
+    public int GetMin(int i)
+    {
+        return i switch
+        {
+            0 => wXmin,
+            1 => wYmin,
+            2 => wZmin,
+            3 => wRmin,
+            4 => wUmin,
+            5 => wVmin,
+            _ => 0,
+        };
+    }
+
+    public int GetMax(int i)
+    {
+        return i switch
+        {
+            0 => wXmax,
+            1 => wYmax,
+            2 => wZmax,
+            3 => wRmax,
+            4 => wUmax,
+            5 => wVmax,
+            _ => 0,
+        };
+    }
+}
+
+/// <summary>
+/// The JOYINFO structure contains information about the joystick position and button state.
+/// </summary>
+internal struct JOYINFO
+{
+    /// <summary>
+    /// Current X-coordinate.
+    /// </summary>
+    public int wXpos;
+
+    /// <summary>
+    /// Current Y-coordinate.
+    /// </summary>
+    public int wYpos;
+
+    /// <summary>
+    /// Current Z-coordinate.
+    /// </summary>
+    public int wZpos;
+
+    /// <summary>
+    /// Current state of joystick buttons.
+    /// </summary>
+    public JOYINFO_wButtons wButtons;
+
+    public int GetAxis(int i) => i switch
+    {
+        0 => wXpos,
+        1 => wYpos,
+        2 => wZpos,
+        _ => 0,
+    };
+}
 
 /// <summary>
 /// The PIXELFORMATDESCRIPTOR structure describes the pixel format of a drawing surface

@@ -9,7 +9,7 @@ namespace BearsEngine.Win32API;
 [SuppressUnmanagedCodeSecurity]
 internal static class Kernal32
 {
-    private const string Library = "kernel32.dll";
+    private const string Library = "Kernel32.dll";
 
     /// <summary>
     /// Allocates a new console for the calling process.

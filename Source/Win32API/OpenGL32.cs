@@ -9,7 +9,7 @@ namespace BearsEngine.Win32API;
 [SuppressUnmanagedCodeSecurity]
 internal static class OpenGL32
 {
-    private const string Library = "opengl32.dll";
+    private const string Library = "Opengl32.dll";
 
     // https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glAlphaFunc.xml
 
@@ -21,9 +21,7 @@ internal static class OpenGL32
     [DllImport(Library)]
     internal static extern void glAlphaFunc(GLAlphaFuncEnum func, float @ref);
     
-
     // ***CLEANED UP ABOVE THIS LINE***
-
 
     [DllImport("opengl32.dll")]
     internal static extern void glBegin(int mode);

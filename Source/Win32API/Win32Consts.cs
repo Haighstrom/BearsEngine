@@ -1,6 +1,103 @@
 ﻿namespace BearsEngine.Win32API;
 
 /// <summary>
+/// Appbar message value to send. https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shappbarmessage
+/// </summary>
+internal enum AppBarMessage : uint
+{
+    /// <summary>
+    /// Registers a new appbar and specifies the message identifier that the system should use to send notification messages to the appbar.
+    /// </summary>
+    ABM_NEW = 0x00000000,
+
+    /// <summary>
+    /// Unregisters an appbar, removing the bar from the system's internal list.
+    /// </summary>
+    ABM_REMOVE = 0x00000001,
+
+    /// <summary>
+    /// Requests a size and screen position for an appbar.
+    /// </summary>
+    ABM_QUERYPOS = 0x00000002,
+
+    /// <summary>
+    /// Sets the size and screen position of an appbar.
+    /// </summary>
+    ABM_SETPOS = 0x00000003,
+
+    /// <summary>
+    /// Retrieves the autohide and always-on-top states of the Windows taskbar.
+    /// </summary>
+    ABM_GETSTATE = 0x00000004,
+
+    /// <summary>
+    /// Retrieves the bounding rectangle of the Windows taskbar. Note that this applies only to the system taskbar. Other objects, particularly toolbars supplied with third-party software, also can be present. As a result, some of the screen area not covered by the Windows taskbar might not be visible to the user. To retrieve the area of the screen not covered by both the taskbar and other app bars—the working area available to your application—, use the GetMonitorInfo function.
+    /// </summary>
+    ABM_GETTASKBARPOS = 0x00000005,
+
+    /// <summary>
+    /// Notifies the system to activate or deactivate an appbar. The lParam member of the APPBARDATA pointed to by pData is set to TRUE to activate or FALSE to deactivate.
+    /// </summary>
+    ABM_ACTIVATE = 0x00000006,
+
+    /// <summary>
+    /// Retrieves the handle to the autohide appbar associated with a particular edge of the screen.
+    /// </summary>
+    ABM_GETAUTOHIDEBAR = 0x00000007,
+
+    /// <summary>
+    /// Registers or unregisters an autohide appbar for an edge of the screen.
+    /// </summary>
+    ABM_SETAUTOHIDEBAR = 0x00000008,
+
+    /// <summary>
+    /// Notifies the system when an appbar's position has changed.
+    /// </summary>
+    ABM_WINDOWPOSCHANGED = 0x00000009,
+
+    /// <summary>
+    /// Windows XP and later: Sets the state of the appbar's autohide and always-on-top attributes.
+    /// </summary>
+    ABM_SETSTATE = 0x0000000A,
+
+    /// <summary>
+    /// Windows XP and later: Retrieves the handle to the autohide appbar associated with a particular edge of a particular monitor.
+    /// </summary>
+    ABM_GETAUTOHIDEBAREX = 0x0000000B,
+
+    /// <summary>
+    /// Windows XP and later: Registers or unregisters an autohide appbar for an edge of a particular monitor.
+    /// </summary>
+    ABM_SETAUTOHIDEBAREX = 0x0000000C,
+}
+
+/// <summary>
+/// A value that specifies an edge of the screen. https://learn.microsoft.com/en-us/windows/win32/api/shellapi/ns-shellapi-appbardata
+/// </summary>
+internal enum APPBARDATA_uEdge : uint
+{
+    /// <summary>
+    /// Bottom edge.
+    /// </summary>
+    ABE_BOTTOM = 3,
+    
+    /// <summary>
+    /// Left edge.
+    /// </summary>
+    ABE_LEFT = 0,
+
+    /// <summary>
+    /// Right edge.
+    /// </summary>
+    ABE_RIGHT = 2,
+
+    /// <summary>
+    /// Top edge.
+    /// </summary>
+    ABE_TOP = 1,
+}
+
+/// <summary>
 /// The item to be returned in GetDeviceCaps. https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getdevicecaps
 /// </summary>
 internal enum GetDeviceCapsIndex : int
@@ -189,6 +286,137 @@ internal enum GetDeviceCapsIndex : int
     /// Value that indicates the color management capabilities of the device
     /// </summary>
     COLORMGMTCAPS = 121,
+}
+
+/// <summary>
+/// Joystick capabilities
+/// </summary>
+[Flags]
+internal enum JOYCAPS_Caps
+{
+    /// <summary>
+    /// Joystick has z-coordinate information.
+    /// </summary>
+    JOYCAPS_HASZ = 0x1,
+
+    /// <summary>
+    /// Joystick has rudder (fourth axis) information.
+    /// </summary>
+    JOYCAPS_HASR = 0x2,
+
+    /// <summary>
+    /// Joystick has u-coordinate (fifth axis) information.
+    /// </summary>
+    JOYCAPS_HASU = 0x4,
+
+    /// <summary>
+    /// 	Joystick has v-coordinate (sixth axis) information.
+    /// </summary>
+    JOYCAPS_HASV = 0x8,
+
+    /// <summary>
+    /// Joystick has point-of-view information.
+    /// </summary>
+    JOYCAPS_HASPOV = 0x16,
+
+    /// <summary>
+    /// Joystick point-of-view supports discrete values (centered, forward, backward, left, and right).
+    /// </summary>
+    JOYCAPS_POV4DIR = 0x32,
+
+    /// <summary>
+    /// Joystick point-of-view supports continuous degree bearings.
+    /// </summary>
+    JOYCAPS_POVCTS = 0x64
+}
+
+/// <summary>
+/// Joystick buttons
+/// </summary>
+[Flags]
+internal enum JOYINFO_wButtons
+{
+    /// <summary>
+    /// First joystick button
+    /// </summary>
+    JOY_BUTTON1 = 1,
+
+    /// <summary>
+    /// Second joystick button
+    /// </summary>
+    JOY_BUTTON2 = 2,
+
+    /// <summary>
+    /// Third joystick button
+    /// </summary>
+    JOY_BUTTON3 = 4,
+
+    /// <summary>
+    /// Fourth jooystick button
+    /// </summary>
+    JOY_BUTTON4 = 8,
+}
+
+/// <summary>
+/// Results of MultiMedia calls
+/// </summary>
+internal enum MMResult : uint
+{
+    /// <summary>
+    /// No error.
+    /// </summary>
+    JOYERR_NOERROR = 0,
+
+    /// <summary>
+    /// The joystick driver is not present, or the specified joystick identifier is invalid. The specified joystick identifier is invalid.
+    /// </summary>
+    MMSYSERR_NODRIVER = 6,
+
+    /// <summary>
+    /// 	An invalid parameter was passed.
+    /// </summary>
+    MMSYSERR_INVALPARAM = 11,
+
+    /// <summary>
+    /// Windows 95/98/Me: The specified joystick identifier is invalid.
+    /// </summary>
+    MMSYSERR_BADDEVICEID = 2,
+
+    /// <summary>
+    /// The specified joystick is not connected to the system.
+    /// </summary>
+    JOYERR_UNPLUGGED = 167,
+
+    /// <summary>
+    /// Windows NT/2000/XP: The specified joystick identifier is invalid.
+    /// </summary>
+    JOYERR_PARMS = 165,
+}
+
+/// <summary>
+/// Identifies the dots per inch (dpi) setting for a monitor.
+/// </summary>
+internal enum MONITOR_DPI_TYPE
+{
+    /// <summary>
+    /// The effective DPI. This value should be used when determining the correct scale factor for scaling UI elements. This incorporates the scale factor set by the user for this specific display.
+    /// </summary>
+    MDT_EFFECTIVE_DPI = 0,
+
+    /// <summary>
+    /// The angular DPI. This DPI ensures rendering at a compliant angular resolution on the screen. This does not include the scale factor set by the user for this specific display.
+    /// </summary>
+    MDT_ANGULAR_DPI = 1,
+
+    /// <summary>
+    /// The raw DPI. This value is the linear DPI of the screen as measured on the screen itself. Use this value when you want to read the pixel density and not the recommended scaling setting. This does not include the scale factor set by the user for this specific display and is not guaranteed to be a supported DPI value.
+    /// </summary>
+    MDT_RAW_DPI = 2,
+
+    /// <summary>
+    /// The default DPI setting for a monitor is MDT_EFFECTIVE_DPI.
+    /// </summary>
+    MDT_DEFAULT = MDT_EFFECTIVE_DPI,
 }
 
 /// <summary>

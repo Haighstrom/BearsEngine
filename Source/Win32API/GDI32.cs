@@ -9,7 +9,7 @@ namespace BearsEngine.Win32API;
 [SuppressUnmanagedCodeSecurity]
 internal static class GDI32
 {
-    private const string Library = "gdi32.dll";
+    private const string Library = "Gdi32.dll";
 
     /// <summary>
     /// The ChoosePixelFormat function attempts to match an appropriate pixel format supported by a device context to a given pixel format specification.

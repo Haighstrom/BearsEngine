@@ -7,7 +7,7 @@ namespace BearsEngine.Win32API;
 /// </summary>
 internal static class DWMAPI
 {
-    private const string Library = "dwmapi.dll";
+    private const string Library = "Dwmapi.dll";
 
     /// <summary>
     /// Retrieves the current value of a specified Desktop Window Manager (DWM) attribute applied to a window.

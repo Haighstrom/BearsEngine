@@ -9,7 +9,7 @@ namespace BearsEngine.Win32API;
 [SuppressUnmanagedCodeSecurity]
 internal static class GLU32
 {
-    private const string Library = "glu32.dll";
+    private const string Library = "Glu32.dll";
 
     /// <summary>
     /// Builds a two-dimensional mipmap
