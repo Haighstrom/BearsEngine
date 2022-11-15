@@ -3,6 +3,54 @@
 namespace BearsEngine.Win32API;
 
 /// <summary>
+/// Contains information about a console screen buffer. https://learn.microsoft.com/en-us/windows/console/console-screen-buffer-info-str
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct CONSOLE_SCREEN_BUFFER_INFO
+{
+    /// <summary>
+    /// A COORD structure that contains the size of the console screen buffer, in character columns and rows.
+    /// </summary>
+    public COORD dwSize;
+
+    /// <summary>
+    /// A COORD structure that contains the column and row coordinates of the cursor in the console screen buffer.
+    /// </summary>
+    public COORD dwCursorPosition;
+
+    /// <summary>
+    /// The attributes of the characters written to a screen buffer by the WriteFile and WriteConsole functions, or echoed to a screen buffer by the ReadFile and ReadConsole functions. For more information, see Character Attributes.
+    /// </summary>
+    public short wAttributes;
+
+    /// <summary>
+    /// A SMALL_RECT structure that contains the console screen buffer coordinates of the upper-left and lower-right corners of the display window.
+    /// </summary>
+    public SMALL_RECT srWindow;
+
+    /// <summary>
+    /// A COORD structure that contains the maximum size of the console window, in character columns and rows, given the current screen buffer size and font and the screen size.
+    /// </summary>
+    public COORD dwMaximumWindowSize;
+}
+
+/// <summary>
+/// Defines the coordinates of a character cell in a console screen buffer. The origin of the coordinate system (0,0) is at the top, left cell of the buffer.
+/// </summary>
+internal struct COORD
+{
+    /// <summary>
+    /// The horizontal coordinate or column value. The units depend on the function call.
+    /// </summary>
+    public short X;
+
+    /// <summary>
+    /// The vertical coordinate or row value. The units depend on the function call.
+    /// </summary>
+    public short Y;
+};
+
+/// <summary>
 /// The PIXELFORMATDESCRIPTOR structure describes the pixel format of a drawing surface
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
@@ -259,4 +307,31 @@ internal class PIXELFORMATDESCRIPTOR
     /// Ignored. Earlier implementations of OpenGL used this member, but it is no longer used.
     /// </summary>
     private readonly int dwDamageMask;
+}
+
+/// <summary>
+/// Defines the coordinates of the upper left and lower right corners of a rectangle.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct SMALL_RECT
+{
+    /// <summary>
+    /// The x-coordinate of the upper left corner of the rectangle.
+    /// </summary>
+    public short Left;
+
+    /// <summary>
+    /// The y-coordinate of the upper left corner of the rectangle.
+    /// </summary>
+    public short Top;
+
+    /// <summary>
+    /// The x-coordinate of the lower right corner of the rectangle.
+    /// </summary>
+    public short Right;
+
+    /// <summary>
+    /// The y-coordinate of the lower right corner of the rectangle.
+    /// </summary>
+    public short Bottom;
 }

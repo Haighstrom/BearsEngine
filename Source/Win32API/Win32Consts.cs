@@ -1,5 +1,8 @@
 ﻿namespace BearsEngine.Win32API;
 
+/// <summary>
+/// The item to be returned in GetDeviceCaps. https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getdevicecaps
+/// </summary>
 internal enum GetDeviceCapsIndex : int
 {
     /// <summary>
@@ -186,4 +189,25 @@ internal enum GetDeviceCapsIndex : int
     /// Value that indicates the color management capabilities of the device
     /// </summary>
     COLORMGMTCAPS = 121,
+}
+
+/// <summary>
+/// The standard device. https://learn.microsoft.com/en-us/windows/console/getstdhandle
+/// </summary>
+internal enum StdHandle
+{
+    /// <summary>
+    /// The standard input device. Initially, this is the console input buffer, CONIN$.
+    /// </summary>
+    STD_INPUT_HANDLE = -10,
+
+    /// <summary>
+    /// The standard output device. Initially, this is the active console screen buffer, CONOUT$.
+    /// </summary>
+    STD_OUTPUT_HANDLE = -11,
+
+    /// <summary>
+    /// The standard error device. Initially, this is the active console screen buffer, CONOUT$.
+    /// </summary>
+    STD_ERROR_HANDLE = -12
 }

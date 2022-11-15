@@ -3500,23 +3500,8 @@ internal struct COLORREF
     public byte B;
 }
 
-[StructLayout(LayoutKind.Sequential)]
-internal struct CONSOLE_SCREEN_BUFFER_INFO
-{
-    public COORD dwSize;
-    public COORD dwCursorPosition;
-    public short wAttributes;
-    public SMALL_RECT srWindow;
-    public COORD dwMaximumWindowSize;
-}
 
-#pragma warning disable 0649
-internal struct COORD
-{
-    public short X;
-    public short Y;
-};
-#pragma warning disable 0649
+
 
 /// <summary>
 /// Used in GetCursorInfo call to query if the cursor is shown or hidden
@@ -3694,13 +3679,6 @@ internal enum GetRawInputDataEnum
 {
     INPUT = 0x10000003,
     HEADER = 0x10000005
-}
-
-internal enum HandleType
-{
-    STD_INPUT_HANDLE = -10,
-    STD_OUTPUT_HANDLE = -11,
-    STD_ERROR_HANDLE = -12
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -4546,14 +4524,6 @@ internal enum SizeMessage
     MAXSHOW = 3,
     MINIMIZED = 1,
     RESTORED = 0
-}
-
-[StructLayout(LayoutKind.Sequential)]
-internal struct SMALL_RECT
-{
-    public short Left, Top, Right, Bottom;
-    internal int Width => Right - Left;
-    internal int Height => Bottom - Top;
 }
 
 internal struct StyleStruct

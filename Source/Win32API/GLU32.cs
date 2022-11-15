@@ -9,6 +9,8 @@ namespace BearsEngine.Win32API;
 [SuppressUnmanagedCodeSecurity]
 internal static class GLU32
 {
+    private const string Library = "glu32.dll";
+
     /// <summary>
     /// Builds a two-dimensional mipmap
     /// </summary>
@@ -20,7 +22,7 @@ internal static class GLU32
     /// <param name="type">Specifies the data type for data. Must be one of GLU_UNSIGNED_BYTE, GLU_BYTE, GLU_BITMAP, GLU_UNSIGNED_SHORT, GLU_SHORT, GLU_UNSIGNED_INT, GLU_INT, GLU_FLOAT, GLU_UNSIGNED_BYTE_3_3_2, GLU_UNSIGNED_BYTE_2_3_3_REV, GLU_UNSIGNED_SHORT_5_6_5, GLU_UNSIGNED_SHORT_5_6_5_REV, GLU_UNSIGNED_SHORT_4_4_4_4, GLU_UNSIGNED_SHORT_4_4_4_4_REV, GLU_UNSIGNED_SHORT_5_5_5_1, GLU_UNSIGNED_SHORT_1_5_5_5_REV, GLU_UNSIGNED_INT_8_8_8_8, GLU_UNSIGNED_INT_8_8_8_8_REV, GLU_UNSIGNED_INT_10_10_10_2, or GLU_UNSIGNED_INT_2_10_10_10_REV.</param>
     /// <param name="data">Specifies a pointer to the image data in memory.</param>
     /// <returns>A return value of zero indicates success, otherwise a GLU error code is returned.</returns>
-    [DllImport("glu32.dll")]
+    [DllImport(Library)]
     internal extern static int gluBuild2DMipmaps(int target, int internalFormat, int width, int height, int format, int type, IntPtr data);
 
     /// <summary>
@@ -35,7 +37,7 @@ internal static class GLU32
     /// <param name="upX">Specifies the direction of the up vector.</param>
     /// <param name="upY">Specifies the direction of the up vector.</param>
     /// <param name="upZ">Specifies the direction of the up vector.</param>
-    [DllImport("glu32.dll")]
+    [DllImport(Library)]
     internal static extern void gluLookAt(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ);
 
     /// <summary>
@@ -45,6 +47,6 @@ internal static class GLU32
     /// <param name="aspect">Specifies the aspect ratio that determines the field of view in the x direction. The aspect ratio is the ratio of x (width) to y (height).</param>
     /// <param name="zNear">Specifies the distance from the viewer to the near clipping plane (always positive).</param>
     /// <param name="zFar">Specifies the distance from the viewer to the far clipping plane (always positive).</param>
-    [DllImport("glu32.dll")]
+    [DllImport(Library)]
     internal static extern void gluPerspective(double fovy, double aspect, double zNear, double zFar);
 }
