@@ -19,19 +19,19 @@ internal static class OpenGL32
     /// <param name="func">Specifies the alpha comparison function. Symbolic constants GL_NEVER, GL_LESS, GL_EQUAL, GL_LEQUAL, GL_GREATER, GL_NOTEQUAL, GL_GEQUAL, and GL_ALWAYS are accepted. The initial value is GL_ALWAYS.</param>
     /// <param name="ref">Specifies the reference value that incoming alpha values are compared to. This value is clamped to the range 0 1 , where 0 represents the lowest possible alpha value and 1 the highest possible value. The initial reference value is 0.</param>
     [DllImport(Library)]
-    internal static extern void glAlphaFunc(GLAlphaFuncEnum func, float @ref);
+    public static extern void glAlphaFunc(GLAlphaFuncEnum func, float @ref);
     
     // ***CLEANED UP ABOVE THIS LINE***
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glBegin(int mode);
+    [DllImport(Library)]
+    public static extern void glBegin(int mode);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glBindTexture(int target, uint texture);
+    [DllImport(Library)]
+    public static extern void glBindTexture(int target, uint texture);
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glBindTexture(TextureTarget target, uint texture);
+    [DllImport(Library)]
+    public static extern void glBindTexture(TextureTarget target, uint texture);
     
 
     //https://registry.khronos.org/OpenGL-Refpages/gl4/html/glBlendFunc.xhtml
@@ -40,229 +40,229 @@ internal static class OpenGL32
     /// </summary>
     /// <param name="sfactor">Specifies how the red, green, blue, and alpha source blending factors are computed. The initial value is GL_ONE.</param>
     /// <param name="dfactor">Specifies how the red, green, blue, and alpha destination blending factors are computed. The following symbolic constants are accepted: GL_ZERO, GL_ONE, GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR, GL_DST_COLOR, GL_ONE_MINUS_DST_COLOR, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA. GL_CONSTANT_COLOR, GL_ONE_MINUS_CONSTANT_COLOR, GL_CONSTANT_ALPHA, and GL_ONE_MINUS_CONSTANT_ALPHA. The initial value is GL_ZERO.</param>
-    [DllImport("opengl32.dll")]
-    internal static extern void glBlendFunc(BlendScaleFactor sfactor, BlendScaleFactor dfactor);
+    [DllImport(Library)]
+    public static extern void glBlendFunc(BlendScaleFactor sfactor, BlendScaleFactor dfactor);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glClear(uint mask);
+    [DllImport(Library)]
+    public static extern void glClear(uint mask);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glClearColor(float red, float green, float blue, float alpha);
+    [DllImport(Library)]
+    public static extern void glClearColor(float red, float green, float blue, float alpha);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glColor3f(float red, float green, float blue);
+    [DllImport(Library)]
+    public static extern void glColor3f(float red, float green, float blue);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glColor4f(float red, float green, float blue, float alpha);
+    [DllImport(Library)]
+    public static extern void glColor4f(float red, float green, float blue, float alpha);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glDeleteTextures(int n, uint[] textures);
+    [DllImport(Library)]
+    public static extern void glDeleteTextures(int n, uint[] textures);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glDepthMask(bool flag);
+    [DllImport(Library)]
+    public static extern void glDepthMask(bool flag);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glDisable(int cap);
+    [DllImport(Library)]
+    public static extern void glDisable(int cap);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glDisableClientState(uint array);
+    [DllImport(Library)]
+    public static extern void glDisableClientState(uint array);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glDrawArrays(int mode, int first, int count);
+    [DllImport(Library)]
+    public static extern void glDrawArrays(int mode, int first, int count);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glEnable(int cap);
+    [DllImport(Library)]
+    public static extern void glEnable(int cap);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glEnableClientState(uint array);
+    [DllImport(Library)]
+    public static extern void glEnableClientState(uint array);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glEnd();
+    [DllImport(Library)]
+    public static extern void glEnd();
     
 
-    [DllImport("opengl32.dll")]
+    [DllImport(Library)]
     public static extern void glFlush();
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glFrontFace(int mode);
+    [DllImport(Library)]
+    public static extern void glFrontFace(int mode);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glGetBooleanv(int pname, [Out] out bool[] data);
+    [DllImport(Library)]
+    public static extern void glGetBooleanv(int pname, [Out] out bool[] data);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern uint glGetError();
+    [DllImport(Library)]
+    public static extern uint glGetError();
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glGetIntegerv(int pname, out int result);
+    [DllImport(Library)]
+    public static extern void glGetIntegerv(int pname, out int result);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glGetIntegerv(int pname, int[] result);
+    [DllImport(Library)]
+    public static extern void glGetIntegerv(int pname, int[] result);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glGetTexImage(int target, int level, int format, int type, IntPtr pixels);
+    [DllImport(Library)]
+    public static extern void glGetTexImage(int target, int level, int format, int type, IntPtr pixels);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glGenTextures(int n, uint[] textures);
+    [DllImport(Library)]
+    public static extern void glGenTextures(int n, uint[] textures);
     
 
-    [DllImport("opengl32.dll")]
-    internal unsafe static extern sbyte* glGetString(uint name);
+    [DllImport(Library)]
+    public unsafe static extern sbyte* glGetString(uint name);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern byte glIsEnabled(int cap);
+    [DllImport(Library)]
+    public static extern byte glIsEnabled(int cap);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glLightfv(int light, int pname, float[] @params);
+    [DllImport(Library)]
+    public static extern void glLightfv(int light, int pname, float[] @params);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glLineWidth(float width);
+    [DllImport(Library)]
+    public static extern void glLineWidth(float width);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glLoadIdentity();
+    [DllImport(Library)]
+    public static extern void glLoadIdentity();
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glMaterialfv(int face, int pname, float[] @params);
+    [DllImport(Library)]
+    public static extern void glMaterialfv(int face, int pname, float[] @params);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glMatrixMode(int mode);
+    [DllImport(Library)]
+    public static extern void glMatrixMode(int mode);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glNormal3f(float nx, float ny, float nz);
+    [DllImport(Library)]
+    public static extern void glNormal3f(float nx, float ny, float nz);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glOrtho(double left, double right, double bottom, double top, double zNear, double zFar);
+    [DllImport(Library)]
+    public static extern void glOrtho(double left, double right, double bottom, double top, double zNear, double zFar);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glReadPixels(int x, int y, int width, int height, int format, int type, [Out] IntPtr data);
+    [DllImport(Library)]
+    public static extern void glReadPixels(int x, int y, int width, int height, int format, int type, [Out] IntPtr data);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glPixelStorei(int pname, int param);
+    [DllImport(Library)]
+    public static extern void glPixelStorei(int pname, int param);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glPointSize(float size);
+    [DllImport(Library)]
+    public static extern void glPointSize(float size);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glPolygonMode(int face, int mode);
+    [DllImport(Library)]
+    public static extern void glPolygonMode(int face, int mode);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glPopMatrix();
+    [DllImport(Library)]
+    public static extern void glPopMatrix();
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glPushMatrix();
+    [DllImport(Library)]
+    public static extern void glPushMatrix();
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glRotatef(float angle, float x, float y, float z);
+    [DllImport(Library)]
+    public static extern void glRotatef(float angle, float x, float y, float z);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glScalef(float x, float y, float z);
+    [DllImport(Library)]
+    public static extern void glScalef(float x, float y, float z);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glShadeModel(int mode);
+    [DllImport(Library)]
+    public static extern void glShadeModel(int mode);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glTexCoord2f(float s, float t);
+    [DllImport(Library)]
+    public static extern void glTexCoord2f(float s, float t);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glTexImage1D(int target, int level, int internalformat, int width, int border, int format, int type, IntPtr pixels);
+    [DllImport(Library)]
+    public static extern void glTexImage1D(int target, int level, int internalformat, int width, int border, int format, int type, IntPtr pixels);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glTexImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type, IntPtr pixels);
+    [DllImport(Library)]
+    public static extern void glTexImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type, IntPtr pixels);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, IntPtr pixels);
+    [DllImport(Library)]
+    public static extern void glTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, IntPtr pixels);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glTexParameteri(int target, int pname, int param);
+    [DllImport(Library)]
+    public static extern void glTexParameteri(int target, int pname, int param);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glTranslatef(float x, float y, float z);
+    [DllImport(Library)]
+    public static extern void glTranslatef(float x, float y, float z);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glVertex2f(float x, float y);
+    [DllImport(Library)]
+    public static extern void glVertex2f(float x, float y);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glVertex3f(float x, float y, float z);
+    [DllImport(Library)]
+    public static extern void glVertex3f(float x, float y, float z);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glVertexPointer(int size, uint type, int stride, float[] pointer);
+    [DllImport(Library)]
+    public static extern void glVertexPointer(int size, uint type, int stride, float[] pointer);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern void glViewport(int x, int y, int width, int height);
+    [DllImport(Library)]
+    public static extern void glViewport(int x, int y, int width, int height);
     
     
 
-    [DllImport("opengl32.dll")]
-    internal extern static IntPtr wglCreateContext(IntPtr hDc);
+    [DllImport(Library)]
+    public extern static IntPtr wglCreateContext(IntPtr hDc);
     
 
-    [DllImport("opengl32.dll")]
-    internal extern static bool wglDeleteContext(IntPtr hRC);
+    [DllImport(Library)]
+    public extern static bool wglDeleteContext(IntPtr hRC);
     
 
-    [DllImport("opengl32.dll")]
-    internal static extern int wglDescribePixelFormat(IntPtr hdc, int ipfd, uint cjpfd, [In, MarshalAs(UnmanagedType.LPStruct)] PIXELFORMATDESCRIPTOR ppfd);
+    [DllImport(Library)]
+    public static extern int wglDescribePixelFormat(IntPtr hdc, int ipfd, uint cjpfd, [In, MarshalAs(UnmanagedType.LPStruct)] PIXELFORMATDESCRIPTOR ppfd);
     
 
-    [DllImport("opengl32.dll")]
-    internal extern static IntPtr wglGetCurrentContext();
+    [DllImport(Library)]
+    public extern static IntPtr wglGetCurrentContext();
     
 
-    [DllImport("opengl32.dll")]
-    internal extern static IntPtr wglGetProcAddress(string lpszProc);
+    [DllImport(Library)]
+    public extern static IntPtr wglGetProcAddress(string lpszProc);
     
 
-    [DllImport("opengl32.dll")]
-    internal extern static bool wglMakeCurrent(IntPtr hDc, IntPtr hRC);
+    [DllImport(Library)]
+    public extern static bool wglMakeCurrent(IntPtr hDc, IntPtr hRC);
     
 
-    [DllImport("opengl32.dll")]
-    internal extern static bool wglShareLists(IntPtr hglrc1, IntPtr hglrc2);
+    [DllImport(Library)]
+    public extern static bool wglShareLists(IntPtr hglrc1, IntPtr hglrc2);
     
     
 

@@ -277,14 +277,140 @@ internal struct JOYINFO
     /// Current state of joystick buttons.
     /// </summary>
     public JOYINFO_wButtons wButtons;
+}
 
-    public int GetAxis(int i) => i switch
+/// <summary>
+/// The JOYINFOEX structure contains extended information about the joystick position, point-of-view position, and button state.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct JOYINFOEX
+{
+    /// <summary>
+    /// Size, in bytes, of this structure.
+    /// </summary>
+    public int dwSize;
+
+    /// <summary>
+    /// Flags indicating the valid information returned in this structure. Members that do not contain valid information are set to zero.
+    /// </summary>
+    [MarshalAs(UnmanagedType.I4)]
+    public JOYINFOEXdwFlags dwFlags;
+
+    /// <summary>
+    /// Current X-coordinate.
+    /// </summary>
+    public int dwXpos;
+
+    /// <summary>
+    /// Current Y-coordinate.
+    /// </summary>
+    public int dwYpos;
+
+    /// <summary>
+    /// Current Z-coordinate.
+    /// </summary>
+    public int dwZpos;
+
+    /// <summary>
+    /// Current position of the rudder or fourth joystick axis.
+    /// </summary>
+    public int dwRpos;
+
+    /// <summary>
+    /// Current fifth axis position.
+    /// </summary>
+    public int dwUpos;
+
+    /// <summary>
+    /// Current sixth axis position.
+    /// </summary>
+    public int dwVpos;
+
+    /// <summary>
+    /// Current state of the 32 joystick buttons. The value of this member can be set to any combination of JOY_BUTTONn flags, where n is a value in the range of 1 through 32 corresponding to the button that is pressed.
+    /// </summary>
+    public uint dwButtons;
+
+    /// <summary>
+    /// Current button number that is pressed.
+    /// </summary>
+    public uint dwButtonNumber;
+
+    /// <summary>
+    /// Current position of the point-of-view control. Values for this member are in the range 0 through 35,900. These values represent the angle, in degrees, of each view multiplied by 100.
+    /// </summary>
+    public int dwPOV;
+
+    /// <summary>
+    /// Reserved; do not use.
+    /// </summary>
+    private readonly uint dwReserved1;
+
+    /// <summary>
+    /// Reserved; do not use.
+    /// </summary>
+    private readonly uint dwReserved2;
+
+    public static readonly int SizeInBytes;
+
+    static JOYINFOEX()
     {
-        0 => wXpos,
-        1 => wYpos,
-        2 => wZpos,
-        _ => 0,
-    };
+        SizeInBytes = Marshal.SizeOf(default(JOYINFOEX));
+    }
+
+    public int GetAxis(int i)
+    {
+        switch (i)
+        {
+            case 0: return dwXpos;
+            case 1: return dwYpos;
+            case 2: return dwZpos;
+            case 3: return dwRpos;
+            case 4: return dwUpos;
+            case 5: return dwVpos;
+            default: return 0;
+        }
+    }
+}
+
+/// <summary>
+/// https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-msg
+/// Contains message information from a thread's message queue.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct MSG
+{
+    /// <summary>
+    /// A handle to the window whose window procedure receives the message. This member is NULL when the message is a thread message.
+    /// </summary>
+    internal IntPtr hwnd;
+
+    /// <summary>
+    /// The message identifier. Applications can only use the low word; the high word is reserved by the system.
+    /// </summary>
+    internal WINDOWMESSAGE message;
+
+    /// <summary>
+    /// Additional information about the message. The exact meaning depends on the value of the message member.
+    /// </summary>
+    internal IntPtr wParam;
+
+    /// <summary>
+    /// Additional information about the message. The exact meaning depends on the value of the message member.
+    /// </summary>
+    internal IntPtr lParam;
+
+    /// <summary>
+    /// The time at which the message was posted.
+    /// </summary>
+    internal uint time;
+
+    /// <summary>
+    /// The cursor position, in screen coordinates, when the message was posted.
+    /// </summary>
+    internal POINT pt;
+
+    private readonly uint lPrivate;
 }
 
 /// <summary>
@@ -544,6 +670,24 @@ internal class PIXELFORMATDESCRIPTOR
     /// Ignored. Earlier implementations of OpenGL used this member, but it is no longer used.
     /// </summary>
     private readonly int dwDamageMask;
+}
+
+/// <summary>
+/// https://docs.microsoft.com/en-us/previous-versions/dd162805(v=vs.85)
+/// The POINT structure defines the x- and y- coordinates of a point.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct POINT
+{
+    /// <summary>
+    /// The x-coordinate of the point.
+    /// </summary>
+    public int X;
+
+    /// <summary>
+    /// The y-coordinate of the point.
+    /// </summary>
+    public int Y;
 }
 
 /// <summary>

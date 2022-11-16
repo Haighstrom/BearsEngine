@@ -210,7 +210,7 @@ public class KeyboardManager : IKeyboardManager
         IntPtr dHandle = data.Header.Device;
         RawKeyboard kData = data.Data.Keyboard;
 
-        bool pressed = kData.Message == (int)WindowMessage.WM_KEYDOWN || kData.Message == (int)WindowMessage.WM_SYSKEYDOWN;
+        bool pressed = kData.Message == (int)WINDOWMESSAGE.WM_KEYDOWN || kData.Message == (int)WINDOWMESSAGE.WM_SYSKEYDOWN;
 
         var scancode = kData.MakeCode;
         var vkey = kData.VKey;

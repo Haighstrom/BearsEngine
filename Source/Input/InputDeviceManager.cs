@@ -71,11 +71,11 @@ public class InputDeviceManager : IInputDeviceManager
     }
 
     private IntPtr _unhandled = new(-1);
-    private IntPtr WindowProcedure(IntPtr handle, WindowMessage message, IntPtr wParam, IntPtr lParam)
+    private IntPtr WindowProcedure(IntPtr handle, WINDOWMESSAGE message, IntPtr wParam, IntPtr lParam)
     {
         switch (message)
         {
-            case WindowMessage.WM_INPUT:
+            case WINDOWMESSAGE.WM_INPUT:
                 int size = 0;
                 User32.GetRawInputData(lParam, GetRawInputDataEnum.INPUT, IntPtr.Zero, ref size, RawInputHeader.SIZE);
 
@@ -102,7 +102,7 @@ public class InputDeviceManager : IInputDeviceManager
                 break;
             
 
-            case WindowMessage.WM_DEVICECHANGE:
+            case WINDOWMESSAGE.WM_DEVICECHANGE:
                 Serilog.Log.Information("Input Devices Change detected. Identifying new devices...");
 
                 _mouseManager.RefreshDevices();

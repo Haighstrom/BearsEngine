@@ -30,7 +30,6 @@ internal static class DWMAPI
     /// <returns>If the function succeeds, it returns S_OK (0). Otherwise, it returns an HRESULT error code.</returns>
     [DllImport(Library)]
     public static extern int DwmGetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, out RECT pvAttribute, int cbAttribute);
-    
 
     /// <summary>
     /// Sets the value of Desktop Window Manager (DWM) non-client rendering attributes for a window.

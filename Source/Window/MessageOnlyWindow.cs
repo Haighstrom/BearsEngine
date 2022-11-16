@@ -63,7 +63,7 @@ internal class MessageOnlyWindow : IDisposable
         return handle;
     }
 
-    private IntPtr TempWndProc(IntPtr handle, WindowMessage message, IntPtr wParam, IntPtr lParam)
+    private IntPtr TempWndProc(IntPtr handle, WINDOWMESSAGE message, IntPtr wParam, IntPtr lParam)
     {
         return User32.DefWindowProc(handle, message, wParam, lParam);
     }
@@ -94,7 +94,7 @@ internal class MessageOnlyWindow : IDisposable
 
     public void Close()
     {
-        User32.PostMessage(Handle, WindowMessage.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+        User32.PostMessage(Handle, WINDOWMESSAGE.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
     }
 
     private void DestroyWindow()

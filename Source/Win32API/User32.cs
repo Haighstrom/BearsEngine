@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 
@@ -10,29 +11,7 @@ namespace BearsEngine.Win32API;
 [SuppressUnmanagedCodeSecurity]
 internal static class User32
 {
-    private const string Library = "user32.dll";
-
-    /// <summary>
-    /// It is recommended that you set the process-default DPI awareness via application manifest. See Setting the default DPI awareness for a process for more information. Setting the process-default DPI awareness via API call can lead to unexpected application behavior. Sets the current process to a specified dots per inch(dpi) awareness context. The DPI awareness contexts are from the DPI_AWARENESS_CONTEXT value.
-    /// </summary>
-    /// <param name="value">A DPI_AWARENESS_CONTEXT handle to set.</param>
-    /// <returns>This function returns TRUE if the operation was successful, and FALSE otherwise. To get extended error information, call GetLastError. Possible errors are ERROR_INVALID_PARAMETER for an invalid input, and ERROR_ACCESS_DENIED if the default API awareness mode for the process has already been set(via a previous API call or within the application manifest).</returns>
-    [DllImport(Library, SetLastError = true)]
-    public static extern bool SetProcessDpiAwarenessContext(IntPtr value);
-
-    /// <summary>
-    /// It is recommended that you set the process-default DPI awareness via application manifest. See Setting the default DPI awareness for a process for more information. Setting the process-default DPI awareness via API call can lead to unexpected application behavior. Sets the current process to a specified dots per inch(dpi) awareness context. The DPI awareness contexts are from the DPI_AWARENESS_CONTEXT value.
-    /// </summary>
-    /// <param name="value">A DPI_AWARENESS_CONTEXT handle to set.</param>
-    /// <returns>This function returns TRUE if the operation was successful, and FALSE otherwise. To get extended error information, call GetLastError. Possible errors are ERROR_INVALID_PARAMETER for an invalid input, and ERROR_ACCESS_DENIED if the default API awareness mode for the process has already been set(via a previous API call or within the application manifest).</returns>
-    public static bool SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT value) => SetProcessDpiAwarenessContext(new IntPtr((int)value));
-
-    // ***CLEANED UP ABOVE THIS LINE***
-
-    [DllImport(Library)]
-    public static extern IntPtr SetThreadDpiAwarenessContext(IntPtr dpiContext);
-
-    public static IntPtr SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT dpiContext) => SetThreadDpiAwarenessContext(new IntPtr((int)dpiContext));
+    private const string Library = "User32.dll";
 
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-adjustwindowrect
@@ -43,11 +22,10 @@ internal static class User32
     /// <param name="dwStyle">The window style of the window whose required size is to be calculated. Note that you cannot specify the WS_OVERLAPPED style.</param>
     /// <param name="bMenu">Indicates whether the window has a menu.</param>
     ///<returns>If the function succeeds, the return value is nonzero.
-    /// If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
-    [DllImport(Library)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern bool AdjustWindowRect(ref RECT lpRect, WindowStyle dwStyle, [MarshalAs(UnmanagedType.Bool)] bool bMenu);
-    
+    /// If the function fails, the return value is zero. To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern bool AdjustWindowRect(ref RECT lpRect, WINDOWSTYLE dwStyle, [MarshalAs(UnmanagedType.Bool)] bool bMenu);
+
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-adjustwindowrectex
     /// Calculates the required size of the window rectangle, based on the desired size of the client rectangle. The window rectangle can then be passed to the CreateWindowEx function to create a window whose client area is the desired size.
@@ -58,12 +36,10 @@ internal static class User32
     /// <param name="dwExStyle">The extended window style of the window whose required size is to be calculated.</param>
     /// <returns>If the function succeeds, the return value is nonzero.
     /// If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
-    [DllImport(Library)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern bool AdjustWindowRectEx(ref RECT lpRect, WindowStyle dwStyle, [MarshalAs(UnmanagedType.Bool)] bool bMenu, ExtendedWindowStyle dwExStyle);
-    
+    [DllImport(Library, SetLastError = true)]
+    public static extern bool AdjustWindowRectEx(ref RECT lpRect, WINDOWSTYLE dwStyle, [MarshalAs(UnmanagedType.Bool)] bool bMenu, WINDOWSTYLEEX dwExStyle);
+
     /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowexw
     /// Creates an overlapped, pop-up, or child window with an extended window style; otherwise, this function is identical to the CreateWindow function. For more information about creating a window and for full descriptions of the other parameters of CreateWindowEx, see CreateWindow.
     /// </summary>
     /// <param name="dwExStyle">The extended window style of the window being created. For a list of possible values, see Extended Window Styles.</param>
@@ -84,12 +60,9 @@ internal static class User32
     /// <returns>If the function succeeds, the return value is a handle to the new window.
     /// If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
     [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    internal static extern IntPtr CreateWindowEx(ExtendedWindowStyle dwExStyle, IntPtr lpClassName, IntPtr lpWindowName, WindowStyle dwStyle, int X, int Y, int nWidth, int nHeight, IntPtr hWndParent, IntPtr hMenu, IntPtr hInstance, IntPtr lpParam);
-    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    internal static extern IntPtr CreateWindowEx(ExtendedWindowStyle dwExStyle, IntPtr lpClassName, IntPtr lpWindowName, WindowStyle dwStyle, uint X, uint Y, uint nWidth, uint nHeight, IntPtr hWndParent, IntPtr hMenu, IntPtr hInstance, IntPtr lpParam);
-    
+    public static extern IntPtr CreateWindowEx(WINDOWSTYLEEX dwExStyle, IntPtr lpClassName, IntPtr lpWindowName, WINDOWSTYLE dwStyle, int X, int Y, int nWidth, int nHeight, IntPtr hWndParent, IntPtr hMenu, IntPtr hInstance, IntPtr lpParam);
+
     /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-defwindowprocw
     /// Calls the default window procedure to provide default processing for any window messages that an application does not process. This function ensures that every message is processed. DefWindowProc is called with the same parameters received by the window procedure.
     /// </summary>
     /// <param name="hWnd">A handle to the window procedure that received the message.</param>
@@ -97,13 +70,16 @@ internal static class User32
     /// <param name="wParam">Additional message information. The content of this parameter depends on the value of the Msg parameter.</param>
     /// <param name="lParam">Additional message information. The content of this parameter depends on the value of the Msg parameter.</param>
     /// <returns>The return value is the result of the message processing and depends on the message.</returns>
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal extern static IntPtr DefWindowProc(IntPtr hWnd, WindowMessage msg, IntPtr wParam, IntPtr lParam);
-    
+    [DllImport(Library, CharSet = CharSet.Auto)]
+    public extern static IntPtr DefWindowProc(IntPtr hWnd, WINDOWMESSAGE msg, IntPtr wParam, IntPtr lParam);
 
-    [DllImport(Library)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern bool DestroyCursor(IntPtr hCursor);
+    /// <summary>
+    /// Destroys a cursor and frees any memory the cursor occupied. Do not use this function to destroy a shared cursor.
+    /// </summary>
+    /// <param name="hCursor">A handle to the cursor to be destroyed. The cursor must not be in use.</param>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern bool DestroyCursor(IntPtr hCursor);
 
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-destroywindow
@@ -114,9 +90,8 @@ internal static class User32
     /// <returns>If the function succeeds, the return value is nonzero.
     /// If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
     [DllImport(Library)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern bool DestroyWindow(IntPtr hWnd);
-    
+    public static extern bool DestroyWindow(IntPtr hWnd);
+
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-dispatchmessage
     /// Dispatches a message to a window procedure. It is typically used to dispatch a message retrieved by the GetMessage function.
@@ -124,19 +99,18 @@ internal static class User32
     /// <param name="lpMsg">A pointer to a structure that contains the message.</param>
     /// <returns>The return value specifies the value returned by the window procedure. Although its meaning depends on the message being dispatched, the return value generally is ignored.</returns>
     [DllImport(Library)]
-    internal static extern IntPtr DispatchMessage(ref MSG lpMsg);
-    
+    public static extern IntPtr DispatchMessage(ref MSG lpMsg);
+
     /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getcursorpos
-    /// Retrieves the position of the mouse cursor, in screen coordinates.
+    /// Retrieves the position of the mouse cursor, in screen coordinates. https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getcursorpos
     /// </summary>
     /// <param name="point">Returns nonzero if successful or zero otherwise. To get extended error information, call GetLastError.A pointer to a POINT structure that receives the screen coordinates of the cursor.</param>
     /// <returns>Returns nonzero if successful or zero otherwise. To get extended error information, call GetLastError.</returns>
-    [DllImport(Library)]
-    internal static extern bool GetCursorPos(ref POINT lpPoint);
+    [DllImport(Library, SetLastError = true)]
+    public static extern bool GetCursorPos(ref POINT lpPoint);
 
     /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getkeynametexta
+    /// Retrieves a string that represents the name of a key. https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getkeynametexta
     /// </summary>
     /// <param name="lParam">The second parameter of the keyboard message (such as WM_KEYDOWN) to be processed. The function interprets the following bit positions in the lParam.
     /// 16-23	Scan code.
@@ -144,31 +118,41 @@ internal static class User32
     /// 25	"Do not care" bit. The application calling this function sets this bit to indicate that the function should not distinguish between left and right CTRL and SHIFT keys, for example.</param>
     /// <param name="lpString">The buffer that will receive the key name.</param>
     /// <param name="cchSize">The maximum length, in characters, of the key name, including the terminating null character. (This parameter should be equal to the size of the buffer pointed to by the lpString parameter.)</param>
-    /// <returns>If the function succeeds, a null-terminated string is copied into the specified buffer, and the return value is the length of the string, in characters, not counting the terminating null character.
-    /// If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
-    [DllImport(Library)]
-    internal static extern int GetKeyNameText(int lParam, [Out] StringBuilder lpString, int cchSize);
+    /// <returns>If the function succeeds, a null-terminated string is copied into the specified buffer, and the return value is the length of the string, in characters, not counting the terminating null character. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern int GetKeyNameText(int lParam, [Out] StringBuilder lpString, int cchSize);
 
-    internal static string GetKeyNameText(uint extendedScanCode)
+    /// <summary>
+    /// Retrieves a string that represents the name of a key. https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getkeynametexta
+    /// </summary>
+    /// <param name="extendedScanCode"></param>
+    /// <returns>If the function succeeds, a null-terminated string is copied into the specified buffer, and the return value is the length of the string, in characters, not counting the terminating null character. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    public static string GetKeyNameText(uint extendedScanCode)
     {
         int StringMaxLength = 512;
-        int key = (int)(extendedScanCode);
+        int key = (int)extendedScanCode;
         StringBuilder s = new(StringMaxLength);
-        int result = GetKeyNameText(key, s, StringMaxLength);
+        _ = GetKeyNameText(key, s, StringMaxLength);
 
         return s.ToString();
     }
 
-    internal static string GetKeyNameText(uint scanCode, bool isE0)
+    /// <summary>
+    /// Retrieves a string that represents the name of a key. https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getkeynametexta
+    /// </summary>
+    /// <param name="scanCode"></param>
+    /// <param name="isE0"></param>
+    /// <returns>If the function succeeds, a null-terminated string is copied into the specified buffer, and the return value is the length of the string, in characters, not counting the terminating null character. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    public static string GetKeyNameText(uint scanCode, bool isE0)
     {
         int StringMaxLength = 512;
         int key = (int)((scanCode << 16) | ((isE0 ? 1 : (uint)0) << 24));
         StringBuilder s = new(StringMaxLength);
-        int result = GetKeyNameText(key, s, StringMaxLength);
+        _ = GetKeyNameText(key, s, StringMaxLength);
 
         return s.ToString();
     }
-    
+
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getmessage
     /// Retrieves a message from the calling thread's message queue. The function dispatches incoming sent messages until a posted message is available for retrieval.
@@ -184,9 +168,10 @@ internal static class User32
     /// <param name="wMsgFilterMax">The integer value of the highest message value to be retrieved. Use WM_KEYLAST to specify the last keyboard message or WM_MOUSELAST to specify the last mouse message.
     /// Use WM_INPUT here and in wMsgFilterMin to specify only the WM_INPUT messages.
     /// If wMsgFilterMin and wMsgFilterMax are both zero, GetMessage returns all available messages(that is, no range filtering is performed).</param>
-    [DllImport("User32.dll")]
-    internal static extern int GetMessage(ref MSG lpMsg, IntPtr hWnd, int wMsgFilterMin, int wMsgFilterMax);
-    
+    /// <returns>If the function retrieves a message other than WM_QUIT, the return value is nonzero. If the function retrieves the WM_QUIT message, the return value is zero. If there is an error, the return value is -1. For example, the function fails if hWnd is an invalid window handle or lpMsg is an invalid pointer.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern int GetMessage(ref MSG lpMsg, IntPtr hWnd, int wMsgFilterMin, int wMsgFilterMax);
+
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getqueuestatus
     /// Retrieves the type of messages found in the calling thread's message queue.
@@ -194,8 +179,8 @@ internal static class User32
     /// <param name="flags">The types of messages for which to check.</param>
     /// <returns>The high-order word of the return value indicates the types of messages currently in the queue. The low-order word indicates the types of messages that have been added to the queue and that are still in the queue since the last call to the GetQueueStatus, GetMessage, or PeekMessage function.</returns>
     [DllImport(Library)]
-    internal static extern uint GetQueueStatus(GetQueueStatus_Flags flags);
-    
+    public static extern uint GetQueueStatus(GetQueueStatus_flags flags);
+
     /// <summary>
     /// Retrieves information about the raw input device.
     /// </summary>
@@ -211,7 +196,49 @@ internal static class User32
     /// If pData is not large enough for the data, the function returns -1. If pData is NULL, the function returns a value of zero.In both of these cases, pcbSize is set to the minimum size required for the pData buffer.
     /// Call GetLastError to identify any other errors.</returns>
     [DllImport(Library, SetLastError = true)]
-    internal static extern uint GetRawInputDeviceInfo(IntPtr hDevice, GetRawInputDeviceInfo_uiCommand uiCommand, IntPtr pData, ref uint pcbSize);
+    public static extern uint GetRawInputDeviceInfo(IntPtr hDevice, GetRawInputDeviceInfo_uiCommand uiCommand, IntPtr pData, ref uint pcbSize);
+
+    /// <summary>
+    /// It is recommended that you set the process-default DPI awareness via application manifest. See Setting the default DPI awareness for a process for more information. Setting the process-default DPI awareness via API call can lead to unexpected application behavior. Sets the current process to a specified dots per inch(dpi) awareness context. The DPI awareness contexts are from the DPI_AWARENESS_CONTEXT value.
+    /// </summary>
+    /// <param name="value">A DPI_AWARENESS_CONTEXT handle to set.</param>
+    /// <returns>This function returns TRUE if the operation was successful, and FALSE otherwise. To get extended error information, call GetLastError. Possible errors are ERROR_INVALID_PARAMETER for an invalid input, and ERROR_ACCESS_DENIED if the default API awareness mode for the process has already been set(via a previous API call or within the application manifest).</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern bool SetProcessDpiAwarenessContext(IntPtr value);
+
+    /// <summary>
+    /// It is recommended that you set the process-default DPI awareness via application manifest. See Setting the default DPI awareness for a process for more information. Setting the process-default DPI awareness via API call can lead to unexpected application behavior. Sets the current process to a specified dots per inch(dpi) awareness context. The DPI awareness contexts are from the DPI_AWARENESS_CONTEXT value.
+    /// </summary>
+    /// <param name="value">A DPI_AWARENESS_CONTEXT handle to set.</param>
+    /// <returns>This function returns TRUE if the operation was successful, and FALSE otherwise. To get extended error information, call GetLastError. Possible errors are ERROR_INVALID_PARAMETER for an invalid input, and ERROR_ACCESS_DENIED if the default API awareness mode for the process has already been set(via a previous API call or within the application manifest).</returns>
+    public static bool SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT value) => SetProcessDpiAwarenessContext(new IntPtr((int)value));
+
+    /// <summary>
+    /// Set the DPI awareness for the current thread to the provided value.
+    /// </summary>
+    /// <param name="dpiContext">The new DPI_AWARENESS_CONTEXT for the current thread. This context includes the DPI_AWARENESS value.</param>
+    /// <returns>The old DPI_AWARENESS_CONTEXT for the thread. If the dpiContext is invalid, the thread will not be updated and the return value will be NULL. You can use this value to restore the old DPI_AWARENESS_CONTEXT after overriding it with a predefined value.</returns>
+    [DllImport(Library)]
+    public static extern IntPtr SetThreadDpiAwarenessContext(IntPtr dpiContext);
+
+    /// <summary>
+    /// Set the DPI awareness for the current thread to the provided value.
+    /// </summary>
+    /// <param name="dpiContext">The new DPI_AWARENESS_CONTEXT for the current thread. This context includes the DPI_AWARENESS value.</param>
+    /// <returns>The old DPI_AWARENESS_CONTEXT for the thread. If the dpiContext is invalid, the thread will not be updated and the return value will be NULL. You can use this value to restore the old DPI_AWARENESS_CONTEXT after overriding it with a predefined value.</returns>
+    public static IntPtr SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT dpiContext) => SetThreadDpiAwarenessContext(new IntPtr((int)dpiContext));
+
+    /// <summary>
+    /// Closes the specified device notification handle.
+    /// </summary>
+    /// <param name="handle">Device notification handle returned by the RegisterDeviceNotification function.</param>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern bool UnregisterDeviceNotification(IntPtr handle);
+
+    // ***CLEANED UP ABOVE THIS LINE***
+    
+
 
     [DllImport(Library, SetLastError = true)]
     private static extern int GetRawInputDeviceInfo(IntPtr hDevice, GetRawInputDeviceInfo_uiCommand uiCommand, RID_DEVICE_INFO pData, ref uint pcbSize);
@@ -222,7 +249,7 @@ internal static class User32
     /// <param name="device">A handle to the raw input device. This comes from the hDevice member of RAWINPUTHEADER or from GetRawInputDeviceList.</param>
     /// <param name="deviceInfo"></param>
     /// <returns></returns>
-    internal static int GetRawInputDeviceInfo(IntPtr device, out RID_DEVICE_INFO deviceInfo)
+    public static int GetRawInputDeviceInfo(IntPtr device, out RID_DEVICE_INFO deviceInfo)
     {
         deviceInfo = new RID_DEVICE_INFO();
         uint size = deviceInfo.cbSize;
@@ -244,7 +271,7 @@ internal static class User32
     /// <param name="cbSizeHeader">Size, in bytes, of RawInputHeader.</param>
     /// <remarks>GetRawInputData gets the raw input one RAWINPUT structure at a time. In contrast, GetRawInputBuffer gets an array of RAWINPUT structures.</remarks>
     [DllImport(Library)]
-    internal static extern int GetRawInputData(IntPtr hRawInput, GetRawInputData_uiCommand uiCommand, [Out] IntPtr pData, [In, Out] ref int pcbSize, int cbSizeHeader);
+    public static extern int GetRawInputData(IntPtr hRawInput, GetRawInputData_uiCommand uiCommand, [Out] IntPtr pData, [In, Out] ref int pcbSize, int cbSizeHeader);
 
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getrawinputdata
@@ -261,7 +288,7 @@ internal static class User32
     /// <param name="cbSizeHeader">Size, in bytes, of RawInputHeader.</param>
     /// <remarks>GetRawInputData gets the raw input one RAWINPUT structure at a time. In contrast, GetRawInputBuffer gets an array of RAWINPUT structures.</remarks>
     [DllImport(Library)]
-    internal static extern int GetRawInputData(IntPtr hRawInput, GetRawInputData_uiCommand uiCommand, [Out] out RawInput pData, [In, Out] ref int pcbSize, int cbSizeHeader);
+    public static extern int GetRawInputData(IntPtr hRawInput, GetRawInputData_uiCommand uiCommand, [Out] out RawInput pData, [In, Out] ref int pcbSize, int cbSizeHeader);
     
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsyscolor
@@ -271,7 +298,7 @@ internal static class User32
     /// <returns>The function returns the red, green, blue (RGB) color value of the given element.
     /// If the nIndex parameter is out of range, the return value is zero.Because zero is also a valid RGB value, you cannot use GetSysColor to determine whether a system color is supported by the current platform.Instead, use the GetSysColorBrush function, which returns NULL if the color is not supported.</returns>
     [DllImport(Library)]
-    internal static extern uint GetSysColor(GetSysColor_Index nIndex);
+    public static extern uint GetSysColor(GetSysColor_Index nIndex);
     
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsyscolorbrush
@@ -280,14 +307,14 @@ internal static class User32
     /// <param name="nIndex">A color index. This value corresponds to the color used to paint one of the window elements. See GetSysColor for system color index values.</param>
     /// <returns>The return value identifies a logical brush if the nIndex parameter is supported by the current platform. Otherwise, it returns NULL.</returns>
     [DllImport(Library)]
-    internal static extern uint GetSysColorBrush(uint nIndex);
-    
+    public static extern uint GetSysColorBrush(uint nIndex);
+
 
     //todo: simplify
     //https://www.pinvoke.net/default.aspx/user32.getwindowlong
     //https://stackoverflow.com/questions/336633/how-to-detect-windows-64-bit-platform-with-net?rq=1
 
-    internal static UIntPtr GetWindowLong(IntPtr handle, GWL index)
+    public static UIntPtr GetWindowLong(IntPtr handle, GWL index)
     {
         if (IntPtr.Size == 4)
             return (UIntPtr)GetWindowLongInternal(handle, index);
@@ -297,11 +324,11 @@ internal static class User32
 
     [SuppressUnmanagedCodeSecurity]
     [DllImport(Library, SetLastError = true, EntryPoint = "GetWindowLong")]
-    private static extern uint GetWindowLongInternal(IntPtr hWnd, GWL nIndex);
+    public static extern uint GetWindowLongInternal(IntPtr hWnd, GWL nIndex);
 
     [SuppressUnmanagedCodeSecurity]
     [DllImport(Library, SetLastError = true, EntryPoint = "GetWindowLongPtr")]
-    private static extern UIntPtr GetWindowLongPtrInternal(IntPtr hWnd, GWL nIndex);
+    public static extern UIntPtr GetWindowLongPtrInternal(IntPtr hWnd, GWL nIndex);
     
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getwindowtexta
@@ -312,7 +339,7 @@ internal static class User32
     /// <param name="nMaxCount">The maximum number of characters to copy to the buffer, including the null character. If the text exceeds this limit, it is truncated.</param>
     /// <returns></returns>
     [DllImport(Library, CharSet = CharSet.Auto, SetLastError = true)]
-    internal static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+    public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
     
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getwindowtextlengtha
@@ -321,7 +348,7 @@ internal static class User32
     /// <param name="hWnd">A handle to the window or control.</param>
     /// <returns></returns>
     [DllImport(Library, CharSet = CharSet.Auto, SetLastError = true)]
-    internal static extern int GetWindowTextLength(IntPtr hWnd);
+    public static extern int GetWindowTextLength(IntPtr hWnd);
     
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadimagew
@@ -338,10 +365,10 @@ internal static class User32
     /// <returns>If the function succeeds, the return value is the handle of the newly loaded image.
     /// If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
     [DllImport(Library, SetLastError = true)]
-    internal static extern IntPtr LoadImage(IntPtr hInst, ushort name, LoadImage_Type type, int cx, int cy, LoadImage_FULoad fuLoad);
+    public static extern IntPtr LoadImage(IntPtr hInst, ushort name, LoadImage_Type type, int cx, int cy, LoadImage_FULoad fuLoad);
 
-    internal static IntPtr LoadImage(PredefinedIcons icon) => LoadImage(IntPtr.Zero, (ushort)icon, LoadImage_Type.IMAGE_ICON, 0, 0, LoadImage_FULoad.LR_SHARED);
-    internal static IntPtr LoadImage(PredefinedCursors cursor) => LoadImage(IntPtr.Zero, (ushort)cursor, LoadImage_Type.IMAGE_CURSOR, 0, 0, LoadImage_FULoad.LR_SHARED);
+    public static IntPtr LoadImage(PredefinedIcons icon) => LoadImage(IntPtr.Zero, (ushort)icon, LoadImage_Type.IMAGE_ICON, 0, 0, LoadImage_FULoad.LR_SHARED);
+    public static IntPtr LoadImage(PredefinedCursors cursor) => LoadImage(IntPtr.Zero, (ushort)cursor, LoadImage_Type.IMAGE_CURSOR, 0, 0, LoadImage_FULoad.LR_SHARED);
     
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-mapvirtualkeya
@@ -356,7 +383,7 @@ internal static class User32
     /// MAPVK_VK_TO_VSC_EX: Windows Vista and later: The uCode parameter is a virtual-key code and is translated into a scan code.If it is a virtual-key code that does not distinguish between left- and right-hand keys, the left-hand scan code is returned.If the scan code is an extended scan code, the high byte of the uCode value can contain either 0xe0 or 0xe1 to specify the extended scan code.If there is no translation, the function returns 0.</param>
     /// <returns>The return value is either a scan code, a virtual-key code, or a character value, depending on the value of uCode and uMapType. If there is no translation, the return value is zero.</returns>
     [DllImport(Library, SetLastError = true)]
-    internal static extern uint MapVirtualKey(VirtualKeys uCode, MapVirtualKey_uMapType uMapType);
+    public static extern uint MapVirtualKey(VirtualKeys uCode, MapVirtualKey_uMapType uMapType);
     
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-peekmessagew
@@ -375,7 +402,7 @@ internal static class User32
     /// If no messages are available, the return value is zero.</returns>
     [DllImport("User32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern bool PeekMessage(ref MSG lpMsg, IntPtr hWnd, WindowMessage wMsgFilterMin, WindowMessage wMsgFilterMax, PeekMessage_Flags wRemoveMsg);
+    public static extern bool PeekMessage(ref MSG lpMsg, IntPtr hWnd, WINDOWMESSAGE wMsgFilterMin, WINDOWMESSAGE wMsgFilterMax, PeekMessage_Flags wRemoveMsg);
     
     /// <summary>
     /// Places (posts) a message in the message queue associated with the thread that created the specified window and returns without waiting for the thread to process the message.
@@ -390,7 +417,7 @@ internal static class User32
     /// If the function fails, the return value is zero.To get extended error information, call GetLastError.GetLastError returns ERROR_NOT_ENOUGH_QUOTA when the limit is hit.</returns>
     [DllImport("User32.dll", CharSet = CharSet.Auto)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern bool PostMessage(IntPtr hWnd, WindowMessage Msg, IntPtr wParam, IntPtr lParam);
+    public static extern bool PostMessage(IntPtr hWnd, WINDOWMESSAGE Msg, IntPtr wParam, IntPtr lParam);
     
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-postquitmessage
@@ -398,7 +425,7 @@ internal static class User32
     /// </summary>
     /// <param name="nExitCode"></param>
     [DllImport(Library)]
-    internal static extern void PostQuitMessage(int nExitCode);
+    public static extern void PostQuitMessage(int nExitCode);
     
 
     /// <summary>
@@ -409,7 +436,7 @@ internal static class User32
     /// <returns>If the function succeeds, the return value is a class atom that uniquely identifies the class being registered. This atom can only be used by the CreateWindow, CreateWindowEx, GetClassInfo, GetClassInfoEx, FindWindow, FindWindowEx, and UnregisterClass functions and the IActiveIMMap::FilterClientWindows method.
     /// If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
     [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    internal static extern ushort RegisterClassEx(ref WNDCLASSEX unnamedParam1);
+    public static extern ushort RegisterClassEx(ref WNDCLASSEX unnamedParam1);
     
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerdevicenotificationa
@@ -431,7 +458,7 @@ internal static class User32
     /// Device notification handles returned by RegisterDeviceNotification must be closed by calling the UnregisterDeviceNotification function when they are no longer needed.
     /// The DBT_DEVICEARRIVAL and DBT_DEVICEREMOVECOMPLETE events are automatically broadcast to all top-level windows for port devices. Therefore, it is not necessary to call RegisterDeviceNotification for ports, and the function fails if the dbch_devicetype member is DBT_DEVTYP_PORT.Volume notifications are also broadcast to top-level windows, so the function fails if dbch_devicetype is DBT_DEVTYP_VOLUME.OEM-defined devices are not used directly by the system, so the function fails if dbch_devicetype is DBT_DEVTYP_OEM.</remarks>
     [DllImport(Library)]
-    internal static extern IntPtr RegisterDeviceNotification(IntPtr hRecipient, IntPtr NotificationFilter, RegisterDeviceNotification_Flags Flags);
+    public static extern IntPtr RegisterDeviceNotification(IntPtr hRecipient, IntPtr NotificationFilter, RegisterDeviceNotification_Flags Flags);
     
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerrawinputdevices
@@ -447,7 +474,7 @@ internal static class User32
     /// Only one window per raw input device class may be registered to receive raw input within a process(the window passed in the last call to RegisterRawInputDevices). Because of this, RegisterRawInputDevices should not be used from a library, as it may interfere with any raw input processing logic already present in applications that load it./// </remarks>
     [DllImport(Library, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool RegisterRawInputDevices(RAWINPUTDEVICE[] pRawInputDevices, uint uiNumDevices, uint cbSize);
+    public static extern bool RegisterRawInputDevices(RAWINPUTDEVICE[] pRawInputDevices, uint uiNumDevices, uint cbSize);
 
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerrawinputdevices
@@ -455,7 +482,7 @@ internal static class User32
     /// </summary>
     /// <param name="rawInputDevices">An array of RAWINPUTDEVICE structures that represent the devices that supply the raw input.</param>
     /// <returns>TRUE if the function succeeds; otherwise, FALSE. If the function fails, call GetLastError for more information.</returns>
-    internal static bool RegisterRawInputDevices(RAWINPUTDEVICE[] rawInputDevices) => RegisterRawInputDevices(rawInputDevices, (uint)rawInputDevices.Length, RAWINPUTDEVICE.s_size);
+    public static bool RegisterRawInputDevices(RAWINPUTDEVICE[] rawInputDevices) => RegisterRawInputDevices(rawInputDevices, (uint)rawInputDevices.Length, RAWINPUTDEVICE.s_size);
 
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerrawinputdevices
@@ -463,7 +490,7 @@ internal static class User32
     /// </summary>
     /// <param name="rawInputDevice">A RAWINPUTDEVICE structure that represent the device that supplies the raw input.</param>
     /// <returns>TRUE if the function succeeds; otherwise, FALSE. If the function fails, call GetLastError for more information.</returns>
-    internal static bool RegisterRawInputDevices(RAWINPUTDEVICE rawInputDevice) => RegisterRawInputDevices(new[] { rawInputDevice });
+    public static bool RegisterRawInputDevices(RAWINPUTDEVICE rawInputDevice) => RegisterRawInputDevices(new[] { rawInputDevice });
     
     /// <summary>
     /// Releases the mouse capture from a window in the current thread and restores normal mouse input processing. A window that has captured the mouse receives all mouse input, regardless of the position of the cursor, except when a mouse button is clicked while the cursor hot spot is in the window of another thread.
@@ -471,7 +498,7 @@ internal static class User32
     /// <returns>If the function succeeds, the return value is nonzero.
     /// If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
     [DllImport(Library)]
-    internal static extern bool ReleaseCapture();
+    public static extern bool ReleaseCapture();
     
 
     /// <summary>
@@ -481,7 +508,7 @@ internal static class User32
     /// <param name="hWnd">A handle to the window in the current thread that is to capture the mouse.</param>
     /// <returns>The return value is a handle to the window that had previously captured the mouse. If there is no such window, the return value is NULL.</returns>
     [DllImport(Library)]
-    internal static extern IntPtr SetCapture(IntPtr hWnd);
+    public static extern IntPtr SetCapture(IntPtr hWnd);
     
 
     //todo: simplify
@@ -492,7 +519,7 @@ internal static class User32
     // SetWindowLongPtr does not exist on x86 platforms (it's a macro that resolves to SetWindowLong).
     // We need to detect if we are on x86 or x64 at runtime and call the correct function
     // (SetWindowLongPtr on x64 or SetWindowLong on x86). Fun!
-    internal static IntPtr SetWindowLong(IntPtr hWnd, GWL nIndex, IntPtr dwNewLong)
+    public static IntPtr SetWindowLong(IntPtr hWnd, GWL nIndex, IntPtr dwNewLong)
     {
         Kernal32.SetLastError(0);
 
@@ -518,20 +545,20 @@ internal static class User32
 
     [SuppressUnmanagedCodeSecurity]
     [DllImport(Library, SetLastError = true, EntryPoint = "SetWindowLong")]
-    static extern int SetWindowLongInternal(IntPtr hWnd, GWL nIndex, int dwNewLong);
+    public static extern int SetWindowLongInternal(IntPtr hWnd, GWL nIndex, int dwNewLong);
 
     [SuppressUnmanagedCodeSecurity]
     [DllImport(Library, SetLastError = true, EntryPoint = "SetWindowLongPtr")]
-    static extern IntPtr SetWindowLongPtrInternal(IntPtr hWnd, GWL nIndex, IntPtr dwNewLong);
+    public static extern IntPtr SetWindowLongPtrInternal(IntPtr hWnd, GWL nIndex, IntPtr dwNewLong);
 
     [SuppressUnmanagedCodeSecurity]
     [DllImport(Library, SetLastError = true, EntryPoint = "SetWindowLong")]
-    static extern int SetWindowLongInternal(IntPtr hWnd, GWL nIndex,
+    public static extern int SetWindowLongInternal(IntPtr hWnd, GWL nIndex,
         [MarshalAs(UnmanagedType.FunctionPtr)] WNDPROC dwNewLong);
 
     [SuppressUnmanagedCodeSecurity]
     [DllImport(Library, SetLastError = true, EntryPoint = "SetWindowLongPtr")]
-    static extern IntPtr SetWindowLongPtrInternal(IntPtr hWnd, GWL nIndex,
+    public static extern IntPtr SetWindowLongPtrInternal(IntPtr hWnd, GWL nIndex,
         [MarshalAs(UnmanagedType.FunctionPtr)] WNDPROC dwNewLong);
 
     
@@ -544,7 +571,7 @@ internal static class User32
     /// <param name="lpString">The new title or control text.</param>
     /// <returns></returns>
     [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    internal static extern bool SetWindowText(IntPtr hWnd, string lpString);
+    public static extern bool SetWindowText(IntPtr hWnd, string lpString);
     
 
     /// <summary>
@@ -556,7 +583,7 @@ internal static class User32
     /// <returns>If the window was previously visible, the return value is nonzero.
     /// If the window was previously hidden, the return value is zero.</returns>
     [DllImport(Library)]
-    internal static extern bool ShowWindow(IntPtr hWnd, ShowWindow_Command nCmdShow);
+    public static extern bool ShowWindow(IntPtr hWnd, ShowWindow_Command nCmdShow);
     
 
     /// <summary>
@@ -569,7 +596,7 @@ internal static class User32
     /// If the message is not translated (that is, a character message is not posted to the thread's message queue), the return value is zero.</returns>
     [DllImport(Library)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern bool TranslateMessage(ref MSG lpMsg);
+    public static extern bool TranslateMessage(ref MSG lpMsg);
     
 
     /// <summary>
@@ -581,20 +608,20 @@ internal static class User32
     /// If the function fails, the return value is zero.</returns>
     [DllImport(Library)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern bool UpdateWindow(IntPtr hWnd);
+    public static extern bool UpdateWindow(IntPtr hWnd);
     
 
     // * * * CLEANED UP ABOVE THIS LINE * * *
 
     [DllImport(Library)]
-    internal static extern int GetDpiForWindow(IntPtr hWnd);
+    public static extern int GetDpiForWindow(IntPtr hWnd);
 
     [DllImport(Library)]
-    internal static extern bool BringWindowToTop(IntPtr hWnd);
+    public static extern bool BringWindowToTop(IntPtr hWnd);
     
 
     [DllImport(Library, SetLastError = true)]
-    internal static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, WindowMessage Msg,
+    public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, WINDOWMESSAGE Msg,
         IntPtr wParam, IntPtr lParam);
     
 
@@ -609,10 +636,10 @@ internal static class User32
     /// <para>When the display mode is changed dynamically, the WM_DISPLAYCHANGE message is sent to all running applications.</para>
     /// </remarks>
     [DllImport(Library, SetLastError = true)]
-    internal static extern int ChangeDisplaySettings(DeviceMode device_mode, ChangeDisplaySettingsEnum flags);
+    public static extern int ChangeDisplaySettings(DeviceMode device_mode, ChangeDisplaySettingsEnum flags);
 
     [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    internal static extern DisplayDeviceSettingsChangedResult ChangeDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName,
+    public static extern DisplayDeviceSettingsChangedResult ChangeDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName,
         DeviceMode lpDevMode, IntPtr hwnd, ChangeDisplaySettingsEnum dwflags, IntPtr lParam);
     
 
@@ -622,20 +649,20 @@ internal static class User32
     /// <param name="hWnd">Handle to the window whose client area will be used for the conversion.</param>
     /// <param name="point">Pointer to a POINT structure that contains the client coordinates to be converted. The new screen coordinates are copied into this structure if the function succeeds.</param>
     [DllImport(Library, SetLastError = true), SuppressUnmanagedCodeSecurity]
-    internal static extern bool ClientToScreen(IntPtr hWnd, ref System.Drawing.Point point);
+    public static extern bool ClientToScreen(IntPtr hWnd, ref System.Drawing.Point point);
     [DllImport(Library, SetLastError = true), SuppressUnmanagedCodeSecurity]
-    internal static extern bool ClientToScreen(IntPtr hWnd, ref POINT point);
+    public static extern bool ClientToScreen(IntPtr hWnd, ref POINT point);
     
 
     [DllImport(Library, CharSet = CharSet.Auto, ExactSpelling = true)]
-    internal static extern bool ClipCursor(ref RECT rcClip);
+    public static extern bool ClipCursor(ref RECT rcClip);
 
     [DllImport(Library, CharSet = CharSet.Auto, ExactSpelling = true)]
-    internal static extern bool ClipCursor(IntPtr rcClip);
+    public static extern bool ClipCursor(IntPtr rcClip);
     
 
     [DllImport(Library)]
-    internal static extern IntPtr CreateIconIndirect([In] ref IconInfo piconinfo);
+    public static extern IntPtr CreateIconIndirect([In] ref IconInfo piconinfo);
     
 
     [DllImport(Library, SetLastError = true)]
@@ -644,15 +671,15 @@ internal static class User32
 
     [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern bool EnumDisplayDevices([MarshalAs(UnmanagedType.LPTStr)] string lpDevice,
+    public static extern bool EnumDisplayDevices([MarshalAs(UnmanagedType.LPTStr)] string lpDevice,
         int iDevNum, [In, Out] DISPLAY_DEVICE lpDisplayDevice, int dwFlags);
     
 
     [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    internal static extern bool EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName, DisplayModeSettingsEnum iModeNum,
+    public static extern bool EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName, DisplayModeSettingsEnum iModeNum,
         [In, Out] DeviceMode lpDevMode, int dwFlags);
     [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    internal static extern bool EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName, int iModeNum,
+    public static extern bool EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName, int iModeNum,
         [In, Out] DeviceMode lpDevMode, int dwFlags);
     
 
@@ -661,7 +688,7 @@ internal static class User32
     
 
     [DllImport(Library)]
-    internal static extern IntPtr GetCapture();
+    public static extern IntPtr GetCapture();
     
 
     /// <summary>
@@ -670,7 +697,7 @@ internal static class User32
     /// <param name="windowHandle">Handle to the window whose client coordinates are to be retrieved.</param>
     /// <param name="clientRectangle">Pointer to a RECT structure that receives the client coordinates. The left and top members are zero. The right and bottom members contain the width and height of the window.</param>
     [DllImport(Library)]
-    internal extern static bool GetClientRect(IntPtr windowHandle, out RECT clientRectangle);
+    public extern static bool GetClientRect(IntPtr windowHandle, out RECT clientRectangle);
 
     
 
@@ -687,12 +714,12 @@ internal static class User32
 
     /// <summary>Must initialize cbSize</summary>
     [DllImport(Library)]
-    private static extern bool GetCursorInfo(ref CURSORINFO pci);
+    public static extern bool GetCursorInfo(ref CURSORINFO pci);
 
     /// <summary>
     /// Returns true if Cursor is currently shown, 0 if hidden. Note that hiding or showing hte cursor increments some windows value by 1, only having an effect when it crosses zero, so these checks are needed
     /// </summary>
-    internal static bool GetCursorInfo()
+    public static bool GetCursorInfo()
     {
         CURSORINFO pci = new()
         {
@@ -704,14 +731,14 @@ internal static class User32
     
 
     [DllImport(Library)]
-    internal static extern IntPtr GetDC(IntPtr hwnd);
+    public static extern IntPtr GetDC(IntPtr hwnd);
     
 
     /// <summary>
     /// Gets the system settings defined delay between clicks for a double click
     /// </summary>
     [DllImport(Library)]
-    internal static extern int GetDoubleClickTime();
+    public static extern int GetDoubleClickTime();
     
 
     [DllImport(Library)]
@@ -720,15 +747,15 @@ internal static class User32
     
 
     [DllImport("User32.dll")]
-    internal static extern int GetMessageTime();
+    public static extern int GetMessageTime();
     
 
     [DllImport(Library)]
-    internal static extern bool GetMonitorInfo(IntPtr hMonitor, ref MonitorInfo lpmi);
+    public static extern bool GetMonitorInfo(IntPtr hMonitor, ref MonitorInfo lpmi);
     
 
     [DllImport(Library, CharSet = CharSet.Auto, SetLastError = true)]
-    unsafe internal static extern int GetMouseMovePointsEx(
+    unsafe public static extern int GetMouseMovePointsEx(
         uint cbSize, MouseMovePoint* pointsIn,
         MouseMovePoint* pointsBufferOut, int nBufPoints, GetMouseMovePointResolution resolution);
     
@@ -748,7 +775,7 @@ internal static class User32
     /// <param name="Size">Pointer to a variable that specifies the size, in bytes, of the data in Data.</param>
     /// <param name="SizeHeader">Size, in bytes, of RawInputHeader.</param>
     [DllImport(Library)]
-    internal static extern int GetRawInputData(
+    public static extern int GetRawInputData(
         IntPtr RawInput,
         GetRawInputDataEnum Command,
         [Out] IntPtr Data,
@@ -778,7 +805,7 @@ internal static class User32
     /// GetRawInputData gets the raw input one RawInput structure at a time. In contrast, GetRawInputBuffer gets an array of RawInput structures.
     /// </remarks>
     [DllImport(Library)]
-    internal static extern int GetRawInputData(
+    public static extern int GetRawInputData(
         IntPtr RawInput,
         GetRawInputDataEnum Command,
         /*[MarshalAs(UnmanagedType.LPStruct)]*/ [Out] out RawInput Data,
@@ -813,7 +840,7 @@ internal static class User32
     /// Pointer to a variable that contains the size, in bytes, of the data in Data.
     /// </param>
     [DllImport(Library)]
-    internal static extern uint GetRawInputDeviceInfo(
+    public static extern uint GetRawInputDeviceInfo(
         IntPtr Device,
         [MarshalAs(UnmanagedType.U4)] RawInputDeviceInfoEnum Command,
         [In, Out] IntPtr Data,
@@ -821,7 +848,7 @@ internal static class User32
     );
 
     [DllImport(Library)]
-    internal static extern int GetRawInputDeviceInfo(
+    public static extern int GetRawInputDeviceInfo(
         IntPtr Device,
         [MarshalAs(UnmanagedType.U4)] RawInputDeviceInfoEnum Command,
         [In, Out] IntPtr Data,
@@ -860,7 +887,7 @@ internal static class User32
     /// <para>Call GetLastError to identify any other errors.</para>
     /// </returns>
     [DllImport(Library, SetLastError = true)]
-    internal static extern uint GetRawInputDeviceInfo(
+    public static extern uint GetRawInputDeviceInfo(
         IntPtr Device,
         [MarshalAs(UnmanagedType.U4)] RawInputDeviceInfoEnum Command,
         [In, Out] RawInputDeviceInfo Data,
@@ -869,7 +896,7 @@ internal static class User32
 
     [System.Security.SuppressUnmanagedCodeSecurity]
     [DllImport(Library, SetLastError = true)]
-    internal static extern int GetRawInputDeviceInfo(
+    public static extern int GetRawInputDeviceInfo(
         IntPtr Device,
         [MarshalAs(UnmanagedType.U4)] RawInputDeviceInfoEnum Command,
         [In, Out] RawInputDeviceInfo Data,
@@ -895,14 +922,14 @@ internal static class User32
     /// Size of a RawInputDeviceList structure.
     /// </param>
     [DllImport(Library, SetLastError = true)]
-    private static extern uint GetRawInputDeviceList(
+    public static extern uint GetRawInputDeviceList(
         [In, Out] RawInputDeviceList[] RawInputDeviceList,
         [In, Out] ref uint NumDevices,
         uint Size
     );
 
     [DllImport(Library, SetLastError = true)]
-    internal static extern int GetRawInputDeviceList(
+    public static extern int GetRawInputDeviceList(
         [In, Out] RawInputDeviceList[] RawInputDeviceList,
         [In, Out] ref int NumDevices,
         int Size
@@ -938,14 +965,14 @@ internal static class User32
     /// On any other error, the function returns (UINT) -1 and GetLastError returns the error indication.
     /// </returns>
     [DllImport(Library, SetLastError = true)]
-    internal static extern uint GetRawInputDeviceList(
+    public static extern uint GetRawInputDeviceList(
         [In, Out] IntPtr RawInputDeviceList,
         [In, Out] ref uint NumDevices,
         uint Size
     );
 
     [DllImport(Library, SetLastError = true)]
-    internal static extern int GetRawInputDeviceList(
+    public static extern int GetRawInputDeviceList(
         [In, Out] IntPtr RawInputDeviceList,
         [In, Out] ref int NumDevices,
         int Size
@@ -957,34 +984,34 @@ internal static class User32
     /// <param name="windowHandle">Handle to the window whose client coordinates are to be retrieved.</param>
     /// <param name="windowRectangle"> Pointer to a structure that receives the screen coordinates of the upper-left and lower-right corners of the window.</param>
     [DllImport(Library)]
-    internal extern static bool GetWindowRect(IntPtr windowHandle, out RECT windowRectangle);
+    public extern static bool GetWindowRect(IntPtr windowHandle, out RECT windowRectangle);
     
     [DllImport(Library)]
-    internal extern static bool GetWindowInfo(IntPtr hwnd, ref WINDOWINFO pwi);
+    public extern static bool GetWindowInfo(IntPtr hwnd, ref WINDOWINFO pwi);
 
     [DllImport(Library)]
-    internal static extern bool IsWindowVisible(IntPtr intPtr);
+    public static extern bool IsWindowVisible(IntPtr intPtr);
     
     [DllImport(Library)]
-    internal static extern IntPtr LoadCursorFromFile(string lpCursorName);
+    public static extern IntPtr LoadCursorFromFile(string lpCursorName);
     
     [DllImport(Library, SetLastError = true)]
-    internal static extern bool KillTimer(IntPtr hWnd, UIntPtr uIDEvent);
+    public static extern bool KillTimer(IntPtr hWnd, UIntPtr uIDEvent);
     
     [DllImport(Library, SetLastError = true)]
-    internal static extern uint MapVirtualKey(uint uCode, MapVirtualKeyType uMapType);
+    public static extern uint MapVirtualKey(uint uCode, MapVirtualKeyType uMapType);
 
     [DllImport(Library, SetLastError = true)]
-    internal static extern uint MapVirtualKey(VirtualKeys vkey, MapVirtualKeyType uMapType);
+    public static extern uint MapVirtualKey(VirtualKeys vkey, MapVirtualKeyType uMapType);
 
     /// <summary>
     /// Retrieves a handle to the display monitor that has the largest area of intersection with the bounding rectangle of a specified window.
     /// </summary>
     [DllImport(Library)]
-    internal static extern IntPtr MonitorFromWindow(IntPtr hwnd, MonitorFrom dwFlags);
+    public static extern IntPtr MonitorFromWindow(IntPtr hwnd, MonitorFrom dwFlags);
     
     [DllImport(Library)]
-    internal static extern bool MoveWindow(
+    public static extern bool MoveWindow(
         IntPtr hWnd,
         int X,
         int Y,
@@ -1003,10 +1030,10 @@ internal static class User32
     /// <param name="flags">What action to take on messages after processing</param>
     [DllImport("User32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern bool PeekMessage(ref MSG msg, IntPtr hWnd, int messageFilterMin, int messageFilterMax, PM flags);
+    public static extern bool PeekMessage(ref MSG msg, IntPtr hWnd, int messageFilterMin, int messageFilterMax, PM flags);
     
     [DllImport(Library)]
-    internal static extern IntPtr RegisterDeviceNotification(IntPtr hRecipient, IntPtr NotificationFilter, DeviceNotification Flags);
+    public static extern IntPtr RegisterDeviceNotification(IntPtr hRecipient, IntPtr NotificationFilter, DeviceNotification Flags);
     
     /// <summary>
     /// Registers the devices that supply the raw input data.
@@ -1022,16 +1049,16 @@ internal static class User32
     /// </param>
     [DllImport(Library, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool RegisterRawInputDevices(
+    public static extern bool RegisterRawInputDevices(
         RawInputDevice[] RawInputDevices,
         int NumDevices,
         int Size
     );
-    internal static bool RegisterRawInputDevices(RawInputDevice[] rawInputDevices)
+    public static bool RegisterRawInputDevices(RawInputDevice[] rawInputDevices)
     {
         return RegisterRawInputDevices(rawInputDevices, rawInputDevices.Length, RawInputDevice.Size);
     }
-    internal static bool RegisterRawInputDevices(RawInputDevice rawInputDevice)
+    public static bool RegisterRawInputDevices(RawInputDevice rawInputDevice)
     {
         RawInputDevice[] rids = { rawInputDevice };
         return RegisterRawInputDevices(rids, 1, RawInputDevice.Size);
@@ -1039,7 +1066,7 @@ internal static class User32
     
     [DllImport(Library)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    internal static extern bool ReleaseDC(IntPtr hwnd, IntPtr DC);
+    public static extern bool ReleaseDC(IntPtr hwnd, IntPtr DC);
     
     /// <summary>
     /// Converts the screen coordinates of a specified point on the screen to client-area coordinates.
@@ -1048,33 +1075,33 @@ internal static class User32
     /// <param name="point">Pointer to a POINT structure that specifies the screen coordinates to be converted.</param>
     [DllImport(Library)]
     //internal static extern BOOL ScreenToClient(HWND hWnd, ref POINT point);
-    internal static extern bool ScreenToClient(IntPtr hWnd, ref System.Drawing.Point point);
+    public static extern bool ScreenToClient(IntPtr hWnd, ref System.Drawing.Point point);
     
     [DllImport(Library, CharSet = CharSet.Auto)]
-    internal static extern IntPtr SendMessage(IntPtr hWnd, WindowMessage Msg, IntPtr wParam, IntPtr lParam);
+    public static extern IntPtr SendMessage(IntPtr hWnd, WINDOWMESSAGE Msg, IntPtr wParam, IntPtr lParam);
     
     [DllImport(Library)]
     public static extern bool SetCursorPos(int X, int Y);
     
     [DllImport(Library)]
-    internal static extern bool SetProcessDPIAware();
+    public static extern bool SetProcessDPIAware();
     
     [DllImport(Library)]
-    internal static extern bool SetProcessDpiAwarenessContext();
+    public static extern bool SetProcessDpiAwarenessContext();
     
     [DllImport(Library, SetLastError = true)]
-    internal static extern IntPtr SetFocus(IntPtr hWnd);
+    public static extern IntPtr SetFocus(IntPtr hWnd);
     
     [DllImport(Library, SetLastError = true)]
     public static extern bool SetParent(IntPtr child, IntPtr newParent);
     
     [DllImport(Library)]
-    internal static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
+    public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
 
-    internal static bool SetWindowPos(IntPtr hWnd, RECT position, SetWindowPosFlags uFlags) => SetWindowPos(hWnd, IntPtr.Zero, position.left, position.top, position.Width, position.Height, uFlags);
+    public static bool SetWindowPos(IntPtr hWnd, RECT position, SetWindowPosFlags uFlags) => SetWindowPos(hWnd, IntPtr.Zero, position.left, position.top, position.Width, position.Height, uFlags);
     
     [DllImport(Library)]
-    internal static extern int ShowCursor(bool show);
+    public static extern int ShowCursor(bool show);
     
     /// <summary>
     /// The ShowWindow function sets the specified window's show state.
@@ -1082,12 +1109,12 @@ internal static class User32
     /// <param name="hWnd">[in] Handle to the window.</param>
     /// <param name="nCmdShow">[in] Specifies how the window is to be shown. This parameter is ignored the first time an application calls ShowWindow, if the program that launched the application provides a STARTUPINFO structure. Otherwise, the first time ShowWindow is called, the value should be the value obtained by the WinMain function in its nCmdShow parameter. In subsequent calls, this parameter can be one of the ShowWindowEnum values.</param>
     [DllImport(Library)]
-    internal static extern bool ShowWindow(IntPtr hWnd, ShowWindowCommand nCmdShow);
+    public static extern bool ShowWindow(IntPtr hWnd, ShowWindowCommand nCmdShow);
     
     [DllImport(Library)]
-    private static extern IntPtr SetClassLong(IntPtr hInstance, int nIndex, IntPtr value);
+    public static extern IntPtr SetClassLong(IntPtr hInstance, int nIndex, IntPtr value);
 
-    internal static IntPtr SetClassLong(IntPtr windowHandle, NIndex nIndex, IntPtr value)
+    public static IntPtr SetClassLong(IntPtr windowHandle, NIndex nIndex, IntPtr value)
     {
         return SetClassLong(windowHandle, (int)nIndex, value);
     }
@@ -1130,21 +1157,17 @@ internal static class User32
     public static extern IntPtr SetCursor(IntPtr hCursor);
     
     [DllImport(Library)]
-    internal static extern bool SetForegroundWindow(IntPtr hWnd);
+    public static extern bool SetForegroundWindow(IntPtr hWnd);
     
     [DllImport(Library, SetLastError = true)]
-    internal static extern UIntPtr SetTimer(IntPtr hWnd, UIntPtr nIDEvent, uint uElapse, TimerProc lpTimerFunc);
+    public static extern UIntPtr SetTimer(IntPtr hWnd, UIntPtr nIDEvent, uint uElapse, TimerProc lpTimerFunc);
     
     [DllImport(Library, SetLastError = true)]
-    internal static extern bool TrackMouseEvent(ref TrackMouseEventStructure lpEventTrack);
+    public static extern bool TrackMouseEvent(ref TrackMouseEventStructure lpEventTrack);
     
     [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    internal static extern short UnregisterClass([MarshalAs(UnmanagedType.LPTStr)] string className, IntPtr instance);
+    public static extern short UnregisterClass([MarshalAs(UnmanagedType.LPTStr)] string className, IntPtr instance);
 
     [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    internal static extern short UnregisterClass(IntPtr className, IntPtr instance);
-    
-    [DllImport(Library)]
-    internal static extern bool UnregisterDeviceNotification(IntPtr handle);
-    
+    public static extern short UnregisterClass(IntPtr className, IntPtr instance);
 }

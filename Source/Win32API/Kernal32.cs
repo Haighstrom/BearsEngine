@@ -86,7 +86,7 @@ internal static class Kernal32
     /// <param name="nStdHandle">The standard device.</param>
     /// <returns>If the function succeeds, the return value is a handle to the specified device, or a redirected handle set by a previous call to SetStdHandle. The handle has GENERIC_READ and GENERIC_WRITE access rights, unless the application has used SetStdHandle to set a standard handle with lesser access. If the function fails, the return value is INVALID_HANDLE_VALUE.To get extended error information, call GetLastError. If an application does not have associated standard handles, such as a service running on an interactive desktop, and has not redirected them, the return value is NULL.</returns>
     [DllImport(Library, SetLastError = true)]
-    public static extern IntPtr GetStdHandle(StdHandle nStdHandle);
+    public static extern IntPtr GetStdHandle(STDHANDLE nStdHandle);
 
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibraryw
@@ -126,5 +126,5 @@ internal static class Kernal32
     /// <param name="hHandle">The handle for the standard device.</param>
     /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
     [DllImport(Library, SetLastError = true)]
-    public static extern bool SetStdHandle(StdHandle nStdHandle, IntPtr hHandle);
+    public static extern bool SetStdHandle(STDHANDLE nStdHandle, IntPtr hHandle);
 }

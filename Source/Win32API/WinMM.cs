@@ -34,7 +34,7 @@ internal static class WinMM
     /// <param name="pji">Pointer to a JOYINFOEX structure that contains extended position information and button status of the joystick. You must set the dwSize and dwFlags members or joyGetPosEx will fail. The information returned from joyGetPosEx depends on the flags you specify in dwFlags.</param>
     /// <returns>Returns JOYERR_NOERROR if successful, or an error value if not.</returns>
     [DllImport(Library)]
-    public static extern MMResult joyGetPosEx(int uJoyID, ref LPJOYINFOEX pji);
+    public static extern MMResult joyGetPosEx(int uJoyID, ref JOYINFOEX pji);
 
     /// <summary>
     /// The joyGetNumDevs function queries the joystick driver for the number of joysticks it supports.

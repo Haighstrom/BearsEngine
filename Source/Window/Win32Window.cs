@@ -7,24 +7,20 @@ namespace BearsEngine.Window;
 public class Win32Window : IWindow
 {
     private const WindowClassStyle DEFAULT_CLASS_STYLE = 0;
-
-    private const WindowStyle WS_PARENT_SIZING_BORDER = WindowStyle.WS_OVERLAPPED | WindowStyle.WS_CAPTION | WindowStyle.WS_SYSMENU | WindowStyle.WS_THICKFRAME | WindowStyle.WS_MAXIMIZEBOX | WindowStyle.WS_MINIMIZEBOX | WindowStyle.WS_CLIPCHILDREN;
-    private const WindowStyle WS_PARENT_BORDER = WindowStyle.WS_OVERLAPPED | WindowStyle.WS_CAPTION | WindowStyle.WS_SYSMENU | WindowStyle.WS_MINIMIZEBOX | WindowStyle.WS_CLIPCHILDREN;
-    private const WindowStyle WS_PARENT_NO_BORDER = WindowStyle.WS_POPUP | WindowStyle.WS_CLIPCHILDREN;
-    private const ExtendedWindowStyle EWS_PARENT = ExtendedWindowStyle.WS_EX_APPWINDOW | ExtendedWindowStyle.WS_EX_WINDOWEDGE;
-    private const WindowStyle WS_CHILD = WindowStyle.WS_VISIBLE | WindowStyle.WS_CHILD | WindowStyle.WS_CLIPSIBLINGS;
-    private const ExtendedWindowStyle EWS_CHILD = 0;
-
+    private const WINDOWSTYLE WS_PARENT_SIZING_BORDER = WINDOWSTYLE.WS_OVERLAPPED | WINDOWSTYLE.WS_CAPTION | WINDOWSTYLE.WS_SYSMENU | WINDOWSTYLE.WS_THICKFRAME | WINDOWSTYLE.WS_MAXIMIZEBOX | WINDOWSTYLE.WS_MINIMIZEBOX | WINDOWSTYLE.WS_CLIPCHILDREN;
+    private const WINDOWSTYLE WS_PARENT_BORDER = WINDOWSTYLE.WS_OVERLAPPED | WINDOWSTYLE.WS_CAPTION | WINDOWSTYLE.WS_SYSMENU | WINDOWSTYLE.WS_MINIMIZEBOX | WINDOWSTYLE.WS_CLIPCHILDREN;
+    private const WINDOWSTYLE WS_PARENT_NO_BORDER = WINDOWSTYLE.WS_POPUP | WINDOWSTYLE.WS_CLIPCHILDREN;
+    private const WINDOWSTYLEEX EWS_PARENT = WINDOWSTYLEEX.WS_EX_APPWINDOW | WINDOWSTYLEEX.WS_EX_WINDOWEDGE;
+    private const WINDOWSTYLE WS_CHILD = WINDOWSTYLE.WS_VISIBLE | WINDOWSTYLE.WS_CHILD | WINDOWSTYLE.WS_CLIPSIBLINGS;
+    private const WINDOWSTYLEEX EWS_CHILD = 0;
     private const int HTCLIENT = 1;
-    internal const int CW_USEDEFAULT = int.MinValue;
-    
+    private const int CW_USEDEFAULT = int.MinValue;
 
     private static RECT GetWindowPosition(IntPtr windowHandle) 
     {
         _ = DWMAPI.DwmGetWindowAttribute(windowHandle, DWMWINDOWATTRIBUTE.DWMWA_EXTENDED_FRAME_BOUNDS, out RECT rect, Marshal.SizeOf(default(RECT)));
         return rect;
     }
-    
 
     /// <summary>
     /// How big the child window should be (based on the parent)
@@ -35,7 +31,6 @@ public class Win32Window : IWindow
         User32.GetClientRect(parentWindowHandle, out RECT r);
         return new Point(r.Width, r.Height);
     }
-    
 
     private static void SetPixelFormat(IntPtr dc)
     {
@@ -54,15 +49,13 @@ public class Win32Window : IWindow
         if (!GDI32.SetPixelFormat(dc, pixelFormat, ref pfd))
             throw new Exception($"Failed to set pixel format: {Marshal.GetLastWin32Error()}");
     }
-    
-    
 
     private readonly IntPtr _windowClassName = Marshal.StringToHGlobalAuto(Guid.NewGuid().ToString());
     private readonly IntPtr _instance = Marshal.GetHINSTANCE(typeof(Win32Window).Module);
     private readonly WNDPROC _wndProc; //need to reference this so it doesn't get garbage collected
     private readonly IntPtr _windowHandle, _childWindowHandle;
-    private readonly WindowStyle _parentStyle;
-    private readonly ExtendedWindowStyle _parentExStyle;
+    private readonly WINDOWSTYLE _parentStyle;
+    private readonly WINDOWSTYLEEX _parentExStyle;
     private bool _disposed = false;
     private MSG _lpMsg;
     private Rect _userPosition; //100% DPI visible Window Position
@@ -81,7 +74,6 @@ public class Win32Window : IWindow
     private bool _resizingWindow = false;
     private int _leftInvisBorder, _topInvisBorder, _rightInvisBorder, _bottomInvisBorder;
     
-
     public Win32Window(WindowSettings settings)
     {
         _userPosition = new Rect();//just to shut up the nullable warnings
@@ -95,13 +87,13 @@ public class Win32Window : IWindow
 
         //todo: move this code into a static constructor?
         if (Environment.OSVersion.Version >= new Version(10, 0, 15063)) // win 10 creators update added support for per monitor v2
-            SHCore.SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT.DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+            User32.SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT.DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
         else if (Environment.OSVersion.Version >= new Version(6, 3, 0)) // win 8.1 added support for per monitor dpi
             SHCore.SetProcessDpiAwareness(PROCESS_DPI_AWARENESS.Process_Per_Monitor_DPI_Aware);
         else
             User32.SetProcessDPIAware();
 
-        DPI = GDI32.GetDeviceCaps(User32.GetDC(IntPtr.Zero), GetDeviceCapsIndex.LOGPIXELSX) / 96f;
+        DPI = GDI32.GetDeviceCaps(User32.GetDC(IntPtr.Zero), GetDeviceCaps_index.LOGPIXELSX) / 96f;
 
         if (settings.MinClientSize.X < 0 || settings.MinClientSize.Y < 0 || settings.MaxClientSize.X < 0 || settings.MaxClientSize.Y < 0 || settings.Width < 0 || settings.Height < 0)
             throw new Exception($"Settings requested a negative size: ({settings})");
@@ -144,7 +136,7 @@ public class Win32Window : IWindow
         _parentStyle = WS_PARENT_SIZING_BORDER;
 
         if (Visible)
-            _parentStyle |= WindowStyle.WS_VISIBLE;
+            _parentStyle |= WINDOWSTYLE.WS_VISIBLE;
 
         _parentExStyle = EWS_PARENT;
 
@@ -164,21 +156,18 @@ public class Win32Window : IWindow
 
         if (_windowHandle == IntPtr.Zero)
             throw new Exception(string.Format("Failed to create window. Error: {0}", Marshal.GetLastWin32Error()));
-        
 
-        WindowStyle style = WS_CHILD;
-        ExtendedWindowStyle exStyle = EWS_CHILD;
+        WINDOWSTYLE style = WS_CHILD;
+        WINDOWSTYLEEX exStyle = EWS_CHILD;
 
         _childWindowHandle = User32.CreateWindowEx(exStyle, _windowClassName, IntPtr.Zero, style, 0, 0, (int)(settings.Width * DPI), (int)(settings.Height * DPI), hWndParent: _windowHandle, hMenu: IntPtr.Zero, _instance, lpParam: IntPtr.Zero);
 
         if (_childWindowHandle == IntPtr.Zero)
             throw new Exception(string.Format("Failed to create window. Error: {0}", Marshal.GetLastWin32Error()));
-        
 
         if (settings.Visible)
             User32.ShowWindow(_windowHandle, ShowWindowCommand.SHOW);
         User32.UpdateWindow(_windowHandle);
-        
 
         //https://stackoverflow.com/questions/34139450/getwindowrect-returns-a-size-including-invisible-borders
         //hack for invisible windows - consider making window visible off screen temporarily?
@@ -193,7 +182,6 @@ public class Win32Window : IWindow
 
         User32.SetWindowPos(_windowHandle, rect, SetWindowPosFlags.NOREDRAW);
         
-
         Border = settings.Border;
 
         if (settings.Centre)
@@ -202,7 +190,6 @@ public class Win32Window : IWindow
         State = settings.State;
         CursorVisible = settings.CursorVisible;
         CursorLockedToWindow = settings.CursorLockedToWindow;
-        
 
         DeviceContext = User32.GetDC(_childWindowHandle);
 
@@ -218,27 +205,25 @@ public class Win32Window : IWindow
         Serilog.Log.Information("Graphics Card: {0}", OpenGL32.GetString(GetStringEnum.Renderer));
         Serilog.Log.Information("Graphics Card: {0}", OpenGL32.GetString(GetStringEnum.Renderer));
     }
-    
 
-    internal IntPtr StandardWindowProcedure(IntPtr handle, WindowMessage message, IntPtr wParam, IntPtr lParam)
+    internal IntPtr StandardWindowProcedure(IntPtr handle, WINDOWMESSAGE message, IntPtr wParam, IntPtr lParam)
     {
         switch (message)
         {
-            case WindowMessage.WM_DPICHANGED:
+            case WINDOWMESSAGE.WM_DPICHANGED:
                 DPI = wParam.ToHIWORD() / 96f;
                 var proposedRect = (RECT)Marshal.PtrToStructure(lParam, typeof(RECT))!;
                 User32.SetWindowPos(_windowHandle, proposedRect, SetWindowPosFlags.NOZORDER | SetWindowPosFlags.NOACTIVATE);
                 return IntPtr.Zero;
 
-            case WindowMessage.WM_MOVE:
+            case WINDOWMESSAGE.WM_MOVE:
                 SetWindowPositionValues();
                 if (!_resizingWindow && _cursorLockedToWindow)
                     ConfineCursor();
                 Moved?.Invoke(this, EventArgs.Empty);
                 break;
-            
 
-            case WindowMessage.WM_SIZING:
+            case WINDOWMESSAGE.WM_SIZING:
                 if (MinClientSize.X == 0 && MinClientSize.Y == 0 && MaxClientSize.X == 0 && MaxClientSize.Y == 0)
                     break;
 
@@ -272,9 +257,8 @@ public class Win32Window : IWindow
 
                 Marshal.StructureToPtr(plannedWindowR, lParam, true);
                 break;
-            
 
-            case WindowMessage.WM_SIZE:
+            case WINDOWMESSAGE.WM_SIZE:
                 SetWindowPositionValues();
 
                 Point desiredUserClientSize = new()
@@ -297,32 +281,28 @@ public class Win32Window : IWindow
 
                 Resized?.Invoke(this, new SizeEventArgs(_actualClientPosition.Width, _actualClientPosition.Height));
                 break;
-            
 
-            case WindowMessage.WM_ENTERMENULOOP:
-            case WindowMessage.WM_ENTERSIZEMOVE:
+            case WINDOWMESSAGE.WM_ENTERMENULOOP:
+            case WINDOWMESSAGE.WM_ENTERSIZEMOVE:
                 _resizingWindow = true;
                 break;
 
-            case WindowMessage.WM_EXITMENULOOP:
-            case WindowMessage.WM_EXITSIZEMOVE:
+            case WINDOWMESSAGE.WM_EXITMENULOOP:
+            case WINDOWMESSAGE.WM_EXITSIZEMOVE:
                 _resizingWindow = false;
                 if (_cursorLockedToWindow)
                     ConfineCursor();
                 break;
-            
 
-            case WindowMessage.WM_SETCURSOR:
+            case WINDOWMESSAGE.WM_SETCURSOR:
                 if (lParam.ToLOWORD() == HTCLIENT)
                 {
                     User32.SetCursor(_cursor.HCursor);
                     return IntPtr.Zero;
                 }
             break;
-            
 
-
-            case WindowMessage.WM_CHAR:
+            case WINDOWMESSAGE.WM_CHAR:
                 char c;
                 if (IntPtr.Size == 4) //Environment.Is64Bit?
                     c = (char)wParam.ToInt32();
@@ -333,8 +313,8 @@ public class Win32Window : IWindow
                     CharEntered?.Invoke(this, new KeyboardCharEventArgs(c));
                 break;
 
-            case WindowMessage.WM_KEYDOWN:
-            case WindowMessage.WM_SYSKEYDOWN:
+            case WINDOWMESSAGE.WM_KEYDOWN:
+            case WINDOWMESSAGE.WM_SYSKEYDOWN:
                 bool extended = (lParam.ToInt64() & 1 << 24) != 0;
                 short scancode = (short)((lParam.ToInt64() >> 16) & 0xff);
                 VirtualKeys vkey = (VirtualKeys)wParam;
@@ -345,8 +325,8 @@ public class Win32Window : IWindow
                     KeyDown?.Invoke(this, new KeyboardKeyEventArgs(key));
                 break;
 
-            case WindowMessage.WM_KEYUP:
-            case WindowMessage.WM_SYSKEYUP:
+            case WINDOWMESSAGE.WM_KEYUP:
+            case WINDOWMESSAGE.WM_SYSKEYUP:
                 extended = (lParam.ToInt64() & 1 << 24) != 0;      //TODO - theres something called extended1 as well...
                 scancode = (short)((lParam.ToInt64() >> 16) & 0xff);
                 vkey = (VirtualKeys)wParam;
@@ -358,7 +338,7 @@ public class Win32Window : IWindow
                 break;
             
 
-            case WindowMessage.WM_ACTIVATE:
+            case WINDOWMESSAGE.WM_ACTIVATE:
                 bool newFocus = wParam.ToLOWORD() != 0;
 
                 if (newFocus != Focussed)
@@ -371,7 +351,7 @@ public class Win32Window : IWindow
                 break;
             
 
-            case WindowMessage.WM_SETFOCUS:
+            case WINDOWMESSAGE.WM_SETFOCUS:
                 if (!Focussed)
                 {
                     Focussed = true;
@@ -380,7 +360,7 @@ public class Win32Window : IWindow
                 break;
             
 
-            case WindowMessage.WM_KILLFOCUS:
+            case WINDOWMESSAGE.WM_KILLFOCUS:
                 if (Focussed)
                 {
                     Focussed = false;
@@ -391,14 +371,14 @@ public class Win32Window : IWindow
 
             //https://docs.microsoft.com/en-us/windows/win32/learnwin32/closing-the-window
 
-            case WindowMessage.WM_CLOSE:
+            case WINDOWMESSAGE.WM_CLOSE:
                 CloseAttempted?.Invoke(this, EventArgs.Empty);
                 if (ExitOnClose)
                     break;
                 return IntPtr.Zero;
             
 
-            case WindowMessage.WM_DESTROY:
+            case WINDOWMESSAGE.WM_DESTROY:
                 Closed?.Invoke(this, EventArgs.Empty);
                 IsOpen = false;
                 Dispose();
@@ -410,11 +390,10 @@ public class Win32Window : IWindow
         return User32.DefWindowProc(handle, message, wParam, lParam);
     }
     
-
     private IntPtr CreateRenderContext(int major, int minor)
     {
         if (major < 1 || minor < 0)
-            throw new Exception("invalid GL version to create: {major}.{minor}.");
+            throw new Exception($"invalid GL version to create: {major}.{minor}.");
 
         Serilog.Log.Information("Creating GL Context: Requested Version {0}.{1}", major, minor);
 
@@ -436,7 +415,6 @@ public class Win32Window : IWindow
         return renderContext;
     }
     
-
     private void SetWindowPositionValues()
     {
         User32.GetWindowRect(_windowHandle, out _reportedPosition);
@@ -459,7 +437,6 @@ public class Win32Window : IWindow
         _bottomInvisBorder = _reportedPosition.bottom - _actualPosition.bottom;
     }
     
-
     /// <summary>
     /// User requested Window to be a certain size. What RECT needs to be used in SetWindowPos to acheive it?
     /// We need to add DPI and invisible borders.
@@ -475,8 +452,7 @@ public class Win32Window : IWindow
         answer.bottom = (int)Math.Round(answer.bottom * DPI) + _bottomInvisBorder;
 
         return answer;
-    }
-    
+    }    
 
     /// <summary>
     /// Transform the parent rect down to the user coordinations by scaling down by DPI
@@ -488,8 +464,7 @@ public class Win32Window : IWindow
             (int)Math.Round(rect.top / DPI),
             (int)Math.Round(rect.Width / DPI),
             (int)Math.Round(rect.Height / DPI));
-    }
-    
+    }    
 
     /// <summary>
     /// Transform the parent rect down to the user coordinations by scaling down by DPI
@@ -499,8 +474,7 @@ public class Win32Window : IWindow
         return new Point(
             (int)Math.Round(actualClientRect.Width / DPI),
             (int)Math.Round(actualClientRect.Height / DPI));
-    }
-    
+    }    
 
     private RECT ActualClientRect_From_UserClientPoint(Point userClientPoint)
     {
@@ -509,21 +483,17 @@ public class Win32Window : IWindow
             right = (int)Math.Round(userClientPoint.X * DPI),
             bottom = (int)Math.Round(userClientPoint.Y * DPI),
         };
-    }
-    
+    }    
 
     private void ConfineCursor()
     {
         User32.ClipCursor(ref _actualPosition);
-    }
-    
+    }    
 
     private void UnconfineCursor()
     {
         User32.ClipCursor(IntPtr.Zero);
     }
-    
-    
 
     public bool IsOpen { get; private set; } = true;
 
@@ -546,7 +516,7 @@ public class Win32Window : IWindow
     public void Close()
     {
         if (IsOpen)
-            User32.PostMessage(_windowHandle, WindowMessage.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+            User32.PostMessage(_windowHandle, WINDOWMESSAGE.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
         else
             Serilog.Log.Error($"Called Close on a {typeof(Win32Window).Name} window that was already destroyed.");
     }
@@ -569,6 +539,7 @@ public class Win32Window : IWindow
     }
 
     public void SwapBuffers() => GDI32.SwapBuffers(DeviceContext);
+
     public bool ExitOnClose { get; set; }
 
     public event EventHandler? CloseAttempted;
@@ -598,7 +569,6 @@ public class Win32Window : IWindow
         }
     }
     
-
     //https://stackoverflow.com/questions/706921/problems-with-setting-application-icon
     public Icon Icon
     {
@@ -608,14 +578,13 @@ public class Win32Window : IWindow
             if (value == _icon)
                 return;
 
-            User32.SendMessage(_windowHandle, WindowMessage.WM_SETICON, (IntPtr)0, _icon.HIcon);
-            User32.SendMessage(_windowHandle, WindowMessage.WM_SETICON, (IntPtr)1, _icon.HIcon);
+            User32.SendMessage(_windowHandle, WINDOWMESSAGE.WM_SETICON, (IntPtr)0, _icon.HIcon);
+            User32.SendMessage(_windowHandle, WINDOWMESSAGE.WM_SETICON, (IntPtr)1, _icon.HIcon);
 
             _icon.Dispose();
             _icon = value;
         }
     }
-    
 
     public BorderStyle Border
     {
@@ -625,15 +594,15 @@ public class Win32Window : IWindow
             if (_border == value)
                 return;
 
-            WindowStyle newStyle = value switch
+            WINDOWSTYLE newStyle = value switch
             {
-                BorderStyle.SizingBorder => WindowStyle.WS_OVERLAPPED | WindowStyle.WS_CAPTION | WindowStyle.WS_SYSMENU | WindowStyle.WS_THICKFRAME | WindowStyle.WS_MAXIMIZEBOX | WindowStyle.WS_MINIMIZEBOX,
-                BorderStyle.Border => WindowStyle.WS_OVERLAPPED | WindowStyle.WS_CAPTION | WindowStyle.WS_SYSMENU | WindowStyle.WS_MINIMIZEBOX,
-                BorderStyle.NoBorder => WindowStyle.WS_POPUP,
+                BorderStyle.SizingBorder => WINDOWSTYLE.WS_OVERLAPPED | WINDOWSTYLE.WS_CAPTION | WINDOWSTYLE.WS_SYSMENU | WINDOWSTYLE.WS_THICKFRAME | WINDOWSTYLE.WS_MAXIMIZEBOX | WINDOWSTYLE.WS_MINIMIZEBOX,
+                BorderStyle.Border => WINDOWSTYLE.WS_OVERLAPPED | WINDOWSTYLE.WS_CAPTION | WINDOWSTYLE.WS_SYSMENU | WINDOWSTYLE.WS_MINIMIZEBOX,
+                BorderStyle.NoBorder => WINDOWSTYLE.WS_POPUP,
                 _ => throw new NotImplementedException(),
             };
             if (Visible)
-                newStyle |= WindowStyle.WS_VISIBLE;
+                newStyle |= WINDOWSTYLE.WS_VISIBLE;
 
             User32.SetWindowLong(_windowHandle, GWL.GWL_STYLE, new IntPtr((int)newStyle));
 
@@ -646,7 +615,6 @@ public class Win32Window : IWindow
         }
     }
     
-
     public WindowState State
     {
         get => _windowState;
@@ -699,8 +667,6 @@ public class Win32Window : IWindow
             _windowState = value;
         }
     }
-    
-    
 
     public float DPI { get; private set; }
 
@@ -714,21 +680,18 @@ public class Win32Window : IWindow
             User32.SetWindowPos(_windowHandle, new IntPtr(0), r.left, r.top, r.Width, r.Height, SetWindowPosFlags.NOREDRAW);
         }
     }
-    
 
     public int X
     {
         get => (int)Position.X;
         set => Position = new Rect(value, Y, Width, Height);
     }
-    
 
     public int Y
     {
         get => (int)Position.Y;
         set => Position = new Rect(X, value, Width, Height);
     }
-    
 
     public int Width
     {
@@ -736,14 +699,12 @@ public class Win32Window : IWindow
         set => Position = new Rect(X, Y, value, Height);
     }
     
-
     public int Height
     {
         get => (int)Position.H;
         set => Position = new Rect(X, Y, Width, value);
     }
     
-
     public Point ClientSize
     {
         get => _userClientSize;
@@ -754,10 +715,11 @@ public class Win32Window : IWindow
             User32.SetWindowPos(_windowHandle, new IntPtr(0), X, Y, r.Width, r.Height, SetWindowPosFlags.NOREDRAW);
         }
     }
-    
 
     public Rect Viewport => new Rect(0, 0, _actualClientPosition.Width, _actualClientPosition.Height);
+
     public Point MinClientSize { get; set; }
+
     public Point MaxClientSize { get; set; }
 
     public void Centre()
@@ -781,16 +743,15 @@ public class Win32Window : IWindow
 
         User32.SetWindowPos(_windowHandle, rect, SetWindowPosFlags.NOREDRAW);
     }
-    
 
     public Point ScreenToClient(Point screenPosition) => new((int)((screenPosition.X - _actualClientPosition.left) / DPI), (int)((screenPosition.Y - _actualClientPosition.top) / DPI));
 
     public event EventHandler? Moved;
 
     public event EventHandler? Resized;
-    
 
     public bool Focussed { get; private set; }
+
     public void MakeFocussed()
     {
         if (!Focussed)
@@ -804,7 +765,6 @@ public class Win32Window : IWindow
     }
 
     public event EventHandler<FocusChangedEventArgs>? FocusChanged;
-    
 
     //http://www.cplusplus.com/forum/windows/97017/
     //https://docs.microsoft.com/en-us/windows/win32/learnwin32/setting-the-cursor-image
@@ -823,7 +783,6 @@ public class Win32Window : IWindow
         }
     }
     
-
     public bool CursorVisible
     {
         get => _cursorVisible;
@@ -837,7 +796,6 @@ public class Win32Window : IWindow
         }
     }
     
-
     public bool CursorLockedToWindow
     {
         get => _cursorLockedToWindow;
@@ -854,8 +812,6 @@ public class Win32Window : IWindow
             _cursorLockedToWindow = value;
         }
     }
-    
-    
 
     /// <summary>
     /// Called whenever a character, text number or symbol, is input by the keyboard. Will not record modifier keys like shift and alt.
@@ -873,12 +829,10 @@ public class Win32Window : IWindow
     /// Called whenever a keyboard key is released
     /// </summary>
     public event EventHandler<KeyboardKeyEventArgs>? KeyUp;
-    
 
     public IntPtr DeviceContext { get; }
+
     public IntPtr RenderContext { get; }
-    
-    
 
     protected virtual void Dispose(bool disposedCorrectly)
     {
@@ -912,7 +866,6 @@ public class Win32Window : IWindow
         Dispose(disposedCorrectly: true);
         GC.SuppressFinalize(this);
     }
-    
 
 #if DEBUG
     private void LogWinRects()
@@ -928,9 +881,6 @@ public class Win32Window : IWindow
         Serilog.Log.Debug($"Child Client: {GetClientSize(_childWindowHandle)}");
     }
     
-
     private static void LogIntPtr(IntPtr pointer) => Serilog.Log.Debug(pointer.ToLong().ToString());
-    
 #endif
-    
 }
