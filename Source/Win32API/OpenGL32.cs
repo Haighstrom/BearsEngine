@@ -11,8 +11,6 @@ internal static class OpenGL32
 {
     private const string Library = "Opengl32.dll";
 
-    // https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glAlphaFunc.xml
-
     /// <summary>
     /// Specify the alpha test function. Alpha testing is performed only in RGBA mode.
     /// </summary>
@@ -20,11 +18,16 @@ internal static class OpenGL32
     /// <param name="ref">Specifies the reference value that incoming alpha values are compared to. This value is clamped to the range 0 1 , where 0 represents the lowest possible alpha value and 1 the highest possible value. The initial reference value is 0.</param>
     [DllImport(Library)]
     public static extern void glAlphaFunc(GLAlphaFuncEnum func, float @ref);
+
+    /// <summary>
+    /// Delimit the vertices of a primitive or a group of like primitives
+    /// </summary>
+    /// <param name="mode">Specifies the primitive or primitives that will be created from vertices presented between glBegin and the subsequent glEnd. Ten symbolic constants are accepted: GL_POINTS, GL_LINES, GL_LINE_STRIP, GL_LINE_LOOP, GL_TRIANGLES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_QUADS, GL_QUAD_STRIP, and GL_POLYGON.</param>
+    [DllImport(Library)]
+    public static extern void glBegin(int mode);
     
     // ***CLEANED UP ABOVE THIS LINE***
 
-    [DllImport(Library)]
-    public static extern void glBegin(int mode);
     
 
     [DllImport(Library)]

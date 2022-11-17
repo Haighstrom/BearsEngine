@@ -220,7 +220,7 @@ namespace BearsEngine.Worlds.Cameras
                 OpenGL32.glBindTexture(TextureTarget.Texture2DMultisample, _frameBufferMSAATexture.ID);
 
                 //Do the MSAA render pass, drawing to the MSAATexture FBO
-                _mSAAShader.Render(ref _ortho, ref identity, Vertices.Length, PrimitiveType.TriangleStrip);
+                _mSAAShader.Render(ref _ortho, ref identity, Vertices.Length, PrimitiveType.GL_TRIANGLE_STRIP);
 
                 //Unbind the FBO 
                 OpenGL32.glBindTexture(TextureTarget.Texture2DMultisample, 0);
@@ -244,7 +244,7 @@ namespace BearsEngine.Worlds.Cameras
             mv = Matrix4.Translate(ref mv, X, Y, 0);
 
             //Render with assigned shader
-            Shader.Render(ref projection, ref mv, Vertices.Length, PrimitiveType.TriangleStrip);
+            Shader.Render(ref projection, ref mv, Vertices.Length, PrimitiveType.GL_TRIANGLE_STRIP);
 
             //Unbind textures            
             OpenGL32.glBindTexture(TextureTarget.Texture2D, 0);

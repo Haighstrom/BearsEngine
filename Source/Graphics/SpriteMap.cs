@@ -76,7 +76,7 @@ namespace BearsEngine.Graphics
                     tileMatrix = Matrix4.Translate(ref mv, i * W, j * H, 0);
                     _shader.IndexX = Maths.Mod(MapValues[i, j], _ssColumns);
                     _shader.IndexY = MapValues[i, j] / _ssColumns;
-                    _shader.Render(ref projection, ref tileMatrix, _vertices.Length, PrimitiveType.TriangleStrip);
+                    _shader.Render(ref projection, ref tileMatrix, _vertices.Length, PrimitiveType.GL_TRIANGLE_STRIP);
                 }
         }
         

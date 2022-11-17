@@ -158,7 +158,7 @@ namespace BearsEngine.Graphics
                 _verticesChanged = false;
             }
 
-            Shader.Render(ref projection, ref mv, _vertices.Length, PrimitiveType.TriangleStrip);
+            Shader.Render(ref projection, ref mv, _vertices.Length, PrimitiveType.GL_TRIANGLE_STRIP);
 
             UnbindVertexBuffer();
         }

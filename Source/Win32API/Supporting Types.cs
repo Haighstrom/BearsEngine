@@ -7909,54 +7909,57 @@ public enum PolygonMode : int
 
 public enum PrimitiveType : int
 {
+    //todo: complete this. Look at other functions for docs? 
+    //https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glBegin.xml
+    //https://registry.khronos.org/OpenGL-Refpages/gl4/html/glDrawArrays.xhtml
     /// <summary>
-    /// GL_POINTS
+    /// Treats each vertex as a single point. Vertex n defines point n. N points are drawn.
     /// </summary>
-    Points = 0,
+    GL_POINTS = 0,
     /// <summary>
     /// GL_LINES
     /// </summary>
-    Lines = 1,
-    /// <summary>
-    /// GL_LINE_LOOP
-    /// </summary>
-    LineLoop = 2,
+    GL_LINES = 1,
     /// <summary>
     /// GL_LINE_STRIP
     /// </summary>
-    LineStrip = 3,
+    GL_LINE_STRIP = 3,
+    /// <summary>
+    /// GL_LINE_LOOP
+    /// </summary>
+    GL_LINE_LOOP = 2,
     /// <summary>
     /// GL_TRIANGLES
     /// </summary>
-    Triangles = 4,
+    GL_TRIANGLES = 4,
     /// <summary>
     /// GL_TRIANGLE_STRIP
     /// </summary>
-    TriangleStrip = 5,
+    GL_TRIANGLE_STRIP = 5,
     /// <summary>
     /// GL_TRIANGLE_FAN
     /// </summary>
-    TriangleFan = 6,
+    GL_TRIANGLE_FAN = 6,
     /// <summary>
     /// GL_QUADS
     /// </summary>
-    Quads = 7,
+    GL_QUADS = 7,
+    /// <summary>
+    /// GL_TRIANGLE_STRIP_ADJACENCY
+    /// </summary>
+    GL_LINE_STRIP_ADJACENCY = 11,
     /// <summary>
     /// GL_LINES_ADJACENCY
     /// </summary>
-    LinesAdjacency = 10,
-    /// <summary>
-    /// GL_TRIANGLE_STRIP_ADJACENCY
-    /// </summary>
-    LineStripAdjacency = 11,
+    GL_LINES_ADJACENCY = 10,
     /// <summary>
     /// GL_TRIANGLES_ADJACENCY
     /// </summary>
-    TrianglesAdjacency = 12,
+    GL_TRIANGLES_ADJACENCY = 12,
     /// <summary>
     /// GL_TRIANGLE_STRIP_ADJACENCY
     /// </summary>
-    TriangleStripAdjacency = 13,
+    GL_TRIANGLE_STRIP_ADJACENCY  = 13,
     /// <summary>
     /// GL_PATCH
     /// </summary>
