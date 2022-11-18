@@ -429,26 +429,10 @@ internal enum RegisterDeviceNotification_Flags
 }
 
 /// <summary>
-/// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getrawinputdata
-/// For use with User32 GetRawInputData
-/// </summary>
-internal enum GetRawInputData_uiCommand
-{
-    /// <summary>
-    /// Get the header information from the RAWINPUT structure.
-    /// </summary>
-    RID_HEADER = 0x10000005,
-    /// <summary>
-    /// Get the raw data from the RAWINPUT structure.
-    /// </summary>
-    RID_INPUT = 0x10000003,
-}
-
-/// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsyscolor
 /// For use with GetSysColor
 /// </summary>
-internal enum GetSysColor_Index : int
+internal enum GetSysColor_nIndex : int
 {
     /// <summary>
     /// Dark shadow for three-dimensional display elements.
@@ -2935,28 +2919,6 @@ internal enum SystemErrorCode : uint
 
 [UnmanagedFunctionPointer(CallingConvention.Winapi)]
 internal delegate void TimerProc(IntPtr hwnd, WINDOWMESSAGE uMsg, UIntPtr idEvent, int dwTime);
-
-[Flags]
-internal enum TrackMouseEventFlags : uint
-{
-    HOVER = 0x00000001,
-    LEAVE = 0x00000002,
-    NONCLIENT = 0x00000010,
-    QUERY = 0x40000000,
-    CANCEL = 0x80000000,
-}
-
-#pragma warning disable 0649
-internal struct TrackMouseEventStructure
-{
-    internal int Size;
-    internal TrackMouseEventFlags Flags;
-    internal IntPtr TrackWindowHandle;
-    internal int HoverTime;
-
-    internal static readonly int SizeInBytes = Marshal.SizeOf(typeof(TrackMouseEventStructure));
-}
-#pragma warning restore 0649
 
 internal enum VirtualKeys : short
 {

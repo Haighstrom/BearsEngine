@@ -1,4 +1,7 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Drawing;
+using System.Dynamic;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
@@ -182,21 +185,77 @@ internal static class User32
     public static extern uint GetQueueStatus(GetQueueStatus_flags flags);
 
     /// <summary>
+    /// Retrieves the raw input from the specified device. https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getrawinputdata
+    /// </summary>
+    /// <param name="hRawInput">A handle to the RAWINPUT structure. This comes from the lParam in WM_INPUT.</param>
+    /// <param name="uiCommand">
+    /// The command flag. This parameter can be one of the following values.
+    /// RID_HEADER: Get the header information from the RAWINPUT structure.
+    /// RID_INPUT: Get the raw data from the RAWINPUT structure.
+    /// </param>
+    /// <param name="pData">A pointer to the data that comes from the RAWINPUT structure. This depends on the value of uiCommand. If pData is NULL, the required size of the buffer is returned in *pcbSize.</param>
+    /// <param name="pcbSize">Pointer to a variable that specifies the size, in bytes, of the data in Data.</param>
+    /// <param name="cbSizeHeader">Size, in bytes, of RawInputHeader.</param>
+    /// <remarks>GetRawInputData gets the raw input one RAWINPUT structure at a time. In contrast, GetRawInputBuffer gets an array of RAWINPUT structures.</remarks>
+    [DllImport(Library)]
+    public static extern int GetRawInputData(IntPtr hRawInput, GetRawInputData_uiCommand uiCommand, [Out] IntPtr pData, [In, Out] ref int pcbSize, int cbSizeHeader);
+
+    /// <summary>
+    /// Retrieves the raw input from the specified device. https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getrawinputdata
+    /// </summary>
+    /// <param name="hRawInput">A handle to the RAWINPUT structure. This comes from the lParam in WM_INPUT.</param>
+    /// <param name="uiCommand">
+    /// The command flag. This parameter can be one of the following values.
+    /// RID_HEADER: Get the header information from the RAWINPUT structure.
+    /// RID_INPUT: Get the raw data from the RAWINPUT structure.
+    /// </param>
+    /// <param name="pData">A pointer to the data that comes from the RAWINPUT structure. This depends on the value of uiCommand. If pData is NULL, the required size of the buffer is returned in *pcbSize.</param>
+    /// <param name="pcbSize">Pointer to a variable that specifies the size, in bytes, of the data in Data.</param>
+    /// <param name="cbSizeHeader">Size, in bytes, of RawInputHeader.</param>
+    /// <remarks>GetRawInputData gets the raw input one RAWINPUT structure at a time. In contrast, GetRawInputBuffer gets an array of RAWINPUT structures.</remarks>
+    [DllImport(Library)]
+    public static extern int GetRawInputData(IntPtr hRawInput, GetRawInputData_uiCommand uiCommand, [Out] out RawInput pData, [In, Out] ref int pcbSize, int cbSizeHeader);
+
+    /// <summary>
     /// Retrieves information about the raw input device.
     /// </summary>
     /// <param name="hDevice">A handle to the raw input device. This comes from the hDevice member of RAWINPUTHEADER or from GetRawInputDeviceList.</param>
-    /// <param name="uiCommand">Specifies what data will be returned in pData. This parameter can be one of the following values.
-    /// RIDI_PREPARSEDDATA: pData is a PHIDP_PREPARSED_DATA pointer to a buffer for a top-level collection's preparsed data.
-    /// RIDI_DEVICENAME: pData points to a string that contains the device interface name. If this device is opened with Shared Access Mode then you can call CreateFile with this name to open a HID collection and use returned handle for calling ReadFile to read input reports and WriteFile to send output reports. For more information, see Opening HID Collections and Handling HID Reports. For this uiCommand only, the value in pcbSize is the character count (not the byte count).
-    /// RIDI_DEVICEINFO: pData points to an RID_DEVICE_INFO structure.</param>
-    /// <param name="pData">A pointer to a buffer that contains the information specified by uiCommand.
-    /// If uiCommand is RIDI_DEVICEINFO, set the cbSize member of RID_DEVICE_INFO to sizeof(RID_DEVICE_INFO) before calling GetRawInputDeviceInfo.</param>
+    /// <param name="uiCommand">Specifies what data will be returned in pData.</param>
+    /// <param name="pData">A pointer to a buffer that contains the information specified by uiCommand. If uiCommand is RIDI_DEVICEINFO, set the cbSize member of RID_DEVICE_INFO to sizeof(RID_DEVICE_INFO) before calling GetRawInputDeviceInfo.</param>
     /// <param name="pcbSize">The size, in bytes, of the data in pData.</param>
-    /// <returns>If successful, this function returns a non-negative number indicating the number of bytes copied to pData.
-    /// If pData is not large enough for the data, the function returns -1. If pData is NULL, the function returns a value of zero.In both of these cases, pcbSize is set to the minimum size required for the pData buffer.
-    /// Call GetLastError to identify any other errors.</returns>
+    /// <returns>If successful, this function returns a non-negative number indicating the number of bytes copied to pData. If pData is not large enough for the data, the function returns -1. If pData is NULL, the function returns a value of zero.In both of these cases, pcbSize is set to the minimum size required for the pData buffer. Call GetLastError to identify any other errors.</returns>
     [DllImport(Library, SetLastError = true)]
-    public static extern uint GetRawInputDeviceInfo(IntPtr hDevice, GetRawInputDeviceInfo_uiCommand uiCommand, IntPtr pData, ref uint pcbSize);
+    public static extern int GetRawInputDeviceInfo(IntPtr hDevice, GetRawInputDeviceInfo_uiCommand uiCommand, RID_DEVICE_INFO pData, ref uint pcbSize);
+
+    /// <summary>
+    /// Retrieves information about the raw input device.
+    /// </summary>
+    /// <param name="hDevice">A handle to the raw input device. This comes from the hDevice member of RAWINPUTHEADER or from GetRawInputDeviceList.</param>
+    /// <param name="pData">A pointer to a buffer that contains the information specified by uiCommand. If uiCommand is RIDI_DEVICEINFO, set the cbSize member of RID_DEVICE_INFO to sizeof(RID_DEVICE_INFO) before calling GetRawInputDeviceInfo.</param>
+    /// <returns>If successful, this function returns a non-negative number indicating the number of bytes copied to pData. If pData is not large enough for the data, the function returns -1. If pData is NULL, the function returns a value of zero.In both of these cases, pcbSize is set to the minimum size required for the pData buffer. Call GetLastError to identify any other errors.</returns>
+    public static int GetRawInputDeviceInfo(IntPtr hDevice, out RID_DEVICE_INFO pData)
+    {
+        pData = new RID_DEVICE_INFO();
+        uint size = pData.cbSize;
+        return GetRawInputDeviceInfo(hDevice, GetRawInputDeviceInfo_uiCommand.RIDI_DEVICEINFO, pData, ref size);
+    }
+
+    /// <summary>
+    /// Retrieves the current color of the specified display element. Display elements are the parts of a window and the display that appear on the system display screen. https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsyscolor
+    /// </summary>
+    /// <param name="nIndex">The display element whose color is to be retrieved.</param>
+    /// <returns>The function returns the red, green, blue (RGB) color value of the given element.
+    /// If the nIndex parameter is out of range, the return value is zero.Because zero is also a valid RGB value, you cannot use GetSysColor to determine whether a system color is supported by the current platform.Instead, use the GetSysColorBrush function, which returns NULL if the color is not supported.</returns>
+    [DllImport(Library)]
+    public static extern uint GetSysColor(GetSysColor_nIndex nIndex);
+
+    /// <summary>
+    /// The GetSysColorBrush function retrieves a handle identifying a logical brush that corresponds to the specified color index. https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsyscolorbrush
+    /// </summary>
+    /// <param name="nIndex">A color index. This value corresponds to the color used to paint one of the window elements. See GetSysColor for system color index values.</param>
+    /// <returns>The return value identifies a logical brush if the nIndex parameter is supported by the current platform. Otherwise, it returns NULL.</returns>
+    [DllImport(Library)]
+    public static extern uint GetSysColorBrush(uint nIndex);
 
     /// <summary>
     /// It is recommended that you set the process-default DPI awareness via application manifest. See Setting the default DPI awareness for a process for more information. Setting the process-default DPI awareness via API call can lead to unexpected application behavior. Sets the current process to a specified dots per inch(dpi) awareness context. The DPI awareness contexts are from the DPI_AWARENESS_CONTEXT value.
@@ -229,6 +288,14 @@ internal static class User32
     public static IntPtr SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT dpiContext) => SetThreadDpiAwarenessContext(new IntPtr((int)dpiContext));
 
     /// <summary>
+    /// Posts messages when the mouse pointer leaves a window or hovers over a window for a specified amount of time.
+    /// </summary>
+    /// <param name="lpEventTrack">A pointer to a TRACKMOUSEEVENT structure that contains tracking information.</param>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern bool TrackMouseEvent(ref TRACKMOUSEEVENT lpEventTrack);
+
+    /// <summary>
     /// Closes the specified device notification handle.
     /// </summary>
     /// <param name="handle">Device notification handle returned by the RegisterDeviceNotification function.</param>
@@ -237,78 +304,6 @@ internal static class User32
     public static extern bool UnregisterDeviceNotification(IntPtr handle);
 
     // ***CLEANED UP ABOVE THIS LINE***
-    
-
-
-    [DllImport(Library, SetLastError = true)]
-    private static extern int GetRawInputDeviceInfo(IntPtr hDevice, GetRawInputDeviceInfo_uiCommand uiCommand, RID_DEVICE_INFO pData, ref uint pcbSize);
-
-    /// <summary>
-    /// Retrieves information about the raw input device.
-    /// </summary>
-    /// <param name="device">A handle to the raw input device. This comes from the hDevice member of RAWINPUTHEADER or from GetRawInputDeviceList.</param>
-    /// <param name="deviceInfo"></param>
-    /// <returns></returns>
-    public static int GetRawInputDeviceInfo(IntPtr device, out RID_DEVICE_INFO deviceInfo)
-    {
-        deviceInfo = new RID_DEVICE_INFO();
-        uint size = deviceInfo.cbSize;
-        return GetRawInputDeviceInfo(device, GetRawInputDeviceInfo_uiCommand.RIDI_DEVICEINFO, deviceInfo, ref size);
-    }
-    
-    /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getrawinputdata
-    /// Retrieves the raw input from the specified device.
-    /// </summary>
-    /// <param name="hRawInput">A handle to the RAWINPUT structure. This comes from the lParam in WM_INPUT.</param>
-    /// <param name="uiCommand">
-    /// The command flag. This parameter can be one of the following values.
-    /// RID_HEADER: Get the header information from the RAWINPUT structure.
-    /// RID_INPUT: Get the raw data from the RAWINPUT structure.
-    /// </param>
-    /// <param name="pData">A pointer to the data that comes from the RAWINPUT structure. This depends on the value of uiCommand. If pData is NULL, the required size of the buffer is returned in *pcbSize.</param>
-    /// <param name="pcbSize">Pointer to a variable that specifies the size, in bytes, of the data in Data.</param>
-    /// <param name="cbSizeHeader">Size, in bytes, of RawInputHeader.</param>
-    /// <remarks>GetRawInputData gets the raw input one RAWINPUT structure at a time. In contrast, GetRawInputBuffer gets an array of RAWINPUT structures.</remarks>
-    [DllImport(Library)]
-    public static extern int GetRawInputData(IntPtr hRawInput, GetRawInputData_uiCommand uiCommand, [Out] IntPtr pData, [In, Out] ref int pcbSize, int cbSizeHeader);
-
-    /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getrawinputdata
-    /// Retrieves the raw input from the specified device.
-    /// </summary>
-    /// <param name="hRawInput">A handle to the RAWINPUT structure. This comes from the lParam in WM_INPUT.</param>
-    /// <param name="uiCommand">
-    /// The command flag. This parameter can be one of the following values.
-    /// RID_HEADER: Get the header information from the RAWINPUT structure.
-    /// RID_INPUT: Get the raw data from the RAWINPUT structure.
-    /// </param>
-    /// <param name="pData">A pointer to the data that comes from the RAWINPUT structure. This depends on the value of uiCommand. If pData is NULL, the required size of the buffer is returned in *pcbSize.</param>
-    /// <param name="pcbSize">Pointer to a variable that specifies the size, in bytes, of the data in Data.</param>
-    /// <param name="cbSizeHeader">Size, in bytes, of RawInputHeader.</param>
-    /// <remarks>GetRawInputData gets the raw input one RAWINPUT structure at a time. In contrast, GetRawInputBuffer gets an array of RAWINPUT structures.</remarks>
-    [DllImport(Library)]
-    public static extern int GetRawInputData(IntPtr hRawInput, GetRawInputData_uiCommand uiCommand, [Out] out RawInput pData, [In, Out] ref int pcbSize, int cbSizeHeader);
-    
-    /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsyscolor
-    /// Retrieves the current color of the specified display element. Display elements are the parts of a window and the display that appear on the system display screen.
-    /// </summary>
-    /// <param name="nIndex">The display element whose color is to be retrieved.</param>
-    /// <returns>The function returns the red, green, blue (RGB) color value of the given element.
-    /// If the nIndex parameter is out of range, the return value is zero.Because zero is also a valid RGB value, you cannot use GetSysColor to determine whether a system color is supported by the current platform.Instead, use the GetSysColorBrush function, which returns NULL if the color is not supported.</returns>
-    [DllImport(Library)]
-    public static extern uint GetSysColor(GetSysColor_Index nIndex);
-    
-    /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsyscolorbrush
-    /// The GetSysColorBrush function retrieves a handle identifying a logical brush that corresponds to the specified color index.
-    /// </summary>
-    /// <param name="nIndex">A color index. This value corresponds to the color used to paint one of the window elements. See GetSysColor for system color index values.</param>
-    /// <returns>The return value identifies a logical brush if the nIndex parameter is supported by the current platform. Otherwise, it returns NULL.</returns>
-    [DllImport(Library)]
-    public static extern uint GetSysColorBrush(uint nIndex);
-
 
     //todo: simplify
     //https://www.pinvoke.net/default.aspx/user32.getwindowlong
@@ -1161,9 +1156,6 @@ internal static class User32
     
     [DllImport(Library, SetLastError = true)]
     public static extern UIntPtr SetTimer(IntPtr hWnd, UIntPtr nIDEvent, uint uElapse, TimerProc lpTimerFunc);
-    
-    [DllImport(Library, SetLastError = true)]
-    public static extern bool TrackMouseEvent(ref TrackMouseEventStructure lpEventTrack);
     
     [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
     public static extern short UnregisterClass([MarshalAs(UnmanagedType.LPTStr)] string className, IntPtr instance);

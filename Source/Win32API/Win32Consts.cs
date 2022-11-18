@@ -397,6 +397,22 @@ internal enum GetQueueStatus_flags : uint
 }
 
 /// <summary>
+/// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getrawinputdata
+/// For use with User32 GetRawInputData
+/// </summary>
+internal enum GetRawInputData_uiCommand
+{
+    /// <summary>
+    /// Get the header information from the RAWINPUT structure.
+    /// </summary>
+    RID_HEADER = 0x10000005,
+    /// <summary>
+    /// Get the raw data from the RAWINPUT structure.
+    /// </summary>
+    RID_INPUT = 0x10000003,
+}
+
+/// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getrawinputdeviceinfoa
 /// For use with User32 GetRawInputDeviceInfo
 /// </summary>
