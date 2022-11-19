@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Collections;
 using System.IO;
 
-namespace BearsEngine;
+namespace BearsEngine.Logging;
 
 public static class HConsole
 {
@@ -42,7 +42,7 @@ public static class HConsole
         Log("-------------------");
         Log("");
     }
-    
+
 
     public static Point SizeInCharacters
     {
@@ -57,7 +57,7 @@ public static class HConsole
 
     public static int WidthInCharacters => (int)SizeInCharacters.X;
     public static int HeightInCharacters => (int)SizeInCharacters.Y;
-    
+
 
     private static class Logger
     {
@@ -111,7 +111,7 @@ public static class HConsole
         Logger.Init();
     }
 
-    
+
 
     public static void Log(object o, params object[] args)
     {
@@ -153,7 +153,7 @@ public static class HConsole
             Console.WriteLine(message);
         }
     }
-    
+
 
     /// <summary>
     /// Pass in any thrown exceptions to make them be logged to console and/or log file, and then the log file closed so it is actually written to. The stream writer only actually writes to the file when it is closed.
@@ -163,7 +163,7 @@ public static class HConsole
     /// <param name="memberName">Details of the calling function and line - is passed automatically, do not enter these parameters</param>
     /// <param name="classPath">Details of the calling function and line - is passed automatically, do not enter these parameters</param>
     /// <param name="lineNumber">Details of the calling function and line - is passed automatically, do not enter these parameters</param>
-    public static void LogException(Exception e, string callerName = null, [System.Runtime.CompilerServices.CallerMemberName]string memberName = "", [System.Runtime.CompilerServices.CallerFilePath] string classPath = "", [System.Runtime.CompilerServices.CallerLineNumberAttribute] int lineNumber = 0)
+    public static void LogException(Exception e, string callerName = null, [System.Runtime.CompilerServices.CallerMemberName] string memberName = "", [System.Runtime.CompilerServices.CallerFilePath] string classPath = "", [System.Runtime.CompilerServices.CallerLineNumber] int lineNumber = 0)
     {
         Console.WriteLine();
         Log("!! An exception has been thrown by " + callerName);
@@ -174,7 +174,7 @@ public static class HConsole
 
         throw e;
     }
-    
+
 
     /// <summary>
     /// Perform 
@@ -192,7 +192,7 @@ public static class HConsole
 
         return false;
     }
-    
+
 
     /// <summary>
     /// Start a Stopwatch timer for debugging diagnostics purposes.
@@ -202,12 +202,12 @@ public static class HConsole
     {
         Stopwatch t = new();
         t.Start();
-        
+
         Log("--> " + operationName + " started..");
 
         _timersDict.Add(operationName, t);
     }
-    
+
 
     /// <summary>
     /// Stops a timer specified by operationName string matching one already started with the same name, and displays its information to the console.
@@ -227,10 +227,10 @@ public static class HConsole
             Log(operationName + " completed in " + millisecs.ToString("F2") + " ms");
         else
             Log(operationName + " aborted after " + millisecs.ToString("F2") + " ms");
-        
+
         return millisecs;
     }
-    
+
 
     public static void Warning(string message, bool blockExecutionInDebug = false)
     {
@@ -253,26 +253,26 @@ public static class HConsole
     {
         Kernal32.FreeConsole();
     }
-    
+
 
     public static void Dispose()
     {
         Hide();
     }
-    
+
 
     public static void MoveConsoleTo(int x, int y, int w, int h)
     {
         User32.MoveWindow(Handle, x, y, w, h, true);
     }
-    
+
 
     public static void Maximize()
     {
         Process p = Process.GetCurrentProcess();
         User32.ShowWindow(p.MainWindowHandle, ShowWindowCommand.MAXIMIZE);
     }
-    
+
 
     public static int MaxWidth
     {
@@ -287,7 +287,7 @@ public static class HConsole
             return mInfo.Work.Width;
         }
     }
-    
+
 
     public static int MaxHeight
     {
@@ -302,5 +302,5 @@ public static class HConsole
             return mInfo.Work.Height;
         }
     }
-    
+
 }
