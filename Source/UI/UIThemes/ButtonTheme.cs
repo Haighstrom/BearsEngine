@@ -1,4 +1,6 @@
-﻿namespace BearsEngine.UI
+﻿using BearsEngine.Source.Core;
+
+namespace BearsEngine.UI
 {
     public struct ButtonTheme
     {

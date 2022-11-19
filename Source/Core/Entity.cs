@@ -1,4 +1,6 @@
-﻿namespace BearsEngine.Worlds;
+﻿using BearsEngine.Source.Core;
+
+namespace BearsEngine.Worlds;
 
 public class Entity : EntityBase, IClickable, ICollideable
 {

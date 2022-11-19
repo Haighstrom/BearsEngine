@@ -1,4 +1,6 @@
-﻿namespace BearsEngine.Tweens
+﻿using BearsEngine.Source.Core;
+
+namespace BearsEngine.Tweens
 {
     public class ColourTween : Tween
     {

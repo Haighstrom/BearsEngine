@@ -1,4 +1,6 @@
-﻿namespace BearsEngine
+﻿using BearsEngine.Source.Core;
+
+namespace BearsEngine
 {
     public interface IScene : IUpdatable, IRenderable, IDisposable
     {

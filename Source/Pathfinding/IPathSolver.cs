@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace BearsEngine.Pathfinding;
+﻿namespace BearsEngine.Pathfinding;
 
 public interface IPathSolver<TNode> where TNode : IPathfindNode<TNode>
 {

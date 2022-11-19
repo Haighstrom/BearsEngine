@@ -1,4 +1,5 @@
 ﻿using BearsEngine.Graphics.Shaders;
+using BearsEngine.Source.Core;
 using BearsEngine.Win32API;
 
 namespace BearsEngine.Graphics

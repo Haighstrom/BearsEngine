@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace BearsEngine.Pathfinding;
+﻿namespace BearsEngine.Pathfinding;
 
 /// <summary>
 /// A node which graph search algorithms can be built on

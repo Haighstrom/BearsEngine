@@ -1,4 +1,6 @@
-﻿namespace BearsEngine.Graphics
+﻿using BearsEngine.Source.Core;
+
+namespace BearsEngine.Graphics
 {
     public class HPBar : ProgressBar
     {
