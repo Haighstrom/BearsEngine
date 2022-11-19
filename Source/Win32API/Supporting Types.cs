@@ -3381,26 +3381,6 @@ public enum BufferUsageHint : int
     DynamicCopy = 0x88EA,
 }
 
-public enum ClearBufferMask : uint
-{
-    /// <summary>
-    /// Original was GL_DEPTH_BUFFER_BIT = 0x00000100
-    /// </summary>
-    DepthBufferBit = 0x00000100,
-    /// <summary>
-    /// Original was GL_ACCUM_BUFFER_BIT = 0x00000200
-    /// </summary>
-    AccumBufferBit = 0x00000200,
-    /// <summary>
-    /// Original was GL_STENCIL_BUFFER_BIT = 0x00000400
-    /// </summary>
-    StencilBufferBit = 0x00000400,
-    /// <summary>
-    /// Original was GL_COLOR_BUFFER_BIT = 0x00004000
-    /// </summary>
-    ColourBufferBit = 0x00004000
-}
-
 [Flags]
 public enum DataType : uint
 {

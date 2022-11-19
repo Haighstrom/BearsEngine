@@ -438,6 +438,30 @@ internal enum GetRawInputDeviceInfo_uiCommand : uint
 }
 
 /// <summary>
+/// glClear takes a single argument that is the bitwise OR of several values indicating which buffer is to be cleared.
+/// </summary>
+[Flags]
+internal enum ClearMask : uint
+{
+    /// <summary>
+    /// Indicates the buffers currently enabled for color writing.
+    /// </summary>
+    GL_COLOR_BUFFER_BIT = 0x00004000,
+    /// <summary>
+    /// Indicates the depth buffer.
+    /// </summary>
+    GL_DEPTH_BUFFER_BIT = 0x00000100,
+    /// <summary>
+    /// Indicates the accumulation buffer.
+    /// </summary>
+    GL_ACCUM_BUFFER_BIT = 0x00000200,
+    /// <summary>
+    /// Indicates the stencil buffer.
+    /// </summary>
+    GL_STENCIL_BUFFER_BIT = 0x00000400,
+}
+
+/// <summary>
 /// Joystick capabilities
 /// </summary>
 [Flags]

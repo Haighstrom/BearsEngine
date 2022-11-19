@@ -179,8 +179,8 @@ namespace BearsEngine.Worlds.Cameras
             }
 
             //Clear the FBO
-            OpenGL32.ClearColour(BackgroundColour);
-            OpenGL32.Clear(ClearBufferMask.ColourBufferBit);
+            OpenGL32.glClearColour(BackgroundColour);
+            OpenGL32.glClear(ClearMask.GL_COLOR_BUFFER_BIT);
 
             //Set normal blend function for within the layers
             OpenGL32.glBlendFunc(BlendScaleFactor.GL_ONE, BlendScaleFactor.GL_ONE_MINUS_SRC_ALPHA);
@@ -213,8 +213,8 @@ namespace BearsEngine.Worlds.Cameras
                 //Bind the 2nd pass FBO and draw from the first to do MSAA sampling
                 OpenGL32.BindFramebuffer(FramebufferTarget.Framebuffer, _frameBufferShaderPassID);
                 OpenGL32.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColourAttachment0, TextureTarget.Texture2D, _frameBufferShaderPassTexture.ID, 0);
-                OpenGL32.ClearColour(new Colour(0, 0, 0, 0));
-                OpenGL32.Clear(ClearBufferMask.ColourBufferBit);
+                OpenGL32.glClearColour(new Colour(0, 0, 0, 0));
+                OpenGL32.glClear(ClearMask.GL_COLOR_BUFFER_BIT);
 
                 //Bind the FBO to be drawn
                 OpenGL32.glBindTexture(TextureTarget.Texture2DMultisample, _frameBufferMSAATexture.ID);

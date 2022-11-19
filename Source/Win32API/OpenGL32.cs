@@ -25,35 +25,56 @@ internal static class OpenGL32
     /// <param name="mode">Specifies the primitive or primitives that will be created from vertices presented between glBegin and the subsequent glEnd. Ten symbolic constants are accepted: GL_POINTS, GL_LINES, GL_LINE_STRIP, GL_LINE_LOOP, GL_TRIANGLES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_QUADS, GL_QUAD_STRIP, and GL_POLYGON.</param>
     [DllImport(Library)]
     public static extern void glBegin(int mode);
-    
-    // ***CLEANED UP ABOVE THIS LINE***
 
-    
-
-    [DllImport(Library)]
-    public static extern void glBindTexture(int target, uint texture);
-
+    /// <summary>
+    /// Bind a named texture to a texturing target
+    /// </summary>
+    /// <param name="target">Specifies the target to which the texture is bound. Must be one of GL_TEXTURE_1D, GL_TEXTURE_2D, GL_TEXTURE_3D, GL_TEXTURE_1D_ARRAY, GL_TEXTURE_2D_ARRAY, GL_TEXTURE_RECTANGLE, GL_TEXTURE_CUBE_MAP, GL_TEXTURE_CUBE_MAP_ARRAY, GL_TEXTURE_BUFFER, GL_TEXTURE_2D_MULTISAMPLE or GL_TEXTURE_2D_MULTISAMPLE_ARRAY.</param>
+    /// <param name="texture">Specifies the name of a texture.</param>
     [DllImport(Library)]
     public static extern void glBindTexture(TextureTarget target, uint texture);
-    
 
-    //https://registry.khronos.org/OpenGL-Refpages/gl4/html/glBlendFunc.xhtml
     /// <summary>
-    /// Defines the operation of blending for all draw buffers when it is enabled.
+    /// Specify pixel arithmetic
     /// </summary>
     /// <param name="sfactor">Specifies how the red, green, blue, and alpha source blending factors are computed. The initial value is GL_ONE.</param>
     /// <param name="dfactor">Specifies how the red, green, blue, and alpha destination blending factors are computed. The following symbolic constants are accepted: GL_ZERO, GL_ONE, GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR, GL_DST_COLOR, GL_ONE_MINUS_DST_COLOR, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA. GL_CONSTANT_COLOR, GL_ONE_MINUS_CONSTANT_COLOR, GL_CONSTANT_ALPHA, and GL_ONE_MINUS_CONSTANT_ALPHA. The initial value is GL_ZERO.</param>
     [DllImport(Library)]
     public static extern void glBlendFunc(BlendScaleFactor sfactor, BlendScaleFactor dfactor);
-    
 
+    /// <summary>
+    /// Clear buffers to preset values
+    /// </summary>
+    /// <param name="mask">Bitwise OR of masks that indicate the buffers to be cleared. The three masks are GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT, and GL_STENCIL_BUFFER_BIT.</param>
     [DllImport(Library)]
-    public static extern void glClear(uint mask);
-    
+    public static extern void glClear(ClearMask mask);
 
+    /// <summary>
+    /// Specify clear values for the color buffers. Specify the red, green, blue, and alpha values used when the color buffers are cleared. The initial values are all 0.
+    /// </summary>
+    /// <param name="red">Specify the red value [0-1].</param>
+    /// <param name="green">Specify the green value [0-1].</param>
+    /// <param name="blue">Specify the blue value [0-1].</param>
+    /// <param name="alpha">Specify the alpha value [0-1].</param>
     [DllImport(Library)]
     public static extern void glClearColor(float red, float green, float blue, float alpha);
-    
+
+    /// <summary>
+    /// Specify clear values for the color buffers. Specify the red, green, blue, and alpha values used when the color buffers are cleared. The initial values are all 0.
+    /// </summary>
+    /// <param name="red">Specify the red value [0-255].</param>
+    /// <param name="green">Specify the green value [0-255].</param>
+    /// <param name="blue">Specify the blue value [0-255].</param>
+    /// <param name="alpha">Specify the alpha value [0-255].</param>
+    public static void glClearColour(byte red, byte green, byte blue, byte alpha = 255) => glClearColor(((float)red) / 255, ((float)green) / 255, ((float)blue) / 255, ((float)alpha) / 255);
+
+    /// <summary>
+    /// Specify clear values for the color buffers. The initial values is Transparent / Black.
+    /// </summary>
+    /// <param name="colour">The new colour ([0-255] components).</param>
+    public static void glClearColour(Colour colour) => glClearColor(((float)colour.R) / 255, ((float)colour.G) / 255, ((float)colour.B) / 255, ((float)colour.A) / 255);
+
+    // ***CLEANED UP ABOVE THIS LINE***
 
     [DllImport(Library)]
     public static extern void glColor3f(float red, float green, float blue);
@@ -400,26 +421,8 @@ internal static class OpenGL32
         return rC;
     }
     
-    
 
-    public static void Clear(ClearBufferMask mask)
-    {
-        glClear((uint)mask);
-    }
-    
 
-    /// <summary>
-    /// Components in [0,255]
-    /// </summary>
-    public static void ClearColour(byte red, byte green, byte blue, byte alpha = 255)
-    {
-        glClearColor(((float)red) / 255, ((float)green) / 255, ((float)blue) / 255, ((float)alpha) / 255);
-    }
-
-    public static void ClearColour(Colour colour)
-    {
-        glClearColor(((float)colour.R) / 255, ((float)colour.G) / 255, ((float)colour.B) / 255, ((float)colour.A) / 255);
-    }
     
 
     public static void Colour(Colour colour)

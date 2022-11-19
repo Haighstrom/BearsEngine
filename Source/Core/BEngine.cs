@@ -104,8 +104,8 @@ internal class BEngine : IEngine
 
     private void Render()
     {
-        OpenGL32.ClearColour(Scene.BackgroundColour);
-        OpenGL32.Clear(ClearBufferMask.ColourBufferBit | ClearBufferMask.DepthBufferBit);
+        OpenGL32.glClearColour(Scene.BackgroundColour);
+        OpenGL32.glClear(ClearMask.GL_COLOR_BUFFER_BIT | ClearMask.GL_DEPTH_BUFFER_BIT);
 
         Matrix4 projection = new(BE.OrthoMatrix);
         Matrix4 identity = Matrix4.Identity;
