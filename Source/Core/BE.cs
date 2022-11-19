@@ -1,4 +1,5 @@
-﻿using BearsEngine.Win32API;
+﻿using BearsEngine.Logging;
+using BearsEngine.Win32API;
 using BearsEngine.Window;
 using Serilog;
 
@@ -52,9 +53,9 @@ public static class BE
                 throw new System.ComponentModel.InvalidEnumArgumentException();
         }
 
-        Log.Logger = loggerconfig.CreateLogger();
+        //Log.Logger = loggerconfig.CreateLogger();
 
-        Log.Information("---{0} Logging Enabled---", "Serilog");
+        //Log.Information("---{0} Logging Enabled---", "Serilog");
     }
 
     private static void ShowConsole(bool leftAlign)
@@ -66,6 +67,11 @@ public static class BE
     }
 
     public static bool RunWhenUnfocussed { get; set; } = true;
+
+    public static void Log(LogLevel logLevel, object thingToLog)
+    {
+        throw new NotImplementedException();
+    }
 
     public static IScene Scene
     {
