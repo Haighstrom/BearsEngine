@@ -93,7 +93,7 @@ public class Win32Window : IWindow
         else
             User32.SetProcessDPIAware();
 
-        DPI = GDI32.GetDeviceCaps(User32.GetDC(IntPtr.Zero), GetDeviceCaps_index.LOGPIXELSX) / 96f;
+        DPI = GDI32.GetDeviceCaps(User32.GetDC(IntPtr.Zero), GETDEVICECAPS_INDEX.LOGPIXELSX) / 96f;
 
         if (settings.MinClientSize.X < 0 || settings.MinClientSize.Y < 0 || settings.MaxClientSize.X < 0 || settings.MaxClientSize.Y < 0 || settings.Width < 0 || settings.Height < 0)
             throw new Exception($"Settings requested a negative size: ({settings})");
@@ -604,7 +604,7 @@ public class Win32Window : IWindow
             if (Visible)
                 newStyle |= WINDOWSTYLE.WS_VISIBLE;
 
-            User32.SetWindowLong(_windowHandle, GWL.GWL_STYLE, new IntPtr((int)newStyle));
+            User32.SetWindowLongPtr(_windowHandle, GWL.GWL_STYLE, new IntPtr((int)newStyle));
 
             //preserve client size
             RECT newWinRect = new() { right = _actualClientPosition.Width, bottom = _actualClientPosition.Height };

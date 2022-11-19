@@ -5,7 +5,7 @@ namespace BearsEngine.Win32API;
 /// <summary>
 /// Appbar message value to send. https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shappbarmessage
 /// </summary>
-internal enum SHAppBarMessage_dwMessage : uint
+internal enum APPBARMESSAGE : uint
 {
     /// <summary>
     /// Registers a new appbar and specifies the message identifier that the system should use to send notification messages to the appbar.
@@ -129,7 +129,7 @@ internal enum DPI_AWARENESS_CONTEXT
 /// <summary>
 /// The item to be returned in GetDeviceCaps. https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getdevicecaps
 /// </summary>
-internal enum GetDeviceCaps_index : int
+internal enum GETDEVICECAPS_INDEX : int
 {
     /// <summary>
     /// The device driver version.
@@ -459,6 +459,45 @@ internal enum ClearMask : uint
     /// Indicates the stencil buffer.
     /// </summary>
     GL_STENCIL_BUFFER_BIT = 0x00000400,
+}
+
+/// <summary>
+/// The zero-based offset to the value to be set in SetWindowLong or get in GetWindowLong. Valid values are in the range zero through the number of bytes of extra window memory, minus the size of an integer. To set any other value, specify one of the following values.
+/// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setwindowlonga
+/// </summary>
+internal enum GWL : int
+{
+    /// <summary>
+    /// Extended window style.
+    /// https://docs.microsoft.com/en-us/windows/win32/winmsg/extended-window-styles
+    /// </summary>
+    GWL_EXSTYLE = -20,
+
+    /// <summary>
+    /// Application instance handle.
+    /// </summary>
+    GWL_HINSTANCE = -6,
+
+    /// <summary>
+    /// Identifier of the child window. The window cannot be a top-level window.
+    /// </summary>
+    GWL_ID = -12,
+
+    /// <summary>
+    /// Window style.
+    /// https://docs.microsoft.com/en-us/windows/win32/winmsg/window-styles
+    /// </summary>
+    GWL_STYLE = -16,
+
+    /// <summary>
+    /// The user data associated with the window. This data is intended for use by the application that created the window. Its value is initially zero.
+    /// </summary>
+    GWL_USERDATA = -21,
+
+    /// <summary>
+    /// The address for the window procedure. You cannot change this attribute if the window does not belong to the same process as the calling thread. You must use the CallWindowProc function to call the window procedure.
+    /// </summary>
+    GWL_WNDPROC = -4,
 }
 
 /// <summary>

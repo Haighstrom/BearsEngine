@@ -80,7 +80,7 @@ internal static class GDI32
     /// <param name="nIndex">The item to be returned.</param>
     /// <returns>The return value specifies the value of the desired item.</returns>
     [DllImport(Library)]
-    public static extern int GetDeviceCaps(IntPtr hDC, GetDeviceCaps_index nIndex);
+    public static extern int GetDeviceCaps(IntPtr hDC, GETDEVICECAPS_INDEX nIndex);
 
     /// <summary>
     /// The SetPixelFormat function sets the pixel format of the specified device context to the format specified by the iPixelFormat index.

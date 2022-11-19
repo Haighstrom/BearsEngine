@@ -24,7 +24,7 @@ internal class MessageOnlyWindow : IDisposable
             Handle = CreateWindow(0, 0, 100, 100);
             Exists = true;
             ProcessEventsOnce();
-            User32.SetWindowLong(Handle, wndProc);
+            User32.SetWindowLongPtr(Handle, GWL.GWL_WNDPROC, Marshal.GetFunctionPointerForDelegate(wndProc));
             ProcessEventsOnce();
         }
     }

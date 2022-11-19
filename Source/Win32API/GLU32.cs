@@ -23,7 +23,7 @@ internal static class GLU32
     /// <param name="data">Specifies a pointer to the image data in memory.</param>
     /// <returns>A return value of zero indicates success, otherwise a GLU error code is returned.</returns>
     [DllImport(Library)]
-    internal extern static int gluBuild2DMipmaps(int target, int internalFormat, int width, int height, int format, int type, IntPtr data);
+    public extern static int gluBuild2DMipmaps(int target, int internalFormat, int width, int height, int format, int type, IntPtr data);
 
     /// <summary>
     /// Define a viewing transformation
@@ -38,7 +38,7 @@ internal static class GLU32
     /// <param name="upY">Specifies the direction of the up vector.</param>
     /// <param name="upZ">Specifies the direction of the up vector.</param>
     [DllImport(Library)]
-    internal static extern void gluLookAt(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ);
+    public static extern void gluLookAt(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ);
 
     /// <summary>
     /// Set up a perspective projection matrix
@@ -48,5 +48,5 @@ internal static class GLU32
     /// <param name="zNear">Specifies the distance from the viewer to the near clipping plane (always positive).</param>
     /// <param name="zFar">Specifies the distance from the viewer to the far clipping plane (always positive).</param>
     [DllImport(Library)]
-    internal static extern void gluPerspective(double fovy, double aspect, double zNear, double zFar);
+    public static extern void gluPerspective(double fovy, double aspect, double zNear, double zFar);
 }

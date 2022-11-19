@@ -1,6 +1,10 @@
-﻿using System.Runtime.InteropServices;
+﻿using Microsoft.VisualBasic;
+using System.Collections.Generic;
+using System.Dynamic;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BearsEngine.Win32API;
 
@@ -254,6 +258,35 @@ internal static class User32
     public static extern uint GetSysColorBrush(uint nIndex);
 
     /// <summary>
+    /// Loads an icon, cursor, animated cursor, or bitmap.
+    /// </summary>
+    /// <param name="hInst">A handle to the module of either a DLL or executable (.exe) that contains the image to be loaded. For more information, see GetModuleHandle. Note that as of 32-bit Windows, an instance handle (HINSTANCE), such as the application instance handle exposed by system function call of WinMain, and a module handle (HMODULE) are the same thing.
+    /// To load an OEM image, set this parameter to NULL.
+    /// To load a stand-alone resource (icon, cursor, or bitmap file) — for example, c:\myimage.bmp — set this parameter to NULL.</param>
+    /// <param name="name"></param>
+    /// <param name="type">The type of image to be loaded.</param>
+    /// <param name="cx">The width, in pixels, of the icon or cursor. If this parameter is zero and the fuLoad parameter is LR_DEFAULTSIZE, the function uses the SM_CXICON or SM_CXCURSOR system metric value to set the width. If this parameter is zero and LR_DEFAULTSIZE is not used, the function uses the actual resource width.</param>
+    /// <param name="cy">The height, in pixels, of the icon or cursor. If this parameter is zero and the fuLoad parameter is LR_DEFAULTSIZE, the function uses the SM_CYICON or SM_CYCURSOR system metric value to set the height. If this parameter is zero and LR_DEFAULTSIZE is not used, the function uses the actual resource height.</param>
+    /// <param name="fuLoad"></param>
+    /// <returns>If the function succeeds, the return value is the handle of the newly loaded image. If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern IntPtr LoadImage(IntPtr hInst, ushort name, LoadImage_Type type, int cx, int cy, LoadImage_FULoad fuLoad);
+
+    /// <summary>
+    /// Loads a standard windows icon.
+    /// </summary>
+    /// <param name="icon">The icon to use</param>
+    /// <returns>If the function succeeds, the return value is the handle of the newly loaded image. If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
+    public static IntPtr LoadImage(PredefinedIcons icon) => LoadImage(IntPtr.Zero, (ushort)icon, LoadImage_Type.IMAGE_ICON, 0, 0, LoadImage_FULoad.LR_SHARED);
+
+    /// <summary>
+    /// Loads a standard windows cursor.
+    /// </summary>
+    /// <param name="cursor">The cursor to use</param>
+    /// <returns>If the function succeeds, the return value is the handle of the newly loaded image. If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
+    public static IntPtr LoadImage(PredefinedCursors cursor) => LoadImage(IntPtr.Zero, (ushort)cursor, LoadImage_Type.IMAGE_CURSOR, 0, 0, LoadImage_FULoad.LR_SHARED);
+
+    /// <summary>
     /// It is recommended that you set the process-default DPI awareness via application manifest. See Setting the default DPI awareness for a process for more information. Setting the process-default DPI awareness via API call can lead to unexpected application behavior. Sets the current process to a specified dots per inch(dpi) awareness context. The DPI awareness contexts are from the DPI_AWARENESS_CONTEXT value.
     /// </summary>
     /// <param name="value">A DPI_AWARENESS_CONTEXT handle to set.</param>
@@ -269,6 +302,35 @@ internal static class User32
     public static bool SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT value) => SetProcessDpiAwarenessContext(new IntPtr((int)value));
 
     /// <summary>
+    /// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra window memory. 
+    /// Note: To write code that is compatible with both 32-bit and 64-bit versions of Windows, use GetWindowLongPtr (instead of GetWindowLong). When compiling for 32-bit Windows, GetWindowLongPtr is defined as a call to the GetWindowLong function.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window and, indirectly, the class to which the window belongs.</param>
+    /// <param name="nIndex">The zero-based offset to the value to be retrieved.</param>
+    /// <returns>If the function succeeds, the return value is the requested value. If the function fails, the return value is zero.To get extended error information, call GetLastError. If SetWindowLong or SetWindowLongPtr has not been called previously, GetWindowLongPtr returns zero for values in the extra window or class memory.</returns>
+    [SuppressUnmanagedCodeSecurity]
+    [DllImport(Library, SetLastError = true)]
+    public static extern UIntPtr GetWindowLongPtr(IntPtr hWnd, GWL nIndex);
+
+    /// <summary>
+    /// Copies the text of the specified window's title bar (if it has one) into a buffer. If the specified window is a control, the text of the control is copied. However, GetWindowText cannot retrieve the text of a control in another application.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window or control containing the text.</param>
+    /// <param name="lpString">The buffer that will receive the text. If the string is as long or longer than the buffer, the string is truncated and terminated with a null character.</param>
+    /// <param name="nMaxCount">The maximum number of characters to copy to the buffer, including the null character. If the text exceeds this limit, it is truncated.</param>
+    /// <returns>If the function succeeds, the return value is the length, in characters, of the copied string, not including the terminating null character. If the window has no title bar or text, if the title bar is empty, or if the window or control handle is invalid, the return value is zero. To get extended error information, call GetLastError. This function cannot retrieve the text of an edit control in another application.</returns>
+    [DllImport(Library, CharSet = CharSet.Auto, SetLastError = true)]
+    public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+
+    /// <summary>
+    /// Retrieves the length, in characters, of the specified window's title bar text (if the window has a title bar). If the specified window is a control, the function retrieves the length of the text within the control. However, GetWindowTextLength cannot retrieve the length of the text of an edit control in another application.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window or control.</param>
+    /// <returns>If the function succeeds, the return value is the length, in characters, of the text. Under certain conditions, this value might be greater than the length of the text (see Remarks). If the window has no text, the return value is zero. Function failure is indicated by a return value of zero and a GetLastError result that is nonzero.</returns>
+    [DllImport(Library, CharSet = CharSet.Auto, SetLastError = true)]
+    public static extern int GetWindowTextLength(IntPtr hWnd);
+
+    /// <summary>
     /// Set the DPI awareness for the current thread to the provided value.
     /// </summary>
     /// <param name="dpiContext">The new DPI_AWARENESS_CONTEXT for the current thread. This context includes the DPI_AWARENESS value.</param>
@@ -282,6 +344,17 @@ internal static class User32
     /// <param name="dpiContext">The new DPI_AWARENESS_CONTEXT for the current thread. This context includes the DPI_AWARENESS value.</param>
     /// <returns>The old DPI_AWARENESS_CONTEXT for the thread. If the dpiContext is invalid, the thread will not be updated and the return value will be NULL. You can use this value to restore the old DPI_AWARENESS_CONTEXT after overriding it with a predefined value.</returns>
     public static IntPtr SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT dpiContext) => SetThreadDpiAwarenessContext(new IntPtr((int)dpiContext));
+
+    /// <summary>
+    /// Changes an attribute of the specified window. The function also sets a value at the specified offset in the extra window memory. 
+    /// Note: To write code that is compatible with both 32-bit and 64-bit versions of Windows, use SetWindowLongPtr. When compiling for 32-bit Windows, SetWindowLongPtr is defined as a call to the SetWindowLong function.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window and, indirectly, the class to which the window belongs. The SetWindowLongPtr function fails if the process that owns the window specified by the hWnd parameter is at a higher process privilege in the UIPI hierarchy than the process the calling thread resides in.</param>
+    /// <param name="nIndex">The zero-based offset to the value to be set.</param>
+    /// <param name="dwNewLong">The replacement value.</param>
+    /// <returns>If the function succeeds, the return value is the previous value of the specified offset. If the function fails, the return value is zero.To get extended error information, call GetLastError. If the previous value is zero and the function succeeds, the return value is zero, but the function does not clear the last error information. To determine success or failure, clear the last error information by calling SetLastError with 0, then call SetWindowLongPtr.Function failure will be indicated by a return value of zero and a GetLastError result that is nonzero.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern IntPtr SetWindowLongPtr(IntPtr hWnd, GWL nIndex, IntPtr dwNewLong);
 
     /// <summary>
     /// Posts messages when the mouse pointer leaves a window or hovers over a window for a specified amount of time.
@@ -300,66 +373,7 @@ internal static class User32
     public static extern bool UnregisterDeviceNotification(IntPtr handle);
 
     // ***CLEANED UP ABOVE THIS LINE***
-
-    //todo: simplify
-    //https://www.pinvoke.net/default.aspx/user32.getwindowlong
-    //https://stackoverflow.com/questions/336633/how-to-detect-windows-64-bit-platform-with-net?rq=1
-
-    public static UIntPtr GetWindowLong(IntPtr handle, GWL index)
-    {
-        if (IntPtr.Size == 4)
-            return (UIntPtr)GetWindowLongInternal(handle, index);
-
-        return GetWindowLongPtrInternal(handle, index);
-    }
-
-    [SuppressUnmanagedCodeSecurity]
-    [DllImport(Library, SetLastError = true, EntryPoint = "GetWindowLong")]
-    public static extern uint GetWindowLongInternal(IntPtr hWnd, GWL nIndex);
-
-    [SuppressUnmanagedCodeSecurity]
-    [DllImport(Library, SetLastError = true, EntryPoint = "GetWindowLongPtr")]
-    public static extern UIntPtr GetWindowLongPtrInternal(IntPtr hWnd, GWL nIndex);
-    
-    /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getwindowtexta
-    /// Copies the text of the specified window's title bar (if it has one) into a buffer. If the specified window is a control, the text of the control is copied. However, GetWindowText cannot retrieve the text of a control in another application.
-    /// </summary>
-    /// <param name="hWnd">A handle to the window or control containing the text.</param>
-    /// <param name="lpString">The buffer that will receive the text. If the string is as long or longer than the buffer, the string is truncated and terminated with a null character.</param>
-    /// <param name="nMaxCount">The maximum number of characters to copy to the buffer, including the null character. If the text exceeds this limit, it is truncated.</param>
-    /// <returns></returns>
-    [DllImport(Library, CharSet = CharSet.Auto, SetLastError = true)]
-    public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
-    
-    /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getwindowtextlengtha
-    /// Retrieves the length, in characters, of the specified window's title bar text (if the window has a title bar). If the specified window is a control, the function retrieves the length of the text within the control. However, GetWindowTextLength cannot retrieve the length of the text of an edit control in another application.
-    /// </summary>
-    /// <param name="hWnd">A handle to the window or control.</param>
-    /// <returns></returns>
-    [DllImport(Library, CharSet = CharSet.Auto, SetLastError = true)]
-    public static extern int GetWindowTextLength(IntPtr hWnd);
-    
-    /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadimagew
-    /// Loads an icon, cursor, animated cursor, or bitmap.
-    /// </summary>
-    /// <param name="hInst">A handle to the module of either a DLL or executable (.exe) that contains the image to be loaded. For more information, see GetModuleHandle. Note that as of 32-bit Windows, an instance handle (HINSTANCE), such as the application instance handle exposed by system function call of WinMain, and a module handle (HMODULE) are the same thing.
-    /// To load an OEM image, set this parameter to NULL.
-    /// To load a stand-alone resource (icon, cursor, or bitmap file) — for example, c:\myimage.bmp — set this parameter to NULL.</param>
-    /// <param name="name"></param>
-    /// <param name="type">The type of image to be loaded.</param>
-    /// <param name="cx">The width, in pixels, of the icon or cursor. If this parameter is zero and the fuLoad parameter is LR_DEFAULTSIZE, the function uses the SM_CXICON or SM_CXCURSOR system metric value to set the width. If this parameter is zero and LR_DEFAULTSIZE is not used, the function uses the actual resource width.</param>
-    /// <param name="cy">The height, in pixels, of the icon or cursor. If this parameter is zero and the fuLoad parameter is LR_DEFAULTSIZE, the function uses the SM_CYICON or SM_CYCURSOR system metric value to set the height. If this parameter is zero and LR_DEFAULTSIZE is not used, the function uses the actual resource height.</param>
-    /// <param name="fuLoad"></param>
-    /// <returns>If the function succeeds, the return value is the handle of the newly loaded image.
-    /// If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
-    [DllImport(Library, SetLastError = true)]
-    public static extern IntPtr LoadImage(IntPtr hInst, ushort name, LoadImage_Type type, int cx, int cy, LoadImage_FULoad fuLoad);
-
-    public static IntPtr LoadImage(PredefinedIcons icon) => LoadImage(IntPtr.Zero, (ushort)icon, LoadImage_Type.IMAGE_ICON, 0, 0, LoadImage_FULoad.LR_SHARED);
-    public static IntPtr LoadImage(PredefinedCursors cursor) => LoadImage(IntPtr.Zero, (ushort)cursor, LoadImage_Type.IMAGE_CURSOR, 0, 0, LoadImage_FULoad.LR_SHARED);
+   
     
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-mapvirtualkeya
@@ -500,59 +514,6 @@ internal static class User32
     /// <returns>The return value is a handle to the window that had previously captured the mouse. If there is no such window, the return value is NULL.</returns>
     [DllImport(Library)]
     public static extern IntPtr SetCapture(IntPtr hWnd);
-    
-
-    //todo: simplify
-    //https://www.pinvoke.net/default.aspx/user32.getwindowlong
-    //https://stackoverflow.com/questions/336633/how-to-detect-windows-64-bit-platform-with-net?rq=1
-    internal static IntPtr SetWindowLong(IntPtr handle, WNDPROC newValue) => SetWindowLong(handle, GWL.GWL_WNDPROC, Marshal.GetFunctionPointerForDelegate(newValue));
-
-    // SetWindowLongPtr does not exist on x86 platforms (it's a macro that resolves to SetWindowLong).
-    // We need to detect if we are on x86 or x64 at runtime and call the correct function
-    // (SetWindowLongPtr on x64 or SetWindowLong on x86). Fun!
-    public static IntPtr SetWindowLong(IntPtr hWnd, GWL nIndex, IntPtr dwNewLong)
-    {
-        Kernal32.SetLastError(0);
-
-        // SetWindowPos defines its error condition as an IntPtr.Zero retval and a non-0 GetLastError.
-        // We need to SetLastError(0) to ensure we are not detecting on older error condition (from another function).
-
-        IntPtr retval;
-        if (IntPtr.Size == 4)
-            retval = new IntPtr(SetWindowLongInternal(hWnd, nIndex, dwNewLong.ToInt32()));
-        else
-            retval = SetWindowLongPtrInternal(hWnd, nIndex, dwNewLong);
-
-        if (retval == IntPtr.Zero)
-        {
-            int error = Marshal.GetLastWin32Error();
-            if (error != 0)
-                throw new Exception(string.Format("Failed to modify window border. Error: {0}", error));
-        }
-
-        return retval;
-    }
-
-
-    [SuppressUnmanagedCodeSecurity]
-    [DllImport(Library, SetLastError = true, EntryPoint = "SetWindowLong")]
-    public static extern int SetWindowLongInternal(IntPtr hWnd, GWL nIndex, int dwNewLong);
-
-    [SuppressUnmanagedCodeSecurity]
-    [DllImport(Library, SetLastError = true, EntryPoint = "SetWindowLongPtr")]
-    public static extern IntPtr SetWindowLongPtrInternal(IntPtr hWnd, GWL nIndex, IntPtr dwNewLong);
-
-    [SuppressUnmanagedCodeSecurity]
-    [DllImport(Library, SetLastError = true, EntryPoint = "SetWindowLong")]
-    public static extern int SetWindowLongInternal(IntPtr hWnd, GWL nIndex,
-        [MarshalAs(UnmanagedType.FunctionPtr)] WNDPROC dwNewLong);
-
-    [SuppressUnmanagedCodeSecurity]
-    [DllImport(Library, SetLastError = true, EntryPoint = "SetWindowLongPtr")]
-    public static extern IntPtr SetWindowLongPtrInternal(IntPtr hWnd, GWL nIndex,
-        [MarshalAs(UnmanagedType.FunctionPtr)] WNDPROC dwNewLong);
-
-    
 
     /// <summary>
     /// https://docs.microsoft.com/en-gb/windows/win32/api/winuser/nf-winuser-setwindowtexta?redirectedfrom=MSDN
