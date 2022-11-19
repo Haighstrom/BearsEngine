@@ -3,48 +3,12 @@ using System.Text;
 using System.Reflection;
 using System.IO;
 using BearsEngine.Win32API;
-using System.Collections;
 
 using Encoding = System.Text.Encoding;
-using BearsEngine.Source.Core;
 
 namespace BearsEngine;
 public static class HF
 {
-    public static string? ConvertToLoggableString(object? o)
-    {
-        if (o is null)
-            return "null";
-        else if (o is string s)
-            return s;
-        else if (o is IDictionary dict)
-        {
-            string dictString = "[";
-
-            foreach (DictionaryEntry entry in dict)
-                dictString += $"({ConvertToLoggableString(entry.Key)},{ConvertToLoggableString(entry.Value)})";
-
-            dictString += "]";
-
-            return dictString;
-        }
-        else if (o is IEnumerable collection)
-        {
-            string collectionString = "[";
-
-            foreach (object item in collection)
-                collectionString += $"{ConvertToLoggableString(item)},";
-
-            collectionString = collectionString[0..^1]; //remove last comma
-
-            collectionString += "]";
-
-            return collectionString;
-        }
-        else
-            return o.ToString();
-    }
-
     public static class BitOps
     {
         //.net core3 = System.Numerics.BitwiseOperations.TrailingZeroCount(int n)

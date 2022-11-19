@@ -26,8 +26,12 @@ namespace BearsEngine
             BringAll = 6,
         }
         
-
         public static bool FileExists(string filePath) => File.Exists(filePath);
+
+        public static bool CreateDirectory(string directoryPath)
+        {
+            throw new NotImplementedException();
+        }
 
         public static bool DirectoryExists(string directoryPath) => Directory.Exists(directoryPath);
 
@@ -60,12 +64,15 @@ namespace BearsEngine
                 }
             }
         }
-        
+
+        public static string GetDirectoryFromFilePath(string filePath)
+        {
+            throw new NotImplementedException();
+        }
 
         public static List<string> GetDirectories(string path, bool includeSubDirectories) => Directory.GetDirectories(path, "*", includeSubDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).ToList();
 
         public static List<string> GetDirectories(string path, bool includeSubDirectories, string searchPattern) => Directory.GetDirectories(path, searchPattern, includeSubDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).ToList();
-        
 
         /// <summary>
         /// Copies all files and optionally folders from one directory to another
@@ -95,8 +102,17 @@ namespace BearsEngine
             foreach (string file in Directory.GetFiles(fromDir, "*", so))
                 File.Copy(file, Path.Combine(toDir, file.Substring(fromDir.Length + 1)), (options & CopyOptions.Overwrite) > 0);
         }
-        
-        
+
+        public static void AppendText(string filePath, string textToAppend)
+        {
+            string directory = GetDirectoryFromFilePath(filePath);
+
+            if (!DirectoryExists(directory))
+                CreateDirectory(directory);
+
+            using StreamWriter sw = File.AppendText(filePath);
+            sw.Write(textToAppend);
+        }
 
         /// <summary>
         /// Saves a single line of text into a .txt file
@@ -135,8 +151,6 @@ namespace BearsEngine
         /// Puts the contents of a .txt file into a string
         /// </summary>
         public static string LoadTXTAsString(string filename) => File.ReadAllText(filename);
-        
-        
 
         /// <summary>
         /// Saves a 2D array to a .csv file
