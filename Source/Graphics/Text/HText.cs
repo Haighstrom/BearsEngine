@@ -3,7 +3,6 @@ using BearsEngine.UI;
 using BearsEngine.Worlds.Graphics.Text.Components;
 using BearsEngine.Graphics.Shaders;
 using Line = BearsEngine.Graphics.Line;
-using BearsEngine.Source.Core;
 
 namespace BearsEngine.Worlds.Graphics.Text
 {

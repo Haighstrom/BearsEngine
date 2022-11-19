@@ -1,6 +1,4 @@
-﻿using BearsEngine.Source.Core;
-
-namespace BearsEngine.UI
+﻿namespace BearsEngine.UI
 {
     public struct ScrollbarTheme
     {

@@ -1,6 +1,4 @@
-﻿using BearsEngine.Source.Core;
-
-namespace BearsEngine.Graphics
+﻿namespace BearsEngine.Graphics
 {
     public interface IGraphic : IAddable, IRenderableOnLayer
     {

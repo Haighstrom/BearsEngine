@@ -1,4 +1,5 @@
-﻿namespace BearsEngine.Worlds;
+﻿
+namespace BearsEngine.Worlds;
 
 public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLayer, IContainer
 {

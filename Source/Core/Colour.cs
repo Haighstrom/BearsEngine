@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace BearsEngine.Source.Core;
+namespace BearsEngine;
 
 [Serializable]
 [StructLayout(LayoutKind.Sequential)]

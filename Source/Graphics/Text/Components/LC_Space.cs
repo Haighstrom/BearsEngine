@@ -1,6 +1,4 @@
-﻿using BearsEngine.Source.Core;
-
-namespace BearsEngine.Worlds.Graphics.Text.Components
+﻿namespace BearsEngine.Worlds.Graphics.Text.Components
 {
     internal class LC_Space : ILineComponent
     {
