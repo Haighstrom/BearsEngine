@@ -2,12 +2,13 @@
 using System.Runtime.InteropServices;
 using BearsEngine.DisplayDevices;
 using BearsEngine.Input;
+using BearsEngine.Logging;
 using BearsEngine.Win32API;
 using BearsEngine.Window;
 
 namespace BearsEngine;
 
-internal class BEngine : IEngine
+internal class Engine : IEngine
 {
     private const int MinimumUpdateRate = 5;
     private const int MaximumUpdateRate = 120;
@@ -42,9 +43,9 @@ internal class BEngine : IEngine
     private readonly int _targetUPS, _targetRPS;
     private readonly ISceneManager _sceneManager;
 
-    public BEngine(GameSettings settings, Func<IScene> initialiser)
+    public Engine(GameSettings settings, Func<IScene> initialiser)
     {
-        BE.Logging.Debug($"{nameof(BEngine)} being initialised.");
+        BE.Logging.Debug($"{nameof(Engine)} being initialised.");
 
         ValidateEngineSettings(settings);
 
@@ -71,8 +72,12 @@ internal class BEngine : IEngine
 
         Window.Resized += OnWindowResize;
 
-        BE.Logging.Debug($"{nameof(BEngine)} initialised.");
+        BE.Logging.Debug($"{nameof(Engine)} initialised.");
     }
+
+    public IConsoleManager ConsoleManager => throw new NotImplementedException(); //todo: build these after removing logging from ctr
+
+    public ILoggingManager LoggingManager => throw new NotImplementedException();//todo: build these after removing logging from ctr
 
     public DisplayDeviceManager DisplayDM { get; }
 

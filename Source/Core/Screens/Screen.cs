@@ -43,7 +43,7 @@ public class Screen : IContainer, IScene
     public void Add(IAddable e)
     {
         if (e.Parent is not null)
-            HConsole.Warning($"Added Entity {e} to Container {this} when it was already in Container {e.Parent}.");
+            BE.Logging.Warning($"Added Entity {e} to Container {this} when it was already in Container {e.Parent}.");
 
         e.Parent = this;
 
@@ -151,7 +151,7 @@ public class Screen : IContainer, IScene
     public void Remove(IAddable e)
     {
         if (e.Parent != this)
-            HConsole.Warning($"Requested Entity {e} to be removed from Container {this} when its Parent was {e.Parent}.");
+            BE.Logging.Warning($"Requested Entity {e} to be removed from Container {this} when its Parent was {e.Parent}.");
 
         e.Parent = null;
 

@@ -6,10 +6,15 @@ public interface IConsoleManager
 {
     bool IsOpen { get; }
 
-    Point SizeInCharacters { get; }
+    int MaxHeight { get; }
+
+    int MaxWidth { get; }
 
     void HideConsole();
-    void ShowConsole();
-    void ShowConsole(ConsoleSettings settings);
+
     void MoveConsoleTo(int x, int y, int w, int h);
+
+    void ShowConsole();
+
+    void ShowConsole(int x, int y, int w, int h);
 }

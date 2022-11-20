@@ -61,7 +61,7 @@ public class Icon : IDisposable
                 // TODO: dispose managed state (managed objects)
             }
             else
-                HConsole.Warning("Cursor was disposed by the finaliser.");
+                BE.Logging.Warning("Cursor was disposed by the finaliser.");
 
             // TODO: free unmanaged resources (unmanaged objects) and override finalizer
             // TODO: set large fields to null

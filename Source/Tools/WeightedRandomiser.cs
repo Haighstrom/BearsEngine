@@ -19,7 +19,7 @@ public class WeightedRandomiser<T>
             if (accumWeight >= r)
                 return item;
 
-        HConsole.Warning("WeightedRandomiser.GetRandomItem: List was empty when requesting an item.");
+        BE.Logging.Warning("WeightedRandomiser.GetRandomItem: List was empty when requesting an item.");
         return default;
     }
 }
