@@ -8,6 +8,8 @@ namespace BearsEngine
 {
     public static class HaighIO
     {
+        private const int DeleteDirectoryRetries = 5;
+
         [Flags]
         public enum CopyOptions : uint
         {
@@ -28,9 +30,9 @@ namespace BearsEngine
         
         public static bool FileExists(string filePath) => File.Exists(filePath);
 
-        public static bool CreateDirectory(string directoryPath)
+        public static DirectoryInfo CreateDirectory(string directoryPath)
         {
-            throw new NotImplementedException();
+            return Directory.CreateDirectory(directoryPath);
         }
 
         public static bool DirectoryExists(string directoryPath) => Directory.Exists(directoryPath);
@@ -42,14 +44,13 @@ namespace BearsEngine
 
             File.Delete(filePath);
         }
-        
 
         public static void DeleteDirectory(string directoryPath)
         {
             if (!DirectoryExists(directoryPath))
-                throw new Exception($"folder does not exist {directoryPath}");
+                throw new DirectoryNotFoundException($"Folder does not exist {directoryPath}");
 
-            int retries = 5;
+            int retries = DeleteDirectoryRetries;
             while (retries > 0)
             {
                 try
@@ -67,7 +68,14 @@ namespace BearsEngine
 
         public static string GetDirectoryFromFilePath(string filePath)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return new FileInfo(filePath).Directory!.FullName;
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
 
         public static List<string> GetDirectories(string path, bool includeSubDirectories) => Directory.GetDirectories(path, "*", includeSubDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).ToList();
@@ -96,11 +104,11 @@ namespace BearsEngine
             //copy subfolders first (if applicable)
             if ((options & CopyOptions.BringFolders) > 0)
                 foreach (string dir in Directory.GetDirectories(fromDir, "*", so))
-                    Directory.CreateDirectory(Path.Combine(toDir, dir.Substring(fromDir.Length + 1)));
+                    Directory.CreateDirectory(Path.Combine(toDir, dir[(fromDir.Length + 1)..]));
 
             //copy files
             foreach (string file in Directory.GetFiles(fromDir, "*", so))
-                File.Copy(file, Path.Combine(toDir, file.Substring(fromDir.Length + 1)), (options & CopyOptions.Overwrite) > 0);
+                File.Copy(file, Path.Combine(toDir, file[(fromDir.Length + 1)..]), (options & CopyOptions.Overwrite) > 0);
         }
 
         public static void AppendText(string filePath, string textToAppend)
@@ -110,8 +118,7 @@ namespace BearsEngine
             if (!DirectoryExists(directory))
                 CreateDirectory(directory);
 
-            using StreamWriter sw = File.AppendText(filePath);
-            sw.Write(textToAppend);
+            File.AppendAllText(filePath, textToAppend);
         }
 
         /// <summary>
@@ -139,13 +146,11 @@ namespace BearsEngine
 
             File.WriteAllLines(filename, lines);
         }
-        
 
         /// <summary>
         /// Puts the contents of a .txt file into an array
         /// </summary>
         public static string[] LoadTXTAsArray(string filename) => File.ReadAllLines(filename);
-        
 
         /// <summary>
         /// Puts the contents of a .txt file into a string
@@ -173,7 +178,6 @@ namespace BearsEngine
             File.WriteAllText(filename, csv.ToString());
         }
         
-
         /// <summary>
         /// Loads a .csv file into a 2D array
         /// </summary>
@@ -195,11 +199,8 @@ namespace BearsEngine
 
             return ret;
         }
-        
-        
 
         public static System.Drawing.Bitmap LoadBMP(string filePath) => new(filePath);
-        
 
         /// <summary>
         /// Saves a struct to a file containing XML 
@@ -214,7 +215,6 @@ namespace BearsEngine
             writer.Serialize(file, fileToSave);
             file.Close();
         }
-        
 
         /// <summary>
         /// Creates a struct from a file containing an XML
@@ -232,8 +232,6 @@ namespace BearsEngine
             }
             else throw new Exception("File not found: {fileName}");
         }
-        
-        
 
         /// <summary>
         /// Converts a struct to its JSON string equivalent
@@ -251,7 +249,6 @@ namespace BearsEngine
         /// Creates a text file with a single line of JSON representing a struct
         /// </summary>
         public static void SaveJSON<M>(string filename, M @object, bool indent = true) => SaveTXT(filename, SerialiseToJSON(@object, indent));
-        
 
         /// <summary>
         /// Constructs an instance of a struct from its JSON string equivalent
@@ -263,18 +260,14 @@ namespace BearsEngine
                 IncludeFields = true,
             });
         
-
         /// <summary>
         /// Creates a struct from a file containing a single line of JSON
         /// </summary>
         public static M LoadJSON<M>(string filename) => DeserialiseFromJSON<M>(LoadTXTAsString(filename));
-        
 
         /// <summary>
         /// Reads lines from a txt file and deserialises each row as an individual json string
         /// </summary>
         public static List<M> LoadJSONFromMultilineTxt<M>(string filename) => LoadTXTAsArray(filename).Select(s => DeserialiseFromJSON<M>(s)).ToList()!; //todo: null check
-        
-        
     }
 }

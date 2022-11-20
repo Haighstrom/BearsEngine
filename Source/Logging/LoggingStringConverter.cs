@@ -37,6 +37,7 @@ internal class LoggingStringConverter : ILoggingStringConverter
     public string ConvertToLoggableString(object? o) => o switch
     {
         null => NullString,
+        string str => str,
         IDictionary dict => ConvertIDictionaryToString(dict),
         IEnumerable enumerable => ConvertIEnumerableToString(enumerable),
         _ => o.ToString() ?? o.GetType().ToString(),

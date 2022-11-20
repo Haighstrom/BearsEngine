@@ -16,13 +16,13 @@ public sealed class DisplayDeviceManager : IDisplayDeviceManager
     
     private void OnDisplaySettingsChanged(object sender, EventArgs e)
     {
-        Serilog.Log.Information("Change in display settings detected. Refreshing display devices. \n");
+        BE.Logging.Information("Change in display settings detected. Refreshing display devices. \n");
         RefreshDevices();
     }
 
     private void RefreshDevices()
     {
-        Serilog.Log.Information("-------Display Devices-------\n");
+        BE.Logging.Information("-------Display Devices-------\n");
 
         //save old device list so we can copy device "original settings" if it existed before
         //this is to cover the case that user has changed resolution from this program (which will later want to be restored), and then changed windows settings, triggering this function
@@ -75,11 +75,11 @@ public sealed class DisplayDeviceManager : IDisplayDeviceManager
             _availableDevices.Add(device);
             if (isPrimary) _primaryDevice = device;
 
-            Serilog.Log.Information(device.ToString());
-            Serilog.Log.Information("");
+            BE.Logging.Information(device.ToString());
+            BE.Logging.Information("");
         }
 
-        Serilog.Log.Information("-----------------------------\n");
+        BE.Logging.Information("-----------------------------\n");
     }
     
     

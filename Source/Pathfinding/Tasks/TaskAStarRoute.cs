@@ -1,5 +1,4 @@
 ﻿using BearsEngine.Tasks;
-using Serilog;
 
 namespace BearsEngine.Pathfinding;
 
@@ -25,7 +24,7 @@ public class TaskAStarRoute<N> : Task where N : IPathfindNode<N>, IPosition
 
         if (route == null)
         {
-            Log.Warning("{0} could not find path from {1} to {2}", _entity, _entity.CurrentNode, _destination);
+            BE.Logging.Warning($"{_entity} could not find path from {_entity.CurrentNode} to {_destination}");
             route = new List<N>();
         }
 

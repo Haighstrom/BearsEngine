@@ -1,7 +1,6 @@
 ﻿using BearsEngine.Logging;
 using BearsEngine.Win32API;
 using BearsEngine.Window;
-using Serilog;
 
 namespace BearsEngine;
 
@@ -22,56 +21,11 @@ public static class BE
 
     internal static Dictionary<string, Texture> TextureDictionary { get; set; } = new();
 
-    private static void EnableSerilog(bool writeToConsole, Serilog.Events.LogEventLevel logLevel)
-    {
-        var loggerconfig = new LoggerConfiguration();
-
-        if (writeToConsole)
-            loggerconfig.WriteTo.Console();
-
-        switch (logLevel)
-        {
-            case Serilog.Events.LogEventLevel.Verbose:
-                loggerconfig.MinimumLevel.Verbose();
-                break;
-            case Serilog.Events.LogEventLevel.Debug:
-                loggerconfig.MinimumLevel.Debug();
-                break;
-            case Serilog.Events.LogEventLevel.Information:
-                loggerconfig.MinimumLevel.Information();
-                break;
-            case Serilog.Events.LogEventLevel.Warning:
-                loggerconfig.MinimumLevel.Warning();
-                break;
-            case Serilog.Events.LogEventLevel.Error:
-                loggerconfig.MinimumLevel.Error();
-                break;
-            case Serilog.Events.LogEventLevel.Fatal:
-                loggerconfig.MinimumLevel.Fatal();
-                break;
-            default:
-                throw new System.ComponentModel.InvalidEnumArgumentException();
-        }
-
-        //Log.Logger = loggerconfig.CreateLogger();
-
-        //Log.Information("---{0} Logging Enabled---", "Serilog");
-    }
-
-    private static void ShowConsole(bool leftAlign)
-    {
-        Kernal32.AllocConsole();
-
-        if (leftAlign)
-            HConsole.MoveConsoleTo(-7, 0, 450, HConsole.MaxHeight);
-    }
-
     public static bool RunWhenUnfocussed { get; set; } = true;
 
-    public static void Log(LogLevel logLevel, object thingToLog)
-    {
-        throw new NotImplementedException();
-    }
+    public static ILoggingManager Logging { get; } = new LoggingManager();
+
+    public static IConsoleManager Console { get; } = new ConsoleManager();
 
     public static IScene Scene
     {
@@ -102,19 +56,22 @@ public static class BE
         }
     }
 
-    public static void Run(EngineSettings settings, Func<IScene> initialiser)
+    public static void Run(GameSettings settings, Func<IScene> initialiser)
     {
         if (_runCalled)
             throw new InvalidOperationException($"It is not permissible to call {nameof(BE)}.{nameof(Run)} twice.");
 
         _runCalled = true;
 
-        if (settings.ShowDebugConsole)
+        if (settings.ShowConsole)
         {
-            ShowConsole(settings.LeftAlignDebugConsole);
+            Console.ShowConsole(settings.ConsoleSettings);
         }
 
-        EnableSerilog(settings.ShowDebugConsole, settings.DebugLoggingLevel);
+        Logging.AddConsoleLogging(settings.LogSettings.ConsoleLogLevel);
+
+        foreach (var writeLogSettings in settings.LogSettings.FileLogging)
+            Logging.AddFileLogging(writeLogSettings);
 
         _engine = new BEngine(settings, initialiser);
         _engine.Run();

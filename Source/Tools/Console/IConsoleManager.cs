@@ -1,4 +1,6 @@
-﻿namespace BearsEngine.Logging;
+﻿using BearsEngine.Logging;
+
+namespace BearsEngine;
 
 public interface IConsoleManager
 {
@@ -6,7 +8,8 @@ public interface IConsoleManager
 
     Point SizeInCharacters { get; }
 
-    void Hide();
-    void Show();
+    void HideConsole();
+    void ShowConsole();
+    void ShowConsole(ConsoleSettings settings);
     void MoveConsoleTo(int x, int y, int w, int h);
 }

@@ -200,10 +200,10 @@ public class Win32Window : IWindow
         OpenGL32.wglMakeCurrent(DeviceContext, RenderContext);
 
         string version = OpenGL32.GetString(GetStringEnum.Version).Remove(9);
-        Serilog.Log.Information("Successfully set up OpenGL v:{0}, GLSL: {1}", version, OpenGL32.GetString(GetStringEnum.ShadingLanguageVersion));
-        Serilog.Log.Information("Graphics Vendor: {0}", OpenGL32.GetString(GetStringEnum.Vendor));
-        Serilog.Log.Information("Graphics Card: {0}", OpenGL32.GetString(GetStringEnum.Renderer));
-        Serilog.Log.Information("Graphics Card: {0}", OpenGL32.GetString(GetStringEnum.Renderer));
+        BE.Logging.Information($"Successfully set up OpenGL v:{version}, GLSL: {OpenGL32.GetString(GetStringEnum.ShadingLanguageVersion)}");
+        BE.Logging.Information($"Graphics Vendor: {OpenGL32.GetString(GetStringEnum.Vendor)}");
+        BE.Logging.Information($"Graphics Card: {OpenGL32.GetString(GetStringEnum.Renderer)}");
+        BE.Logging.Information($"Graphics Card: {OpenGL32.GetString(GetStringEnum.Renderer)}");
     }
 
     internal IntPtr StandardWindowProcedure(IntPtr handle, WINDOWMESSAGE message, IntPtr wParam, IntPtr lParam)
@@ -395,7 +395,7 @@ public class Win32Window : IWindow
         if (major < 1 || minor < 0)
             throw new Exception($"invalid GL version to create: {major}.{minor}.");
 
-        Serilog.Log.Information("Creating GL Context: Requested Version {0}.{1}", major, minor);
+        BE.Logging.Information($"Creating GL Context: Requested Version {major}.{minor}");
 
         //create temp context to be able to call wglGetProcAddress
         IntPtr tempContext = OpenGL32.wglCreateContext(DeviceContext);
@@ -518,7 +518,7 @@ public class Win32Window : IWindow
         if (IsOpen)
             User32.PostMessage(_windowHandle, WINDOWMESSAGE.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
         else
-            Serilog.Log.Error($"Called Close on a {typeof(Win32Window).Name} window that was already destroyed.");
+            BE.Logging.Error($"Called Close on a {typeof(Win32Window).Name} window that was already destroyed.");
     }
 
     public void Exit()
@@ -526,7 +526,7 @@ public class Win32Window : IWindow
         if (IsOpen)
             User32.DestroyWindow(_windowHandle);
         else
-            Serilog.Log.Error($"Called Exit on a {typeof(Win32Window).Name} window that was already destroyed.");
+            BE.Logging.Error($"Called Exit on a {typeof(Win32Window).Name} window that was already destroyed.");
     }
 
     public void ProcessEvents()
@@ -555,7 +555,7 @@ public class Win32Window : IWindow
             int resultLength = User32.GetWindowText(_windowHandle, sb, sb.Capacity);
 
             if (resultLength == 0)
-                Serilog.Log.Warning($"Window title is empty, error code: {Marshal.GetLastWin32Error()}");
+                BE.Logging.Warning($"Window title is empty, error code: {Marshal.GetLastWin32Error()}");
 
             return sb.ToString();
         }
@@ -564,7 +564,7 @@ public class Win32Window : IWindow
             if (Title != value)
             {
                 if (!User32.SetWindowText(_windowHandle, value))
-                    Serilog.Log.Error($"Failed to change window title, requested: {value}, error code: {Marshal.GetLastWin32Error()}");
+                    BE.Logging.Error($"Failed to change window title, requested: {value}, error code: {Marshal.GetLastWin32Error()}");
             }
         }
     }
@@ -761,7 +761,7 @@ public class Win32Window : IWindow
             User32.SetForegroundWindow(_windowHandle);
         }
         else
-            Serilog.Log.Warning("Tried to focus the window when it was already focussed.");
+            BE.Logging.Warning("Tried to focus the window when it was already focussed.");
     }
 
     public event EventHandler<FocusChangedEventArgs>? FocusChanged;
@@ -843,7 +843,7 @@ public class Win32Window : IWindow
                 // TODO: dispose managed state (managed objects)
             }
             else
-                Serilog.Log.Warning("Window was disposed by the finaliser.");
+                BE.Logging.Warning("Window was disposed by the finaliser.");
 
             // TODO: free unmanaged resources (unmanaged objects) and override finalizer
             // TODO: set large fields to null
@@ -870,17 +870,17 @@ public class Win32Window : IWindow
 #if DEBUG
     private void LogWinRects()
     {
-        Serilog.Log.Debug($"_userPosition: {_userPosition}");
-        Serilog.Log.Debug($"_actualPosition: {_actualPosition}");
-        Serilog.Log.Debug($"_reportedPosition: {_reportedPosition}");
-        Serilog.Log.Debug($"_userClientSize: {_userClientSize}");
-        Serilog.Log.Debug($"_actualClientPosition: {_actualClientPosition}");
-        Serilog.Log.Debug($"Window Position: {GetWindowPosition(_windowHandle)}");
-        Serilog.Log.Debug($"Window Client: {GetClientSize(_windowHandle)}");
-        Serilog.Log.Debug($"Child Position: {GetWindowPosition(_childWindowHandle)}");
-        Serilog.Log.Debug($"Child Client: {GetClientSize(_childWindowHandle)}");
+        BE.Logging.Debug($"_userPosition: {_userPosition}");
+        BE.Logging.Debug($"_actualPosition: {_actualPosition}");
+        BE.Logging.Debug($"_reportedPosition: {_reportedPosition}");
+        BE.Logging.Debug($"_userClientSize: {_userClientSize}");
+        BE.Logging.Debug($"_actualClientPosition: {_actualClientPosition}");
+        BE.Logging.Debug($"Window Position: {GetWindowPosition(_windowHandle)}");
+        BE.Logging.Debug($"Window Client: {GetClientSize(_windowHandle)}");
+        BE.Logging.Debug($"Child Position: {GetWindowPosition(_childWindowHandle)}");
+        BE.Logging.Debug($"Child Client: {GetClientSize(_childWindowHandle)}");
     }
     
-    private static void LogIntPtr(IntPtr pointer) => Serilog.Log.Debug(pointer.ToLong().ToString());
+    private static void LogIntPtr(IntPtr pointer) => BE.Logging.Debug(pointer.ToLong().ToString());
 #endif
 }

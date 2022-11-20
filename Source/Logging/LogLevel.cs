@@ -3,13 +3,8 @@
 /// <summary>
 /// Specifies the level of logging that a messages should write or that a logger should display.
 /// </summary>
-public enum LogLevel
+public enum LogLevel : int
 {
-    /// <summary>
-    /// Specifies that a logger should not write any messages. Should not be used to write messages.
-    /// </summary>
-    None = 0,
-
     /// <summary>
     /// Logs that contain the most detailed messages, and may contain sensitive application data. These should not be made available to write or used in a production environment.
     /// </summary>
@@ -39,4 +34,9 @@ public enum LogLevel
     /// Fatal logs should be used for recording events which cause the application to close.
     /// </summary>
     Fatal = 6,
+
+    /// <summary>
+    /// Specifies that a logger should not write any messages. Should not be used to write messages.
+    /// </summary>
+    None = 99,
 }

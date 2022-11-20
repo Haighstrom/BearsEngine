@@ -16,8 +16,11 @@ public class Logger : ILogger
         _outputStreams.Add(output);
     }
 
-    public void Log(LogLevel logLevel, object thingToLog)
+    public void Log(LogLevel logLevel, object? thingToLog)
     {
+        if (logLevel == LogLevel.None)
+            throw new ArgumentException($"Cannot write log messages with {LogLevel.None}", nameof(logLevel));
+
         foreach (var stream in _outputStreams)
             if (logLevel >= stream.LogLevel)
                 stream.Write(_stringConverter.ConvertToLoggableString(thingToLog));

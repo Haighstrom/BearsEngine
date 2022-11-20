@@ -46,11 +46,11 @@ public class InputDeviceManager : IInputDeviceManager
     }
     private void CreateDrivers()
     {
-        Serilog.Log.Information("--------Input Devices--------\n");
+        BE.Logging.Information("--------Input Devices--------\n");
         _mouseManager = new MouseManager(_inputWindow.Handle);
         _keyboardManager = new KeyboardManager(_inputWindow.Handle);
         _gamePadManager = new GamePadManager(_inputWindow.Handle);
-        Serilog.Log.Information("\n-----------------------------\n");
+        BE.Logging.Information("\n-----------------------------\n");
 
         RegisterForRawInput();
     }
@@ -103,7 +103,7 @@ public class InputDeviceManager : IInputDeviceManager
             
 
             case WINDOWMESSAGE.WM_DEVICECHANGE:
-                Serilog.Log.Information("Input Devices Change detected. Identifying new devices...");
+                BE.Logging.Information("Input Devices Change detected. Identifying new devices...");
 
                 _mouseManager.RefreshDevices();
                 _keyboardManager.RefreshDevices();

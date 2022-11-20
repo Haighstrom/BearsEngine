@@ -1,17 +1,19 @@
-﻿using BearsEngine.Window;
-using Serilog.Events;
+﻿using BearsEngine.Logging;
+using BearsEngine.Window;
 
 namespace BearsEngine;
 
-public class EngineSettings : WindowSettings
+public class GameSettings
 {
-    public static EngineSettings Default => new();
+    public static GameSettings Default => new();
+
+    public WindowSettings WindowSettings { get; set; } = new();
 
     public int TargetFramesPerSecond { get; set; } = 60;
     public int TargetUPS { get; set; } = 60;
 
-    public bool ShowDebugConsole { get; set; } = false;
-    public bool LeftAlignDebugConsole { get; set; } = true; //todo: change to Gridposition and Size or something?
-    public LogEventLevel DebugLoggingLevel { get; set; } = LogEventLevel.Information;
+    public bool ShowConsole { get; set; } = false;
+    public ConsoleSettings ConsoleSettings { get; set; } = new();
 
+    public LogSettings LogSettings { get; set; } = new();
 }

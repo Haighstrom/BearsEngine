@@ -7,8 +7,6 @@ namespace BearsEngine;
 
 public static class HConsole
 {
-    private static readonly IntPtr InvalidHandleValue = new(-1);
-
     public static IntPtr Handle => Kernal32.GetConsoleWindow();
 
     public static bool IsOpen => Handle != IntPtr.Zero;
@@ -202,9 +200,6 @@ public static class HConsole
 
     public static void Warning(string message, bool blockExecutionInDebug = false)
     {
-        if (ThrowErrorsOnWarnings)
-            throw new ConsoleWarningException($"{message}");
-
         Console.Write($"[Warning]: {message}");
 
 #if DEBUG

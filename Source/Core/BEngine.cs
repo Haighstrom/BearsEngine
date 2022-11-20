@@ -4,7 +4,6 @@ using BearsEngine.DisplayDevices;
 using BearsEngine.Input;
 using BearsEngine.Win32API;
 using BearsEngine.Window;
-using Serilog;
 
 namespace BearsEngine;
 
@@ -18,13 +17,13 @@ internal class BEngine : IEngine
     private const int FrameCountArraySize = 10; //how many captures frame counts are averaged over
     private const double TimeBetweenPeriodicUpdates = 1;
 
-    private static void ValidateEngineSettings(EngineSettings settings)
+    private static void ValidateEngineSettings(GameSettings settings)
     {
         if (settings.TargetUPS < MinimumUpdateRate || settings.TargetUPS > MaximumUpdateRate)
         {
             int newRate = Maths.Clamp(settings.TargetUPS, MinimumUpdateRate, MaximumUpdateRate);
 
-            Log.Warning("Requested an update rate of {0}, which is outside the bounds of the allowed values ({1}-{2}). Adjusting to {3}.", settings.TargetUPS, MinimumUpdateRate, MaximumUpdateRate, newRate);
+            BE.Logging.Warning($"Requested an update rate of {settings.TargetUPS}, which is outside the bounds of the allowed values ({MaximumUpdateRate}-{MinimumUpdateRate}). Adjusting to {newRate}.");
 
             settings.TargetUPS = newRate;
         }
@@ -33,7 +32,7 @@ internal class BEngine : IEngine
         {
             int newRate = Maths.Clamp(settings.TargetFramesPerSecond, MinimumRenderRate, MaximumRenderRate);
 
-            Log.Warning("Requested a render rate of {0}, which is outside the bounds of the allowed values ({1}-{2}). Adjusting to {3}.", settings.TargetFramesPerSecond, MinimumRenderRate, MaximumRenderRate, newRate);
+            BE.Logging.Warning($"Requested a render rate of {settings.TargetFramesPerSecond}, which is outside the bounds of the allowed values ({MinimumRenderRate}-{MaximumRenderRate}). Adjusting to {newRate}.");
 
             settings.TargetFramesPerSecond = newRate;
         }
@@ -43,26 +42,26 @@ internal class BEngine : IEngine
     private readonly int _targetUPS, _targetRPS;
     private readonly ISceneManager _sceneManager;
 
-    public BEngine(EngineSettings settings, Func<IScene> initialiser)
+    public BEngine(GameSettings settings, Func<IScene> initialiser)
     {
-        Log.Debug("{0} being initialised.", nameof(BEngine));
+        BE.Logging.Debug($"{nameof(BEngine)} being initialised.");
 
         ValidateEngineSettings(settings);
 
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             throw new InvalidOperationException("Only Windows is currently supported.");
 
-        Log.Debug("Environment Information:\nMachine: {0}\nOS: {1}\nUser: {2}\nProcessors: {3}\nSystem Architecture: {4}\nProcess Arcitecture: {5}", Environment.MachineName, RuntimeInformation.OSDescription, Environment.UserName, Environment.ProcessorCount, Environment.Is64BitOperatingSystem ? "64-bit" : "32-bit", Environment.Is64BitProcess ? "64-bit" : "32-bit");
+        BE.Logging.Debug($"Environment Information:\nMachine: {Environment.MachineName}\nOS: {RuntimeInformation.OSDescription}\nUser: {Environment.UserName}\nProcessors: {Environment.ProcessorCount}\nSystem Architecture: {(Environment.Is64BitOperatingSystem ? "64-bit" : "32-bit")}\nProcess Arcitecture: {(Environment.Is64BitProcess ? "64-bit" : "32-bit")}");
 
         DisplayDM = new();
         InputDM = new();
-        Window = new HaighWindow(settings);
+        Window = new HaighWindow(settings.WindowSettings);
         _sceneManager = new SceneManager(initialiser());
 
         //Window.MouseLeftDoubleClicked += (o, a) => HI.MouseLeftDoubleClicked = true;
 
-        OpenGL32.DebugMessageCallback(HConsole.HandleOpenGLOutput);
-        OpenGL32.DebugMessageControl(DebugSource.DontCare, DebugType.DontCare, DebugSeverity.DontCare, true);
+        //OpenGL32.DebugMessageCallback(HConsole.HandleOpenGLOutput);
+        //OpenGL32.DebugMessageControl(DebugSource.DontCare, DebugType.DontCare, DebugSeverity.DontCare, true);
 
         _targetUPS = settings.TargetUPS;
         _targetRPS = settings.TargetFramesPerSecond;
@@ -72,7 +71,7 @@ internal class BEngine : IEngine
 
         Window.Resized += OnWindowResize;
 
-        Log.Debug("{0} initialised.", nameof(BEngine));
+        BE.Logging.Debug($"{nameof(BEngine)} initialised.");
     }
 
     public DisplayDeviceManager DisplayDM { get; }
@@ -93,7 +92,7 @@ internal class BEngine : IEngine
 
     private void LogPeriodicInfo()
     {
-        Log.Information("FPS: {0}, RPS: {1}", UpdateFramesPerSecond, RenderFramesPerSecond);
+        BE.Logging.Information($"FPS: {UpdateFramesPerSecond}, RPS: {RenderFramesPerSecond}");
     }
 
     private void OnWindowResize(object? sender, EventArgs e)
@@ -167,7 +166,7 @@ internal class BEngine : IEngine
                 if (timeSinceLastUpdate > 2 * targetUpdateTime)
                 {
                     timeOfFrame = timeSinceLastUpdate;
-                    Log.Warning("Engine is running slowly.");
+                    BE.Logging.Warning("Engine is running slowly.");
                 }
                 else
                 {

@@ -14,6 +14,6 @@ public class FileOutputStream : ILoggerOutputStream
 
     public void Write(string message)
     {
-        HaighIO.AppendText(OutputFile, message);
+        HaighIO.AppendText(OutputFile, message + Environment.NewLine);
     }
 }
