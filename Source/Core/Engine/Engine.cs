@@ -128,6 +128,7 @@ internal class Engine : IEngine
         }
     }
 
+    private double _testTime = 0;
     public void Run()
     {
         Window.ProcessEvents(); //get any initial crap out the way before we start timing
@@ -171,7 +172,7 @@ internal class Engine : IEngine
                 if (timeSinceLastUpdate > 2 * targetUpdateTime)
                 {
                     timeOfFrame = timeSinceLastUpdate;
-                    BE.Logging.Warning("Engine is running slowly.");
+                    BE.Logging.Warning($"A frame took {timeSinceLastUpdate / targetUpdateTime: 0.0}x as long as expected. Rendering took {_testTime / targetUpdateTime:0.0}.");
                 }
                 else
                 {
@@ -188,8 +189,10 @@ internal class Engine : IEngine
 
             if (timeSinceLastRender >= targetRenderTime)
             {
+            _testTime = timer.Elapsed.TotalSeconds;
                 if (Window.IsOpen)
                     Render();
+            _testTime = timer.Elapsed.TotalSeconds - _testTime;
 
                 while (timeSinceLastRender >= targetRenderTime)
                     timeSinceLastRender -= targetRenderTime;
