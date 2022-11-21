@@ -317,7 +317,7 @@ public class Win32Window : IWindow
             case WINDOWMESSAGE.WM_SYSKEYDOWN:
                 bool extended = (lParam.ToInt64() & 1 << 24) != 0;
                 short scancode = (short)((lParam.ToInt64() >> 16) & 0xff);
-                VirtualKeys vkey = (VirtualKeys)wParam;
+                VIRTUALKEYCODE vkey = (VIRTUALKEYCODE)wParam;
 
                 Key key = KeyMap.TranslateKey(scancode, vkey, extended);
 
@@ -329,7 +329,7 @@ public class Win32Window : IWindow
             case WINDOWMESSAGE.WM_SYSKEYUP:
                 extended = (lParam.ToInt64() & 1 << 24) != 0;      //TODO - theres something called extended1 as well...
                 scancode = (short)((lParam.ToInt64() >> 16) & 0xff);
-                vkey = (VirtualKeys)wParam;
+                vkey = (VIRTUALKEYCODE)wParam;
 
                 key = KeyMap.TranslateKey(scancode, vkey, extended);
 
@@ -531,7 +531,7 @@ public class Win32Window : IWindow
 
     public void ProcessEvents()
     {
-        while (User32.PeekMessage(ref _lpMsg, _windowHandle, 0, 0, PeekMessage_Flags.PM_REMOVE))
+        while (User32.PeekMessage(ref _lpMsg, _windowHandle, 0, 0, PEEKMESSAGEFLAG.PM_REMOVE))
         {
             User32.TranslateMessage(ref _lpMsg);
             User32.DispatchMessage(ref _lpMsg);

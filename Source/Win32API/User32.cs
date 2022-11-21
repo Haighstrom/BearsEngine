@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using BearsEngine.UI;
+using System.Dynamic;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 
@@ -327,6 +329,124 @@ internal static class User32
     public static extern int GetWindowTextLength(IntPtr hWnd);
 
     /// <summary>
+    /// Translates (maps) a virtual-key code into a scan code or character value, or translates a scan code into a virtual-key code.
+    /// To specify a handle to the keyboard layout to use for translating the specified code, use the MapVirtualKeyEx function.
+    /// </summary>
+    /// <param name="uCode">The virtual key code or scan code for a key. How this value is interpreted depends on the value of the uMapType parameter.
+    /// Starting with Windows Vista, the high byte of the uCode value can contain either 0xe0 or 0xe1 to specify the extended scan code.</param>
+    /// <param name="uMapType">The translation to be performed.</param>
+    /// <returns>The return value is either a scan code, a virtual-key code, or a character value, depending on the value of uCode and uMapType. If there is no translation, the return value is zero.</returns>
+    [DllImport(Library)]
+    public static extern uint MapVirtualKey(VIRTUALKEYCODE uCode, VIRTUALKEYMAPTYPE uMapType);
+
+    /// <summary>
+    /// Dispatches incoming sent messages, checks the thread message queue for a posted message, and retrieves the message (if any exist).
+    /// </summary>
+    /// <param name="lpMsg">A pointer to an MSG structure that receives message information.</param>
+    /// <param name="hWnd">A handle to the window whose messages are to be retrieved. The window must belong to the current thread.
+    /// If hWnd is NULL, PeekMessage retrieves messages for any window that belongs to the current thread, and any messages on the current thread's message queue whose hwnd value is NULL (see the MSG structure). Therefore if hWnd is NULL, both window messages and thread messages are processed.
+    /// If hWnd is -1, PeekMessage retrieves only messages on the current thread's message queue whose hwnd value is NULL, that is, thread messages as posted by PostMessage (when the hWnd parameter is NULL) or PostThreadMessage.</param>
+    /// <param name="wMsgFilterMin">The value of the first message in the range of messages to be examined. Use WM_KEYFIRST (0x0100) to specify the first keyboard message or WM_MOUSEFIRST (0x0200) to specify the first mouse message.
+    /// If wMsgFilterMin and wMsgFilterMax are both zero, PeekMessage returns all available messages(that is, no range filtering is performed).</param>
+    /// <param name="wMsgFilterMax">The value of the last message in the range of messages to be examined. Use WM_KEYLAST to specify the last keyboard message or WM_MOUSELAST to specify the last mouse message.
+    /// If wMsgFilterMin and wMsgFilterMax are both zero, PeekMessage returns all available messages(that is, no range filtering is performed).</param>
+    /// <param name="wRemoveMsg">Specifies how messages are to be handled.</param>
+    /// <returns>If a message is available, the return value is nonzero. If no messages are available, the return value is zero.</returns>
+    [DllImport(Library)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool PeekMessage(ref MSG lpMsg, IntPtr hWnd, WINDOWMESSAGE wMsgFilterMin, WINDOWMESSAGE wMsgFilterMax, PEEKMESSAGEFLAG wRemoveMsg);
+
+    /// <summary>
+    /// Places (posts) a message in the message queue associated with the thread that created the specified window and returns without waiting for the thread to process the message.
+    /// To post a message in the message queue associated with a thread, use the PostThreadMessage function.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window whose window procedure is to receive the message.</param>
+    /// <param name="Msg">The message to be posted. For lists of the system-provided messages, see System-Defined Messages.
+    /// https://docs.microsoft.com/en-us/windows/win32/winmsg/about-messages-and-message-queues </param>
+    /// <param name="wParam">Additional message-specific information.</param>
+    /// <param name="lParam">Additional message-specific information.</param>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.GetLastError returns ERROR_NOT_ENOUGH_QUOTA when the limit is hit.</returns>
+    [DllImport(Library, CharSet = CharSet.Auto, SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool PostMessage(IntPtr hWnd, WINDOWMESSAGE Msg, IntPtr wParam, IntPtr lParam);
+
+    /// <summary>
+    /// Indicates to the system that a thread has made a request to terminate (quit). It is typically used in response to a WM_DESTROY message.
+    /// </summary>
+    /// <param name="nExitCode">The application exit code. This value is used as the wParam parameter of the WM_QUIT message.</param>
+    [DllImport(Library)]
+    public static extern void PostQuitMessage(int nExitCode);
+
+    /// <summary>
+    /// Registers a window class for subsequent use in calls to the CreateWindow or CreateWindowEx function.
+    /// </summary>
+    /// <param name="unnamedParam1">A pointer to a WNDCLASSEX structure. You must fill the structure with the appropriate class attributes before passing it to the function.</param>
+    /// <returns>If the function succeeds, the return value is a class atom that uniquely identifies the class being registered. This atom can only be used by the CreateWindow, CreateWindowEx, GetClassInfo, GetClassInfoEx, FindWindow, FindWindowEx, and UnregisterClass functions and the IActiveIMMap::FilterClientWindows method.
+    /// If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
+    public static extern ushort RegisterClassEx(ref WNDCLASSEX unnamedParam1);
+
+    /// <summary>
+    /// Registers the device or type of device for which a window will receive notifications.
+    /// </summary>
+    /// <param name="hRecipient">A handle to the window or service that will receive device events for the devices specified in the NotificationFilter parameter. The same window handle can be used in multiple calls to RegisterDeviceNotification.
+    /// Services can specify either a window handle or service status handle.</param>
+    /// <param name="NotificationFilter">A pointer to a block of data that specifies the type of device for which notifications should be sent. This block always begins with the DEV_BROADCAST_HDR structure. The data following this header is dependent on the value of the dbch_devicetype member, which can be DBT_DEVTYP_DEVICEINTERFACE or DBT_DEVTYP_HANDLE. For more information, see Remarks.</param>
+    /// <param name="Flags">This parameter can be one of the following values:
+    /// DEVICE_NOTIFY_WINDOW_HANDLE: The hRecipient parameter is a window handle.
+    /// DEVICE_NOTIFY_SERVICE_HANDLE: The hRecipient parameter is a service status handle.
+    /// DEVICE_NOTIFY_ALL_INTERFACE_CLASSES: Notifies the recipient of device interface events for all device interface classes. (The dbcc_classguid member is ignored.) This value can be used only if the dbch_devicetype member is DBT_DEVTYP_DEVICEINTERFACE.
+    /// </param>
+    /// <returns>If the function succeeds, the return value is a device notification handle. If the function fails, the return value is NULL. To get extended error information, call GetLastError.</remarks>
+    [DllImport(Library)]
+    public static extern IntPtr RegisterDeviceNotification(IntPtr hRecipient, IntPtr NotificationFilter, DEVICENOTIFYFLAGS Flags);
+
+    /// <summary>
+    /// Registers the devices that supply the raw input data.
+    /// </summary>
+    /// <param name="pRawInputDevices">An array of RAWINPUTDEVICE structures that represent the devices that supply the raw input.</param>
+    /// <param name="uiNumDevices">The number of RAWINPUTDEVICE structures pointed to by pRawInputDevices.</param>
+    /// <param name="cbSize">The size, in bytes, of a RAWINPUTDEVICE structure.</param>
+    /// <returns>TRUE if the function succeeds; otherwise, FALSE. If the function fails, call GetLastError for more information.</returns>
+    /// <remarks>To receive WM_INPUT messages, an application must first register the raw input devices using RegisterRawInputDevices. By default, an application does not receive raw input.
+    /// To receive WM_INPUT_DEVICE_CHANGE messages, an application must specify the RIDEV_DEVNOTIFY flag for each device class that is specified by the usUsagePage and usUsage fields of the RAWINPUTDEVICE structure.By default, an application does not receive WM_INPUT_DEVICE_CHANGE notifications for raw input device arrival and removal.
+    /// If a RAWINPUTDEVICE structure has the RIDEV_REMOVE flag set and the hwndTarget parameter is not set to NULL, then parameter validation will fail.
+    /// Only one window per raw input device class may be registered to receive raw input within a process(the window passed in the last call to RegisterRawInputDevices). Because of this, RegisterRawInputDevices should not be used from a library, as it may interfere with any raw input processing logic already present in applications that load it</remarks>
+    [DllImport(Library, SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool RegisterRawInputDevices(RAWINPUTDEVICE[] pRawInputDevices, uint uiNumDevices, uint cbSize);
+
+    /// <summary>
+    /// Registers the devices that supply the raw input data.
+    /// </summary>
+    /// <param name="rawInputDevices">An array of RAWINPUTDEVICE structures that represent the devices that supply the raw input.</param>
+    /// <returns>TRUE if the function succeeds; otherwise, FALSE. If the function fails, call GetLastError for more information.</returns>
+    public static bool RegisterRawInputDevices(RAWINPUTDEVICE[] rawInputDevices) => RegisterRawInputDevices(rawInputDevices, (uint)rawInputDevices.Length, RAWINPUTDEVICE.s_size);
+
+    /// <summary>
+    /// Registers the devices that supply the raw input data.
+    /// </summary>
+    /// <param name="rawInputDevice">A RAWINPUTDEVICE structure that represent the device that supplies the raw input.</param>
+    /// <returns>TRUE if the function succeeds; otherwise, FALSE. If the function fails, call GetLastError for more information.</returns>
+    public static bool RegisterRawInputDevices(RAWINPUTDEVICE rawInputDevice) => RegisterRawInputDevices(new[] { rawInputDevice });
+
+    /// <summary>
+    /// Releases the mouse capture from a window in the current thread and restores normal mouse input processing. A window that has captured the mouse receives all mouse input, regardless of the position of the cursor, except when a mouse button is clicked while the cursor hot spot is in the window of another thread.
+    /// </summary>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern bool ReleaseCapture();
+
+    /// <summary>
+    /// Sets the mouse capture to the specified window belonging to the current thread. SetCapture captures mouse input either when the mouse is over the capturing window, or when the mouse button was pressed while the mouse was over the capturing window and the button is still down. Only one window at a time can capture the mouse.
+    /// If the mouse cursor is over a window created by another thread, the system will dRect mouse input to the specified window only if a mouse button is down.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window in the current thread that is to capture the mouse.</param>
+    /// <returns>The return value is a handle to the window that had previously captured the mouse. If there is no such window, the return value is NULL.</returns>
+    [DllImport(Library)]
+    public static extern IntPtr SetCapture(IntPtr hWnd);
+
+    /// <summary>
     /// Set the DPI awareness for the current thread to the provided value.
     /// </summary>
     /// <param name="dpiContext">The new DPI_AWARENESS_CONTEXT for the current thread. This context includes the DPI_AWARENESS value.</param>
@@ -342,6 +462,18 @@ internal static class User32
     public static IntPtr SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT dpiContext) => SetThreadDpiAwarenessContext(new IntPtr((int)dpiContext));
 
     /// <summary>
+    /// Changes the text of the specified window's title bar (if it has one). If the specified window is a control, the text of the control is changed. However, SetWindowText cannot change the text of a control in another application.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window or control whose text is to be changed.</param>
+    /// <param name="lpString">The new title or control text.</param>
+    /// <returns> If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    /// <remarks>If the target window is owned by the current process, SetWindowText causes a WM_SETTEXT message to be sent to the specified window or control. If the control is a list box control created with the WS_CAPTION style, however, SetWindowText sets the text for the control, not for the list box entries. 
+    /// To set the text of a control in another process, send the WM_SETTEXT message directly instead of calling SetWindowText.
+    /// The SetWindowText function does not expand tab characters (ASCII code 0x09). Tab characters are displayed as vertical bar(|) characters.</remarks>
+    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
+    public static extern bool SetWindowText(IntPtr hWnd, string lpString);
+
+    /// <summary>
     /// Changes an attribute of the specified window. The function also sets a value at the specified offset in the extra window memory. 
     /// Note: To write code that is compatible with both 32-bit and 64-bit versions of Windows, use SetWindowLongPtr. When compiling for 32-bit Windows, SetWindowLongPtr is defined as a call to the SetWindowLong function.
     /// </summary>
@@ -351,6 +483,27 @@ internal static class User32
     /// <returns>If the function succeeds, the return value is the previous value of the specified offset. If the function fails, the return value is zero.To get extended error information, call GetLastError. If the previous value is zero and the function succeeds, the return value is zero, but the function does not clear the last error information. To determine success or failure, clear the last error information by calling SetLastError with 0, then call SetWindowLongPtr.Function failure will be indicated by a return value of zero and a GetLastError result that is nonzero.</returns>
     [DllImport(Library, SetLastError = true)]
     public static extern IntPtr SetWindowLongPtr(IntPtr hWnd, GWL nIndex, IntPtr dwNewLong);
+
+    /// <summary>
+    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-showwindow
+    /// Sets the specified window's show state.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window.</param>
+    /// <param name="nCmdShow">Controls how the window is to be shown. This parameter is ignored the first time an application calls ShowWindow, if the program that launched the application provides a STARTUPINFO structure. Otherwise, the first time ShowWindow is called, the value should be the value obtained by the WinMain function in its nCmdShow parameter.</param>
+    /// <returns>If the window was previously visible, the return value is nonzero. If the window was previously hidden, the return value is zero.</returns>
+    [DllImport(Library)]
+    public static extern bool ShowWindow(IntPtr hWnd, SHOWWINDOWCOMMAND nCmdShow);
+
+    /// <summary>
+    /// Translates virtual-key messages into character messages. The character messages are posted to the calling thread's message queue, to be read the next time the thread calls the GetMessage or PeekMessage function.
+    /// </summary>
+    /// <param name="lpMsg">A pointer to an MSG structure that contains message information retrieved from the calling thread's message queue by using the GetMessage or PeekMessage function.</param>
+    /// <returns>If the message is translated (that is, a character message is posted to the thread's message queue), the return value is nonzero.
+    /// If the message is WM_KEYDOWN, WM_KEYUP, WM_SYSKEYDOWN, or WM_SYSKEYUP, the return value is nonzero, regardless of the translation.
+    /// If the message is not translated (that is, a character message is not posted to the thread's message queue), the return value is zero.</returns>
+    [DllImport(Library)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool TranslateMessage(ref MSG lpMsg);
 
     /// <summary>
     /// Posts messages when the mouse pointer leaves a window or hovers over a window for a specified amount of time.
@@ -368,196 +521,14 @@ internal static class User32
     [DllImport(Library, SetLastError = true)]
     public static extern bool UnregisterDeviceNotification(IntPtr handle);
 
-    // ***CLEANED UP ABOVE THIS LINE***
-   
-    
     /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-mapvirtualkeya
-    /// </summary>
-    /// <param name="uCode">The virtual key code or scan code for a key. How this value is interpreted depends on the value of the uMapType parameter.
-    /// Starting with Windows Vista, the high byte of the uCode value can contain either 0xe0 or 0xe1 to specify the extended scan code.</param>
-    /// <param name="uMapType">The translation to be performed. The value of this parameter depends on the value of the uCode parameter.
-    /// MAPVK_VK_TO_VSC: The uCode parameter is a virtual-key code and is translated into a scan code.If it is a virtual-key code that does not distinguish between left- and right-hand keys, the left-hand scan code is returned.If there is no translation, the function returns 0.
-    /// MAPVK_VSC_TO_VK: The uCode parameter is a scan code and is translated into a virtual-key code that does not distinguish between left- and right-hand keys.If there is no translation, the function returns 0.
-    /// MAPVK_VK_TO_CHAR: The uCode parameter is a virtual-key code and is translated into an unshifted character value in the low order word of the return value.Dead keys(diacritics) are indicated by setting the top bit of the return value.If there is no translation, the function returns 0.
-    /// MAPVK_VSC_TO_VK_EX: The uCode parameter is a scan code and is translated into a virtual-key code that distinguishes between left- and right-hand keys.If there is no translation, the function returns 0.
-    /// MAPVK_VK_TO_VSC_EX: Windows Vista and later: The uCode parameter is a virtual-key code and is translated into a scan code.If it is a virtual-key code that does not distinguish between left- and right-hand keys, the left-hand scan code is returned.If the scan code is an extended scan code, the high byte of the uCode value can contain either 0xe0 or 0xe1 to specify the extended scan code.If there is no translation, the function returns 0.</param>
-    /// <returns>The return value is either a scan code, a virtual-key code, or a character value, depending on the value of uCode and uMapType. If there is no translation, the return value is zero.</returns>
-    [DllImport(Library, SetLastError = true)]
-    public static extern uint MapVirtualKey(VirtualKeys uCode, MapVirtualKey_uMapType uMapType);
-    
-    /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-peekmessagew
-    /// Dispatches incoming sent messages, checks the thread message queue for a posted message, and retrieves the message (if any exist).
-    /// </summary>
-    /// <param name="lpMsg">A pointer to an MSG structure that receives message information.</param>
-    /// <param name="hWnd">A handle to the window whose messages are to be retrieved. The window must belong to the current thread.
-    /// If hWnd is NULL, PeekMessage retrieves messages for any window that belongs to the current thread, and any messages on the current thread's message queue whose hwnd value is NULL (see the MSG structure). Therefore if hWnd is NULL, both window messages and thread messages are processed.
-    /// If hWnd is -1, PeekMessage retrieves only messages on the current thread's message queue whose hwnd value is NULL, that is, thread messages as posted by PostMessage (when the hWnd parameter is NULL) or PostThreadMessage.</param>
-    /// <param name="wMsgFilterMin">The value of the first message in the range of messages to be examined. Use WM_KEYFIRST (0x0100) to specify the first keyboard message or WM_MOUSEFIRST (0x0200) to specify the first mouse message.
-    /// If wMsgFilterMin and wMsgFilterMax are both zero, PeekMessage returns all available messages(that is, no range filtering is performed).</param>
-    /// <param name="wMsgFilterMax">The value of the last message in the range of messages to be examined. Use WM_KEYLAST to specify the last keyboard message or WM_MOUSELAST to specify the last mouse message.
-    /// If wMsgFilterMin and wMsgFilterMax are both zero, PeekMessage returns all available messages(that is, no range filtering is performed).</param>
-    /// <param name="wRemoveMsg">Specifies how messages are to be handled.</param>
-    /// <returns>If a message is available, the return value is nonzero.
-    /// If no messages are available, the return value is zero.</returns>
-    [DllImport("User32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool PeekMessage(ref MSG lpMsg, IntPtr hWnd, WINDOWMESSAGE wMsgFilterMin, WINDOWMESSAGE wMsgFilterMax, PeekMessage_Flags wRemoveMsg);
-    
-    /// <summary>
-    /// Places (posts) a message in the message queue associated with the thread that created the specified window and returns without waiting for the thread to process the message.
-    /// To post a message in the message queue associated with a thread, use the PostThreadMessage function.
-    /// </summary>
-    /// <param name="hWnd">A handle to the window whose window procedure is to receive the message.</param>
-    /// <param name="Msg">The message to be posted. For lists of the system-provided messages, see System-Defined Messages.
-    /// https://docs.microsoft.com/en-us/windows/win32/winmsg/about-messages-and-message-queues </param>
-    /// <param name="wParam">Additional message-specific information.</param>
-    /// <param name="lParam">Additional message-specific information.</param>
-    /// <returns>If the function succeeds, the return value is nonzero.
-    /// If the function fails, the return value is zero.To get extended error information, call GetLastError.GetLastError returns ERROR_NOT_ENOUGH_QUOTA when the limit is hit.</returns>
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool PostMessage(IntPtr hWnd, WINDOWMESSAGE Msg, IntPtr wParam, IntPtr lParam);
-    
-    /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-postquitmessage
-    /// Indicates to the system that a thread has made a request to terminate (quit). It is typically used in response to a WM_DESTROY message.
-    /// </summary>
-    /// <param name="nExitCode"></param>
-    [DllImport(Library)]
-    public static extern void PostQuitMessage(int nExitCode);
-    
-
-    /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerclassexw
-    /// Registers a window class for subsequent use in calls to the CreateWindow or CreateWindowEx function.
-    /// </summary>
-    /// <param name="unnamedParam1">A pointer to a WNDCLASSEX structure. You must fill the structure with the appropriate class attributes before passing it to the function.</param>
-    /// <returns>If the function succeeds, the return value is a class atom that uniquely identifies the class being registered. This atom can only be used by the CreateWindow, CreateWindowEx, GetClassInfo, GetClassInfoEx, FindWindow, FindWindowEx, and UnregisterClass functions and the IActiveIMMap::FilterClientWindows method.
-    /// If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
-    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    public static extern ushort RegisterClassEx(ref WNDCLASSEX unnamedParam1);
-    
-    /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerdevicenotificationa
-    /// Registers the device or type of device for which a window will receive notifications.
-    /// </summary>
-    /// <param name="hRecipient">A handle to the window or service that will receive device events for the devices specified in the NotificationFilter parameter. The same window handle can be used in multiple calls to RegisterDeviceNotification.
-    /// Services can specify either a window handle or service status handle.</param>
-    /// <param name="NotificationFilter">A pointer to a block of data that specifies the type of device for which notifications should be sent. This block always begins with the DEV_BROADCAST_HDR structure. The data following this header is dependent on the value of the dbch_devicetype member, which can be DBT_DEVTYP_DEVICEINTERFACE or DBT_DEVTYP_HANDLE. For more information, see Remarks.</param>
-    /// <param name="Flags">This parameter can be one of the following values:
-    /// DEVICE_NOTIFY_WINDOW_HANDLE: The hRecipient parameter is a window handle.
-    /// DEVICE_NOTIFY_SERVICE_HANDLE: The hRecipient parameter is a service status handle.
-    /// DEVICE_NOTIFY_ALL_INTERFACE_CLASSES: Notifies the recipient of device interface events for all device interface classes. (The dbcc_classguid member is ignored.) This value can be used only if the dbch_devicetype member is DBT_DEVTYP_DEVICEINTERFACE.
-    /// </param>
-    /// <returns>If the function succeeds, the return value is a device notification handle.
-    /// If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
-    /// <remarks>Applications send event notifications using the BroadcastSystemMessage function. Any application with a top-level window can receive basic notifications by processing the WM_DEVICECHANGE message. Applications can use the RegisterDeviceNotification function to register to receive device notifications.
-    /// Services can use the RegisterDeviceNotification function to register to receive device notifications.If a service specifies a window handle in the hRecipient parameter, the notifications are sent to the window procedure. If hRecipient is a service status handle, SERVICE_CONTROL_DEVICEEVENT notifications are sent to the service control handler.For more information about the service control handler, see HandlerEx.
-    /// Be sure to handle Plug and Play device events as quickly as possible.Otherwise, the system may become unresponsive.If your event handler is to perform an operation that may block execution (such as I/O), it is best to start another thread to perform the operation asynchronously.
-    /// Device notification handles returned by RegisterDeviceNotification must be closed by calling the UnregisterDeviceNotification function when they are no longer needed.
-    /// The DBT_DEVICEARRIVAL and DBT_DEVICEREMOVECOMPLETE events are automatically broadcast to all top-level windows for port devices. Therefore, it is not necessary to call RegisterDeviceNotification for ports, and the function fails if the dbch_devicetype member is DBT_DEVTYP_PORT.Volume notifications are also broadcast to top-level windows, so the function fails if dbch_devicetype is DBT_DEVTYP_VOLUME.OEM-defined devices are not used directly by the system, so the function fails if dbch_devicetype is DBT_DEVTYP_OEM.</remarks>
-    [DllImport(Library)]
-    public static extern IntPtr RegisterDeviceNotification(IntPtr hRecipient, IntPtr NotificationFilter, RegisterDeviceNotification_Flags Flags);
-    
-    /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerrawinputdevices
-    /// Registers the devices that supply the raw input data.
-    /// </summary>
-    /// <param name="pRawInputDevices">An array of RAWINPUTDEVICE structures that represent the devices that supply the raw input.</param>
-    /// <param name="uiNumDevices">The number of RAWINPUTDEVICE structures pointed to by pRawInputDevices.</param>
-    /// <param name="cbSize">The size, in bytes, of a RAWINPUTDEVICE structure.</param>
-    /// <returns>TRUE if the function succeeds; otherwise, FALSE. If the function fails, call GetLastError for more information.</returns>
-    /// <remarks>To receive WM_INPUT messages, an application must first register the raw input devices using RegisterRawInputDevices. By default, an application does not receive raw input.
-    /// To receive WM_INPUT_DEVICE_CHANGE messages, an application must specify the RIDEV_DEVNOTIFY flag for each device class that is specified by the usUsagePage and usUsage fields of the RAWINPUTDEVICE structure.By default, an application does not receive WM_INPUT_DEVICE_CHANGE notifications for raw input device arrival and removal.
-    /// If a RAWINPUTDEVICE structure has the RIDEV_REMOVE flag set and the hwndTarget parameter is not set to NULL, then parameter validation will fail.
-    /// Only one window per raw input device class may be registered to receive raw input within a process(the window passed in the last call to RegisterRawInputDevices). Because of this, RegisterRawInputDevices should not be used from a library, as it may interfere with any raw input processing logic already present in applications that load it./// </remarks>
-    [DllImport(Library, SetLastError = true)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool RegisterRawInputDevices(RAWINPUTDEVICE[] pRawInputDevices, uint uiNumDevices, uint cbSize);
-
-    /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerrawinputdevices
-    /// Registers the devices that supply the raw input data.
-    /// </summary>
-    /// <param name="rawInputDevices">An array of RAWINPUTDEVICE structures that represent the devices that supply the raw input.</param>
-    /// <returns>TRUE if the function succeeds; otherwise, FALSE. If the function fails, call GetLastError for more information.</returns>
-    public static bool RegisterRawInputDevices(RAWINPUTDEVICE[] rawInputDevices) => RegisterRawInputDevices(rawInputDevices, (uint)rawInputDevices.Length, RAWINPUTDEVICE.s_size);
-
-    /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerrawinputdevices
-    /// Registers the devices that supply the raw input data.
-    /// </summary>
-    /// <param name="rawInputDevice">A RAWINPUTDEVICE structure that represent the device that supplies the raw input.</param>
-    /// <returns>TRUE if the function succeeds; otherwise, FALSE. If the function fails, call GetLastError for more information.</returns>
-    public static bool RegisterRawInputDevices(RAWINPUTDEVICE rawInputDevice) => RegisterRawInputDevices(new[] { rawInputDevice });
-    
-    /// <summary>
-    /// Releases the mouse capture from a window in the current thread and restores normal mouse input processing. A window that has captured the mouse receives all mouse input, regardless of the position of the cursor, except when a mouse button is clicked while the cursor hot spot is in the window of another thread.
-    /// </summary>
-    /// <returns>If the function succeeds, the return value is nonzero.
-    /// If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
-    [DllImport(Library)]
-    public static extern bool ReleaseCapture();
-    
-
-    /// <summary>
-    /// Sets the mouse capture to the specified window belonging to the current thread. SetCapture captures mouse input either when the mouse is over the capturing window, or when the mouse button was pressed while the mouse was over the capturing window and the button is still down. Only one window at a time can capture the mouse.
-    /// If the mouse cursor is over a window created by another thread, the system will dRect mouse input to the specified window only if a mouse button is down.
-    /// </summary>
-    /// <param name="hWnd">A handle to the window in the current thread that is to capture the mouse.</param>
-    /// <returns>The return value is a handle to the window that had previously captured the mouse. If there is no such window, the return value is NULL.</returns>
-    [DllImport(Library)]
-    public static extern IntPtr SetCapture(IntPtr hWnd);
-
-    /// <summary>
-    /// https://docs.microsoft.com/en-gb/windows/win32/api/winuser/nf-winuser-setwindowtexta?redirectedfrom=MSDN
-    /// Changes the text of the specified window's title bar (if it has one). If the specified window is a control, the text of the control is changed. However, SetWindowText cannot change the text of a control in another application.
-    /// </summary>
-    /// <param name="hWnd">A handle to the window or control whose text is to be changed.</param>
-    /// <param name="lpString">The new title or control text.</param>
-    /// <returns></returns>
-    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    public static extern bool SetWindowText(IntPtr hWnd, string lpString);
-    
-
-    /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-showwindow
-    /// Sets the specified window's show state.
-    /// </summary>
-    /// <param name="hWnd">A handle to the window.</param>
-    /// <param name="nCmdShow">Controls how the window is to be shown. This parameter is ignored the first time an application calls ShowWindow, if the program that launched the application provides a STARTUPINFO structure. Otherwise, the first time ShowWindow is called, the value should be the value obtained by the WinMain function in its nCmdShow parameter.</param>
-    /// <returns>If the window was previously visible, the return value is nonzero.
-    /// If the window was previously hidden, the return value is zero.</returns>
-    [DllImport(Library)]
-    public static extern bool ShowWindow(IntPtr hWnd, ShowWindow_Command nCmdShow);
-    
-
-    /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-translatemessage
-    /// Translates virtual-key messages into character messages. The character messages are posted to the calling thread's message queue, to be read the next time the thread calls the GetMessage or PeekMessage function.
-    /// </summary>
-    /// <param name="lpMsg">A pointer to an MSG structure that contains message information retrieved from the calling thread's message queue by using the GetMessage or PeekMessage function.</param>
-    /// <returns>If the message is translated (that is, a character message is posted to the thread's message queue), the return value is nonzero.
-    /// If the message is WM_KEYDOWN, WM_KEYUP, WM_SYSKEYDOWN, or WM_SYSKEYUP, the return value is nonzero, regardless of the translation.
-    /// If the message is not translated (that is, a character message is not posted to the thread's message queue), the return value is zero.</returns>
-    [DllImport(Library)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool TranslateMessage(ref MSG lpMsg);
-    
-
-    /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-updatewindow
     /// The UpdateWindow function updates the client area of the specified window by sending a WM_PAINT message to the window if the window's update region is not empty. The function sends a WM_PAINT message directly to the window procedure of the specified window, bypassing the application queue. If the update region is empty, no message is sent.
     /// </summary>
     /// <param name="hWnd">Handle to the window to be updated.</param>
-    /// <returns>If the function succeeds, the return value is nonzero.
-    /// If the function fails, the return value is zero.</returns>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.</returns>
     [DllImport(Library)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool UpdateWindow(IntPtr hWnd);
-    
 
     // * * * CLEANED UP ABOVE THIS LINE * * *
 
@@ -950,7 +921,7 @@ internal static class User32
     public static extern uint MapVirtualKey(uint uCode, MapVirtualKeyType uMapType);
 
     [DllImport(Library, SetLastError = true)]
-    public static extern uint MapVirtualKey(VirtualKeys vkey, MapVirtualKeyType uMapType);
+    public static extern uint MapVirtualKey(VIRTUALKEYCODE vkey, MapVirtualKeyType uMapType);
 
     /// <summary>
     /// Retrieves a handle to the display monitor that has the largest area of intersection with the bounding rectangle of a specified window.

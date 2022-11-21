@@ -406,28 +406,6 @@ internal enum WindowClassStyle : uint
     CS_VREDRAW = 0x0001,
 }
 
-
-/// <summary>
-/// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerdevicenotificationa
-/// For use with User32 RegisterDeviceNotification
-/// </summary>
-internal enum RegisterDeviceNotification_Flags
-{
-    /// <summary>
-    /// The hRecipient parameter is a window handle.
-    /// </summary>
-    DEVICE_NOTIFY_WINDOW_HANDLE = 0x00000000,
-    /// <summary>
-    /// The hRecipient parameter is a service status handle.
-    /// </summary>
-    DEVICE_NOTIFY_SERVICE_HANDLE = 0x00000001,
-    /// <summary>
-    /// Notifies the recipient of device interface events for all device interface classes. (The dbcc_classguid member is ignored.)
-    /// This value can be used only if the dbch_devicetype member is DBT_DEVTYP_DEVICEINTERFACE.
-    /// </summary>
-    DEVICE_NOTIFY_ALL_INTERFACE_CLASSES = 0x00000004,
-}
-
 /// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsyscolor
 /// For use with GetSysColor
@@ -584,22 +562,6 @@ internal enum GetSysColor_nIndex : int
     /// Text in windows. The associated background color is COLOR_WINDOW.
     /// </summary>
     COLOR_WINDOWTEXT = 8,
-}
-
-/// <summary>
-/// For MapVirtualKey
-/// </summary>
-internal enum MapVirtualKey_uMapType
-{
-    /// <summary>uCode is a virtual-key code and is translated into a scan code. If it is a virtual-key code that does not distinguish between left- and right-hand keys, the left-hand scan code is returned. If there is no translation, the function returns 0.</summary>
-    VirtualKeyToScanCode = 0,
-    /// <summary>uCode is a scan code and is translated into a virtual-key code that does not distinguish between left- and right-hand keys. If there is no translation, the function returns 0.</summary>
-    ScanCodeToVirtualKey = 1,
-    /// <summary>uCode is a virtual-key code and is translated into an unshifted character value in the low-order word of the return value. Dead keys (diacritics) are indicated by setting the top bit of the return value. If there is no translation, the function returns 0.</summary>
-    VirtualKeyToCharacter = 2,
-    /// <summary>Windows NT/2000/XP: uCode is a scan code and is translated into a virtual-key code that distinguishes between left- and right-hand keys. If there is no translation, the function returns 0.</summary>
-    ScanCodeToVirtualKeyExtended = 3,
-    VirtualKeyToScanCodeExtended = 4,
 }
 
 /// <summary>
@@ -1396,70 +1358,6 @@ internal struct RID_DEVICE_INFO_MOUSE
 }
 
 /// <summary>
-/// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-showwindow
-/// For use with User32 ShowWindow
-/// </summary>
-internal enum ShowWindow_Command
-{
-    /// <summary>
-    /// Hides the window and activates another window.
-    /// </summary>
-    SW_HIDE = 0,
-    /// <summary>
-    /// Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when displaying the window for the first time.
-    /// </summary>
-    SW_SHOWNORMAL = 1,
-    /// <summary>
-    /// Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when displaying the window for the first time.
-    /// </summary>
-    SW_NORMAL = SW_SHOWNORMAL,
-    /// <summary>
-    /// Activates the window and displays it as a minimized window.
-    /// </summary>
-    SW_SHOWMINIMIZED = 2,
-    /// <summary>
-    /// Activates the window and displays it as a maximized window.
-    /// </summary>
-    SW_SHOWMAXIMIZED = 3,
-    /// <summary>
-    /// Activates the window and displays it as a maximized window.
-    /// </summary>
-    SW_MAXIMIZE = SW_SHOWMAXIMIZED,
-    /// <summary>
-    /// Displays a window in its most recent size and position. This value is similar to SW_SHOWNORMAL, except that the window is not activated.
-    /// </summary>
-    SW_SHOWNOACTIVATE = 4,
-    /// <summary>
-    /// Activates the window and displays it in its current size and position.
-    /// </summary>
-    SW_SHOW = 5,
-    /// <summary>
-    /// Minimizes the specified window and activates the next top-level window in the Z order.
-    /// </summary>
-    SW_MINIMIZE = 6,
-    /// <summary>
-    /// Displays the window as a minimized window. This value is similar to SW_SHOWMINIMIZED, except the window is not activated.
-    /// </summary>
-    SW_SHOWMINNOACTIVE = 7,
-    /// <summary>
-    /// Displays the window in its current size and position. This value is similar to SW_SHOW, except that the window is not activated.
-    /// </summary>
-    SW_SHOWNA = 8,
-    /// <summary>
-    /// Activates and displays the window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when restoring a minimized window.
-    /// </summary>
-    SW_RESTORE = 9,
-    /// <summary>
-    /// Sets the show state based on the SW_ value specified in the STARTUPINFO structure passed to the CreateProcess function by the program that started the application.
-    /// </summary>
-    SW_SHOWDEFAULT = 10,
-    /// <summary>
-    /// Minimizes a window, even if the thread that owns the window is not responding. This flag should only be used when minimizing windows from a different thread.
-    /// </summary>
-    SW_FORCEMINIMIZE = 11,
-}
-
-/// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/winmsg/wm-sizing
 /// The edge of the window that is being sized. Provided by wParam within a WM_SIZING message.
 /// </summary>
@@ -1572,45 +1470,6 @@ internal struct MINMAXINFO
     public POINT ptMaxPosition;
     public POINT ptMinTrackSize;
     public POINT ptMaxTrackSize;
-}
-
-/// <summary>
-/// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-peekmessagew
-/// Specifies how messages are to be handled, for use with PeekMessage.
-/// By default, all message types are processed. To specify that only certain message should be processed, specify one or more of the PM_QS values.
-/// </summary>
-[Flags]
-internal enum PeekMessage_Flags : uint
-{
-    /// <summary>
-    /// Messages are not removed from the queue after processing by PeekMessage.
-    /// </summary>
-    PM_NOREMOVE = 0x0000,
-    /// <summary>
-    /// Messages are removed from the queue after processing by PeekMessage.
-    /// </summary>
-    PM_REMOVE = 0x0001,
-    /// <summary>
-    /// Prevents the system from releasing any thread that is waiting for the caller to go idle (see WaitForInputIdle).
-    /// Combine this value with either PM_NOREMOVE or PM_REMOVE.
-    /// </summary>
-    PM_NOYIELD = 0x0002,
-    /// <summary>
-    /// Process mouse and keyboard messages.
-    /// </summary>
-    PM_QS_INPUT = GetQueueStatus_flags.QS_INPUT << 16,
-    /// <summary>
-    /// Process paint messages.
-    /// </summary>
-    PM_QS_PAINT = GetQueueStatus_flags.QS_PAINT << 16,
-    /// <summary>
-    /// Process all posted messages, including timers and hotkeys.
-    /// </summary>
-    PM_QS_POSTMESSAGE = (GetQueueStatus_flags.QS_POSTMESSAGE | GetQueueStatus_flags.QS_HOTKEY | GetQueueStatus_flags.QS_TIMER) << 16,
-    /// <summary>
-    /// Process all sent messages.
-    /// </summary>
-    PM_QS_SENDMESSAGE = GetQueueStatus_flags.QS_SENDMESSAGE << 16,
 }
 
 //https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-windowinfo
@@ -2620,7 +2479,7 @@ internal struct RawKeyboard
     /// Microsoft Windows message compatible virtual-key code. For more information, see Virtual-Key Codes.
     /// </summary>
     //internal UInt16 VKey;
-    internal VirtualKeys VKey;
+    internal VIRTUALKEYCODE VKey;
     /// <summary>
     /// Corresponding window message, for example WM_KEYDOWN, WM_SYSKEYDOWN, and so forth.
     /// </summary>
@@ -2885,7 +2744,7 @@ internal enum SystemErrorCode : uint
 [UnmanagedFunctionPointer(CallingConvention.Winapi)]
 internal delegate void TimerProc(IntPtr hwnd, WINDOWMESSAGE uMsg, UIntPtr idEvent, int dwTime);
 
-internal enum VirtualKeys : short
+internal enum VIRTUALKEYCODE : short
 {
     /*
         * Virtual Key, Standard Set
