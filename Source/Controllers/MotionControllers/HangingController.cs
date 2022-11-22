@@ -1,4 +1,4 @@
-﻿namespace BearsEngine.Worlds.Controllers;
+﻿namespace BearsEngine.Source.Controllers.MotionControllers;
 
 public class HangingController : AddableBase, IUpdatable
 {

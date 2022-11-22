@@ -1,14 +1,6 @@
 ﻿using BearsEngine.Worlds.Cameras;
 
-namespace BearsEngine.Worlds.Controllers;
-
-[Flags]
-public enum CameraFollowMode
-{
-    Default = 0,
-    StopAtEdges = 1 << 0,
-    CentreIfWindowBiggerThanMap = 1 << 1,
-}
+namespace BearsEngine.Controllers;
 
 public class CameraFollowController : AddableBase, IUpdatable
 {
@@ -16,7 +8,6 @@ public class CameraFollowController : AddableBase, IUpdatable
     private readonly IRectangular _target;
     private readonly CameraFollowMode _mode;
     private readonly float _cameraMinX, _cameraMaxX, _cameraMinY, _cameraMaxY;
-    
 
     public CameraFollowController(ICamera camera, IRectangular target, CameraFollowMode mode, float cameraMinX, float cameraMaxX, float cameraMinY, float cameraMaxY)
     {
@@ -30,7 +21,12 @@ public class CameraFollowController : AddableBase, IUpdatable
 
         SetCameraPosition();
     }
-    
+
+    public bool Active { get; set; } = true;
+
+    public float CameraAdjustX { get; set; }
+
+    public float CameraAdjustY { get; set; }
 
     private void SetCameraPosition()
     {
@@ -67,16 +63,8 @@ public class CameraFollowController : AddableBase, IUpdatable
         _camera.View.Y += CameraAdjustY;
     }
 
-    public bool Active { get; set; } = true;
-
     public virtual void Update(float elapsed)
     {
         SetCameraPosition();
     }
-    
-    
-
-    public float CameraAdjustX { get; set; }
-    public float CameraAdjustY { get; set; }
-    
 }

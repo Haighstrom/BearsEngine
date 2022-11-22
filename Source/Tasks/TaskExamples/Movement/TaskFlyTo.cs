@@ -1,4 +1,6 @@
-﻿namespace BearsEngine.Tasks;
+﻿using BearsEngine.Controllers;
+
+namespace BearsEngine.Tasks;
 
 public class TaskFlyTo : Task
 {

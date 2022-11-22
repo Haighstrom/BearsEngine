@@ -1,6 +1,4 @@
-﻿using BearsEngine.Worlds.Controllers;
-
-namespace BearsEngine.Worlds;
+﻿namespace BearsEngine.Controllers;
 
 public interface IWaypointable : IMoveable
 {
