@@ -100,6 +100,68 @@ internal enum APPBARDATA_uEdge : uint
 }
 
 /// <summary>
+/// Flags indicating how the graphics mode should be changed in <see cref="User32.ChangeDisplaySettings"/> and <see cref="User32.ChangeDisplaySettingsEx"/>
+/// </summary>
+[Flags]
+internal enum CHANGEDISPLAYSETTINGSFLAGS
+{
+    /// <summary>
+    /// The graphics mode for the current screen will be changed dynamically.
+    /// </summary>
+    CDS_NONE = 0,
+
+    /// <summary>
+    /// The mode is temporary in nature. If you change to and from another desktop, this mode will not be reset.
+    /// </summary>
+    CDS_FULLSCREEN = 0x00000004,
+
+    /// <summary>
+    /// The settings will be saved in the global settings area so that they will affect all users on the machine. Otherwise, only the settings for the user are modified. This flag is only valid when specified with the CDS_UPDATEREGISTRY flag.
+    /// </summary>
+    CDS_GLOBAL = 0x00000008,
+
+    /// <summary>
+    /// The settings will be saved in the registry, but will not take effect. This flag is only valid when specified with the CDS_UPDATEREGISTRY flag.
+    /// </summary>
+    CDS_NORESET = 0x10000000,
+
+    /// <summary>
+    /// The settings should be changed, even if the requested settings are the same as the current settings.
+    /// </summary>
+    CDS_RESET = 0x40000000,
+
+    /// <summary>
+    /// This device will become the primary device.
+    /// </summary>
+    CDS_SET_PRIMARY = 0x00000010,
+
+    /// <summary>
+    /// The system tests if the requested graphics mode could be set.
+    /// </summary>
+    CDS_TEST = 0x00000002,
+
+    /// <summary>
+    /// The graphics mode for the current screen will be changed dynamically and the graphics mode will be updated in the registry. The mode information is stored in the USER profile.
+    /// </summary>
+    CDS_UPDATEREGISTRY = 0x00000001,
+
+    /// <summary>
+    /// When set, the lParam parameter is a pointer to a VIDEOPARAMETERS structure.
+    /// </summary>
+    CDS_VIDEOPARAMETERS = 0x00000020,
+
+    /// <summary>
+    /// Enables settings changes to unsafe graphics modes.
+    /// </summary>
+    CDS_ENABLE_UNSAFE_MODES = 0x00000100,
+
+    /// <summary>
+    /// Disables settings changes to unsafe graphics modes.
+    /// </summary>
+    CDS_DISABLE_UNSAFE_MODES = 0x00000200,
+}
+
+/// <summary>
 /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerdevicenotificationa
 /// For use with User32 RegisterDeviceNotification
 /// </summary>
@@ -120,6 +182,45 @@ internal enum DEVICENOTIFYFLAGS
     /// This value can be used only if the dbch_devicetype member is DBT_DEVTYP_DEVICEINTERFACE.
     /// </summary>
     DEVICE_NOTIFY_ALL_INTERFACE_CLASSES = 0x00000004,
+}
+
+/// <summary>
+/// The result returned by <see cref="User32.ChangeDisplaySettings"/> and <see cref="User32.ChangeDisplaySettingsEx"/> functions
+/// </summary>
+public enum DISPCHANGERESULT : int
+{
+    /// <summary>
+    /// The settings change was successful.
+    /// </summary>
+    DISP_CHANGE_SUCCESSFUL = 0,
+    /// <summary>
+    /// The settings change was unsuccessful because the system is DualView capable.
+    /// </summary>
+    DISP_CHANGE_BADDUALVIEW = -6,
+    /// <summary>
+    /// An invalid set of flags was passed in.
+    /// </summary>
+    DISP_CHANGE_BADFLAGS = -4,
+    /// <summary>
+    /// The graphics mode is not supported.
+    /// </summary>
+    DISP_CHANGE_BADMODE = -2,
+    /// <summary>
+    /// An invalid parameter was passed in. This can include an invalid flag or combination of flags.
+    /// </summary>
+    DISP_CHANGE_BADPARAM = -5,
+    /// <summary>
+    /// The display driver failed the specified graphics mode.
+    /// </summary>
+    DISP_CHANGE_FAILED = -1,
+    /// <summary>
+    /// Unable to write settings to the registry.
+    /// </summary>
+    DISP_CHANGE_NOTUPDATED = -3,
+    /// <summary>
+    /// The computer must be restarted for the graphics mode to work.
+    /// </summary>
+    DISP_CHANGE_RESTART = 1,
 }
 
 /// <summary>
@@ -147,6 +248,21 @@ internal enum DPI_AWARENESS_CONTEXT
     /// DPI unaware with improved quality of GDI-based content. This mode behaves similarly to DPI_AWARENESS_CONTEXT_UNAWARE, but also enables the system to automatically improve the rendering quality of text and other GDI-based primitives when the window is displayed on a high-DPI monitor. For more details, see Improving the high-DPI experience in GDI-based Desktop apps. DPI_AWARENESS_CONTEXT_UNAWARE_GDISCALED was introduced in the October 2018 update of Windows 10 (also known as version 1809).
     /// </summary>
     DPI_AWARENESS_CONTEXT_UNAWARE_GDISCALED = -5,
+}
+
+/// <summary>
+/// Flag used in <see cref="User32.EnumDisplayDevices"/>
+/// </summary>
+internal enum ENUMDISPLAYDEVICEFLAG : uint
+{
+    /// <summary>
+    /// Standard behaviour
+    /// </summary>
+    EDD_NONE = 0,
+    /// <summary>
+    /// Retrieve (into the DeviceID member of the DISPLAY_DEVICE structure the device interface name for GUID_DEVINTERFACE_MONITOR, which is registered by the operating system on a per monitor basis.
+    /// </summary>
+    EDD_GET_DEVICE_INTERFACE_NAME = 0x00000001,
 }
 
 /// <summary>
@@ -458,6 +574,22 @@ internal enum GetRawInputDeviceInfo_uiCommand : uint
     /// pData points to an RID_DEVICE_INFO structure.
     /// </summary>
     RIDI_DEVICEINFO = 0x2000000b
+}
+
+/// <summary>
+/// The resolution desired in <see cref="User32.GetMouseMovePointsEx"/>
+/// </summary>
+internal enum GMMP_RESOLUTION : uint
+{
+    /// <summary>
+    /// Retrieves the points using the display resolution.
+    /// </summary>
+    GMMP_USE_DISPLAY_POINTS = 1,
+
+    /// <summary>
+    /// Retrieves high resolution points. Points can range from zero to 65,535 (0xFFFF) in both x- and y-coordinates. This is the resolution provided by absolute coordinate pointing devices such as drawing tablets.
+    /// </summary>
+    GMMP_USE_HIGH_RESOLUTION_POINTS = 2,
 }
 
 /// <summary>

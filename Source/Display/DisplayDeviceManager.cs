@@ -41,7 +41,7 @@ public sealed class DisplayDeviceManager : IDisplayDeviceManager
         {
             if ((win32DisplayDevice.StateFlags & DisplayDeviceStateFlags.AttachedToDesktop) == 0) continue;
 
-            DeviceMode dm = new();
+            DEVMODE dm = new();
 
             if (User32.EnumDisplaySettingsEx(win32DisplayDevice.DeviceName, DisplayModeSettingsEnum.CurrentSettings, dm, 0) || User32.EnumDisplaySettingsEx(win32DisplayDevice.DeviceName, DisplayModeSettingsEnum.RegistrySettings, dm, 0))
             {

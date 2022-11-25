@@ -1,8 +1,19 @@
-﻿using BearsEngine.UI;
-using System.Dynamic;
+﻿using BearsEngine.Controllers;
+using BearsEngine.Display;
+using BearsEngine.Source.Tools;
+using BearsEngine.Window;
+using NAudio.CoreAudioApi;
+using System;
+using System.Data.Common;
+using System.Diagnostics;
+using System.Drawing;
+using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics.X86;
 using System.Security;
 using System.Text;
+using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BearsEngine.Win32API;
 
@@ -49,6 +60,74 @@ internal static class User32
     public static extern bool BringWindowToTop(IntPtr hWnd);
 
     /// <summary>
+    /// Passes message information to the specified window procedure.
+    /// </summary>
+    /// <param name="lpPrevWndFunc">The previous window procedure. If this value is obtained by calling the GetWindowLong function with the nIndex parameter set to GWL_WNDPROC or DWL_DLGPROC, it is actually either the address of a window or dialog box procedure, or a special internal value meaningful only to CallWindowProc.</param>
+    /// <param name="hWnd">A handle to the window procedure to receive the message.</param>
+    /// <param name="Msg">The message.</param>
+    /// <param name="wParam">Additional message-specific information. The contents of this parameter depend on the value of the Msg parameter.</param>
+    /// <param name="lParam">Additional message-specific information. The contents of this parameter depend on the value of the Msg parameter.</param>
+    /// <returns>The return value specifies the result of the message processing and depends on the message sent.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, WINDOWMESSAGE Msg, IntPtr wParam, IntPtr lParam);
+
+    /// <summary>
+    /// The ChangeDisplaySettings function changes the settings of the default display device to the specified graphics mode.
+    /// </summary>
+    /// <param name="lpDevMode">Pointer to a <see cref="DEVMODE"/> structure that describes the new graphics mode. If <see cref="lpDevMode"/> is NULL, all the values currently in the registry will be used for the display setting. Passing NULL for the <see cref="lpDevMode"/> parameter and 0 for the dwFlags parameter is the easiest way to return to the default mode after a dynamic mode change.</param>
+    /// <param name="dwFlags">Indicates how the graphics mode should be changed.</param>
+    /// <returns>Returns a <see cref="DISPCHANGERESULT"/> to indicate the result.</returns>
+    /// <remarks>To change the settings of a specified display device, use the ChangeDisplaySettingsEx function. To ensure that the DEVMODE structure passed to ChangeDisplaySettings is valid and contains only values supported by the display driver, use the DEVMODE returned by the EnumDisplaySettings function. When the display mode is changed dynamically, the WM_DISPLAYCHANGE message is sent to all running applications. </remarks>
+    [DllImport(Library, SetLastError = true)]
+    public static extern DISPCHANGERESULT ChangeDisplaySettings(DEVMODE lpDevMode, CHANGEDISPLAYSETTINGSFLAGS dwFlags);
+
+    /// <summary>
+    /// The ChangeDisplaySettingsEx function changes the settings of the specified display device to the specified graphics mode.
+    /// </summary>
+    /// <param name="lpszDeviceName">A pointer to a null-terminated string that specifies the display device whose graphics mode will change. Only display device names as returned by EnumDisplayDevices are valid. See EnumDisplayDevices for further information on the names associated with these display devices. The lpszDeviceName parameter can be NULL.A NULL value specifies the default display device. The default device can be determined by calling EnumDisplayDevices and checking for the DISPLAY_DEVICE_PRIMARY_DEVICE flag.</param>
+    /// <param name="lpDevMode">A pointer to a DEVMODE structure that describes the new graphics mode. If lpDevMode is NULL, all the values currently in the registry will be used for the display setting. Passing NULL for the lpDevMode parameter and 0 for the dwFlags parameter is the easiest way to return to the default mode after a dynamic mode change.</param>
+    /// <param name="hwnd">Reserved; must be NULL.</param>
+    /// <param name="dwflags">Indicates how the graphics mode should be changed.</param>
+    /// <param name="lParam">If dwFlags is CDS_VIDEOPARAMETERS, lParam is a pointer to a VIDEOPARAMETERS structure. Otherwise lParam must be NULL.</param>
+    /// <returns>Returns a <see cref="DISPCHANGERESULT"/> to indicate the result.</returns>
+    /// <remarks>To ensure that the DEVMODE structure passed to ChangeDisplaySettings is valid and contains only values supported by the display driver, use the DEVMODE returned by the EnumDisplaySettings function. When the display mode is changed dynamically, the WM_DISPLAYCHANGE message is sent to all running applications.</remarks>
+    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
+    public static extern DISPCHANGERESULT ChangeDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName, DEVMODE lpDevMode, IntPtr hwnd, CHANGEDISPLAYSETTINGSFLAGS dwflags, IntPtr lParam);
+
+    /// <summary>
+    /// Converts the client-area coordinates of a specified point to screen coordinates.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window whose client area is used for the conversion.</param>
+    /// <param name="point">A pointer to a POINT structure that contains the client coordinates to be converted. The new screen coordinates are copied into this structure if the function succeeds.</param>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern bool ClientToScreen(IntPtr hWnd, ref POINT point);
+
+    /// <summary>
+    /// Confines the cursor to a rectangular area on the screen. If a subsequent cursor position (set by the SetCursorPos function or the mouse) lies outside the rectangle, the system automatically adjusts the position to keep the cursor inside the rectangular area.
+    /// </summary>
+    /// <param name="rcClip">A pointer to the structure that contains the screen coordinates of the upper-left and lower-right corners of the confining rectangle. If this parameter is NULL, the cursor is free to move anywhere on the screen.</param>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, CharSet = CharSet.Auto)]
+    public static extern bool ClipCursor(ref RECT rcClip);
+
+    /// <summary>
+    /// Confines the cursor to a rectangular area on the screen. If a subsequent cursor position (set by the SetCursorPos function or the mouse) lies outside the rectangle, the system automatically adjusts the position to keep the cursor inside the rectangular area.
+    /// </summary>
+    /// <param name="rcClip">A pointer to the structure that contains the screen coordinates of the upper-left and lower-right corners of the confining rectangle. If this parameter is NULL, the cursor is free to move anywhere on the screen.</param>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, CharSet = CharSet.Auto)]
+    public static extern bool ClipCursor(IntPtr rcClip);
+
+    /// <summary>
+    /// Creates an icon or cursor from an ICONINFO structure.
+    /// </summary>
+    /// <param name="piconinfo">A pointer to an ICONINFO structure the function uses to create the icon or cursor.</param>
+    /// <returns>If the function succeeds, the return value is a handle to the icon or cursor that is created. If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern IntPtr CreateIconIndirect(ref ICONINFO piconinfo);
+
+    /// <summary>
     /// Creates an overlapped, pop-up, or child window with an extended window style; otherwise, this function is identical to the CreateWindow function. For more information about creating a window and for full descriptions of the other parameters of CreateWindowEx, see CreateWindow.
     /// </summary>
     /// <param name="dwExStyle">The extended window style of the window being created. For a list of possible values, see Extended Window Styles.</param>
@@ -91,6 +170,14 @@ internal static class User32
     public static extern bool DestroyCursor(IntPtr hCursor);
 
     /// <summary>
+    /// Destroys an icon and frees any memory the icon occupied.
+    /// </summary>
+    /// <param name="hIcon">A handle to the icon to be destroyed. The icon must not be in use.</param>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern bool DestroyIcon(IntPtr hIcon);
+
+    /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-destroywindow
     /// Destroys the specified window. The function sends WM_DESTROY and WM_NCDESTROY messages to the window to deactivate it and remove the keyboard focus from it. The function also destroys the window's menu, flushes the thread message queue, destroys timers, removes clipboard ownership, and breaks the clipboard viewer chain (if the window is at the top of the viewer chain).
     /// If the specified window is a parent or owner window, DestroyWindow automatically destroys the associated child or owned windows when it destroys the parent or owner window. The function first destroys child or owned windows, and then it destroys the parent or owner window.
@@ -111,12 +198,89 @@ internal static class User32
     public static extern IntPtr DispatchMessage(ref MSG lpMsg);
 
     /// <summary>
+    /// The EnumDisplayDevices function lets you obtain information about the display devices in the current session.
+    /// </summary>
+    /// <param name="lpDevice">A pointer to the device name. If NULL, function returns information for the display adapter(s) on the machine, based on iDevNum.</param>
+    /// <param name="iDevNum">An index value that specifies the display device of interest. The operating system identifies each display device in the current session with an index value.The index values are consecutive integers, starting at 0. If the current session has three display devices, for example, they are specified by the index values 0, 1, and 2.</param>
+    /// <param name="lpDisplayDevice">A pointer to a DISPLAY_DEVICE structure that receives information about the display device specified by iDevNum. Before calling EnumDisplayDevices, you must initialize the cb member of DISPLAY_DEVICE to the size, in bytes, of DISPLAY_DEVICE.</param>
+    /// <param name="dwFlags">Set this flag to EDD_GET_DEVICE_INTERFACE_NAME (0x00000001) to retrieve the device interface name for GUID_DEVINTERFACE_MONITOR, which is registered by the operating system on a per monitor basis. The value is placed in the DeviceID member of the DISPLAY_DEVICE structure returned in lpDisplayDevice. The resulting device interface name can be used with SetupAPI functions and serves as a link between GDI monitor devices and SetupAPI monitor devices.</param>
+    /// <returns></returns>
+    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool EnumDisplayDevices([MarshalAs(UnmanagedType.LPTStr)] string lpDevice, int iDevNum, [In, Out] DISPLAY_DEVICE lpDisplayDevice, ENUMDISPLAYDEVICEFLAG dwFlags);
+
+    /// <summary>
+    /// Retrieves a handle to the top-level window whose class name and window name match the specified strings. This function does not search child windows. This function does not perform a case-sensitive search. To search child windows, beginning with a specified child window, use the FindWindowEx function.
+    /// </summary>
+    /// <param name="lpClassName">The class name or a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The atom must be in the low-order word of lpClassName; the high-order word must be zero. If lpClassName points to a string, it specifies the window class name. The class name can be any name registered with RegisterClass or RegisterClassEx, or any of the predefined control-class names. If lpClassName is NULL, it finds any window whose title matches the lpWindowName parameter.</param>
+    /// <param name="lpWindowName">The window name (the window's title). If this parameter is NULL, all window names match.</param>
+    /// <returns>If the function succeeds, the return value is a handle to the window that has the specified class name and window name. If the function fails, the return value is NULL. To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern IntPtr FindWindow(string? lpClassName, string? lpWindowName);
+
+    /// <summary>
+    /// Retrieves a handle to the window (if any) that has captured the mouse. Only one window at a time can capture the mouse; this window receives mouse input whether or not the cursor is within its borders.
+    /// </summary>
+    /// <returns>The return value is a handle to the capture window associated with the current thread. If no window in the thread has captured the mouse, the return value is NULL.</returns>
+    [DllImport(Library)]
+    public static extern IntPtr GetCapture();
+
+    /// <summary>
+    /// The GetClientRect function retrieves the coordinates of a window's client area. The client coordinates specify the upper-left and lower-right corners of the client area. Because client coordinates are relative to the upper-left corner of a window's client area, the coordinates of the upper-left corner are (0,0).
+    /// </summary>
+    /// <param name="windowHandle">A handle to the window whose client coordinates are to be retrieved.</param>
+    /// <param name="clientRectangle">A pointer to a <see cref="RECT"/> structure that receives the client coordinates. The left and top members are zero. The right and bottom members contain the width and height of the window.</param>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero. To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public extern static bool GetClientRect(IntPtr windowHandle, out RECT clientRectangle);
+
+    /// <summary>
+    /// Retrieves a handle to the current cursor.
+    /// </summary>
+    /// <returns>
+    /// The return value is the handle to the current cursor. If there is no cursor, the return value is null.
+    /// </returns>
+    [DllImport(Library)]
+    public static extern IntPtr GetCursor();
+
+    /// <summary>
+    /// Retrieves information about the global cursor.
+    /// </summary>
+    /// <param name="pci">A pointer to a <see cref="CURSORINFO"/> structure that receives the information.</param>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern bool GetCursorInfo(ref CURSORINFO pci);
+
+    /// <summary>
     /// Retrieves the position of the mouse cursor, in screen coordinates. https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getcursorpos
     /// </summary>
     /// <param name="point">Returns nonzero if successful or zero otherwise. To get extended error information, call GetLastError.A pointer to a POINT structure that receives the screen coordinates of the cursor.</param>
     /// <returns>Returns nonzero if successful or zero otherwise. To get extended error information, call GetLastError.</returns>
     [DllImport(Library, SetLastError = true)]
     public static extern bool GetCursorPos(ref POINT lpPoint);
+
+    /// <summary>
+    /// The GetDC function retrieves a handle to a device context (DC) for the client area of a specified window or for the entire screen. You can use the returned handle in subsequent GDI functions to draw in the DC. The device context is an opaque data structure, whose values are used internally by GDI.
+    /// </summary>
+    /// <param name="hwnd">A handle to the window whose DC is to be retrieved. If this value is NULL, GetDC retrieves the DC for the entire screen.</param>
+    /// <returns>If the function succeeds, the return value is a handle to the DC for the specified window's client area. If the function fails, the return value is NULL.</returns>
+    [DllImport(Library)]
+    public static extern IntPtr GetDC(IntPtr hwnd);
+
+    /// <summary>
+    /// Retrieves the current double-click time for the mouse. A double-click is a series of two clicks of the mouse button, the second occurring within a specified time after the first. The double-click time is the maximum number of milliseconds that may occur between the first and second click of a double-click. The maximum double-click time is 5000 milliseconds.
+    /// </summary>
+    /// <returns>The return value specifies the current double-click time, in milliseconds. The maximum return value is 5000 milliseconds.</returns>
+    [DllImport(Library)]
+    public static extern int GetDoubleClickTime();
+
+    /// <summary>
+    /// Returns the dots per inch (dpi) value for the specified window.
+    /// </summary>
+    /// <param name="hWnd">The window that you want to get information about.</param>
+    /// <returns>The DPI for the window, which depends on the DPI_AWARENESS of the window. See the Remarks section for more information. An invalid hwnd value will result in a return value of 0.</returns>
+    [DllImport(Library)]
+    public static extern int GetDpiForWindow(IntPtr hWnd);
 
     /// <summary>
     /// Retrieves a string that represents the name of a key. https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getkeynametexta
@@ -180,6 +344,18 @@ internal static class User32
     /// <returns>If the function retrieves a message other than WM_QUIT, the return value is nonzero. If the function retrieves the WM_QUIT message, the return value is zero. If there is an error, the return value is -1. For example, the function fails if hWnd is an invalid window handle or lpMsg is an invalid pointer.To get extended error information, call GetLastError.</returns>
     [DllImport(Library, SetLastError = true)]
     public static extern int GetMessage(ref MSG lpMsg, IntPtr hWnd, int wMsgFilterMin, int wMsgFilterMax);
+
+    /// <summary>
+    /// Retrieves a history of up to 64 previous coordinates of the mouse or pen.
+    /// </summary>
+    /// <param name="cbSize">The size, in bytes, of the MOUSEMOVEPOINT structure.</param>
+    /// <param name="pointsIn">A pointer to a MOUSEMOVEPOINT structure containing valid mouse coordinates (in screen coordinates). It may also contain a time stamp. The GetMouseMovePointsEx function searches for the point in the mouse coordinates history.If the function finds the point, it returns the last nBufPoints prior to and including the supplied point. If your application supplies a time stamp, the GetMouseMovePointsEx function will use it to differentiate between two equal points that were recorded at different times. An application should call this function using the mouse coordinates received from the WM_MOUSEMOVE message and convert them to screen coordinates.</param>
+    /// <param name="pointsBufferOut">A pointer to a buffer that will receive the points. It should be at least cbSize* nBufPoints in size.</param>
+    /// <param name="nBufPoints">The number of points to be retrieved.</param>
+    /// <param name="resolution">The resolution desired.</param>
+    /// <returns>If the function succeeds, the return value is the number of points in the buffer. Otherwise, the function returns –1. For extended error information, your application can call GetLastError.</returns>
+    [DllImport(Library, CharSet = CharSet.Auto, SetLastError = true)]
+    unsafe public static extern int GetMouseMovePointsEx(uint cbSize, MOUSEMOVEPOINT* lppt, MOUSEMOVEPOINT* lpptBuf, int nBufPoints, GMMP_RESOLUTION resolution);
 
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getqueuestatus
@@ -264,43 +440,6 @@ internal static class User32
     public static extern uint GetSysColorBrush(uint nIndex);
 
     /// <summary>
-    /// Loads an icon, cursor, animated cursor, or bitmap.
-    /// </summary>
-    /// <param name="hInst">A handle to the module of either a DLL or executable (.exe) that contains the image to be loaded. For more information, see GetModuleHandle. Note that as of 32-bit Windows, an instance handle (HINSTANCE), such as the application instance handle exposed by system function call of WinMain, and a module handle (HMODULE) are the same thing.
-    /// To load an OEM image, set this parameter to NULL.
-    /// To load a stand-alone resource (icon, cursor, or bitmap file) — for example, c:\myimage.bmp — set this parameter to NULL.</param>
-    /// <param name="name"></param>
-    /// <param name="type">The type of image to be loaded.</param>
-    /// <param name="cx">The width, in pixels, of the icon or cursor. If this parameter is zero and the fuLoad parameter is LR_DEFAULTSIZE, the function uses the SM_CXICON or SM_CXCURSOR system metric value to set the width. If this parameter is zero and LR_DEFAULTSIZE is not used, the function uses the actual resource width.</param>
-    /// <param name="cy">The height, in pixels, of the icon or cursor. If this parameter is zero and the fuLoad parameter is LR_DEFAULTSIZE, the function uses the SM_CYICON or SM_CYCURSOR system metric value to set the height. If this parameter is zero and LR_DEFAULTSIZE is not used, the function uses the actual resource height.</param>
-    /// <param name="fuLoad"></param>
-    /// <returns>If the function succeeds, the return value is the handle of the newly loaded image. If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
-    [DllImport(Library, SetLastError = true)]
-    public static extern IntPtr LoadImage(IntPtr hInst, ushort name, LoadImage_Type type, int cx, int cy, LoadImage_FULoad fuLoad);
-
-    /// <summary>
-    /// Loads a standard windows icon.
-    /// </summary>
-    /// <param name="icon">The icon to use</param>
-    /// <returns>If the function succeeds, the return value is the handle of the newly loaded image. If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
-    public static IntPtr LoadImage(PredefinedIcons icon) => LoadImage(IntPtr.Zero, (ushort)icon, LoadImage_Type.IMAGE_ICON, 0, 0, LoadImage_FULoad.LR_SHARED);
-
-    /// <summary>
-    /// Loads a standard windows cursor.
-    /// </summary>
-    /// <param name="cursor">The cursor to use</param>
-    /// <returns>If the function succeeds, the return value is the handle of the newly loaded image. If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
-    public static IntPtr LoadImage(PredefinedCursors cursor) => LoadImage(IntPtr.Zero, (ushort)cursor, LoadImage_Type.IMAGE_CURSOR, 0, 0, LoadImage_FULoad.LR_SHARED);
-
-    /// <summary>
-    /// Returns the dots per inch (dpi) value for the specified window.
-    /// </summary>
-    /// <param name="hWnd">The window that you want to get information about.</param>
-    /// <returns>The DPI for the window, which depends on the DPI_AWARENESS of the window. See the Remarks section for more information. An invalid hwnd value will result in a return value of 0.</returns>
-    [DllImport(Library)]
-    public static extern int GetDpiForWindow(IntPtr hWnd);
-
-    /// <summary>
     /// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra window memory. 
     /// Note: To write code that is compatible with both 32-bit and 64-bit versions of Windows, use GetWindowLongPtr (instead of GetWindowLong). When compiling for 32-bit Windows, GetWindowLongPtr is defined as a call to the GetWindowLong function.
     /// </summary>
@@ -328,6 +467,52 @@ internal static class User32
     /// <returns>If the function succeeds, the return value is the length, in characters, of the text. Under certain conditions, this value might be greater than the length of the text (see Remarks). If the window has no text, the return value is zero. Function failure is indicated by a return value of zero and a GetLastError result that is nonzero.</returns>
     [DllImport(Library, CharSet = CharSet.Auto, SetLastError = true)]
     public static extern int GetWindowTextLength(IntPtr hWnd);
+
+    /// <summary>
+    /// Destroys the specified timer.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window associated with the specified timer. This value must be the same as the hWnd value passed to the SetTimer function that created the timer.</param>
+    /// <param name="uIDEvent">The timer to be destroyed. If the window handle passed to SetTimer is valid, this parameter must be the same as the nIDEvent value passed to SetTimer.If the application calls SetTimer with hWnd set to NULL, this parameter must be the timer identifier returned by SetTimer.</param>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern bool KillTimer(IntPtr hWnd, UIntPtr uIDEvent);
+
+    /// <summary>
+    /// Creates a cursor based on data contained in a file.
+    /// </summary>
+    /// <param name="lpFileName">The source of the file data to be used to create the cursor. The data in the file must be in either .CUR or .ANI format. If the high-order word of lpFileName is nonzero, it is a pointer to a string that is a fully qualified name of a file containing cursor data.</param>
+    /// <returns>If the function is successful, the return value is a handle to the new cursor. If the function fails, the return value is NULL. To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern IntPtr LoadCursorFromFile(string lpFileName);
+
+    /// <summary>
+    /// Loads an icon, cursor, animated cursor, or bitmap.
+    /// </summary>
+    /// <param name="hInst">A handle to the module of either a DLL or executable (.exe) that contains the image to be loaded. For more information, see GetModuleHandle. Note that as of 32-bit Windows, an instance handle (HINSTANCE), such as the application instance handle exposed by system function call of WinMain, and a module handle (HMODULE) are the same thing.
+    /// To load an OEM image, set this parameter to NULL.
+    /// To load a stand-alone resource (icon, cursor, or bitmap file) — for example, c:\myimage.bmp — set this parameter to NULL.</param>
+    /// <param name="name"></param>
+    /// <param name="type">The type of image to be loaded.</param>
+    /// <param name="cx">The width, in pixels, of the icon or cursor. If this parameter is zero and the fuLoad parameter is LR_DEFAULTSIZE, the function uses the SM_CXICON or SM_CXCURSOR system metric value to set the width. If this parameter is zero and LR_DEFAULTSIZE is not used, the function uses the actual resource width.</param>
+    /// <param name="cy">The height, in pixels, of the icon or cursor. If this parameter is zero and the fuLoad parameter is LR_DEFAULTSIZE, the function uses the SM_CYICON or SM_CYCURSOR system metric value to set the height. If this parameter is zero and LR_DEFAULTSIZE is not used, the function uses the actual resource height.</param>
+    /// <param name="fuLoad"></param>
+    /// <returns>If the function succeeds, the return value is the handle of the newly loaded image. If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern IntPtr LoadImage(IntPtr hInst, ushort name, LoadImage_Type type, int cx, int cy, LoadImage_FULoad fuLoad);
+
+    /// <summary>
+    /// Loads a standard windows icon.
+    /// </summary>
+    /// <param name="icon">The icon to use</param>
+    /// <returns>If the function succeeds, the return value is the handle of the newly loaded image. If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
+    public static IntPtr LoadImage(PredefinedIcons icon) => LoadImage(IntPtr.Zero, (ushort)icon, LoadImage_Type.IMAGE_ICON, 0, 0, LoadImage_FULoad.LR_SHARED);
+
+    /// <summary>
+    /// Loads a standard windows cursor.
+    /// </summary>
+    /// <param name="cursor">The cursor to use</param>
+    /// <returns>If the function succeeds, the return value is the handle of the newly loaded image. If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
+    public static IntPtr LoadImage(PredefinedCursors cursor) => LoadImage(IntPtr.Zero, (ushort)cursor, LoadImage_Type.IMAGE_CURSOR, 0, 0, LoadImage_FULoad.LR_SHARED);
 
     /// <summary>
     /// Translates (maps) a virtual-key code into a scan code or character value, or translates a scan code into a virtual-key code.
@@ -448,6 +633,57 @@ internal static class User32
     public static extern IntPtr SetCapture(IntPtr hWnd);
 
     /// <summary>
+    /// Sets the cursor shape.
+    /// </summary>
+    /// <param name="hCursor">
+    /// A handle to the cursor. The cursor must have been created by the 
+    /// CreateCursor function or loaded by the LoadCursor or LoadImage 
+    /// function. If this parameter is IntPtr.Zero, the cursor is removed 
+    /// from the screen.
+    /// </param>
+    /// <returns>The return value is the handle to the previous cursor, if there was one. If there was no previous cursor, the return value is null.</returns>
+    /// <remarks>
+    /// The cursor is set only if the new cursor is different from the 
+    /// previous cursor; otherwise, the function returns immediately.
+    /// 
+    /// The cursor is a shared resource. A window should set the cursor 
+    /// shape only when the cursor is in its client area or when the window 
+    /// is capturing mouse input. In systems without a mouse, the window 
+    /// should restore the previous cursor before the cursor leaves the 
+    /// client area or before it relinquishes control to another window.
+    /// 
+    /// If your application must set the cursor while it is in a window, 
+    /// make sure the class cursor for the specified window's class is set 
+    /// to NULL. If the class cursor is not NULL, the system restores the 
+    /// class cursor each time the mouse is moved.
+    /// 
+    /// The cursor is not shown on the screen if the internal cursor 
+    /// display count is less than zero. This occurs if the application 
+    /// uses the ShowCursor function to hide the cursor more times than to 
+    /// show the cursor.
+    /// </remarks>
+    [DllImport(Library)]
+    public static extern IntPtr SetCursor(IntPtr hCursor);
+
+    /// <summary>
+    /// Brings the thread that created the specified window into the foreground and activates the window. Keyboard input is directed to the window, and various visual cues are changed for the user. The system assigns a slightly higher priority to the thread that created the foreground window than it does to other threads.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window that should be activated and brought to the foreground.</param>
+    /// <returns>If the window was brought to the foreground, the return value is nonzero. If the window was not brought to the foreground, the return value is zero.</returns>
+    /// <remarks>The system restricts which processes can set the foreground window. An application cannot force a window to the foreground while the user is working with another window. Instead, Windows flashes the taskbar button of the window to notify the user. A process can set the foreground window only if one of the following conditions is true:
+    /// <para>The process is the foreground process.</para>
+    /// <para>The process was started by the foreground process.</para>
+    /// <para>The process received the last input event.</para>
+    /// <para>There is no foreground process.</para>
+    /// <para>The process is being debugged.</para>
+    /// <para>The foreground process is not a Modern Application or the Start Screen.</para>
+    /// <para>The foreground is not locked (see LockSetForegroundWindow).</para>
+    /// <para>The foreground lock time-out has expired(see SPI_GETFOREGROUNDLOCKTIMEOUT in SystemParametersInfo).</para>
+    /// <para>No menus are active.</para></remarks>
+    [DllImport(Library)]
+    public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+    /// <summary>
     /// It is recommended that you set the process-default DPI awareness via application manifest. See Setting the default DPI awareness for a process for more information. Setting the process-default DPI awareness via API call can lead to unexpected application behavior. Sets the current process to a specified dots per inch(dpi) awareness context. The DPI awareness contexts are from the DPI_AWARENESS_CONTEXT value.
     /// </summary>
     /// <param name="value">A DPI_AWARENESS_CONTEXT handle to set.</param>
@@ -501,6 +737,15 @@ internal static class User32
     public static extern IntPtr SetWindowLongPtr(IntPtr hWnd, GWL nIndex, IntPtr dwNewLong);
 
     /// <summary>
+    /// Displays or hides the cursor.
+    /// </summary>
+    /// <param name="show">If bShow is TRUE, the display count is incremented by one. If bShow is FALSE, the display count is decremented by one.</param>
+    /// <returns>The return value specifies the new display counter.</returns>
+    /// <remarks>This function sets an internal display counter that determines whether the cursor should be displayed. The cursor is displayed only if the display count is greater than or equal to 0. If a mouse is installed, the initial display count is 0. If no mouse is installed, the display count is –1.</remarks>
+    [DllImport(Library)]
+    public static extern int ShowCursor(bool show);
+
+    /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-showwindow
     /// Sets the specified window's show state.
     /// </summary>
@@ -548,147 +793,20 @@ internal static class User32
 
     // * * * CLEANED UP ABOVE THIS LINE * * *
 
-    
-
-    [DllImport(Library, SetLastError = true)]
-    public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, WINDOWMESSAGE Msg,
-        IntPtr wParam, IntPtr lParam);
-    
-
-    /// <summary>
-    /// The ChangeDisplaySettings function changes the settings of the default display device to the specified graphics mode.
-    /// </summary>
-    /// <param name="device_mode">[in] Pointer to a DEVMODE structure that describes the new graphics mode. If lpDevMode is NULL, all the values currently in the registry will be used for the display setting. Passing NULL for the lpDevMode parameter and 0 for the dwFlags parameter is the easiest way to return to the default mode after a dynamic mode change.</param>
-    /// <param name="flags">[in] Indicates how the graphics mode should be changed.</param>
-    /// <returns></returns>
-    /// <remarks>To change the settings of a specified display device, use the ChangeDisplaySettingsEx function.
-    /// <para>To ensure that the DEVMODE structure passed to ChangeDisplaySettings is valid and contains only values supported by the display driver, use the DEVMODE returned by the EnumDisplaySettings function.</para>
-    /// <para>When the display mode is changed dynamically, the WM_DISPLAYCHANGE message is sent to all running applications.</para>
-    /// </remarks>
-    [DllImport(Library, SetLastError = true)]
-    public static extern int ChangeDisplaySettings(DeviceMode device_mode, ChangeDisplaySettingsEnum flags);
+    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
+    public static extern bool EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName, DisplayModeSettingsEnum iModeNum, [In, Out] DEVMODE lpDevMode, int dwFlags);
 
     [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    public static extern DisplayDeviceSettingsChangedResult ChangeDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName,
-        DeviceMode lpDevMode, IntPtr hwnd, ChangeDisplaySettingsEnum dwflags, IntPtr lParam);
-    
-
-    /// <summary>
-    /// Converts the client-area coordinates of a specified point to screen coordinates.
-    /// </summary>
-    /// <param name="hWnd">Handle to the window whose client area will be used for the conversion.</param>
-    /// <param name="point">Pointer to a POINT structure that contains the client coordinates to be converted. The new screen coordinates are copied into this structure if the function succeeds.</param>
-    [DllImport(Library, SetLastError = true), SuppressUnmanagedCodeSecurity]
-    public static extern bool ClientToScreen(IntPtr hWnd, ref System.Drawing.Point point);
-    [DllImport(Library, SetLastError = true), SuppressUnmanagedCodeSecurity]
-    public static extern bool ClientToScreen(IntPtr hWnd, ref POINT point);
-    
-
-    [DllImport(Library, CharSet = CharSet.Auto, ExactSpelling = true)]
-    public static extern bool ClipCursor(ref RECT rcClip);
-
-    [DllImport(Library, CharSet = CharSet.Auto, ExactSpelling = true)]
-    public static extern bool ClipCursor(IntPtr rcClip);
-    
-
-    [DllImport(Library)]
-    public static extern IntPtr CreateIconIndirect([In] ref IconInfo piconinfo);
-    
-
-    [DllImport(Library, SetLastError = true)]
-    public static extern bool DestroyIcon(IntPtr hIcon);
-    
-
-    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool EnumDisplayDevices([MarshalAs(UnmanagedType.LPTStr)] string lpDevice,
-        int iDevNum, [In, Out] DISPLAY_DEVICE lpDisplayDevice, int dwFlags);
-    
-
-    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    public static extern bool EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName, DisplayModeSettingsEnum iModeNum,
-        [In, Out] DeviceMode lpDevMode, int dwFlags);
-    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    public static extern bool EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName, int iModeNum,
-        [In, Out] DeviceMode lpDevMode, int dwFlags);
-    
-
-    [DllImport(Library, SetLastError = true)]
-    public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-    
-
-    [DllImport(Library)]
-    public static extern IntPtr GetCapture();
-    
-
-    /// <summary>
-    /// The GetClientRect function retrieves the coordinates of a window's client area. The client coordinates specify the upper-left and lower-right corners of the client area. Because client coordinates are relative to the upper-left corner of a window's client area, the coordinates of the upper-left corner are (0,0).
-    /// </summary>
-    /// <param name="windowHandle">Handle to the window whose client coordinates are to be retrieved.</param>
-    /// <param name="clientRectangle">Pointer to a RECT structure that receives the client coordinates. The left and top members are zero. The right and bottom members contain the width and height of the window.</param>
-    [DllImport(Library)]
-    public extern static bool GetClientRect(IntPtr windowHandle, out RECT clientRectangle);
-
-    
-
-    /// <summary>
-    /// Retrieves a handle to the current cursor.
-    /// </summary>
-    /// <returns>
-    /// The return value is the handle to the current cursor. If there is 
-    /// no cursor, the return value is null.
-    /// </returns>
-    [DllImport(Library)]
-    public static extern IntPtr GetCursor();
-    
-
-    /// <summary>Must initialize cbSize</summary>
-    [DllImport(Library)]
-    public static extern bool GetCursorInfo(ref CURSORINFO pci);
-
-    /// <summary>
-    /// Returns true if Cursor is currently shown, 0 if hidden. Note that hiding or showing hte cursor increments some windows value by 1, only having an effect when it crosses zero, so these checks are needed
-    /// </summary>
-    public static bool GetCursorInfo()
-    {
-        CURSORINFO pci = new()
-        {
-            cbSize = Marshal.SizeOf(typeof(CURSORINFO))
-        };
-        return GetCursorInfo(ref pci);
-    }
-
-    
-
-    [DllImport(Library)]
-    public static extern IntPtr GetDC(IntPtr hwnd);
-    
-
-    /// <summary>
-    /// Gets the system settings defined delay between clicks for a double click
-    /// </summary>
-    [DllImport(Library)]
-    public static extern int GetDoubleClickTime();
-    
+    public static extern bool EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName, int iModeNum, [In, Out] DEVMODE lpDevMode, int dwFlags);
 
     [DllImport(Library)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool GetIconInfo(IntPtr hIcon, ref IconInfo pIconInfo);
+    public static extern bool GetIconInfo(IntPtr hIcon, ref ICONINFO pIconInfo);
     
-
-    [DllImport("User32.dll")]
-    public static extern int GetMessageTime();
-    
-
     [DllImport(Library)]
     public static extern bool GetMonitorInfo(IntPtr hMonitor, ref MonitorInfo lpmi);
-    
 
-    [DllImport(Library, CharSet = CharSet.Auto, SetLastError = true)]
-    unsafe public static extern int GetMouseMovePointsEx(
-        uint cbSize, MouseMovePoint* pointsIn,
-        MouseMovePoint* pointsBufferOut, int nBufPoints, GetMouseMovePointResolution resolution);
-    
+
 
     /// <summary>
     /// Gets the raw input from the specified device.
@@ -705,13 +823,7 @@ internal static class User32
     /// <param name="Size">Pointer to a variable that specifies the size, in bytes, of the data in Data.</param>
     /// <param name="SizeHeader">Size, in bytes, of RawInputHeader.</param>
     [DllImport(Library)]
-    public static extern int GetRawInputData(
-        IntPtr RawInput,
-        GetRawInputDataEnum Command,
-        [Out] IntPtr Data,
-        [In, Out] ref int Size,
-        int SizeHeader
-    );
+    public static extern int GetRawInputData(IntPtr RawInput, GetRawInputDataEnum Command, [Out] IntPtr Data, [In, Out] ref int Size, int SizeHeader);
 
     /// <summary>
     /// Gets the raw input from the specified device.
@@ -735,13 +847,7 @@ internal static class User32
     /// GetRawInputData gets the raw input one RawInput structure at a time. In contrast, GetRawInputBuffer gets an array of RawInput structures.
     /// </remarks>
     [DllImport(Library)]
-    public static extern int GetRawInputData(
-        IntPtr RawInput,
-        GetRawInputDataEnum Command,
-        /*[MarshalAs(UnmanagedType.LPStruct)]*/ [Out] out RawInput Data,
-        [In, Out] ref int Size,
-        int SizeHeader
-    );
+    public static extern int GetRawInputData(IntPtr RawInput, GetRawInputDataEnum Command,        /*[MarshalAs(UnmanagedType.LPStruct)]*/ [Out] out RawInput Data, [In, Out] ref int Size, int SizeHeader);
 
     /// <summary>
     /// Gets information about the raw input device.
@@ -770,143 +876,14 @@ internal static class User32
     /// Pointer to a variable that contains the size, in bytes, of the data in Data.
     /// </param>
     [DllImport(Library)]
-    public static extern uint GetRawInputDeviceInfo(
-        IntPtr Device,
-        [MarshalAs(UnmanagedType.U4)] RawInputDeviceInfoEnum Command,
-        [In, Out] IntPtr Data,
-        [In, Out] ref uint Size
-    );
-
-    [DllImport(Library)]
-    public static extern int GetRawInputDeviceInfo(
-        IntPtr Device,
-        [MarshalAs(UnmanagedType.U4)] RawInputDeviceInfoEnum Command,
-        [In, Out] IntPtr Data,
-        [In, Out] ref int Size
-    );
-
-    /// <summary>
-    /// Gets information about the raw input device.
-    /// </summary>
-    /// <param name="Device">
-    /// Handle to the raw input device. This comes from the lParam of the WM_INPUT message,
-    /// from RawInputHeader.Device, or from GetRawInputDeviceList.
-    /// It can also be NULL if an application inserts input data, for example, by using SendInput.
-    /// </param>
-    /// <param name="Command">
-    /// Specifies what data will be returned in pData. It can be one of the following values. 
-    /// RawInputDeviceInfoEnum.PREPARSEDDATA
-    /// Data points to the previously parsed data.
-    /// RawInputDeviceInfoEnum.DEVICENAME
-    /// Data points to a string that contains the device name. 
-    /// For this Command only, the value in Size is the character count (not the byte count).
-    /// RawInputDeviceInfoEnum.DEVICEINFO
-    /// Data points to an RawInputDeviceInfo structure.
-    /// </param>
-    /// <param name="Data">
-    /// ointer to a buffer that contains the information specified by Command.
-    /// If Command is RawInputDeviceInfoEnum.DEVICEINFO, set RawInputDeviceInfo.Size to sizeof(RawInputDeviceInfo)
-    /// before calling GetRawInputDeviceInfo. (This is done automatically in OpenTK)
-    /// </param>
-    /// <param name="Size">
-    /// Pointer to a variable that contains the size, in bytes, of the data in Data.
-    /// </param>
-    /// <returns>
-    /// <para>If successful, this function returns a non-negative number indicating the number of bytes copied to Data.</para>
-    /// <para>If Data is not large enough for the data, the function returns -1. If Data is NULL, the function returns a value of zero. In both of these cases, Size is set to the minimum size required for the Data buffer.</para>
-    /// <para>Call GetLastError to identify any other errors.</para>
-    /// </returns>
-    [DllImport(Library, SetLastError = true)]
-    public static extern uint GetRawInputDeviceInfo(
-        IntPtr Device,
-        [MarshalAs(UnmanagedType.U4)] RawInputDeviceInfoEnum Command,
-        [In, Out] RawInputDeviceInfo Data,
-        [In, Out] ref uint Size
-    );
-
-    [System.Security.SuppressUnmanagedCodeSecurity]
-    [DllImport(Library, SetLastError = true)]
-    public static extern int GetRawInputDeviceInfo(
-        IntPtr Device,
-        [MarshalAs(UnmanagedType.U4)] RawInputDeviceInfoEnum Command,
-        [In, Out] RawInputDeviceInfo Data,
-        [In, Out] ref int Size
-    );
-
-    /// <summary>
-    /// Enumerates the raw input devices attached to the system.
-    /// </summary>
-    /// <param name="RawInputDeviceList">
-    /// ointer to buffer that holds an array of RawInputDeviceList structures
-    /// for the devices attached to the system.
-    /// If NULL, the number of devices are returned in NumDevices.
-    /// </param>
-    /// <param name="NumDevices">
-    /// Pointer to a variable. If RawInputDeviceList is NULL, it specifies the number
-    /// of devices attached to the system. Otherwise, it contains the size, in bytes,
-    /// of the preallocated buffer pointed to by pRawInputDeviceList.
-    /// However, if NumDevices is smaller than needed to contain RawInputDeviceList structures,
-    /// the required buffer size is returned here.
-    /// </param>
-    /// <param name="Size">
-    /// Size of a RawInputDeviceList structure.
-    /// </param>
-    [DllImport(Library, SetLastError = true)]
-    public static extern uint GetRawInputDeviceList(
-        [In, Out] RawInputDeviceList[] RawInputDeviceList,
-        [In, Out] ref uint NumDevices,
-        uint Size
-    );
+    public static extern uint GetRawInputDeviceInfo(IntPtr Device, [MarshalAs(UnmanagedType.U4)] RawInputDeviceInfoEnum Command, [In, Out] IntPtr Data, [In, Out] ref uint Size);
 
     [DllImport(Library, SetLastError = true)]
-    public static extern int GetRawInputDeviceList(
-        [In, Out] RawInputDeviceList[] RawInputDeviceList,
-        [In, Out] ref int NumDevices,
-        int Size
-    );
+    public static extern int GetRawInputDeviceInfo(IntPtr Device, [MarshalAs(UnmanagedType.U4)] RawInputDeviceInfoEnum Command, [In, Out] RawInputDeviceInfo Data, [In, Out] ref int Size);
 
-
-
-    /// <summary>
-    /// Enumerates the raw input devices attached to the system.
-    /// </summary>
-    /// <param name="RawInputDeviceList">
-    /// ointer to buffer that holds an array of RawInputDeviceList structures
-    /// for the devices attached to the system.
-    /// If NULL, the number of devices are returned in NumDevices.
-    /// </param>
-    /// <param name="NumDevices">
-    /// Pointer to a variable. If RawInputDeviceList is NULL, it specifies the number
-    /// of devices attached to the system. Otherwise, it contains the size, in bytes,
-    /// of the preallocated buffer pointed to by pRawInputDeviceList.
-    /// However, if NumDevices is smaller than needed to contain RawInputDeviceList structures,
-    /// the required buffer size is returned here.
-    /// </param>
-    /// <param name="Size">
-    /// Size of a RawInputDeviceList structure.
-    /// </param>
-    /// <returns>
-    /// If the function is successful, the return value is the number of devices stored in the buffer
-    /// pointed to by RawInputDeviceList.
-    /// If RawInputDeviceList is NULL, the return value is zero. 
-    /// If NumDevices is smaller than needed to contain all the RawInputDeviceList structures,
-    /// the return value is (UINT) -1 and the required buffer is returned in NumDevices.
-    /// Calling GetLastError returns ERROR_INSUFFICIENT_BUFFER.
-    /// On any other error, the function returns (UINT) -1 and GetLastError returns the error indication.
-    /// </returns>
-    [DllImport(Library, SetLastError = true)]
-    public static extern uint GetRawInputDeviceList(
-        [In, Out] IntPtr RawInputDeviceList,
-        [In, Out] ref uint NumDevices,
-        uint Size
-    );
 
     [DllImport(Library, SetLastError = true)]
-    public static extern int GetRawInputDeviceList(
-        [In, Out] IntPtr RawInputDeviceList,
-        [In, Out] ref int NumDevices,
-        int Size
-    );
+    public static extern int GetRawInputDeviceList([In, Out] RawInputDeviceList[] RawInputDeviceList, [In, Out] ref int NumDevices, int Size);
 
     /// <summary>
     /// The GetWindowRect function retrieves the dimensions of the bounding rectangle of the specified window. The dimensions are given in screen coordinates that are relative to the upper-left corner of the screen.
@@ -917,19 +894,7 @@ internal static class User32
     public extern static bool GetWindowRect(IntPtr windowHandle, out RECT windowRectangle);
     
     [DllImport(Library)]
-    public extern static bool GetWindowInfo(IntPtr hwnd, ref WINDOWINFO pwi);
-
-    [DllImport(Library)]
     public static extern bool IsWindowVisible(IntPtr intPtr);
-    
-    [DllImport(Library)]
-    public static extern IntPtr LoadCursorFromFile(string lpCursorName);
-    
-    [DllImport(Library, SetLastError = true)]
-    public static extern bool KillTimer(IntPtr hWnd, UIntPtr uIDEvent);
-    
-    [DllImport(Library, SetLastError = true)]
-    public static extern uint MapVirtualKey(uint uCode, MapVirtualKeyType uMapType);
 
     [DllImport(Library, SetLastError = true)]
     public static extern uint MapVirtualKey(VIRTUALKEYCODE vkey, MapVirtualKeyType uMapType);
@@ -939,16 +904,9 @@ internal static class User32
     /// </summary>
     [DllImport(Library)]
     public static extern IntPtr MonitorFromWindow(IntPtr hwnd, MonitorFrom dwFlags);
-    
+
     [DllImport(Library)]
-    public static extern bool MoveWindow(
-        IntPtr hWnd,
-        int X,
-        int Y,
-        int nWidth,
-        int nHeight,
-        bool bRepaint
-    );
+    public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
     
     /// <summary>
     /// Low-level WINAPI function that checks the next message in the queue.
@@ -964,7 +922,7 @@ internal static class User32
     
     [DllImport(Library)]
     public static extern IntPtr RegisterDeviceNotification(IntPtr hRecipient, IntPtr NotificationFilter, DeviceNotification Flags);
-    
+
     /// <summary>
     /// Registers the devices that supply the raw input data.
     /// </summary>
@@ -979,11 +937,7 @@ internal static class User32
     /// </param>
     [DllImport(Library, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool RegisterRawInputDevices(
-        RawInputDevice[] RawInputDevices,
-        int NumDevices,
-        int Size
-    );
+    public static extern bool RegisterRawInputDevices(RawInputDevice[] RawInputDevices, int NumDevices, int Size);
     public static bool RegisterRawInputDevices(RawInputDevice[] rawInputDevices)
     {
         return RegisterRawInputDevices(rawInputDevices, rawInputDevices.Length, RawInputDevice.Size);
@@ -997,15 +951,6 @@ internal static class User32
     [DllImport(Library)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool ReleaseDC(IntPtr hwnd, IntPtr DC);
-    
-    /// <summary>
-    /// Converts the screen coordinates of a specified point on the screen to client-area coordinates.
-    /// </summary>
-    /// <param name="hWnd">Handle to the window whose client area will be used for the conversion.</param>
-    /// <param name="point">Pointer to a POINT structure that specifies the screen coordinates to be converted.</param>
-    [DllImport(Library)]
-    //internal static extern BOOL ScreenToClient(HWND hWnd, ref POINT point);
-    public static extern bool ScreenToClient(IntPtr hWnd, ref System.Drawing.Point point);
     
     [DllImport(Library, CharSet = CharSet.Auto)]
     public static extern IntPtr SendMessage(IntPtr hWnd, WINDOWMESSAGE Msg, IntPtr wParam, IntPtr lParam);
@@ -1029,9 +974,8 @@ internal static class User32
     public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
 
     public static bool SetWindowPos(IntPtr hWnd, RECT position, SetWindowPosFlags uFlags) => SetWindowPos(hWnd, IntPtr.Zero, position.left, position.top, position.Width, position.Height, uFlags);
-    
-    [DllImport(Library)]
-    public static extern int ShowCursor(bool show);
+
+
     
     /// <summary>
     /// The ShowWindow function sets the specified window's show state.
@@ -1048,46 +992,9 @@ internal static class User32
     {
         return SetClassLong(windowHandle, (int)nIndex, value);
     }
-    
-    /// <summary>
-    /// Sets the cursor shape.
-    /// </summary>
-    /// <param name="hCursor">
-    /// A handle to the cursor. The cursor must have been created by the 
-    /// CreateCursor function or loaded by the LoadCursor or LoadImage 
-    /// function. If this parameter is IntPtr.Zero, the cursor is removed 
-    /// from the screen.
-    /// </param>
-    /// <returns>
-    /// The return value is the handle to the previous cursor, if there was one.
-    /// 
-    /// If there was no previous cursor, the return value is null.
-    /// </returns>
-    /// <remarks>
-    /// The cursor is set only if the new cursor is different from the 
-    /// previous cursor; otherwise, the function returns immediately.
-    /// 
-    /// The cursor is a shared resource. A window should set the cursor 
-    /// shape only when the cursor is in its client area or when the window 
-    /// is capturing mouse input. In systems without a mouse, the window 
-    /// should restore the previous cursor before the cursor leaves the 
-    /// client area or before it relinquishes control to another window.
-    /// 
-    /// If your application must set the cursor while it is in a window, 
-    /// make sure the class cursor for the specified window's class is set 
-    /// to NULL. If the class cursor is not NULL, the system restores the 
-    /// class cursor each time the mouse is moved.
-    /// 
-    /// The cursor is not shown on the screen if the internal cursor 
-    /// display count is less than zero. This occurs if the application 
-    /// uses the ShowCursor function to hide the cursor more times than to 
-    /// show the cursor.
-    /// </remarks>
-    [DllImport(Library)]
-    public static extern IntPtr SetCursor(IntPtr hCursor);
-    
-    [DllImport(Library)]
-    public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+
+
     
     [DllImport(Library, SetLastError = true)]
     public static extern UIntPtr SetTimer(IntPtr hWnd, UIntPtr nIDEvent, uint uElapse, TimerProc lpTimerFunc);

@@ -31,7 +31,7 @@ public class Cursor : IDisposable
 
         IntPtr imgHandle = cursor.GetHicon();
 
-        IconInfo ii = new();
+        ICONINFO ii = new();
         User32.GetIconInfo(imgHandle, ref ii);
 
         ii.xHotspot = xHotspot;
@@ -66,7 +66,7 @@ public class Cursor : IDisposable
 
             IntPtr imgHandle = img.GetHicon();
 
-            IconInfo ii = new();
+            ICONINFO ii = new();
             User32.GetIconInfo(imgHandle, ref ii);
 
             ii.xHotspot = xHotspot;

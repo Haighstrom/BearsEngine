@@ -1766,15 +1766,6 @@ internal enum ABS : int
     AlwaysOnTop = 0x0000002
 }
 
-[Flags]
-internal enum ChangeDisplaySettingsEnum
-{
-    // ChangeDisplaySettings types (found in winuser.h)
-    UpdateRegistry = 0x00000001,
-    Test = 0x00000002,
-    Fullscreen = 0x00000004,
-}
-
 internal struct CreateStruct
 {
     internal IntPtr lpCreateParams;
@@ -1848,20 +1839,7 @@ internal struct COLORREF
 
 
 
-/// <summary>
-/// Used in GetCursorInfo call to query if the cursor is shown or hidden
-/// </summary>
-[StructLayout(LayoutKind.Sequential)]
-struct CURSORINFO
-{
-    public int cbSize;        // Specifies the size, in bytes, of the structure.
-                                // The caller must set this to Marshal.SizeOf(typeof(CURSORINFO)).
-    public int flags;         // Specifies the cursor state. This parameter can be one of the following values:
-                                //    0             The cursor is hidden.
-                                //    CURSOR_SHOWING    The cursor is showing.
-    public IntPtr hCursor;          // Handle to the cursor.
-    public POINT ptScreenPos;       // A POINT structure that receives the screen coordinates of the cursor.
-}
+
 
 [Flags]
 internal enum DesiredAccess : uint
@@ -1894,9 +1872,9 @@ internal enum DeviceBroadcastType
 
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-internal class DeviceMode
+internal class DEVMODE
 {
-    internal DeviceMode()
+    internal DEVMODE()
     {
         Size = (short)Marshal.SizeOf(this);
     }
@@ -1982,13 +1960,6 @@ internal class DISPLAY_DEVICE
     internal string DeviceKey;
 }
 
-public enum DisplayDeviceSettingsChangedResult : int
-{
-    DISP_CHANGE_SUCCESSFUL = 0,
-    DISP_CHANGE_RESTART = 1,
-    DISP_CHANGE_FAILED = -1,
-}
-
 [Flags]
 internal enum DisplayDeviceStateFlags
 {
@@ -2014,12 +1985,6 @@ internal enum DisplayModeSettingsEnum
     RegistrySettings = -2
 }
 
-internal enum GetMouseMovePointResolution : uint
-{
-    GMMP_USE_DISPLAY_POINTS = 1,
-    GMMP_USE_HIGH_RESOLUTION_POINTS = 2,
-}
-
 internal enum GetRawInputDataEnum
 {
     INPUT = 0x10000003,
@@ -2027,7 +1992,7 @@ internal enum GetRawInputDataEnum
 }
 
 [StructLayout(LayoutKind.Sequential)]
-internal struct IconInfo
+internal struct ICONINFO
 {
     public bool IsIcon;
     public int xHotspot;
@@ -2081,7 +2046,7 @@ internal struct MonitorInfo
 #pragma warning restore 0649
 
 [StructLayout(LayoutKind.Sequential)]
-public struct MouseMovePoint
+public struct MOUSEMOVEPOINT
 {
     /// <summary>
     /// The x-coordinate of the mouse.
@@ -2103,7 +2068,7 @@ public struct MouseMovePoint
     /// <summary>
     /// Returns the size of a MouseMovePoint in bytes.
     /// </summary>
-    public static readonly int SizeInBytes = Marshal.SizeOf(default(MouseMovePoint));
+    public static readonly int SizeInBytes = Marshal.SizeOf(default(MOUSEMOVEPOINT));
 }
 
 /// <summary>

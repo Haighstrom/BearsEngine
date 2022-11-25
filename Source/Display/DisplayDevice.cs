@@ -76,10 +76,10 @@ public class DisplayDevice : IDisplayDevice
 
     private bool TryChangeSettings(DisplayDeviceSettings targetSettings)
     {
-        DeviceMode mode = null;
+        DEVMODE mode = null;
         if (targetSettings != null)
         {
-            mode = new DeviceMode()
+            mode = new DEVMODE()
             {
                 PelsWidth = targetSettings.Width,
                 PelsHeight = targetSettings.Height,
@@ -90,7 +90,7 @@ public class DisplayDevice : IDisplayDevice
             };
         }
         //DISP_CHANGE_SUCCESSFUL = 0;
-        return User32.ChangeDisplaySettingsEx(DeviceID, mode, IntPtr.Zero, ChangeDisplaySettingsEnum.Fullscreen, IntPtr.Zero) == 0;
+        return User32.ChangeDisplaySettingsEx(DeviceID, mode, IntPtr.Zero, CHANGEDISPLAYSETTINGSFLAGS.CDS_FULLSCREEN, IntPtr.Zero) == 0;
     }
     private bool TryRestoreSettings()
     {

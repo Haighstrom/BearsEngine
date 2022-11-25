@@ -90,6 +90,49 @@ internal struct COORD
 };
 
 /// <summary>
+/// Contains global cursor information.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct CURSORINFO
+{
+    public enum Flags : int
+    {
+        /// <summary>
+        /// The cursor is hidden.
+        /// </summary>
+        CURSOR_HIDDEN = 0,
+        /// <summary>
+        /// The cursor is showing.
+        /// </summary>
+        CURSOR_SHOWING = 0x00000001,
+        /// <summary>
+        /// Windows 8: The cursor is suppressed. This flag indicates that the system is not drawing the cursor because the user is providing input through touch or pen instead of the mouse.
+        /// </summary>
+        CURSOR_SUPPRESSED = 0x00000002,
+    }
+
+    /// <summary>
+    /// The size of the structure, in bytes. The caller must set this to sizeof(CURSORINFO).
+    /// </summary>
+    public int cbSize;
+
+    /// <summary>
+    /// The cursor state.
+    /// </summary>
+    public Flags flags;
+
+    /// <summary>
+    /// A handle to the cursor.
+    /// </summary>
+    public IntPtr hCursor;
+
+    /// <summary>
+    /// A structure that receives the screen coordinates of the cursor.
+    /// </summary>
+    public POINT ptScreenPos;
+}
+
+/// <summary>
 /// The JOYCAPS structure contains information about the joystick capabilities.
 /// </summary>
 internal struct JOYCAPS
