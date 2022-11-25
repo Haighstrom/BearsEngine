@@ -266,6 +266,27 @@ internal enum ENUMDISPLAYDEVICEFLAG : uint
 }
 
 /// <summary>
+/// For use with <see cref="User32.EnumDisplaySettingsEx"/>
+/// </summary>
+internal enum ENUMDISPLAYSETTINGSFLAG : uint
+{
+    /// <summary>
+    /// Default behaviour.
+    /// </summary>
+    EDS_DEFAULT = 0,
+
+    /// <summary>
+    /// If set, the function will return all graphics modes reported by the adapter driver, regardless of monitor capabilities. Otherwise, it will only return modes that are compatible with current monitors.
+    /// </summary>
+    EDS_RAWMODE = 0x00000002,
+
+    /// <summary>
+    /// If set, the function will return graphics modes in all orientations. Otherwise, it will only return modes that have the same orientation as the one currently set for the requested display.
+    /// </summary>
+    EDS_ROTATEDMODE = 0x00000004,
+}
+
+/// <summary>
 /// The item to be returned in GetDeviceCaps. https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getdevicecaps
 /// </summary>
 internal enum GETDEVICECAPS_INDEX : int
@@ -919,6 +940,50 @@ internal enum MONITOR_DPI_TYPE
 }
 
 /// <summary>
+/// Specifies how messages are to be handled, for use with PeekMessage.
+/// By default, all message types are processed. To specify that only certain message should be processed, specify one or more of the PM_QS values.
+/// </summary>
+[Flags]
+internal enum PEEKMESSAGEFLAG : uint
+{
+    /// <summary>
+    /// Messages are not removed from the queue after processing by PeekMessage.
+    /// </summary>
+    PM_NOREMOVE = 0x0000,
+
+    /// <summary>
+    /// Messages are removed from the queue after processing by PeekMessage.
+    /// </summary>
+    PM_REMOVE = 0x0001,
+
+    /// <summary>
+    /// Prevents the system from releasing any thread that is waiting for the caller to go idle (see WaitForInputIdle).
+    /// Combine this value with either PM_NOREMOVE or PM_REMOVE.
+    /// </summary>
+    PM_NOYIELD = 0x0002,
+
+    /// <summary>
+    /// Process mouse and keyboard messages.
+    /// </summary>
+    PM_QS_INPUT = GetQueueStatus_flags.QS_INPUT << 16,
+
+    /// <summary>
+    /// Process paint messages.
+    /// </summary>
+    PM_QS_PAINT = GetQueueStatus_flags.QS_PAINT << 16,
+
+    /// <summary>
+    /// Process all posted messages, including timers and hotkeys.
+    /// </summary>
+    PM_QS_POSTMESSAGE = (GetQueueStatus_flags.QS_POSTMESSAGE | GetQueueStatus_flags.QS_HOTKEY | GetQueueStatus_flags.QS_TIMER) << 16,
+
+    /// <summary>
+    /// Process all sent messages.
+    /// </summary>
+    PM_QS_SENDMESSAGE = GetQueueStatus_flags.QS_SENDMESSAGE << 16,
+}
+
+/// <summary>
 /// The RECT structure defines a rectangle by the coordinates of its upper-left and lower-right corners. https://docs.microsoft.com/en-us/windows/win32/api/windef/ns-windef-rect
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
@@ -966,82 +1031,6 @@ internal struct RECT
 }
 
 /// <summary>
-/// For use with User32 ShowWindow
-/// </summary>
-internal enum SHOWWINDOWCOMMAND
-{
-    /// <summary>
-    /// Hides the window and activates another window.
-    /// </summary>
-    SW_HIDE = 0,
-
-    /// <summary>
-    /// Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when displaying the window for the first time.
-    /// </summary>
-    SW_SHOWNORMAL = 1,
-
-    /// <summary>
-    /// Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when displaying the window for the first time.
-    /// </summary>
-    SW_NORMAL = SW_SHOWNORMAL,
-
-    /// <summary>
-    /// Activates the window and displays it as a minimized window.
-    /// </summary>
-    SW_SHOWMINIMIZED = 2,
-
-    /// <summary>
-    /// Activates the window and displays it as a maximized window.
-    /// </summary>
-    SW_SHOWMAXIMIZED = 3,
-
-    /// <summary>
-    /// Activates the window and displays it as a maximized window.
-    /// </summary>
-    SW_MAXIMIZE = SW_SHOWMAXIMIZED,
-
-    /// <summary>
-    /// Displays a window in its most recent size and position. This value is similar to SW_SHOWNORMAL, except that the window is not activated.
-    /// </summary>
-    SW_SHOWNOACTIVATE = 4,
-
-    /// <summary>
-    /// Activates the window and displays it in its current size and position.
-    /// </summary>
-    SW_SHOW = 5,
-
-    /// <summary>
-    /// Minimizes the specified window and activates the next top-level window in the Z order.
-    /// </summary>
-    SW_MINIMIZE = 6,
-
-    /// <summary>
-    /// Displays the window as a minimized window. This value is similar to SW_SHOWMINIMIZED, except the window is not activated.
-    /// </summary>
-    SW_SHOWMINNOACTIVE = 7,
-
-    /// <summary>
-    /// Displays the window in its current size and position. This value is similar to SW_SHOW, except that the window is not activated.
-    /// </summary>
-    SW_SHOWNA = 8,
-
-    /// <summary>
-    /// Activates and displays the window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when restoring a minimized window.
-    /// </summary>
-    SW_RESTORE = 9,
-
-    /// <summary>
-    /// Sets the show state based on the SW_ value specified in the STARTUPINFO structure passed to the CreateProcess function by the program that started the application.
-    /// </summary>
-    SW_SHOWDEFAULT = 10,
-
-    /// <summary>
-    /// Minimizes a window, even if the thread that owns the window is not responding. This flag should only be used when minimizing windows from a different thread.
-    /// </summary>
-    SW_FORCEMINIMIZE = 11,
-}
-
-/// <summary>
 /// The standard device. https://learn.microsoft.com/en-us/windows/console/getstdhandle
 /// </summary>
 internal enum STDHANDLE
@@ -1063,47 +1052,79 @@ internal enum STDHANDLE
 }
 
 /// <summary>
-/// Specifies how messages are to be handled, for use with PeekMessage.
-/// By default, all message types are processed. To specify that only certain message should be processed, specify one or more of the PM_QS values.
+/// Controls how the window is to be shown in <see cref="User32.ShowWindow"/>
 /// </summary>
-[Flags]
-internal enum PEEKMESSAGEFLAG : uint
+internal enum SHOWWINDOWCOMMAND
 {
     /// <summary>
-    /// Messages are not removed from the queue after processing by PeekMessage.
+    /// Hides the window and activates another window.
     /// </summary>
-    PM_NOREMOVE = 0x0000,
+    SW_HIDE = 0,
 
     /// <summary>
-    /// Messages are removed from the queue after processing by PeekMessage.
+    /// Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when displaying the window for the first time.
     /// </summary>
-    PM_REMOVE = 0x0001,
+    SW_SHOWNORMAL = 1,
 
     /// <summary>
-    /// Prevents the system from releasing any thread that is waiting for the caller to go idle (see WaitForInputIdle).
-    /// Combine this value with either PM_NOREMOVE or PM_REMOVE.
+    /// Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when displaying the window for the first time.
     /// </summary>
-    PM_NOYIELD = 0x0002,
+    SW_NORMAL = 1,
 
     /// <summary>
-    /// Process mouse and keyboard messages.
+    /// Activates the window and displays it as a minimized window.
     /// </summary>
-    PM_QS_INPUT = GetQueueStatus_flags.QS_INPUT << 16,
+    SW_SHOWMINIMIZED = 2,
 
     /// <summary>
-    /// Process paint messages.
+    /// Activates the window and displays it as a maximized window.
     /// </summary>
-    PM_QS_PAINT = GetQueueStatus_flags.QS_PAINT << 16,
+    SW_SHOWMAXIMIZED = 3,
 
     /// <summary>
-    /// Process all posted messages, including timers and hotkeys.
+    /// Activates the window and displays it as a maximized window.
     /// </summary>
-    PM_QS_POSTMESSAGE = (GetQueueStatus_flags.QS_POSTMESSAGE | GetQueueStatus_flags.QS_HOTKEY | GetQueueStatus_flags.QS_TIMER) << 16,
+    SW_MAXIMIZE = 3,
 
     /// <summary>
-    /// Process all sent messages.
+    /// Displays the window as a minimized window. This value is similar to SW_SHOWMINIMIZED, except the window is not activated.
     /// </summary>
-    PM_QS_SENDMESSAGE = GetQueueStatus_flags.QS_SENDMESSAGE << 16,
+    SW_SHOWNOACTIVATE = 4,
+
+    /// <summary>
+    /// Activates the window and displays it in its current size and position.
+    /// </summary>
+    SW_SHOW = 5,
+
+    /// <summary>
+    /// Minimizes the specified window and activates the next top-level window in the Z order.
+    /// </summary>
+    SW_MINIMIZE = 6,
+
+    /// <summary>
+    /// Displays the window as a minimized window. This value is similar to SW_SHOWMINIMIZED, except the window is not activated.
+    /// </summary>
+    SW_SHOWMINNOACTIVE = 7,
+
+    /// <summary>
+    /// Displays the window in its current size and position. This value is similar to SW_SHOW, except the window is not activated.
+    /// </summary>
+    SW_SHOWNA = 8,
+
+    /// <summary>
+    /// Activates and displays the window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when restoring a minimized window.
+    /// </summary>
+    SW_RESTORE = 9,
+
+    /// <summary>
+    /// Sets the show state based on the SW_ value specified in the STARTUPINFO structure passed to the CreateProcess function by the program that started the application.
+    /// </summary>
+    SW_SHOWDEFAULT = 10,
+
+    /// <summary>
+    /// Windows 2000/XP: Minimizes a window, even if the thread that owns the window is not responding. This flag should only be used when minimizing windows from a different thread.
+    /// </summary>
+    SW_FORCEMINIMIZE = 11,
 }
 
 /// <summary>

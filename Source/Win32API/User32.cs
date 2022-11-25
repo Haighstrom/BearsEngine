@@ -1,19 +1,8 @@
-﻿using BearsEngine.Controllers;
-using BearsEngine.Display;
-using BearsEngine.Source.Tools;
-using BearsEngine.Window;
-using NAudio.CoreAudioApi;
-using System;
-using System.Data.Common;
-using System.Diagnostics;
-using System.Drawing;
-using System.Reflection.Metadata;
+﻿using Microsoft.VisualBasic;
+using NAudio.Midi;
 using System.Runtime.InteropServices;
-using System.Runtime.Intrinsics.X86;
 using System.Security;
 using System.Text;
-using System.Text.RegularExpressions;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace BearsEngine.Win32API;
 
@@ -208,6 +197,28 @@ internal static class User32
     [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool EnumDisplayDevices([MarshalAs(UnmanagedType.LPTStr)] string lpDevice, int iDevNum, [In, Out] DISPLAY_DEVICE lpDisplayDevice, ENUMDISPLAYDEVICEFLAG dwFlags);
+
+    /// <summary>
+    /// The EnumDisplaySettingsEx function retrieves information about one of the graphics modes for a display device. To retrieve information for all the graphics modes for a display device, make a series of calls to this function. This function differs from EnumDisplaySettings in that there is a dwFlags parameter.
+    /// </summary>
+    /// <param name="lpszDeviceName">A pointer to a null-terminated string that specifies the display device about which graphics mode the function will obtain information. This parameter is either NULL or a DISPLAY_DEVICE.DeviceName returned from EnumDisplayDevices.A NULL value specifies the current display device on the computer that the calling thread is running on.</param>
+    /// <param name="iModeNum">Indicates the type of information to be retrieved. This value can be a graphics mode index or one of the <see cref="DisplayModeSettingsEnum"/> values.</param>
+    /// <param name="lpDevMode">A pointer to a <see cref="DEVMODE"/> structure into which the function stores information about the specified graphics mode. Before calling EnumDisplaySettingsEx, set the dmSize member to sizeof (DEVMODE), and set the dmDriverExtra member to indicate the size, in bytes, of the additional space available to receive private driver data.</param>
+    /// <param name="dwFlags">This parameter can be the following value.</param>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.</returns>
+    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
+    public static extern bool EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName, DisplayModeSettingsEnum iModeNum, [In, Out] DEVMODE lpDevMode, ENUMDISPLAYSETTINGSFLAG dwFlags);
+
+    /// <summary>
+    /// The EnumDisplaySettingsEx function retrieves information about one of the graphics modes for a display device. To retrieve information for all the graphics modes for a display device, make a series of calls to this function. This function differs from EnumDisplaySettings in that there is a dwFlags parameter.
+    /// </summary>
+    /// <param name="lpszDeviceName">A pointer to a null-terminated string that specifies the display device about which graphics mode the function will obtain information. This parameter is either NULL or a DISPLAY_DEVICE.DeviceName returned from EnumDisplayDevices.A NULL value specifies the current display device on the computer that the calling thread is running on.</param>
+    /// <param name="iModeNum">Indicates the type of information to be retrieved. This value can be a graphics mode index or one of the <see cref="DisplayModeSettingsEnum"/> values.</param>
+    /// <param name="lpDevMode">A pointer to a <see cref="DEVMODE"/> structure into which the function stores information about the specified graphics mode. Before calling EnumDisplaySettingsEx, set the dmSize member to sizeof (DEVMODE), and set the dmDriverExtra member to indicate the size, in bytes, of the additional space available to receive private driver data.</param>
+    /// <param name="dwFlags">This parameter can be the following value.</param>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.</returns>
+    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
+    public static extern bool EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName, int iModeNum, [In, Out] DEVMODE lpDevMode, ENUMDISPLAYSETTINGSFLAG dwFlags);
 
     /// <summary>
     /// Retrieves a handle to the top-level window whose class name and window name match the specified strings. This function does not search child windows. This function does not perform a case-sensitive search. To search child windows, beginning with a specified child window, use the FindWindowEx function.
@@ -714,6 +725,17 @@ internal static class User32
     public static IntPtr SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT dpiContext) => SetThreadDpiAwarenessContext(new IntPtr((int)dpiContext));
 
     /// <summary>
+    /// Creates a timer with the specified time-out value.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window to be associated with the timer. This window must be owned by the calling thread. If a NULL value for hWnd is passed in along with an nIDEvent of an existing timer, that timer will be replaced in the same way that an existing non-NULL hWnd timer will be.</param>
+    /// <param name="nIDEvent">A nonzero timer identifier. If the hWnd parameter is NULL, and the nIDEvent does not match an existing timer then it is ignored and a new timer ID is generated. If the hWnd parameter is not NULL and the window specified by hWnd already has a timer with the value nIDEvent, then the existing timer is replaced by the new timer. When SetTimer replaces a timer, the timer is reset. Therefore, a message will be sent after the current time-out value elapses, but the previously set time-out value is ignored. If the call is not intended to replace an existing timer, nIDEvent should be 0 if the hWnd is NULL.</param>
+    /// <param name="uElapse">The time-out value, in milliseconds. If uElapse is less than USER_TIMER_MINIMUM(0x0000000A), the timeout is set to USER_TIMER_MINIMUM.If uElapse is greater than USER_TIMER_MAXIMUM(0x7FFFFFFF), the timeout is set to USER_TIMER_MAXIMUM.</param>
+    /// <param name="lpTimerFunc">A pointer to the function to be notified when the time-out value elapses. For more information about the function, see TimerProc. If lpTimerFunc is NULL, the system posts a WM_TIMER message to the application queue. The hwnd member of the message's MSG structure contains the value of the hWnd parameter.</param>
+    /// <returns>If the function succeeds and the hWnd parameter is NULL, the return value is an integer identifying the new timer. An application can pass this value to the KillTimer function to destroy the timer. If the function succeeds and the hWnd parameter is not NULL, then the return value is a nonzero integer.An application can pass the value of the nIDEvent parameter to the KillTimer function to destroy the timer. If the function fails to create a timer, the return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern UIntPtr SetTimer(IntPtr hWnd, UIntPtr nIDEvent, uint uElapse, TimerProc lpTimerFunc);
+
+    /// <summary>
     /// Changes the text of the specified window's title bar (if it has one). If the specified window is a control, the text of the control is changed. However, SetWindowText cannot change the text of a control in another application.
     /// </summary>
     /// <param name="hWnd">A handle to the window or control whose text is to be changed.</param>
@@ -746,7 +768,6 @@ internal static class User32
     public static extern int ShowCursor(bool show);
 
     /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-showwindow
     /// Sets the specified window's show state.
     /// </summary>
     /// <param name="hWnd">A handle to the window.</param>
@@ -775,6 +796,15 @@ internal static class User32
     public static extern bool TrackMouseEvent(ref TRACKMOUSEEVENT lpEventTrack);
 
     /// <summary>
+    /// Unregisters a window class, freeing the memory required for the class.
+    /// </summary>
+    /// <param name="className">A null-terminated string or a class atom. If lpClassName is a string, it specifies the window class name. This class name must have been registered by a previous call to the RegisterClass or RegisterClassEx function. System classes, such as dialog box controls, cannot be unregistered. If this parameter is an atom, it must be a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The atom must be in the low-order word of lpClassName; the high-order word must be zero.</param>
+    /// <param name="instance">A handle to the instance of the module that created the class.</param>
+    /// <returns>If the function succeeds, the return value is nonzero. If the class could not be found or if a window still exists that was created with the class, the return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
+    public static extern short UnregisterClass(IntPtr className, IntPtr instance);
+
+    /// <summary>
     /// Closes the specified device notification handle.
     /// </summary>
     /// <param name="handle">Device notification handle returned by the RegisterDeviceNotification function.</param>
@@ -792,12 +822,6 @@ internal static class User32
     public static extern bool UpdateWindow(IntPtr hWnd);
 
     // * * * CLEANED UP ABOVE THIS LINE * * *
-
-    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    public static extern bool EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName, DisplayModeSettingsEnum iModeNum, [In, Out] DEVMODE lpDevMode, int dwFlags);
-
-    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    public static extern bool EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName, int iModeNum, [In, Out] DEVMODE lpDevMode, int dwFlags);
 
     [DllImport(Library)]
     [return: MarshalAs(UnmanagedType.Bool)]
@@ -976,32 +1000,8 @@ internal static class User32
     public static bool SetWindowPos(IntPtr hWnd, RECT position, SetWindowPosFlags uFlags) => SetWindowPos(hWnd, IntPtr.Zero, position.left, position.top, position.Width, position.Height, uFlags);
 
 
-    
-    /// <summary>
-    /// The ShowWindow function sets the specified window's show state.
-    /// </summary>
-    /// <param name="hWnd">[in] Handle to the window.</param>
-    /// <param name="nCmdShow">[in] Specifies how the window is to be shown. This parameter is ignored the first time an application calls ShowWindow, if the program that launched the application provides a STARTUPINFO structure. Otherwise, the first time ShowWindow is called, the value should be the value obtained by the WinMain function in its nCmdShow parameter. In subsequent calls, this parameter can be one of the ShowWindowEnum values.</param>
-    [DllImport(Library)]
-    public static extern bool ShowWindow(IntPtr hWnd, ShowWindowCommand nCmdShow);
-    
-    [DllImport(Library)]
-    public static extern IntPtr SetClassLong(IntPtr hInstance, int nIndex, IntPtr value);
-
-    public static IntPtr SetClassLong(IntPtr windowHandle, NIndex nIndex, IntPtr value)
-    {
-        return SetClassLong(windowHandle, (int)nIndex, value);
-    }
 
 
 
-    
-    [DllImport(Library, SetLastError = true)]
-    public static extern UIntPtr SetTimer(IntPtr hWnd, UIntPtr nIDEvent, uint uElapse, TimerProc lpTimerFunc);
-    
-    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    public static extern short UnregisterClass([MarshalAs(UnmanagedType.LPTStr)] string className, IntPtr instance);
 
-    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
-    public static extern short UnregisterClass(IntPtr className, IntPtr instance);
 }

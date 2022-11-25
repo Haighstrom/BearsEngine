@@ -166,7 +166,7 @@ public class Win32Window : IWindow
             throw new Exception(string.Format("Failed to create window. Error: {0}", Marshal.GetLastWin32Error()));
 
         if (settings.Visible)
-            User32.ShowWindow(_windowHandle, ShowWindowCommand.SHOW);
+            User32.ShowWindow(_windowHandle, SHOWWINDOWCOMMAND.SW_SHOW);
         User32.UpdateWindow(_windowHandle);
 
         //https://stackoverflow.com/questions/34139450/getwindowrect-returns-a-size-including-invisible-borders
@@ -504,12 +504,12 @@ public class Win32Window : IWindow
         {
             if (value)
             {
-                User32.ShowWindow(_windowHandle, ShowWindowCommand.SHOW);
+                User32.ShowWindow(_windowHandle, SHOWWINDOWCOMMAND.SW_SHOW);
                 User32.BringWindowToTop(_windowHandle);
                 User32.SetForegroundWindow(_windowHandle);
             }
             else
-                User32.ShowWindow(_windowHandle, ShowWindowCommand.HIDE);
+                User32.ShowWindow(_windowHandle, SHOWWINDOWCOMMAND.SW_HIDE);
         }
     }
 
@@ -633,14 +633,14 @@ public class Win32Window : IWindow
                     if (_border != BorderStyle.SizingBorder && (State == WindowState.Maximized || State == WindowState.Fullscreen))
                         User32.SetWindowPos(_windowHandle, _prevPosition, 0);
                     else
-                        User32.ShowWindow(_windowHandle, ShowWindowCommand.RESTORE);
+                        User32.ShowWindow(_windowHandle, SHOWWINDOWCOMMAND.SW_RESTORE);
                     break;
                 case WindowState.Minimized:
-                    User32.ShowWindow(_windowHandle, ShowWindowCommand.MINIMIZE);
+                    User32.ShowWindow(_windowHandle, SHOWWINDOWCOMMAND.SW_MINIMIZE);
                     break;
                 case WindowState.Maximized:
                     if (Border == BorderStyle.SizingBorder)
-                        User32.ShowWindow(_windowHandle, ShowWindowCommand.MAXIMIZE);
+                        User32.ShowWindow(_windowHandle, SHOWWINDOWCOMMAND.SW_MAXIMIZE);
                     else //avoid putting it on top of the taskbar (that's what Fullscreen is for)
                     {
                         _prevPosition = _reportedPosition;
@@ -660,7 +660,7 @@ public class Win32Window : IWindow
                     _prevBorder = _border;
                     _prevPosition = _reportedPosition;
                     Border = BorderStyle.NoBorder;
-                    User32.ShowWindow(_windowHandle, ShowWindowCommand.MAXIMIZE);
+                    User32.ShowWindow(_windowHandle, SHOWWINDOWCOMMAND.SW_MAXIMIZE);
                     break;
             }
 

@@ -1507,49 +1507,60 @@ internal struct WNDCLASSEX
     /// The size, in bytes, of this structure. Set this member to sizeof(WNDCLASSEX). Be sure to set this member before calling the GetClassInfoEx function.
     /// </summary>
     internal uint cbSize;
+
     /// <summary>
     /// The class style(s). This member can be any combination of the Class Styles.
     /// </summary>
     internal WindowClassStyle style;
+
     /// <summary>
     /// A pointer to the window procedure. You must use the CallWindowProc function to call the window procedure. For more information, see WindowProc.
     /// </summary>
     [MarshalAs(UnmanagedType.FunctionPtr)]
     internal WNDPROC lpfnWndProc;
+
     /// <summary>
     /// The number of extra bytes to allocate following the window-class structure. The system initializes the bytes to zero.
     /// </summary>
     internal int cbClsExtra;
+
     /// <summary>
     /// The number of extra bytes to allocate following the window instance. The system initializes the bytes to zero. If an application uses WNDCLASSEX to register a dialog box created by using the CLASS directive in the resource file, it must set this member to DLGWINDOWEXTRA.
     /// </summary>
     internal int cbWndExtra;
+
     /// <summary>
     /// A handle to the instance that contains the window procedure for the class.
     /// </summary>
     internal IntPtr hInstance;
+
     /// <summary>
     /// A handle to the class icon. This member must be a handle to an icon resource. If this member is NULL, the system provides a default icon.
     /// </summary>
     internal IntPtr hIcon;
+
     /// <summary>
     /// A handle to the class cursor. This member must be a handle to a cursor resource. If this member is NULL, an application must explicitly set the cursor shape whenever the mouse moves into the application's window.
     /// </summary>
     internal IntPtr hCursor;
+
     /// <summary>
     /// A handle to the class background brush. This member can be a handle to the brush to be used for painting the background, or it can be a color value. A color value must be one of the following standard system colors (the value 1 must be added to the chosen color). The system automatically deletes class background brushes when the class is unregistered by using UnregisterClass. An application should not delete these brushes. When this member is NULL, an application must paint its own background whenever it is requested to paint in its client area.To determine whether the background must be painted, an application can either process the WM_ERASEBKGND message or test the fErase member of the PAINTSTRUCT structure filled by the BeginPaint function.
     /// </summary>
     internal IntPtr hbrBackground;
+
     /// <summary>
     /// Pointer to a null-terminated character string that specifies the resource name of the class menu, as the name appears in the resource file. If you use an integer to identify the menu, use the MAKEINTRESOURCE macro. If this member is NULL, windows belonging to this class have no default menu.
     /// </summary>
     internal IntPtr lpszMenuName;
+
     /// <summary>
     /// A pointer to a null-terminated string or is an atom. If this parameter is an atom, it must be a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The atom must be in the low-order word of lpszClassName; the high-order word must be zero.
     /// If lpszClassName is a string, it specifies the window class name. The class name can be any name registered with RegisterClass or RegisterClassEx, or any of the predefined control-class names.
     /// The maximum length for lpszClassName is 256. If lpszClassName is greater than the maximum length, the RegisterClassEx function will fail.
     /// </summary>
     internal IntPtr lpszClassName;
+
     /// <summary>
     /// A handle to a small icon that is associated with the window class. If this member is NULL, the system searches the icon resource specified by the hIcon member for an icon of the appropriate size to use as the small icon.
     /// </summary>
@@ -2600,68 +2611,6 @@ internal enum SetWindowPosFlags : int
 
     DEFERERASE = 0x2000,
     ASYNCWINDOWPOS = 0x4000
-}
-
-internal enum ShowWindowCommand
-{
-    /// <summary>
-    /// Hides the window and activates another window.
-    /// </summary>
-    HIDE = 0,
-    /// <summary>
-    /// Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when displaying the window for the first time.
-    /// </summary>
-    SHOWNORMAL = 1,
-    NORMAL = 1,
-    /// <summary>
-    /// Activates the window and displays it as a minimized window.
-    /// </summary>
-    SHOWMINIMIZED = 2,
-    /// <summary>
-    /// Activates the window and displays it as a maximized window.
-    /// </summary>
-    SHOWMAXIMIZED = 3,
-    MAXIMIZE = 3,
-    /// <summary>
-    /// Displays the window as a minimized window. This value is similar to SW_SHOWMINIMIZED, except the window is not activated.
-    /// </summary>
-    SHOWNOACTIVATE = 4,
-    /// <summary>
-    /// Activates the window and displays it in its current size and position.
-    /// </summary>
-    SHOW = 5,
-    /// <summary>
-    /// Minimizes the specified window and activates the next top-level window in the Z order.
-    /// </summary>
-    MINIMIZE = 6,
-    /// <summary>
-    /// Displays the window as a minimized window. This value is similar to SW_SHOWMINIMIZED, except the window is not activated.
-    /// </summary>
-    SHOWMINNOACTIVE = 7,
-    /// <summary>
-    /// Displays the window in its current size and position. This value is similar to SW_SHOW, except the window is not activated.
-    /// </summary>
-    SHOWNA = 8,
-    /// <summary>
-    /// Activates and displays the window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when restoring a minimized window.
-    /// </summary>
-    RESTORE = 9,
-    /// <summary>
-    /// Sets the show state based on the SW_ value specified in the STARTUPINFO structure passed to the CreateProcess function by the program that started the application.
-    /// </summary>
-    SHOWDEFAULT = 10,
-    /// <summary>
-    /// Windows 2000/XP: Minimizes a window, even if the thread that owns the window is not responding. This flag should only be used when minimizing windows from a different thread.
-    /// </summary>
-    FORCEMINIMIZE = 11,
-    //MAX             = 11,
-
-    // Old ShowWindow() Commands
-    //HIDE_WINDOW        = 0,
-    //SHOW_OPENWINDOW    = 1,
-    //SHOW_ICONWINDOW    = 2,
-    //SHOW_FULLSCREEN    = 3,
-    //SHOW_OPENNOACTIVATE= 4,
 }
 
 internal enum SizeMessage
