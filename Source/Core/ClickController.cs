@@ -45,31 +45,46 @@ internal class ClickController : AddableBase, IUpdatable
     {
         if (_leftPressedRequests.Any())
         {
-            _leftPressedRequests.First().OnLeftPressed();
+            var target = _leftPressedRequests.First();
+
+            if (target.Clickable)
+                target.OnLeftPressed();
             _leftPressedRequests.Clear();
         }
 
         if (_leftReleasedRequests.Any())
         {
-            _leftReleasedRequests.First().OnLeftReleased();
+            var target = _leftReleasedRequests.First();
+
+            if (target.Clickable)
+                target.OnLeftReleased();
             _leftReleasedRequests.Clear();
         }
 
         if (_leftClickedRequests.Any())
         {
-            _leftClickedRequests.First().OnLeftClicked();
+            var target = _leftClickedRequests.First();
+
+            if (target.Clickable)
+                target.OnLeftClicked();
             _leftClickedRequests.Clear();
         }
 
         if (_mouseEnteredRequests.Any())
         {
-            _mouseEnteredRequests.First().OnMouseEntered();
+            var target = _mouseEnteredRequests.First();
+
+            if (target.Clickable)
+                target.OnMouseEntered();
             _mouseEnteredRequests.Clear();
         }
 
         if (_mouseHoveredRequests.Any())
         {
-            _mouseHoveredRequests.First().OnMouseHovered();
+            var target = _mouseHoveredRequests.First();
+
+            if (target.Clickable)
+                target.OnMouseHovered();
             _mouseHoveredRequests.Clear();
         }
     }

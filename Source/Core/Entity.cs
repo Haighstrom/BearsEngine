@@ -66,7 +66,7 @@ public class Entity : EntityBase, IClickable, ICollideable
         Add(new ClickController(this));
     }
 
-    public bool Clickable { get; set; } = true;
+    public virtual bool Clickable { get; set; } = true;
 
     public bool Collideable { get; set; } = true;
 

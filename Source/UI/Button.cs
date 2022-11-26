@@ -103,6 +103,19 @@ public class Button : Entity, IClickable
     
     public Action? ActionOnClicked { get; set; }
 
+    public override bool Clickable
+    {
+        get => base.Clickable;
+        set
+        {
+            base.Clickable = value;
+            if (Clickable)
+                BackgroundGraphic.Colour = DefaultColour;
+            else
+                BackgroundGraphic.Colour = UnclickableColour;
+        }
+    }
+
     public Colour DefaultColour { get; set; } = Colour.White;
 
     public Colour UnclickableColour { get; set; } = Colour.White;
@@ -116,7 +129,7 @@ public class Button : Entity, IClickable
         get => _text.Text;
         set => _text.Text = value;
     }
-    
+
     public void SetDefaultAutoShadingColours()
     {
         DefaultColour = Colour.White;
@@ -129,25 +142,29 @@ public class Button : Entity, IClickable
     {
         base.OnLeftClicked();
         ActionOnClicked?.Invoke();
-        BackgroundGraphic.Colour = HoverColour;
+        if (Clickable)
+            BackgroundGraphic.Colour = HoverColour;
     }
 
     protected override void OnLeftPressed()
     {
         base.OnLeftPressed();
-        BackgroundGraphic.Colour = PressedColour;
+        if (Clickable)
+            BackgroundGraphic.Colour = PressedColour;
     }
     
     protected override void OnMouseEntered()
     {
         base.OnMouseEntered();
-        BackgroundGraphic.Colour = HoverColour;
+        if (Clickable)
+            BackgroundGraphic.Colour = HoverColour;
     }
 
     protected override void OnNoMouseEvent()
     {
         base.OnNoMouseEvent();
-        BackgroundGraphic.Colour = DefaultColour;
+        if (Clickable)
+            BackgroundGraphic.Colour = DefaultColour;
     }
 
     public void Press() => OnLeftClicked();
