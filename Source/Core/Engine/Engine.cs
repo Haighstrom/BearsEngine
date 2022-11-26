@@ -82,7 +82,7 @@ internal class Engine : IEngine
     public DisplayDeviceManager DisplayDM { get; }
 
     public InputDeviceManager InputDM { get; }
-    
+
     public int RenderFramesPerSecond { get; private set; }
 
     public IScene Scene
@@ -143,7 +143,7 @@ internal class Engine : IEngine
         double timeSinceLastUpdate = 0, timeSinceLastRender = 0;
 
         //for tracking UPS and RPS
-        double frameCounterTime = 0; 
+        double frameCounterTime = 0;
         int[] updateFramesCounter = new int[FrameCountArraySize + 1];
         int[] renderFramesCounter = new int[FrameCountArraySize + 1];
 
@@ -172,7 +172,7 @@ internal class Engine : IEngine
                 if (timeSinceLastUpdate > 2 * targetUpdateTime)
                 {
                     timeOfFrame = timeSinceLastUpdate;
-                    BE.Logging.Warning($"A frame took {timeSinceLastUpdate / targetUpdateTime: 0.0}x as long as expected. Rendering took {_testTime / targetUpdateTime:0.0}.");
+                    BE.Logging.Warning($"A frame took {timeSinceLastUpdate / targetUpdateTime: 0.0}x as long as expected. Render took {_testTime / targetUpdateTime:0.0}x");
                 }
                 else
                 {
@@ -189,36 +189,35 @@ internal class Engine : IEngine
 
             if (timeSinceLastRender >= targetRenderTime)
             {
-            _testTime = timer.Elapsed.TotalSeconds;
+                _testTime = timer.Elapsed.TotalSeconds;
                 if (Window.IsOpen)
                     Render();
-            _testTime = timer.Elapsed.TotalSeconds - _testTime;
+                _testTime = timer.Elapsed.TotalSeconds - _testTime;
 
                 while (timeSinceLastRender >= targetRenderTime)
                     timeSinceLastRender -= targetRenderTime;
 
                 renderFramesCounter[0]++;
             }
+        }
+        while (frameCounterTime >= TimeBetweenFrameCountUpdates)
+        {
+            frameCounterTime -= TimeBetweenFrameCountUpdates;
 
-            while (frameCounterTime >= TimeBetweenFrameCountUpdates)
-            {
-                frameCounterTime -= TimeBetweenFrameCountUpdates;
+            Array.Copy(updateFramesCounter, 0, updateFramesCounter, 1, FrameCountArraySize);
+            updateFramesCounter[0] = 0;
+            UpdateFramesPerSecond = (int)(updateFramesCounter.Skip(1).Sum() * FrameCountArraySize * TimeBetweenFrameCountUpdates);
 
-                Array.Copy(updateFramesCounter, 0, updateFramesCounter, 1, FrameCountArraySize);
-                updateFramesCounter[0] = 0;
-                UpdateFramesPerSecond = (int)(updateFramesCounter.Skip(1).Sum() * FrameCountArraySize * TimeBetweenFrameCountUpdates);
-                
-                Array.Copy(renderFramesCounter, 0, renderFramesCounter, 1, FrameCountArraySize);
-                renderFramesCounter[0] = 0;
-                RenderFramesPerSecond = (int)(renderFramesCounter.Skip(1).Sum() * FrameCountArraySize * TimeBetweenFrameCountUpdates);
-            }
+            Array.Copy(renderFramesCounter, 0, renderFramesCounter, 1, FrameCountArraySize);
+            renderFramesCounter[0] = 0;
+            RenderFramesPerSecond = (int)(renderFramesCounter.Skip(1).Sum() * FrameCountArraySize * TimeBetweenFrameCountUpdates);
+        }
 
-            if (periodicLoggingTimer >= TimeBetweenPeriodicUpdates)
-            {
-                while (periodicLoggingTimer >= TimeBetweenPeriodicUpdates)
-                    periodicLoggingTimer -= TimeBetweenPeriodicUpdates;
-                LogPeriodicInfo();
-            }
+        if (periodicLoggingTimer >= TimeBetweenPeriodicUpdates)
+        {
+            while (periodicLoggingTimer >= TimeBetweenPeriodicUpdates)
+                periodicLoggingTimer -= TimeBetweenPeriodicUpdates;
+            LogPeriodicInfo();
         }
     }
 
