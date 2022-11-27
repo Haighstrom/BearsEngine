@@ -3,8 +3,8 @@
 public class WaypointController : AddableBase, IUpdatable
 {
     private readonly IMoveable _target;
-    private Direction _lastDirection;
-    private Direction _direction;
+    private Direction? _lastDirection;
+    private Direction? _direction;
 
     public WaypointController(IMoveable target, List<IPosition> waypoints)
         : this(target)
@@ -63,9 +63,11 @@ public class WaypointController : AddableBase, IUpdatable
             }
         }
         else
-            _direction = Direction.None;
+        {
+            _direction = null;
+        }
 
-        if (_direction != _lastDirection && _direction != Direction.None) //todo: are we happy with the second condition? without it the unsuspecting consumer ends up making their guy look left, because None = -1 = 3 = left.
+        if (_direction != _lastDirection && _direction is not null)
             DirectionChanged?.Invoke(this, new DirectionChangedEventArgs(_lastDirection, _direction));
 
         _lastDirection = _direction;
