@@ -115,7 +115,7 @@ public static class Maths
     {
         return (p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y);
     }
-    public static float DistGrid(Point p1, Point p2) => Math.Abs(p1.X - p2.X) + Math.Abs(p1.Y - p2.Y);
+    public static float DistGrid(IPosition p1, IPosition p2) => Math.Abs(p1.X - p2.X) + Math.Abs(p1.Y - p2.Y);
 
 
     /// <summary>
