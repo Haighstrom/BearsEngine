@@ -108,11 +108,15 @@ public class Button : Entity, IClickable
         get => base.Clickable;
         set
         {
-            base.Clickable = value;
-            if (Clickable)
-                BackgroundGraphic.Colour = DefaultColour;
-            else
-                BackgroundGraphic.Colour = UnclickableColour;
+            if (value != Clickable)
+            {
+                base.Clickable = value;
+
+                if (Clickable)
+                    BackgroundGraphic.Colour = DefaultColour;
+                else
+                    BackgroundGraphic.Colour = UnclickableColour;
+            }
         }
     }
 
