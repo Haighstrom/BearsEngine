@@ -34,4 +34,9 @@ public class PathfindNode<TEnum> : IPathfindNode<PathfindNode<TEnum>>, IPosition
     public override bool Equals(object? other) => Equals(other as IPosition);
 
     public bool Equals(PathfindNode<TEnum>? other) => Equals(other as IPosition);
+
+    public override string ToString()
+    {
+        return $"Node:({X},{Y})";
+    }
 }
