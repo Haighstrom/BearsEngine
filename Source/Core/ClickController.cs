@@ -45,7 +45,7 @@ internal class ClickController : AddableBase, IUpdatable
     {
         if (_leftPressedRequests.Any())
         {
-            var target = _leftPressedRequests.First();
+            var target = _leftPressedRequests.Last();
 
             if (target.Clickable)
                 target.OnLeftPressed();
@@ -54,7 +54,7 @@ internal class ClickController : AddableBase, IUpdatable
 
         if (_leftReleasedRequests.Any())
         {
-            var target = _leftReleasedRequests.First();
+            var target = _leftReleasedRequests.Last();
 
             if (target.Clickable)
                 target.OnLeftReleased();
@@ -63,7 +63,7 @@ internal class ClickController : AddableBase, IUpdatable
 
         if (_leftClickedRequests.Any())
         {
-            var target = _leftClickedRequests.First();
+            var target = _leftClickedRequests.Last();
 
             if (target.Clickable)
                 target.OnLeftClicked();
@@ -72,7 +72,7 @@ internal class ClickController : AddableBase, IUpdatable
 
         if (_mouseEnteredRequests.Any())
         {
-            var target = _mouseEnteredRequests.First();
+            var target = _mouseEnteredRequests.Last();
 
             if (target.Clickable)
                 target.OnMouseEntered();
@@ -81,7 +81,7 @@ internal class ClickController : AddableBase, IUpdatable
 
         if (_mouseHoveredRequests.Any())
         {
-            var target = _mouseHoveredRequests.First();
+            var target = _mouseHoveredRequests.Last();
 
             if (target.Clickable)
                 target.OnMouseHovered();

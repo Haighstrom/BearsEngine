@@ -55,7 +55,7 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
             if (a is IRenderableOnLayer r)
                 return r.Layer;
             else
-                return -1;
+                return int.MaxValue;
         }
 
         _entities.Sort((a1, a2) => GetEntityLayer(a2).CompareTo(GetEntityLayer(a1))); //sort descending by layer
