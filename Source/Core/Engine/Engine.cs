@@ -18,7 +18,7 @@ internal class Engine : IEngine
     private const int FrameCountArraySize = 10; //how many captures frame counts are averaged over
     private const double TimeBetweenPeriodicUpdates = 1;
 
-    private static void ValidateEngineSettings(GameSettings settings)
+    private static void ValidateEngineSettings(EngineSettings settings)
     {
         if (settings.TargetUPS < MinimumUpdateRate || settings.TargetUPS > MaximumUpdateRate)
         {
@@ -47,7 +47,7 @@ internal class Engine : IEngine
     {
         BE.Logging.Debug($"{nameof(Engine)} being initialised.");
 
-        ValidateEngineSettings(settings);
+        ValidateEngineSettings(settings.EngineSettings);
 
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             throw new InvalidOperationException("Only Windows is currently supported.");
@@ -64,8 +64,8 @@ internal class Engine : IEngine
         //OpenGL32.DebugMessageCallback(HConsole.HandleOpenGLOutput);
         //OpenGL32.DebugMessageControl(DebugSource.DontCare, DebugType.DontCare, DebugSeverity.DontCare, true);
 
-        _targetUPS = settings.TargetUPS;
-        _targetRPS = settings.TargetFramesPerSecond;
+        _targetUPS = settings.EngineSettings.TargetUPS;
+        _targetRPS = settings.EngineSettings.TargetFramesPerSecond;
 
         OpenGL32.Viewport(Window.Viewport);
         BE.OrthoMatrix = Matrix4.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
