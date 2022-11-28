@@ -1,6 +1,4 @@
-﻿using BearsEngine.Logging;
-
-namespace BearsEngine;
+﻿namespace BearsEngine;
 
 public interface IConsoleManager
 {

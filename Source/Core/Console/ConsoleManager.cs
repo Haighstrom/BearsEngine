@@ -64,7 +64,6 @@ public class ConsoleManager : IConsoleManager
 
         ShowConsole();
 
-        //todo: use settings
-        MoveConsoleTo(-7, 0, 450, MaxHeight);
+        MoveConsoleTo(topLeftX, topLeftY, width, height);
     }
 }
