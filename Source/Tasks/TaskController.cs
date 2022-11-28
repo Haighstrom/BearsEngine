@@ -19,12 +19,12 @@
             CurrentTask = tasks[0];
         }
 
-        public TaskController(Func<ITask>? getNextTask = null)
+        public TaskController(Func<ITask?>? getNextTask = null)
             : this(null, getNextTask)
         {
         }
 
-        public TaskController(ITask? firstTask, Func<ITask>? getNextTask = null)
+        public TaskController(ITask? firstTask, Func<ITask?>? getNextTask = null)
         {
             CurrentTask = firstTask;
             GetNextTask = getNextTask;
@@ -33,7 +33,7 @@
 
         public virtual bool Active { get; set; } = true;
         public ITask? CurrentTask { get; set; }
-        public Func<ITask>? GetNextTask { get; set; }
+        public Func<ITask?>? GetNextTask { get; set; }
 
         public virtual void Update(float elapsed)
         {
