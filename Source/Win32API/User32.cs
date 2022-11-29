@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using NAudio.Midi;
+﻿using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
@@ -294,6 +293,16 @@ internal static class User32
     public static extern int GetDpiForWindow(IntPtr hWnd);
 
     /// <summary>
+    /// Retrieves information about the specified icon or cursor.
+    /// </summary>
+    /// <param name="hIcon">A handle to the icon or cursor.</param>
+    /// <param name="pIconInfo">A pointer to an ICONINFO structure. The function fills in the structure's members.</param>
+    /// <returns>If the function succeeds, the return value is nonzero and the function fills in the members of the specified ICONINFO structure. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool GetIconInfo(IntPtr hIcon, ref ICONINFO pIconInfo);
+
+    /// <summary>
     /// Retrieves a string that represents the name of a key. https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getkeynametexta
     /// </summary>
     /// <param name="lParam">The second parameter of the keyboard message (such as WM_KEYDOWN) to be processed. The function interprets the following bit positions in the lParam.
@@ -357,6 +366,15 @@ internal static class User32
     public static extern int GetMessage(ref MSG lpMsg, IntPtr hWnd, int wMsgFilterMin, int wMsgFilterMax);
 
     /// <summary>
+    /// The GetMonitorInfo function retrieves information about a display monitor.
+    /// </summary>
+    /// <param name="hMonitor">A handle to the display monitor of interest.</param>
+    /// <param name="lpmi">A pointer to a MONITORINFO or MONITORINFOEX structure that receives information about the specified display monitor.</param>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.</returns>
+    [DllImport(Library)]
+    public static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFO lpmi);
+
+    /// <summary>
     /// Retrieves a history of up to 64 previous coordinates of the mouse or pen.
     /// </summary>
     /// <param name="cbSize">The size, in bytes, of the MOUSEMOVEPOINT structure.</param>
@@ -378,36 +396,28 @@ internal static class User32
     public static extern uint GetQueueStatus(GetQueueStatus_flags flags);
 
     /// <summary>
-    /// Retrieves the raw input from the specified device. https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getrawinputdata
+    /// Retrieves the raw input from the specified device.
     /// </summary>
-    /// <param name="hRawInput">A handle to the RAWINPUT structure. This comes from the lParam in WM_INPUT.</param>
-    /// <param name="uiCommand">
-    /// The command flag. This parameter can be one of the following values.
-    /// RID_HEADER: Get the header information from the RAWINPUT structure.
-    /// RID_INPUT: Get the raw data from the RAWINPUT structure.
-    /// </param>
-    /// <param name="pData">A pointer to the data that comes from the RAWINPUT structure. This depends on the value of uiCommand. If pData is NULL, the required size of the buffer is returned in *pcbSize.</param>
-    /// <param name="pcbSize">Pointer to a variable that specifies the size, in bytes, of the data in Data.</param>
-    /// <param name="cbSizeHeader">Size, in bytes, of RawInputHeader.</param>
-    /// <remarks>GetRawInputData gets the raw input one RAWINPUT structure at a time. In contrast, GetRawInputBuffer gets an array of RAWINPUT structures.</remarks>
+    /// <param name="RawInput">A handle to the RAWINPUT structure. This comes from the lParam in WM_INPUT.</param>
+    /// <param name="Command">The command flag.</param>
+    /// <param name="Data">A pointer to the data that comes from the RAWINPUT structure. This depends on the value of uiCommand. If pData is NULL, the required size of the buffer is returned in *pcbSize.</param>
+    /// <param name="Size">The size, in bytes, of the data in pData.</param>
+    /// <param name="SizeHeader">The size, in bytes, of the RAWINPUTHEADER structure..</param>
+    /// <returns>If pData is NULL and the function is successful, the return value is 0. If pData is not NULL and the function is successful, the return value is the number of bytes copied into pData. If there is an error, the return value is (UINT)-1.</returns>
     [DllImport(Library)]
-    public static extern int GetRawInputData(IntPtr hRawInput, GetRawInputData_uiCommand uiCommand, [Out] IntPtr pData, [In, Out] ref int pcbSize, int cbSizeHeader);
+    public static extern int GetRawInputData(IntPtr hRawInput, RAWINPUTDATAFLAG uiCommand, [Out] IntPtr pData, [In, Out] ref int pcbSize, int cbSizeHeader);
 
     /// <summary>
-    /// Retrieves the raw input from the specified device. https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getrawinputdata
+    /// Retrieves the raw input from the specified device.
     /// </summary>
-    /// <param name="hRawInput">A handle to the RAWINPUT structure. This comes from the lParam in WM_INPUT.</param>
-    /// <param name="uiCommand">
-    /// The command flag. This parameter can be one of the following values.
-    /// RID_HEADER: Get the header information from the RAWINPUT structure.
-    /// RID_INPUT: Get the raw data from the RAWINPUT structure.
-    /// </param>
-    /// <param name="pData">A pointer to the data that comes from the RAWINPUT structure. This depends on the value of uiCommand. If pData is NULL, the required size of the buffer is returned in *pcbSize.</param>
-    /// <param name="pcbSize">Pointer to a variable that specifies the size, in bytes, of the data in Data.</param>
-    /// <param name="cbSizeHeader">Size, in bytes, of RawInputHeader.</param>
-    /// <remarks>GetRawInputData gets the raw input one RAWINPUT structure at a time. In contrast, GetRawInputBuffer gets an array of RAWINPUT structures.</remarks>
+    /// <param name="RawInput">A handle to the RAWINPUT structure. This comes from the lParam in WM_INPUT.</param>
+    /// <param name="Command">The command flag.</param>
+    /// <param name="Data">A pointer to the data that comes from the RAWINPUT structure. This depends on the value of uiCommand. If pData is NULL, the required size of the buffer is returned in *pcbSize.</param>
+    /// <param name="Size">The size, in bytes, of the data in pData.</param>
+    /// <param name="SizeHeader">The size, in bytes, of the RAWINPUTHEADER structure..</param>
+    /// <returns>If pData is NULL and the function is successful, the return value is 0. If pData is not NULL and the function is successful, the return value is the number of bytes copied into pData. If there is an error, the return value is (UINT)-1.</returns>
     [DllImport(Library)]
-    public static extern int GetRawInputData(IntPtr hRawInput, GetRawInputData_uiCommand uiCommand, [Out] out RawInput pData, [In, Out] ref int pcbSize, int cbSizeHeader);
+    public static extern int GetRawInputData(IntPtr hRawInput, RAWINPUTDATAFLAG uiCommand, [Out] out RawInput pData, [In, Out] ref int pcbSize, int cbSizeHeader);
 
     /// <summary>
     /// Retrieves information about the raw input device.
@@ -457,7 +467,6 @@ internal static class User32
     /// <param name="hWnd">A handle to the window and, indirectly, the class to which the window belongs.</param>
     /// <param name="nIndex">The zero-based offset to the value to be retrieved.</param>
     /// <returns>If the function succeeds, the return value is the requested value. If the function fails, the return value is zero.To get extended error information, call GetLastError. If SetWindowLong or SetWindowLongPtr has not been called previously, GetWindowLongPtr returns zero for values in the extra window or class memory.</returns>
-    [SuppressUnmanagedCodeSecurity]
     [DllImport(Library, SetLastError = true)]
     public static extern UIntPtr GetWindowLongPtr(IntPtr hWnd, GWL nIndex);
 
@@ -535,6 +544,19 @@ internal static class User32
     /// <returns>The return value is either a scan code, a virtual-key code, or a character value, depending on the value of uCode and uMapType. If there is no translation, the return value is zero.</returns>
     [DllImport(Library)]
     public static extern uint MapVirtualKey(VIRTUALKEYCODE uCode, VIRTUALKEYMAPTYPE uMapType);
+
+    /// <summary>
+    /// Changes the position and dimensions of the specified window. For a top-level window, the position and dimensions are relative to the upper-left corner of the screen. For a child window, they are relative to the upper-left corner of the parent window's client area.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window.</param>
+    /// <param name="X">The new position of the left side of the window.</param>
+    /// <param name="Y">The new position of the top of the window.</param>
+    /// <param name="nWidth">The new width of the window.</param>
+    /// <param name="nHeight">The new height of the window.</param>
+    /// <param name="bRepaint">Indicates whether the window is to be repainted. If this parameter is TRUE, the window receives a message. If the parameter is FALSE, no repainting of any kind occurs. This applies to the client area, the nonclient area (including the title bar and scroll bars), and any part of the parent window uncovered as a result of moving a child window.</param>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
 
     /// <summary>
     /// Dispatches incoming sent messages, checks the thread message queue for a posted message, and retrieves the message (if any exist).
@@ -635,6 +657,16 @@ internal static class User32
     public static extern bool ReleaseCapture();
 
     /// <summary>
+    /// The ReleaseDC function releases a device context (DC), freeing it for use by other applications. The effect of the ReleaseDC function depends on the type of DC. It frees only common and window DCs. It has no effect on class or private DCs.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window whose DC is to be released.</param>
+    /// <param name="hDC">A handle to the DC to be released.</param>
+    /// <returns>The return value indicates whether the DC was released. If the DC was released, the return value is 1. If the DC was not released, the return value is zero.</returns>
+    [DllImport(Library)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
+
+    /// <summary>
     /// Sets the mouse capture to the specified window belonging to the current thread. SetCapture captures mouse input either when the mouse is over the capturing window, or when the mouse button was pressed while the mouse was over the capturing window and the button is still down. Only one window at a time can capture the mouse.
     /// If the mouse cursor is over a window created by another thread, the system will dRect mouse input to the specified window only if a mouse button is down.
     /// </summary>
@@ -677,6 +709,23 @@ internal static class User32
     public static extern IntPtr SetCursor(IntPtr hCursor);
 
     /// <summary>
+    /// Moves the cursor to the specified screen coordinates. If the new coordinates are not within the screen rectangle set by the most recent ClipCursor function call, the system automatically adjusts the coordinates so that the cursor stays within the rectangle.
+    /// </summary>
+    /// <param name="X">The new x-coordinate of the cursor, in screen coordinates.</param>
+    /// <param name="Y">The new y-coordinate of the cursor, in screen coordinates.</param>
+    /// <returns>Returns nonzero if successful or zero otherwise. To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern bool SetCursorPos(int X, int Y);
+
+    /// <summary>
+    /// Sets the keyboard focus to the specified window. The window must be attached to the calling thread's message queue.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window that will receive the keyboard input. If this parameter is NULL, keystrokes are ignored.</param>
+    /// <returns>If the function succeeds, the return value is the handle to the window that previously had the keyboard focus. If the hWnd parameter is invalid or the window is not attached to the calling thread's message queue, the return value is NULL. To get extended error information, call GetLastError function. Extended error ERROR_INVALID_PARAMETER(0x57) means that window is in disabled state.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern IntPtr SetFocus(IntPtr hWnd);
+
+    /// <summary>
     /// Brings the thread that created the specified window into the foreground and activates the window. Keyboard input is directed to the window, and various visual cues are changed for the user. The system assigns a slightly higher priority to the thread that created the foreground window than it does to other threads.
     /// </summary>
     /// <param name="hWnd">A handle to the window that should be activated and brought to the foreground.</param>
@@ -693,6 +742,22 @@ internal static class User32
     /// <para>No menus are active.</para></remarks>
     [DllImport(Library)]
     public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+    /// <summary>
+    /// Changes the parent window of the specified child window.
+    /// </summary>
+    /// <param name="child">A handle to the child window.</param>
+    /// <param name="newParent">A handle to the new parent window. If this parameter is NULL, the desktop window becomes the new parent window. If this parameter is HWND_MESSAGE, the child window becomes a message-only window.</param>
+    /// <returns>If the function succeeds, the return value is a handle to the previous parent window. If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern bool SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+
+    /// <summary>
+    /// Sets the process-default DPI awareness to system-DPI awareness. This is equivalent to calling SetProcessDpiAwarenessContext with a DPI_AWARENESS_CONTEXT value of DPI_AWARENESS_CONTEXT_SYSTEM_AWARE.
+    /// </summary>
+    /// <returns>If the function succeeds, the return value is nonzero. Otherwise, the return value is zero.</returns>
+    [DllImport(Library)]
+    public static extern bool SetProcessDPIAware();
 
     /// <summary>
     /// It is recommended that you set the process-default DPI awareness via application manifest. See Setting the default DPI awareness for a process for more information. Setting the process-default DPI awareness via API call can lead to unexpected application behavior. Sets the current process to a specified dots per inch(dpi) awareness context. The DPI awareness contexts are from the DPI_AWARENESS_CONTEXT value.
@@ -824,96 +889,14 @@ internal static class User32
     // * * * CLEANED UP ABOVE THIS LINE * * *
 
     [DllImport(Library)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool GetIconInfo(IntPtr hIcon, ref ICONINFO pIconInfo);
-    
-    [DllImport(Library)]
-    public static extern bool GetMonitorInfo(IntPtr hMonitor, ref MonitorInfo lpmi);
-
-
-
-    /// <summary>
-    /// Gets the raw input from the specified device.
-    /// </summary>
-    /// <param name="RawInput">Handle to the RawInput structure. This comes from the lParam in WM_INPUT.</param>
-    /// <param name="Command">
-    /// Command flag. This parameter can be one of the following values. 
-    /// RawInputDateEnum.INPUT
-    /// Get the raw data from the RawInput structure.
-    /// RawInputDateEnum.HEADER
-    /// Get the header information from the RawInput structure.
-    /// </param>
-    /// <param name="Data">Pointer to the data that comes from the RawInput structure. This depends on the value of uiCommand. If Data is NULL, the required size of the buffer is returned in Size.</param>
-    /// <param name="Size">Pointer to a variable that specifies the size, in bytes, of the data in Data.</param>
-    /// <param name="SizeHeader">Size, in bytes, of RawInputHeader.</param>
-    [DllImport(Library)]
-    public static extern int GetRawInputData(IntPtr RawInput, GetRawInputDataEnum Command, [Out] IntPtr Data, [In, Out] ref int Size, int SizeHeader);
-
-    /// <summary>
-    /// Gets the raw input from the specified device.
-    /// </summary>
-    /// <param name="RawInput">Handle to the RawInput structure. This comes from the lParam in WM_INPUT.</param>
-    /// <param name="Command">
-    /// Command flag. This parameter can be one of the following values. 
-    /// RawInputDateEnum.INPUT
-    /// Get the raw data from the RawInput structure.
-    /// RawInputDateEnum.HEADER
-    /// Get the header information from the RawInput structure.
-    /// </param>
-    /// <param name="Data">Pointer to the data that comes from the RawInput structure. This depends on the value of uiCommand. If Data is NULL, the required size of the buffer is returned in Size.</param>
-    /// <param name="Size">Pointer to a variable that specifies the size, in bytes, of the data in Data.</param>
-    /// <param name="SizeHeader">Size, in bytes, of RawInputHeader.</param>
-    /// <returns>
-    /// <para>If Data is NULL and the function is successful, the return value is 0. If Data is not NULL and the function is successful, the return value is the number of bytes copied into Data.</para>
-    /// <para>If there is an error, the return value is (UINT)-1.</para>
-    /// </returns>
-    /// <remarks>
-    /// GetRawInputData gets the raw input one RawInput structure at a time. In contrast, GetRawInputBuffer gets an array of RawInput structures.
-    /// </remarks>
-    [DllImport(Library)]
-    public static extern int GetRawInputData(IntPtr RawInput, GetRawInputDataEnum Command,        /*[MarshalAs(UnmanagedType.LPStruct)]*/ [Out] out RawInput Data, [In, Out] ref int Size, int SizeHeader);
-
-    /// <summary>
-    /// Gets information about the raw input device.
-    /// </summary>
-    /// <param name="Device">
-    /// Handle to the raw input device. This comes from the lParam of the WM_INPUT message,
-    /// from RawInputHeader.Device, or from GetRawInputDeviceList.
-    /// It can also be NULL if an application inserts input data, for example, by using SendInput.
-    /// </param>
-    /// <param name="Command">
-    /// Specifies what data will be returned in pData. It can be one of the following values. 
-    /// RawInputDeviceInfoEnum.PREPARSEDDATA
-    /// Data points to the previously parsed data.
-    /// RawInputDeviceInfoEnum.DEVICENAME
-    /// Data points to a string that contains the device name. 
-    /// For this Command only, the value in Size is the character count (not the byte count).
-    /// RawInputDeviceInfoEnum.DEVICEINFO
-    /// Data points to an RawInputDeviceInfo structure.
-    /// </param>
-    /// <param name="Data">
-    /// ointer to a buffer that contains the information specified by Command.
-    /// If Command is RawInputDeviceInfoEnum.DEVICEINFO, set RawInputDeviceInfo.Size to sizeof(RawInputDeviceInfo)
-    /// before calling GetRawInputDeviceInfo. (This is done automatically in OpenTK)
-    /// </param>
-    /// <param name="Size">
-    /// Pointer to a variable that contains the size, in bytes, of the data in Data.
-    /// </param>
-    [DllImport(Library)]
     public static extern uint GetRawInputDeviceInfo(IntPtr Device, [MarshalAs(UnmanagedType.U4)] RawInputDeviceInfoEnum Command, [In, Out] IntPtr Data, [In, Out] ref uint Size);
 
     [DllImport(Library, SetLastError = true)]
     public static extern int GetRawInputDeviceInfo(IntPtr Device, [MarshalAs(UnmanagedType.U4)] RawInputDeviceInfoEnum Command, [In, Out] RawInputDeviceInfo Data, [In, Out] ref int Size);
 
-
     [DllImport(Library, SetLastError = true)]
     public static extern int GetRawInputDeviceList([In, Out] RawInputDeviceList[] RawInputDeviceList, [In, Out] ref int NumDevices, int Size);
 
-    /// <summary>
-    /// The GetWindowRect function retrieves the dimensions of the bounding rectangle of the specified window. The dimensions are given in screen coordinates that are relative to the upper-left corner of the screen.
-    /// </summary>
-    /// <param name="windowHandle">Handle to the window whose client coordinates are to be retrieved.</param>
-    /// <param name="windowRectangle"> Pointer to a structure that receives the screen coordinates of the upper-left and lower-right corners of the window.</param>
     [DllImport(Library)]
     public extern static bool GetWindowRect(IntPtr windowHandle, out RECT windowRectangle);
     
@@ -923,23 +906,9 @@ internal static class User32
     [DllImport(Library, SetLastError = true)]
     public static extern uint MapVirtualKey(VIRTUALKEYCODE vkey, MapVirtualKeyType uMapType);
 
-    /// <summary>
-    /// Retrieves a handle to the display monitor that has the largest area of intersection with the bounding rectangle of a specified window.
-    /// </summary>
     [DllImport(Library)]
     public static extern IntPtr MonitorFromWindow(IntPtr hwnd, MonitorFrom dwFlags);
 
-    [DllImport(Library)]
-    public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
-    
-    /// <summary>
-    /// Low-level WINAPI function that checks the next message in the queue.
-    /// </summary>
-    /// <param name="msg">The pending message (if any) is stored here.</param>
-    /// <param name="hWnd">The scope of messages to receive</param>
-    /// <param name="messageFilterMin">The minimum value of message to receive</param>
-    /// <param name="messageFilterMax">The maximum value of message to receive</param>
-    /// <param name="flags">What action to take on messages after processing</param>
     [DllImport("User32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool PeekMessage(ref MSG msg, IntPtr hWnd, int messageFilterMin, int messageFilterMax, PM flags);
@@ -947,18 +916,6 @@ internal static class User32
     [DllImport(Library)]
     public static extern IntPtr RegisterDeviceNotification(IntPtr hRecipient, IntPtr NotificationFilter, DeviceNotification Flags);
 
-    /// <summary>
-    /// Registers the devices that supply the raw input data.
-    /// </summary>
-    /// <param name="RawInputDevices">
-    /// Pointer to an array of RawInputDevice structures that represent the devices that supply the raw input.
-    /// </param>
-    /// <param name="NumDevices">
-    /// Number of RawInputDevice structures pointed to by RawInputDevices.
-    /// </param>
-    /// <param name="Size">
-    /// Size, in bytes, of a RAWINPUTDEVICE structure.
-    /// </param>
     [DllImport(Library, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool RegisterRawInputDevices(RawInputDevice[] RawInputDevices, int NumDevices, int Size);
@@ -972,36 +929,11 @@ internal static class User32
         return RegisterRawInputDevices(rids, 1, RawInputDevice.Size);
     }
     
-    [DllImport(Library)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool ReleaseDC(IntPtr hwnd, IntPtr DC);
-    
     [DllImport(Library, CharSet = CharSet.Auto)]
     public static extern IntPtr SendMessage(IntPtr hWnd, WINDOWMESSAGE Msg, IntPtr wParam, IntPtr lParam);
-    
-    [DllImport(Library)]
-    public static extern bool SetCursorPos(int X, int Y);
-    
-    [DllImport(Library)]
-    public static extern bool SetProcessDPIAware();
-    
-    [DllImport(Library)]
-    public static extern bool SetProcessDpiAwarenessContext();
-    
-    [DllImport(Library, SetLastError = true)]
-    public static extern IntPtr SetFocus(IntPtr hWnd);
-    
-    [DllImport(Library, SetLastError = true)]
-    public static extern bool SetParent(IntPtr child, IntPtr newParent);
-    
+
     [DllImport(Library)]
     public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
 
     public static bool SetWindowPos(IntPtr hWnd, RECT position, SetWindowPosFlags uFlags) => SetWindowPos(hWnd, IntPtr.Zero, position.left, position.top, position.Width, position.Height, uFlags);
-
-
-
-
-
-
 }

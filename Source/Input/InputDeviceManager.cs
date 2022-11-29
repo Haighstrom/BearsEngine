@@ -77,9 +77,9 @@ public class InputDeviceManager : IInputDeviceManager
         {
             case WINDOWMESSAGE.WM_INPUT:
                 int size = 0;
-                User32.GetRawInputData(lParam, GetRawInputDataEnum.INPUT, IntPtr.Zero, ref size, RawInputHeader.SIZE);
+                User32.GetRawInputData(lParam, RAWINPUTDATAFLAG.RID_INPUT, IntPtr.Zero, ref size, RawInputHeader.SIZE);
 
-                if (size == User32.GetRawInputData(lParam, GetRawInputDataEnum.INPUT, out _rawInput, ref size, RawInputHeader.SIZE))
+                if (size == User32.GetRawInputData(lParam, RAWINPUTDATAFLAG.RID_INPUT, out _rawInput, ref size, RawInputHeader.SIZE))
                 {
                     switch (_rawInput.Header.Type)
                     {

@@ -12,7 +12,7 @@ public class ConsoleManager : IConsoleManager
     {
         IntPtr monitor = User32.MonitorFromWindow(Handle, MonitorFrom.Nearest);
 
-        var mInfo = new MonitorInfo() { Size = MonitorInfo.UnmanagedSize };
+        var mInfo = new MONITORINFO() { Size = MONITORINFO.UnmanagedSize };
 
         User32.GetMonitorInfo(monitor, ref mInfo);
 

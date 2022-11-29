@@ -1996,11 +1996,7 @@ internal enum DisplayModeSettingsEnum
     RegistrySettings = -2
 }
 
-internal enum GetRawInputDataEnum
-{
-    INPUT = 0x10000003,
-    HEADER = 0x10000005
-}
+
 
 [StructLayout(LayoutKind.Sequential)]
 internal struct ICONINFO
@@ -2045,14 +2041,14 @@ internal enum MonitorFrom
 }
 
 #pragma warning disable 0649
-internal struct MonitorInfo
+internal struct MONITORINFO
 {
     internal int Size;
     internal RECT Monitor;
     internal RECT Work;
     internal int Flags;
 
-    internal static readonly int UnmanagedSize = Marshal.SizeOf(default(MonitorInfo));
+    internal static readonly int UnmanagedSize = Marshal.SizeOf(default(MONITORINFO));
 }
 #pragma warning restore 0649
 

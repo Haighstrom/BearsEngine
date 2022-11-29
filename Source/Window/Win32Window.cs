@@ -646,7 +646,7 @@ public class Win32Window : IWindow
                         _prevPosition = _reportedPosition;
 
                         IntPtr monitor = User32.MonitorFromWindow(_windowHandle, MonitorFrom.Nearest);
-                        var mInfo = new MonitorInfo() { Size = MonitorInfo.UnmanagedSize };
+                        var mInfo = new MONITORINFO() { Size = MONITORINFO.UnmanagedSize };
                         User32.GetMonitorInfo(monitor, ref mInfo);
                         mInfo.Work.left -= _leftInvisBorder;
                         mInfo.Work.top -= _topInvisBorder;
@@ -726,7 +726,7 @@ public class Win32Window : IWindow
     {
         IntPtr monitor = User32.MonitorFromWindow(_windowHandle, MonitorFrom.Nearest);
 
-        var mInfo = new MonitorInfo() { Size = MonitorInfo.UnmanagedSize };
+        var mInfo = new MONITORINFO() { Size = MONITORINFO.UnmanagedSize };
 
         User32.GetMonitorInfo(monitor, ref mInfo);
 
