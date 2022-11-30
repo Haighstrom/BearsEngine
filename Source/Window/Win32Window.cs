@@ -180,7 +180,7 @@ public class Win32Window : IWindow
         rect.top -= _topInvisBorder;
         rect.bottom -= _topInvisBorder;
 
-        User32.SetWindowPos(_windowHandle, rect, SetWindowPosFlags.NOREDRAW);
+        User32.SetWindowPos(_windowHandle, rect, SETWINDOWPOSFLAGS.NOREDRAW);
         
         Border = settings.Border;
 
@@ -213,7 +213,7 @@ public class Win32Window : IWindow
             case WINDOWMESSAGE.WM_DPICHANGED:
                 DPI = wParam.ToHIWORD() / 96f;
                 var proposedRect = (RECT)Marshal.PtrToStructure(lParam, typeof(RECT))!;
-                User32.SetWindowPos(_windowHandle, proposedRect, SetWindowPosFlags.NOZORDER | SetWindowPosFlags.NOACTIVATE);
+                User32.SetWindowPos(_windowHandle, proposedRect, SETWINDOWPOSFLAGS.NOZORDER | SETWINDOWPOSFLAGS.NOACTIVATE);
                 return IntPtr.Zero;
 
             case WINDOWMESSAGE.WM_MOVE:
@@ -274,7 +274,7 @@ public class Win32Window : IWindow
                 }
 
                 User32.SetWindowPos(_childWindowHandle, IntPtr.Zero, 0, 0, _actualClientPosition.Width, _actualClientPosition.Height, 
-                    SetWindowPosFlags.NOZORDER | SetWindowPosFlags.NOOWNERZORDER | SetWindowPosFlags.NOACTIVATE | SetWindowPosFlags.NOSENDCHANGING);
+                    SETWINDOWPOSFLAGS.NOZORDER | SETWINDOWPOSFLAGS.NOOWNERZORDER | SETWINDOWPOSFLAGS.NOACTIVATE | SETWINDOWPOSFLAGS.NOSENDCHANGING);
 
                 if (!_resizingWindow && _cursorLockedToWindow)
                     ConfineCursor();
@@ -531,7 +531,7 @@ public class Win32Window : IWindow
 
     public void ProcessEvents()
     {
-        while (User32.PeekMessage(ref _lpMsg, _windowHandle, 0, 0, PEEKMESSAGEFLAG.PM_REMOVE))
+        while (User32.PeekMessage(ref _lpMsg, _windowHandle, 0, (WINDOWMESSAGE)0, PEEKMESSAGEFLAGS.PM_REMOVE))
         {
             User32.TranslateMessage(ref _lpMsg);
             User32.DispatchMessage(ref _lpMsg);
@@ -609,7 +609,7 @@ public class Win32Window : IWindow
             //preserve client size
             RECT newWinRect = new() { right = _actualClientPosition.Width, bottom = _actualClientPosition.Height };
             User32.AdjustWindowRectEx(ref newWinRect, newStyle, false, _parentExStyle);
-            User32.SetWindowPos(_windowHandle, IntPtr.Zero, 0, 0, newWinRect.Width, newWinRect.Height, SetWindowPosFlags.NOMOVE | SetWindowPosFlags.NOZORDER | SetWindowPosFlags.FRAMECHANGED);
+            User32.SetWindowPos(_windowHandle, IntPtr.Zero, 0, 0, newWinRect.Width, newWinRect.Height, SETWINDOWPOSFLAGS.NOMOVE | SETWINDOWPOSFLAGS.NOZORDER | SETWINDOWPOSFLAGS.FRAMECHANGED);
 
             _border = value;
         }
@@ -645,7 +645,7 @@ public class Win32Window : IWindow
                     {
                         _prevPosition = _reportedPosition;
 
-                        IntPtr monitor = User32.MonitorFromWindow(_windowHandle, MonitorFrom.Nearest);
+                        IntPtr monitor = User32.MonitorFromWindow(_windowHandle, MONITORFROMWINDOWFLAGS.MONITOR_DEFAULTTONEAREST);
                         var mInfo = new MONITORINFO() { Size = MONITORINFO.UnmanagedSize };
                         User32.GetMonitorInfo(monitor, ref mInfo);
                         mInfo.Work.left -= _leftInvisBorder;
@@ -677,7 +677,7 @@ public class Win32Window : IWindow
         {
             RECT r = ReportedParentRect_From_UserParentRect(value);
 
-            User32.SetWindowPos(_windowHandle, new IntPtr(0), r.left, r.top, r.Width, r.Height, SetWindowPosFlags.NOREDRAW);
+            User32.SetWindowPos(_windowHandle, new IntPtr(0), r.left, r.top, r.Width, r.Height, SETWINDOWPOSFLAGS.NOREDRAW);
         }
     }
 
@@ -712,7 +712,7 @@ public class Win32Window : IWindow
         {
             RECT r = ActualClientRect_From_UserClientPoint(value);
             User32.AdjustWindowRectEx(ref r, _parentStyle, false, _parentExStyle);
-            User32.SetWindowPos(_windowHandle, new IntPtr(0), X, Y, r.Width, r.Height, SetWindowPosFlags.NOREDRAW);
+            User32.SetWindowPos(_windowHandle, new IntPtr(0), X, Y, r.Width, r.Height, SETWINDOWPOSFLAGS.NOREDRAW);
         }
     }
 
@@ -724,7 +724,7 @@ public class Win32Window : IWindow
 
     public void Centre()
     {
-        IntPtr monitor = User32.MonitorFromWindow(_windowHandle, MonitorFrom.Nearest);
+        IntPtr monitor = User32.MonitorFromWindow(_windowHandle, MONITORFROMWINDOWFLAGS.MONITOR_DEFAULTTONEAREST);
 
         var mInfo = new MONITORINFO() { Size = MONITORINFO.UnmanagedSize };
 
@@ -741,7 +741,7 @@ public class Win32Window : IWindow
             bottom = y + _reportedPosition.Height
         };
 
-        User32.SetWindowPos(_windowHandle, rect, SetWindowPosFlags.NOREDRAW);
+        User32.SetWindowPos(_windowHandle, rect, SETWINDOWPOSFLAGS.NOREDRAW);
     }
 
     public Point ScreenToClient(Point screenPosition) => new((int)((screenPosition.X - _actualClientPosition.left) / DPI), (int)((screenPosition.Y - _actualClientPosition.top) / DPI));

@@ -23,15 +23,15 @@ public sealed class MouseManager : IMouseManager
         RefreshDevices();
     }
     
-    static string GetDeviceName(RawInputDeviceList dev)
+    static string GetDeviceName(RAWINPUTDEVICELIST dev)
     {
         // get name size
         uint size = 0;
-        User32.GetRawInputDeviceInfo(dev.Device, RawInputDeviceInfoEnum.DEVICENAME, IntPtr.Zero, ref size);
+        User32.GetRawInputDeviceInfo(dev.Device, RAWINPUTDEVICEINFOFLAG.RIDI_DEVICENAME, IntPtr.Zero, ref size);
 
         // get actual name
         IntPtr name_ptr = Marshal.AllocHGlobal((IntPtr)size);
-        User32.GetRawInputDeviceInfo(dev.Device, RawInputDeviceInfoEnum.DEVICENAME, name_ptr, ref size);
+        User32.GetRawInputDeviceInfo(dev.Device, RAWINPUTDEVICEINFOFLAG.RIDI_DEVICENAME, name_ptr, ref size);
         string name = Marshal.PtrToStringAnsi(name_ptr);
         Marshal.FreeHGlobal(name_ptr);
 
@@ -129,15 +129,15 @@ public sealed class MouseManager : IMouseManager
             }
 
             int count = 0;
-            User32.GetRawInputDeviceList(null, ref count, RawInputDeviceList.Size);
+            User32.GetRawInputDeviceList(null, ref count, RAWINPUTDEVICELIST.Size);
 
-            RawInputDeviceList[] ridl = new RawInputDeviceList[count];
+            RAWINPUTDEVICELIST[] ridl = new RAWINPUTDEVICELIST[count];
             for (int i = 0; i < count; i++)
-                ridl[i] = new RawInputDeviceList();
+                ridl[i] = new RAWINPUTDEVICELIST();
 
-            User32.GetRawInputDeviceList(ridl, ref count, RawInputDeviceList.Size);
+            User32.GetRawInputDeviceList(ridl, ref count, RAWINPUTDEVICELIST.Size);
 
-            foreach (RawInputDeviceList d in ridl)
+            foreach (RAWINPUTDEVICELIST d in ridl)
             {
                 if (_regdDevices.ContainsKey(d.Device))
                 {
@@ -182,7 +182,7 @@ public sealed class MouseManager : IMouseManager
                             // Register the device:
                             RawInputDeviceInfo info = new();
                             int devInfoSize = info.Size;
-                            User32.GetRawInputDeviceInfo(d.Device, RawInputDeviceInfoEnum.DEVICEINFO,
+                            User32.GetRawInputDeviceInfo(d.Device, RAWINPUTDEVICEINFOFLAG.RIDI_DEVICEINFO,
                                     info, ref devInfoSize);
 
                             RegisterRawDevice(_msgWindowHandle, deviceDesc);

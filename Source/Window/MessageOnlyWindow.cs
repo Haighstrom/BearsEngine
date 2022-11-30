@@ -70,7 +70,7 @@ internal class MessageOnlyWindow : IDisposable
 
     public void ProcessEventsOnce()
     {
-        while (User32.PeekMessage(ref _msg, Handle, 0, 0, PM.REMOVE))
+        while (User32.PeekMessage(ref _msg, Handle, 0, 0, PEEKMESSAGEFLAGS.PM_REMOVE))
         {
             User32.TranslateMessage(ref _msg);
             User32.DispatchMessage(ref _msg);

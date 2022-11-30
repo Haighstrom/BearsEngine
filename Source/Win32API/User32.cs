@@ -1,4 +1,8 @@
-﻿using System.Drawing;
+﻿using BearsEngine.Window;
+using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Dynamic;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
@@ -428,20 +432,28 @@ internal static class User32
     /// <param name="pcbSize">The size, in bytes, of the data in pData.</param>
     /// <returns>If successful, this function returns a non-negative number indicating the number of bytes copied to pData. If pData is not large enough for the data, the function returns -1. If pData is NULL, the function returns a value of zero.In both of these cases, pcbSize is set to the minimum size required for the pData buffer. Call GetLastError to identify any other errors.</returns>
     [DllImport(Library, SetLastError = true)]
-    public static extern int GetRawInputDeviceInfo(IntPtr hDevice, GetRawInputDeviceInfo_uiCommand uiCommand, RID_DEVICE_INFO pData, ref uint pcbSize);
+    public static extern uint GetRawInputDeviceInfo(IntPtr hDevice, [MarshalAs(UnmanagedType.U4)] RAWINPUTDEVICEINFOFLAG uiCommand, [In, Out] IntPtr pData, [In, Out] ref uint pcbSize);
 
     /// <summary>
     /// Retrieves information about the raw input device.
     /// </summary>
     /// <param name="hDevice">A handle to the raw input device. This comes from the hDevice member of RAWINPUTHEADER or from GetRawInputDeviceList.</param>
+    /// <param name="uiCommand">Specifies what data will be returned in pData.</param>
     /// <param name="pData">A pointer to a buffer that contains the information specified by uiCommand. If uiCommand is RIDI_DEVICEINFO, set the cbSize member of RID_DEVICE_INFO to sizeof(RID_DEVICE_INFO) before calling GetRawInputDeviceInfo.</param>
+    /// <param name="pcbSize">The size, in bytes, of the data in pData.</param>
     /// <returns>If successful, this function returns a non-negative number indicating the number of bytes copied to pData. If pData is not large enough for the data, the function returns -1. If pData is NULL, the function returns a value of zero.In both of these cases, pcbSize is set to the minimum size required for the pData buffer. Call GetLastError to identify any other errors.</returns>
-    public static int GetRawInputDeviceInfo(IntPtr hDevice, out RID_DEVICE_INFO pData)
-    {
-        pData = new RID_DEVICE_INFO();
-        uint size = pData.cbSize;
-        return GetRawInputDeviceInfo(hDevice, GetRawInputDeviceInfo_uiCommand.RIDI_DEVICEINFO, pData, ref size);
-    }
+    [DllImport(Library, SetLastError = true)]
+    public static extern int GetRawInputDeviceInfo(IntPtr hDevice, [MarshalAs(UnmanagedType.U4)] RAWINPUTDEVICEINFOFLAG uiCommand, [In, Out] RawInputDeviceInfo pData, [In, Out] ref int pcbSize);
+
+    /// <summary>
+    /// Enumerates the raw input devices attached to the system.
+    /// </summary>
+    /// <param name="pRawInputDeviceList">An array of RAWINPUTDEVICELIST structures for the devices attached to the system. If NULL, the number of devices are returned in *puiNumDevices.</param>
+    /// <param name="puiNumDevices">If pRawInputDeviceList is NULL, the function populates this variable with the number of devices attached to the system; otherwise, this variable specifies the number of RAWINPUTDEVICELIST structures that can be contained in the buffer to which pRawInputDeviceList points. If this value is less than the number of devices attached to the system, the function returns the actual number of devices in this variable and fails with ERROR_INSUFFICIENT_BUFFER. If this value is greater than or equal to the number of devices attached to the system, then the value is unchanged, and the number of devices is reported as the return value.</param>
+    /// <param name="cbSize">The size of a RAWINPUTDEVICELIST structure, in bytes.</param>
+    /// <returns>If the function is successful, the return value is the number of devices stored in the buffer pointed to by pRawInputDeviceList. On any other error, the function returns (UINT)-1 and GetLastError returns the error indication.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern int GetRawInputDeviceList([In, Out] RAWINPUTDEVICELIST[] pRawInputDeviceList, [In, Out] ref int puiNumDevices, int cbSize);
 
     /// <summary>
     /// Retrieves the current color of the specified display element. Display elements are the parts of a window and the display that appear on the system display screen. https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsyscolor
@@ -471,6 +483,15 @@ internal static class User32
     public static extern UIntPtr GetWindowLongPtr(IntPtr hWnd, GWL nIndex);
 
     /// <summary>
+    /// Retrieves the dimensions of the bounding rectangle of the specified window. The dimensions are given in screen coordinates that are relative to the upper-left corner of the screen.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window.</param>
+    /// <param name="lpRect">A pointer to a RECT structure that receives the screen coordinates of the upper-left and lower-right corners of the window.</param>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public extern static bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+    /// <summary>
     /// Copies the text of the specified window's title bar (if it has one) into a buffer. If the specified window is a control, the text of the control is copied. However, GetWindowText cannot retrieve the text of a control in another application.
     /// </summary>
     /// <param name="hWnd">A handle to the window or control containing the text.</param>
@@ -487,6 +508,14 @@ internal static class User32
     /// <returns>If the function succeeds, the return value is the length, in characters, of the text. Under certain conditions, this value might be greater than the length of the text (see Remarks). If the window has no text, the return value is zero. Function failure is indicated by a return value of zero and a GetLastError result that is nonzero.</returns>
     [DllImport(Library, CharSet = CharSet.Auto, SetLastError = true)]
     public static extern int GetWindowTextLength(IntPtr hWnd);
+
+    /// <summary>
+    /// Determines the visibility state of the specified window.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window to be tested.</param>
+    /// <returns>If the specified window, its parent window, its parent's parent window, and so forth, have the WS_VISIBLE style, the return value is nonzero. Otherwise, the return value is zero. Because the return value specifies whether the window has the WS_VISIBLE style, it may be nonzero even if the window is totally obscured by other windows.</returns>
+    [DllImport(Library)]
+    public static extern bool IsWindowVisible(IntPtr hWnd);
 
     /// <summary>
     /// Destroys the specified timer.
@@ -546,6 +575,15 @@ internal static class User32
     public static extern uint MapVirtualKey(VIRTUALKEYCODE uCode, VIRTUALKEYMAPTYPE uMapType);
 
     /// <summary>
+    /// The MonitorFromWindow function retrieves a handle to the display monitor that has the largest area of intersection with the bounding rectangle of a specified window.
+    /// </summary>
+    /// <param name="hwnd">A handle to the window of interest.</param>
+    /// <param name="dwFlags">Determines the function's return value if the window does not intersect any display monitor.</param>
+    /// <returns>If the window intersects one or more display monitor rectangles, the return value is an HMONITOR handle to the display monitor that has the largest area of intersection with the window. If the window does not intersect a display monitor, the return value depends on the value of dwFlags.</returns>
+    [DllImport(Library)]
+    public static extern IntPtr MonitorFromWindow(IntPtr hwnd, MONITORFROMWINDOWFLAGS dwFlags);
+
+    /// <summary>
     /// Changes the position and dimensions of the specified window. For a top-level window, the position and dimensions are relative to the upper-left corner of the screen. For a child window, they are relative to the upper-left corner of the parent window's client area.
     /// </summary>
     /// <param name="hWnd">A handle to the window.</param>
@@ -573,7 +611,7 @@ internal static class User32
     /// <returns>If a message is available, the return value is nonzero. If no messages are available, the return value is zero.</returns>
     [DllImport(Library)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool PeekMessage(ref MSG lpMsg, IntPtr hWnd, WINDOWMESSAGE wMsgFilterMin, WINDOWMESSAGE wMsgFilterMax, PEEKMESSAGEFLAG wRemoveMsg);
+    public static extern bool PeekMessage(ref MSG lpMsg, IntPtr hWnd, WINDOWMESSAGE wMsgFilterMin, WINDOWMESSAGE wMsgFilterMax, PEEKMESSAGEFLAGS wRemoveMsg);
 
     /// <summary>
     /// Places (posts) a message in the message queue associated with the thread that created the specified window and returns without waiting for the thread to process the message.
@@ -801,6 +839,20 @@ internal static class User32
     public static extern UIntPtr SetTimer(IntPtr hWnd, UIntPtr nIDEvent, uint uElapse, TimerProc lpTimerFunc);
 
     /// <summary>
+    /// Changes the size, position, and Z order of a child, pop-up, or top-level window. These windows are ordered according to their appearance on the screen. The topmost window receives the highest rank and is the first window in the Z order.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window.</param>
+    /// <param name="hWndInsertAfter">A handle to the window to precede the positioned window in the Z order.</param>
+    /// <param name="X">The new position of the left side of the window, in client coordinates.</param>
+    /// <param name="Y">The new position of the top of the window, in client coordinates.</param>
+    /// <param name="cx">The new width of the window, in pixels.</param>
+    /// <param name="cy">The new height of the window, in pixels.</param>
+    /// <param name="uFlags">The window sizing and positioning flags.</param>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport(Library, SetLastError = true)]
+    public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SETWINDOWPOSFLAGS uFlags);
+
+    /// <summary>
     /// Changes the text of the specified window's title bar (if it has one). If the specified window is a control, the text of the control is changed. However, SetWindowText cannot change the text of a control in another application.
     /// </summary>
     /// <param name="hWnd">A handle to the window or control whose text is to be changed.</param>
@@ -887,31 +939,6 @@ internal static class User32
     public static extern bool UpdateWindow(IntPtr hWnd);
 
     // * * * CLEANED UP ABOVE THIS LINE * * *
-
-    [DllImport(Library)]
-    public static extern uint GetRawInputDeviceInfo(IntPtr Device, [MarshalAs(UnmanagedType.U4)] RawInputDeviceInfoEnum Command, [In, Out] IntPtr Data, [In, Out] ref uint Size);
-
-    [DllImport(Library, SetLastError = true)]
-    public static extern int GetRawInputDeviceInfo(IntPtr Device, [MarshalAs(UnmanagedType.U4)] RawInputDeviceInfoEnum Command, [In, Out] RawInputDeviceInfo Data, [In, Out] ref int Size);
-
-    [DllImport(Library, SetLastError = true)]
-    public static extern int GetRawInputDeviceList([In, Out] RawInputDeviceList[] RawInputDeviceList, [In, Out] ref int NumDevices, int Size);
-
-    [DllImport(Library)]
-    public extern static bool GetWindowRect(IntPtr windowHandle, out RECT windowRectangle);
-    
-    [DllImport(Library)]
-    public static extern bool IsWindowVisible(IntPtr intPtr);
-
-    [DllImport(Library, SetLastError = true)]
-    public static extern uint MapVirtualKey(VIRTUALKEYCODE vkey, MapVirtualKeyType uMapType);
-
-    [DllImport(Library)]
-    public static extern IntPtr MonitorFromWindow(IntPtr hwnd, MonitorFrom dwFlags);
-
-    [DllImport("User32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool PeekMessage(ref MSG msg, IntPtr hWnd, int messageFilterMin, int messageFilterMax, PM flags);
     
     [DllImport(Library)]
     public static extern IntPtr RegisterDeviceNotification(IntPtr hRecipient, IntPtr NotificationFilter, DeviceNotification Flags);
@@ -931,9 +958,4 @@ internal static class User32
     
     [DllImport(Library, CharSet = CharSet.Auto)]
     public static extern IntPtr SendMessage(IntPtr hWnd, WINDOWMESSAGE Msg, IntPtr wParam, IntPtr lParam);
-
-    [DllImport(Library)]
-    public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
-
-    public static bool SetWindowPos(IntPtr hWnd, RECT position, SetWindowPosFlags uFlags) => SetWindowPos(hWnd, IntPtr.Zero, position.left, position.top, position.Width, position.Height, uFlags);
 }

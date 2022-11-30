@@ -10,7 +10,7 @@ public class ConsoleManager : IConsoleManager
 
     internal static RECT GetMaxSize()
     {
-        IntPtr monitor = User32.MonitorFromWindow(Handle, MonitorFrom.Nearest);
+        IntPtr monitor = User32.MonitorFromWindow(Handle, MONITORFROMWINDOWFLAGS.MONITOR_DEFAULTTONEAREST);
 
         var mInfo = new MONITORINFO() { Size = MONITORINFO.UnmanagedSize };
 

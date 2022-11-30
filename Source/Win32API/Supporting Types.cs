@@ -2008,49 +2008,17 @@ internal struct ICONINFO
     public IntPtr ColorBitmap;
 };
 
-/// <summary>
-/// For MapVirtualKey
-/// </summary>
-internal enum MapVirtualKeyType
-{
-    /// <summary>uCode is a virtual-key code and is translated into a scan code. If it is a virtual-key code that does not distinguish between left- and right-hand keys, the left-hand scan code is returned. If there is no translation, the function returns 0.</summary>
-    VirtualKeyToScanCode = 0,
-    /// <summary>uCode is a scan code and is translated into a virtual-key code that does not distinguish between left- and right-hand keys. If there is no translation, the function returns 0.</summary>
-    ScanCodeToVirtualKey = 1,
-    /// <summary>uCode is a virtual-key code and is translated into an unshifted character value in the low-order word of the return value. Dead keys (diacritics) are indicated by setting the top bit of the return value. If there is no translation, the function returns 0.</summary>
-    VirtualKeyToCharacter = 2,
-    /// <summary>Windows NT/2000/XP: uCode is a scan code and is translated into a virtual-key code that distinguishes between left- and right-hand keys. If there is no translation, the function returns 0.</summary>
-    ScanCodeToVirtualKeyExtended = 3,
-    VirtualKeyToScanCodeExtended = 4,
-}
 
-internal enum MonitorFrom
-{
-    /// <summary>
-    /// MONITOR_DEFAULTTONULL: Returns NULL.
-    /// </summary>
-    Null = 0,
-    /// <summary>
-    /// MONITOR_DEFAULTTOPRIMARY: Returns a handle to the primary display monitor.
-    /// </summary>
-    Primary = 1,
-    /// <summary>
-    /// MONITOR_DEFAULTTONEAREST: Returns a handle to the display monitor that is nearest to the window.
-    /// </summary>
-    Nearest = 2,
-}
 
-#pragma warning disable 0649
 internal struct MONITORINFO
 {
-    internal int Size;
-    internal RECT Monitor;
-    internal RECT Work;
-    internal int Flags;
+    public int Size;
+    public RECT Monitor;
+    public RECT Work;
+    public int Flags;
 
-    internal static readonly int UnmanagedSize = Marshal.SizeOf(default(MONITORINFO));
+    public static readonly int UnmanagedSize = Marshal.SizeOf(default(MONITORINFO));
 }
-#pragma warning restore 0649
 
 [StructLayout(LayoutKind.Sequential)]
 public struct MOUSEMOVEPOINT
@@ -2059,14 +2027,17 @@ public struct MOUSEMOVEPOINT
     /// The x-coordinate of the mouse.
     /// </summary>
     public int X;
+
     /// <summary>
     /// The y-coordinate of the mouse.
     /// </summary>
     public int Y;
+
     /// <summary>
     /// The time stamp of the mouse coordinate.
     /// </summary>
     public int Time;
+
     /// <summary>
     /// Additional information associated with this coordinate.
     /// </summary>
@@ -2096,13 +2067,7 @@ internal enum NIndex : int
     WndProc = -24 
 }
 
-[Flags]
-internal enum PM : int
-{
-    NOREMOVE = 0x0000,
-    REMOVE = 0x0001,
-    NOYIELD = 0x0002
-}
+
 
 [StructLayout(LayoutKind.Explicit)]
 internal struct RawHID
@@ -2239,18 +2204,13 @@ internal class RawInputDeviceInfo
     };
 }
 
-internal enum RawInputDeviceInfoEnum
-{
-    PREPARSEDDATA = 0x20000005,
-    DEVICENAME = 0x20000007,  // the return valus is the character length, not the byte size
-    DEVICEINFO = 0x2000000b
-}
+
 
 /// <summary>
 /// Contains information about a raw input device.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-internal struct RawInputDeviceList
+internal struct RAWINPUTDEVICELIST
 {
     /// <summary>
     /// Handle to the raw input device.
@@ -2261,7 +2221,7 @@ internal struct RawInputDeviceList
     /// </summary>
     internal RawInputDeviceType Type;
 
-    internal static readonly int Size = Marshal.SizeOf(typeof(RawInputDeviceList));
+    internal static readonly int Size = Marshal.SizeOf(typeof(RAWINPUTDEVICELIST));
 }
 
 internal enum RawInputDeviceType : int
@@ -2540,7 +2500,7 @@ internal enum RawMouseFlags : ushort
 }
 
 [Flags]
-internal enum SetWindowPosFlags : int
+internal enum SETWINDOWPOSFLAGS : int
 {
     /// <summary>
     /// Retains the current size (ignores the cx and cy parameters).
@@ -2976,7 +2936,7 @@ internal struct WindowPosition
     /// Specifies the window position.
     /// </summary>
     [MarshalAs(UnmanagedType.U4)]
-    internal SetWindowPosFlags flags;
+    internal SETWINDOWPOSFLAGS flags;
 }
 
 public enum AlphaFunction : int

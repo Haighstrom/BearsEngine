@@ -7,7 +7,7 @@ using System.ComponentModel;
 namespace BearsEngine.Win32API;
 
 [SuppressUnmanagedCodeSecurity]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "OpenGL functions have dumb naming convensions")]
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "OpenGL functions have dumb naming conventions but I'm keeping these APIs pure.")]
 internal static class OpenGL32
 {
     private const string Library = "Opengl32.dll";

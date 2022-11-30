@@ -761,6 +761,53 @@ internal struct SMALL_RECT
 }
 
 /// <summary>
+/// The RECT structure defines a rectangle by the coordinates of its upper-left and lower-right corners. https://docs.microsoft.com/en-us/windows/win32/api/windef/ns-windef-rect
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct RECT
+{
+    /// <summary>
+    /// Specifies the x-coordinate of the upper-left corner of the rectangle.
+    /// </summary>
+    public int left;
+
+    /// <summary>
+    /// Specifies the y-coordinate of the upper-left corner of the rectangle.
+    /// </summary>
+    public int top;
+
+    /// <summary>
+    /// Specifies the x-coordinate of the lower-right corner of the rectangle.
+    /// </summary>
+    public int right;
+
+    /// <summary>
+    /// Specifies the y-coordinate of the lower-right corner of the rectangle.
+    /// </summary>
+    public int bottom;
+
+    /// <summary>
+    /// The width of the rectangle.
+    /// </summary>
+    public int Width => right - left;
+
+    /// <summary>
+    /// The height of the rectangle.
+    /// </summary>
+    public int Height => bottom - top;
+
+    /// <summary>
+    /// The point representing the centre of the rectangle;
+    /// </summary>
+    public POINT Centre => new() { X = (right + left) / 2, Y = (bottom + top) / 2 };
+
+    /// <summary>
+    /// The unmanaged size in memory of this object.
+    /// </summary>
+    public static int UnmanagedSize => Marshal.SizeOf(default(RECT));
+}
+
+/// <summary>
 /// Used by the <see cref="User32.TrackMouseEvent"/> function to track when the mouse pointer leaves a window or hovers over a window for a specified amount of time.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]

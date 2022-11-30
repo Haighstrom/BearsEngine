@@ -721,7 +721,7 @@ internal static class KeyMap
     //c.f.  https://blog.molecular-matters.com/2011/09/05/properly-handling-keyboard-input/
     internal static Key TranslateKey(short scancode, VIRTUALKEYCODE vkey, bool extended0)
     {
-        uint modifiedScancode = User32.MapVirtualKey(vkey, MapVirtualKeyType.VirtualKeyToScanCode);
+        uint modifiedScancode = User32.MapVirtualKey(vkey, VIRTUALKEYMAPTYPE.MAPVK_VK_TO_VSC);
         uint extendedScanCode = (modifiedScancode << 16) | ((extended0 ? 1 : (uint)0) << 24);
         
         Key key = GetExtendedKey(extendedScanCode);

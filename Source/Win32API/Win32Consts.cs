@@ -556,30 +556,7 @@ internal enum GetQueueStatus_flags : uint
     QS_TIMER = 0x0010,
 }
 
-/// <summary>
-/// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getrawinputdeviceinfoa
-/// For use with User32 GetRawInputDeviceInfo
-/// </summary>
-internal enum GetRawInputDeviceInfo_uiCommand : uint
-{
-    /// <summary>
-    /// pData is a PHIDP_PREPARSED_DATA pointer to a buffer for a top-level collection's preparsed data.
-    /// </summary>
-    RIDI_PREPARSEDDATA = 0x20000005,
 
-    /// <summary>
-    /// pData points to a string that contains the device interface name.
-    /// If this device is opened with Shared Access Mode then you can call CreateFile with this name to open a HID collection and use returned handle for calling ReadFile to read input reports and WriteFile to send output reports.
-    /// For more information, see Opening HID Collections and Handling HID Reports.
-    /// For this uiCommand only, the value in pcbSize is the character count (not the byte count).
-    /// </summary>
-    RIDI_DEVICENAME = 0x20000007,
-
-    /// <summary>
-    /// pData points to an RID_DEVICE_INFO structure.
-    /// </summary>
-    RIDI_DEVICEINFO = 0x2000000b
-}
 
 /// <summary>
 /// The resolution desired in <see cref="User32.GetMouseMovePointsEx"/>
@@ -924,11 +901,31 @@ internal enum MONITOR_DPI_TYPE
 }
 
 /// <summary>
-/// Specifies how messages are to be handled, for use with PeekMessage.
-/// By default, all message types are processed. To specify that only certain message should be processed, specify one or more of the PM_QS values.
+/// Determines <see cref="User32.MonitorFromWindow"/>'s return value if the window does not intersect any display monitor.
+/// </summary>
+internal enum MONITORFROMWINDOWFLAGS
+{
+    /// <summary>
+    /// Returns a handle to the display monitor that is nearest to the window.
+    /// </summary>
+    MONITOR_DEFAULTTONEAREST = 2,
+
+    /// <summary>
+    /// Returns NULL.
+    /// </summary>
+    MONITOR_DEFAULTTONULL = 0,
+
+    /// <summary>
+    /// Returns a handle to the primary display monitor.
+    /// </summary>
+    MONITOR_DEFAULTTOPRIMARY = 1,
+}
+
+/// <summary>
+/// Specifies how messages are to be handled, for use with <see cref="User32.PeekMessage"/>
 /// </summary>
 [Flags]
-internal enum PEEKMESSAGEFLAG : uint
+internal enum PEEKMESSAGEFLAGS : uint
 {
     /// <summary>
     /// Messages are not removed from the queue after processing by PeekMessage.
@@ -984,50 +981,24 @@ internal enum RAWINPUTDATAFLAG
 }
 
 /// <summary>
-/// The RECT structure defines a rectangle by the coordinates of its upper-left and lower-right corners. https://docs.microsoft.com/en-us/windows/win32/api/windef/ns-windef-rect
+/// Specifies what data will be returned in pData in <see cref="User32.GetRawInputDeviceInfo"/>
 /// </summary>
-[StructLayout(LayoutKind.Sequential)]
-internal struct RECT
+internal enum RAWINPUTDEVICEINFOFLAG
 {
     /// <summary>
-    /// Specifies the x-coordinate of the upper-left corner of the rectangle.
+    /// pData is a PHIDP_PREPARSED_DATA pointer to a buffer for a top-level collection's preparsed data.
     /// </summary>
-    public int left;
+    RIDI_PREPARSEDDATA = 0x20000005,
 
     /// <summary>
-    /// Specifies the y-coordinate of the upper-left corner of the rectangle.
+    /// pData points to a string that contains the device interface name. If this device is opened with Shared Access Mode then you can call CreateFile with this name to open a HID collection and use returned handle for calling ReadFile to read input reports and WriteFile to send output reports. For this uiCommand only, the value in pcbSize is the character count (not the byte count).
     /// </summary>
-    public int top;
+    RIDI_DEVICENAME = 0x20000007,
 
     /// <summary>
-    /// Specifies the x-coordinate of the lower-right corner of the rectangle.
+    /// pData points to an RID_DEVICE_INFO structure.
     /// </summary>
-    public int right;
-
-    /// <summary>
-    /// Specifies the y-coordinate of the lower-right corner of the rectangle.
-    /// </summary>
-    public int bottom;
-
-    /// <summary>
-    /// The width of the rectangle.
-    /// </summary>
-    public int Width => right - left;
-
-    /// <summary>
-    /// The height of the rectangle.
-    /// </summary>
-    public int Height => bottom - top;
-
-    /// <summary>
-    /// The point representing the centre of the rectangle;
-    /// </summary>
-    public POINT Centre => new() { X = (right + left) / 2, Y = (bottom + top) / 2 };
-
-    /// <summary>
-    /// The unmanaged size in memory of this object.
-    /// </summary>
-    public static int UnmanagedSize => Marshal.SizeOf(default(RECT));
+    RIDI_DEVICEINFO = 0x2000000b
 }
 
 /// <summary>
