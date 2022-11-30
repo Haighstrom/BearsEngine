@@ -69,18 +69,20 @@ public class KeyboardManager : IKeyboardManager
 
     private void RegisterRawDevice(IntPtr window, string device)
     {
-        RawInputDevice[] rid = new RawInputDevice[1];
+        RAWINPUTDEVICE[] rids = new RAWINPUTDEVICE[1];
         // Keyboard is 1/6 (page/id). See http://www.microsoft.com/whdc/device/input/HID_HWID.mspx
-        rid[0] = new RawInputDevice();
-        rid[0].UsagePage = 1;
-        rid[0].Usage = 6;
-        rid[0].Flags = RawInputDeviceFlags.INPUTSINK;
-        rid[0].Target = window;
+        rids[0] = new()
+        {
+            usUsagePage = RAWINPUTDEVICEUSAGEPAGE.HID_USAGE_PAGE_GENERIC,
+            usUsage = RAWINPUTDEVICE_usUsage.HID_USAGE_GENERIC_KEYBOARD,
+            dwFlags = RAWINPUTDEVICEFLAGS.RIDEV_INPUTSINK,
+            hwndTarget = window
+        };
 
-        if (!User32.RegisterRawInputDevices(rid))
+        if (!User32.RegisterRawInputDevices(rids, rids.Length, Marshal.SizeOf(typeof(RAWINPUTDEVICE))))
         {
             Console.WriteLine("[Warning] Raw input registration failed with error: {0}. Device: {1}",
-                Marshal.GetLastWin32Error(), rid[0].ToString());
+                Marshal.GetLastWin32Error(), rids[0].ToString());
         }
         else
         {

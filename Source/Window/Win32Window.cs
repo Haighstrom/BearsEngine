@@ -180,7 +180,7 @@ public class Win32Window : IWindow
         rect.top -= _topInvisBorder;
         rect.bottom -= _topInvisBorder;
 
-        User32.SetWindowPos(_windowHandle, rect, SETWINDOWPOSFLAGS.NOREDRAW);
+        User32.SetWindowPos(_windowHandle, IntPtr.Zero, rect.left, rect.top, rect.Width, rect.Height, SETWINDOWPOSFLAGS.NOREDRAW);
         
         Border = settings.Border;
 
@@ -213,7 +213,7 @@ public class Win32Window : IWindow
             case WINDOWMESSAGE.WM_DPICHANGED:
                 DPI = wParam.ToHIWORD() / 96f;
                 var proposedRect = (RECT)Marshal.PtrToStructure(lParam, typeof(RECT))!;
-                User32.SetWindowPos(_windowHandle, proposedRect, SETWINDOWPOSFLAGS.NOZORDER | SETWINDOWPOSFLAGS.NOACTIVATE);
+                User32.SetWindowPos(_windowHandle, IntPtr.Zero, proposedRect.left, proposedRect.top, proposedRect.Width, proposedRect.Height, SETWINDOWPOSFLAGS.NOZORDER | SETWINDOWPOSFLAGS.NOACTIVATE);
                 return IntPtr.Zero;
 
             case WINDOWMESSAGE.WM_MOVE:
@@ -631,7 +631,7 @@ public class Win32Window : IWindow
             {
                 case WindowState.Normal:
                     if (_border != BorderStyle.SizingBorder && (State == WindowState.Maximized || State == WindowState.Fullscreen))
-                        User32.SetWindowPos(_windowHandle, _prevPosition, 0);
+                        User32.SetWindowPos(_windowHandle, IntPtr.Zero, _prevPosition.left, _prevPosition.top, _prevPosition.Width, _prevPosition.Height, 0);
                     else
                         User32.ShowWindow(_windowHandle, SHOWWINDOWCOMMAND.SW_RESTORE);
                     break;
@@ -653,7 +653,7 @@ public class Win32Window : IWindow
                         mInfo.Work.right += _rightInvisBorder;
                         mInfo.Work.bottom += _bottomInvisBorder;
 
-                        User32.SetWindowPos(_windowHandle, mInfo.Work, 0);
+                        User32.SetWindowPos(_windowHandle, IntPtr.Zero, mInfo.Work.left, mInfo.Work.top, mInfo.Work.Width, mInfo.Work.Height, 0);
                     }
                     break;
                 case WindowState.Fullscreen:
@@ -741,7 +741,7 @@ public class Win32Window : IWindow
             bottom = y + _reportedPosition.Height
         };
 
-        User32.SetWindowPos(_windowHandle, rect, SETWINDOWPOSFLAGS.NOREDRAW);
+        User32.SetWindowPos(_windowHandle, IntPtr.Zero, rect.left, rect.top, rect.Width, rect.Height, SETWINDOWPOSFLAGS.NOREDRAW);
     }
 
     public Point ScreenToClient(Point screenPosition) => new((int)((screenPosition.X - _actualClientPosition.left) / DPI), (int)((screenPosition.Y - _actualClientPosition.top) / DPI));

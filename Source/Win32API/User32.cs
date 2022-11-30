@@ -1,9 +1,4 @@
-﻿using BearsEngine.Window;
-using System;
-using System.ComponentModel;
-using System.Drawing;
-using System.Dynamic;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 
@@ -151,7 +146,7 @@ internal static class User32
     /// <param name="lParam">Additional message information. The content of this parameter depends on the value of the Msg parameter.</param>
     /// <returns>The return value is the result of the message processing and depends on the message.</returns>
     [DllImport(Library, CharSet = CharSet.Auto)]
-    public extern static IntPtr DefWindowProc(IntPtr hWnd, WINDOWMESSAGE msg, IntPtr wParam, IntPtr lParam);
+    public static extern IntPtr DefWindowProc(IntPtr hWnd, WINDOWMESSAGE msg, IntPtr wParam, IntPtr lParam);
 
     /// <summary>
     /// Destroys a cursor and frees any memory the cursor occupied. Do not use this function to destroy a shared cursor.
@@ -246,7 +241,7 @@ internal static class User32
     /// <param name="clientRectangle">A pointer to a <see cref="RECT"/> structure that receives the client coordinates. The left and top members are zero. The right and bottom members contain the width and height of the window.</param>
     /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero. To get extended error information, call GetLastError.</returns>
     [DllImport(Library, SetLastError = true)]
-    public extern static bool GetClientRect(IntPtr windowHandle, out RECT clientRectangle);
+    public static extern bool GetClientRect(IntPtr windowHandle, out RECT clientRectangle);
 
     /// <summary>
     /// Retrieves a handle to the current cursor.
@@ -489,7 +484,7 @@ internal static class User32
     /// <param name="lpRect">A pointer to a RECT structure that receives the screen coordinates of the upper-left and lower-right corners of the window.</param>
     /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
     [DllImport(Library, SetLastError = true)]
-    public extern static bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+    public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
 
     /// <summary>
     /// Copies the text of the specified window's title bar (if it has one) into a buffer. If the specified window is a control, the text of the control is copied. However, GetWindowText cannot retrieve the text of a control in another application.
@@ -671,21 +666,7 @@ internal static class User32
     /// Only one window per raw input device class may be registered to receive raw input within a process(the window passed in the last call to RegisterRawInputDevices). Because of this, RegisterRawInputDevices should not be used from a library, as it may interfere with any raw input processing logic already present in applications that load it</remarks>
     [DllImport(Library, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool RegisterRawInputDevices(RAWINPUTDEVICE[] pRawInputDevices, uint uiNumDevices, uint cbSize);
-
-    /// <summary>
-    /// Registers the devices that supply the raw input data.
-    /// </summary>
-    /// <param name="rawInputDevices">An array of RAWINPUTDEVICE structures that represent the devices that supply the raw input.</param>
-    /// <returns>TRUE if the function succeeds; otherwise, FALSE. If the function fails, call GetLastError for more information.</returns>
-    public static bool RegisterRawInputDevices(RAWINPUTDEVICE[] rawInputDevices) => RegisterRawInputDevices(rawInputDevices, (uint)rawInputDevices.Length, RAWINPUTDEVICE.s_size);
-
-    /// <summary>
-    /// Registers the devices that supply the raw input data.
-    /// </summary>
-    /// <param name="rawInputDevice">A RAWINPUTDEVICE structure that represent the device that supplies the raw input.</param>
-    /// <returns>TRUE if the function succeeds; otherwise, FALSE. If the function fails, call GetLastError for more information.</returns>
-    public static bool RegisterRawInputDevices(RAWINPUTDEVICE rawInputDevice) => RegisterRawInputDevices(new[] { rawInputDevice });
+    public static extern bool RegisterRawInputDevices(RAWINPUTDEVICE[] pRawInputDevices, int uiNumDevices, int cbSize);
 
     /// <summary>
     /// Releases the mouse capture from a window in the current thread and restores normal mouse input processing. A window that has captured the mouse receives all mouse input, regardless of the position of the cursor, except when a mouse button is clicked while the cursor hot spot is in the window of another thread.
@@ -703,6 +684,17 @@ internal static class User32
     [DllImport(Library)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
+
+    /// <summary>
+    /// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message. To send a message and return immediately, use the SendMessageCallback or SendNotifyMessage function.To post a message to a thread's message queue and return immediately, use the PostMessage or PostThreadMessage function.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message is not sent to child windows. Message sending is subject to UIPI.The thread of a process can send messages only to message queues of threads in processes of lesser or equal integrity level.</param>
+    /// <param name="Msg">The message to be sent.</param>
+    /// <param name="wParam">Additional message-specific information.</param>
+    /// <param name="lParam">Additional message-specific information.</param>
+    /// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+    [DllImport(Library, CharSet = CharSet.Auto)]
+    public static extern IntPtr SendMessage(IntPtr hWnd, WINDOWMESSAGE Msg, IntPtr wParam, IntPtr lParam);
 
     /// <summary>
     /// Sets the mouse capture to the specified window belonging to the current thread. SetCapture captures mouse input either when the mouse is over the capturing window, or when the mouse button was pressed while the mouse was over the capturing window and the button is still down. Only one window at a time can capture the mouse.
@@ -937,25 +929,4 @@ internal static class User32
     [DllImport(Library)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool UpdateWindow(IntPtr hWnd);
-
-    // * * * CLEANED UP ABOVE THIS LINE * * *
-    
-    [DllImport(Library)]
-    public static extern IntPtr RegisterDeviceNotification(IntPtr hRecipient, IntPtr NotificationFilter, DeviceNotification Flags);
-
-    [DllImport(Library, SetLastError = true)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool RegisterRawInputDevices(RawInputDevice[] RawInputDevices, int NumDevices, int Size);
-    public static bool RegisterRawInputDevices(RawInputDevice[] rawInputDevices)
-    {
-        return RegisterRawInputDevices(rawInputDevices, rawInputDevices.Length, RawInputDevice.Size);
-    }
-    public static bool RegisterRawInputDevices(RawInputDevice rawInputDevice)
-    {
-        RawInputDevice[] rids = { rawInputDevice };
-        return RegisterRawInputDevices(rids, 1, RawInputDevice.Size);
-    }
-    
-    [DllImport(Library, CharSet = CharSet.Auto)]
-    public static extern IntPtr SendMessage(IntPtr hWnd, WINDOWMESSAGE Msg, IntPtr wParam, IntPtr lParam);
 }

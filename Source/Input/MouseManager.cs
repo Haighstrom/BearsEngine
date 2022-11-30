@@ -68,13 +68,15 @@ public sealed class MouseManager : IMouseManager
     private void RegisterRawDevice(IntPtr window, string device)
     {
         // Mouse is 1/2 (page/id). See http://www.microsoft.com/whdc/device/input/HID_HWID.mspx
-        RawInputDevice rid = new();
-        rid.UsagePage = 1;
-        rid.Usage = 2;
-        rid.Flags = RawInputDeviceFlags.INPUTSINK;
-        rid.Target = window;
+        RAWINPUTDEVICE rid = new();
+        rid.usUsagePage = RAWINPUTDEVICEUSAGEPAGE.HID_USAGE_PAGE_GENERIC;
+        rid.usUsage = RAWINPUTDEVICE_usUsage.HID_USAGE_GENERIC_MOUSE;
+        rid.dwFlags = RAWINPUTDEVICEFLAGS.RIDEV_INPUTSINK;
+        rid.hwndTarget = window;
 
-        if (!User32.RegisterRawInputDevices(rid))
+        RAWINPUTDEVICE[] rids = { rid };
+
+        if (!User32.RegisterRawInputDevices(rids, rids.Length, Marshal.SizeOf(typeof(RAWINPUTDEVICE))))
         {
             Console.WriteLine("[Warning] Raw input registration failed with error: {0}. Device: {1}",
                 Marshal.GetLastWin32Error(), rid.ToString());

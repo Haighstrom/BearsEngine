@@ -694,7 +694,7 @@ internal struct RAWINPUTDEVICE
     /// https://docs.microsoft.com/en-us/windows-hardware/drivers/hid/hid-architecture#hid-clients-supported-in-windows
     /// Top level collection Usage page for the raw input device. See HID Clients Supported in Windows for details on possible values.
     /// </summary>
-    internal RAWINPUTDEVICE_usUsagePage usUsagePage;
+    internal RAWINPUTDEVICEUSAGEPAGE usUsagePage;
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows-hardware/drivers/hid/top-level-collections
     /// https://docs.microsoft.com/en-us/windows-hardware/drivers/hid/hid-usages#usage-id
@@ -715,13 +715,11 @@ internal struct RAWINPUTDEVICE
     /// RIDEV_EXINPUTSINK: If set, this enables the caller to receive input in the background only if the foreground application does not process it.In other words, if the foreground application is not registered for raw input, then the background application that is registered will receive the input. This flag is not supported until Windows Vista
     /// RIDEV_DEVNOTIFY: If set, this enables the caller to receive WM_INPUT_DEVICE_CHANGE notifications for device arrival and device removal. Windows XP: This flag is not supported until Windows Vista
     /// </summary>
-    internal RAWINPUTDEVICE_dwFlags dwFlags;
+    internal RAWINPUTDEVICEFLAGS dwFlags;
     /// <summary>
     /// Handle to the target window. If NULL it follows the keyboard focus.
     /// </summary>
     internal IntPtr hwndTarget;
-
-    internal static readonly uint s_size = (uint)Marshal.SizeOf(typeof(RAWINPUTDEVICE));
 }
 
 /// <summary>
@@ -731,7 +729,7 @@ internal struct RAWINPUTDEVICE
 /// <remarks>If RIDEV_NOLEGACY is set for a mouse or a keyboard, the system does not generate any legacy message for that device for the application. For example, if the mouse TLC is set with RIDEV_NOLEGACY, WM_LBUTTONDOWN and related legacy mouse messages are not generated. Likewise, if the keyboard TLC is set with RIDEV_NOLEGACY, WM_KEYDOWN and related legacy keyboard messages are not generated.
 /// If RIDEV_REMOVE is set and the hwndTarget member is not set to NULL, then RegisterRawInputDevices function will fail.</remarks>
 [Flags]
-internal enum RAWINPUTDEVICE_dwFlags : int
+internal enum RAWINPUTDEVICEFLAGS : int
 {
     DEFAULT = 0,
     /// <summary>
@@ -1133,7 +1131,7 @@ internal enum RAWINPUTDEVICE_usUsage : ushort
 /// https://github.com/tpn/winsdk-10/blob/master/Include/10.0.10240.0/shared/hidusage.h
 /// HID usages are organized into usage pages of related controls. A specific control usage is defined by its usage page, a usage ID, a name, and a description. A usage page value is a 16-bit unsigned value. For use with User32 RegisterRawInputDevices.
 /// </summary>
-internal enum RAWINPUTDEVICE_usUsagePage : ushort
+internal enum RAWINPUTDEVICEUSAGEPAGE : ushort
 {
     /// <summary>Unknown usage page.</summary>
     HID_USAGE_PAGE_UNDEFINED = 0x00,
@@ -1945,13 +1943,6 @@ internal enum DeviceModeEnum : int
     DM_DISPLAYFREQUENCY = 0x00400000,
 }
 
-internal enum DeviceNotification
-{
-    WINDOW_HANDLE = 0x00000000,
-    SERVICE_HANDLE = 0x00000001,
-    ALL_INTERFACE_CLASSES = 0x00000004,
-}
-
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 internal class DISPLAY_DEVICE
 {
@@ -2091,90 +2082,6 @@ internal struct RawInputData
     internal RawKeyboard Keyboard;
     [FieldOffset(0)]
     internal RawHID HID;
-}
-
-/// <summary>
-/// Defines information for the raw input devices.
-/// </summary>
-[StructLayout(LayoutKind.Sequential)]
-internal struct RawInputDevice
-{
-    /// <summary>
-    /// Top level collection Usage page for the raw input device.
-    /// </summary>
-    //internal UInt16 UsagePage;
-    internal short UsagePage;
-    /// <summary>
-    /// Top level collection Usage for the raw input device.
-    /// </summary>
-    //internal UInt16 Usage;
-    internal short Usage;
-    /// <summary>
-    /// Mode flag that specifies how to interpret the information provided by UsagePage and Usage.
-    /// It can be zero (the default) or one of the following values.
-    /// By default, the operating system sends raw input from devices with the specified top level collection (TLC)
-    /// to the registered application as long as it has the window focus. 
-    /// </summary>
-    internal RawInputDeviceFlags Flags;
-    /// <summary>
-    /// Handle to the target window. If NULL it follows the keyboard focus.
-    /// </summary>
-    internal IntPtr Target;
-
-    internal static readonly int Size = Marshal.SizeOf(typeof(RawInputDevice));
-}
-
-[Flags]
-internal enum RawInputDeviceFlags : int
-{
-    /// <summary>
-    /// If set, this removes the top level collection from the inclusion list.
-    /// This tells the operating system to stop reading from a device which matches the top level collection.
-    /// </summary>
-    REMOVE = 0x00000001,
-    /// <summary>
-    /// If set, this specifies the top level collections to exclude when reading a complete usage page.
-    /// This flag only affects a TLC whose usage page is already specified with RawInputDeviceEnum.PAGEONLY. 
-    /// </summary>
-    EXCLUDE = 0x00000010,
-    /// <summary>
-    /// If set, this specifies all devices whose top level collection is from the specified UsagePage.
-    /// Note that usUsage must be zero. To exclude a particular top level collection, use EXCLUDE.
-    /// </summary>
-    PAGEONLY = 0x00000020,
-    /// <summary>
-    /// If set, this prevents any devices specified by UsagePage or Usage from generating legacy messages.
-    /// This is only for the mouse and keyboard. See RawInputDevice Remarks.
-    /// </summary>
-    NOLEGACY = 0x00000030,
-    /// <summary>
-    /// If set, this enables the caller to receive the input even when the caller is not in the foreground.
-    /// Note that Target must be specified in RawInputDevice.
-    /// </summary>
-    INPUTSINK = 0x00000100,
-    /// <summary>
-    /// If set, the mouse button click does not activate the other window.
-    /// </summary>
-    CAPTUREMOUSE = 0x00000200, // effective when mouse nolegacy is specified, otherwise it would be an error
-    /// <summary>
-    /// If set, the application-defined keyboard device hotkeys are not handled.
-    /// However, the system hotkeys; for example, ALT+TAB and CTRL+ALT+DEL, are still handled.
-    /// By default, all keyboard hotkeys are handled.
-    /// NOHOTKEYS can be specified even if NOLEGACY is not specified and Target is NULL in RawInputDevice.
-    /// </summary>
-    NOHOTKEYS = 0x00000200, // effective for keyboard.
-    /// <summary>
-    /// Microsoft Windows XP Service Pack 1 (SP1): If set, the application command keys are handled. APPKEYS can be specified only if NOLEGACY is specified for a keyboard device.
-    /// </summary>
-    APPKEYS = 0x00000400, // effective for keyboard.
-    /// <summary>
-    /// If set, this enables the caller to receive input in the background only if the foreground application
-    /// does not process it. In other words, if the foreground application is not registered for raw input,
-    /// then the background application that is registered will receive the input.
-    /// </summary>
-    EXINPUTSINK = 0x00001000,
-    DEVNOTIFY = 0x00002000,
-    //EXMODEMASK      = 0x000000F0
 }
 
 /// <summary>

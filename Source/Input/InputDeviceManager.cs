@@ -62,7 +62,7 @@ public class InputDeviceManager : IInputDeviceManager
         dbHdr.ClassGuid = DeviceInterfaceHid;
         unsafe
         {
-            _registrationHandle = User32.RegisterDeviceNotification(_inputWindow.Handle, new IntPtr(&dbHdr), DeviceNotification.WINDOW_HANDLE);
+            _registrationHandle = User32.RegisterDeviceNotification(_inputWindow.Handle, new IntPtr(&dbHdr), DEVICENOTIFYFLAGS.DEVICE_NOTIFY_WINDOW_HANDLE);
         }
         if (_registrationHandle == IntPtr.Zero)
         {
