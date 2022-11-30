@@ -183,7 +183,7 @@ public class Screen : IContainer, IScene
         }
 
         OpenGL32.glClearColour(BackgroundColour);
-        OpenGL32.glClear(ClearMask.GL_COLOR_BUFFER_BIT | ClearMask.GL_DEPTH_BUFFER_BIT);
+        OpenGL32.glClear(CLEAR_MASK.GL_COLOR_BUFFER_BIT | CLEAR_MASK.GL_DEPTH_BUFFER_BIT);
 
         OpenGL32.Enable(EnableCap.Blend);
         OpenGL32.glBlendFunc(BlendScaleFactor.GL_ONE, BlendScaleFactor.GL_ONE_MINUS_SRC_ALPHA);

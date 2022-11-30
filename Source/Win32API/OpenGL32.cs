@@ -6,6 +6,33 @@ using System.ComponentModel;
 
 namespace BearsEngine.Win32API;
 
+/// <summary>
+/// <see cref="OpenGL32.glClear"/> takes a single argument that is the bitwise OR of several values indicating which buffer(s) are to be cleared.
+/// </summary>
+[Flags]
+internal enum CLEAR_MASK : uint
+{
+    /// <summary>
+    /// Indicates the buffers currently enabled for color writing.
+    /// </summary>
+    GL_COLOR_BUFFER_BIT = 0x00004000,
+
+    /// <summary>
+    /// Indicates the depth buffer.
+    /// </summary>
+    GL_DEPTH_BUFFER_BIT = 0x00000100,
+
+    /// <summary>
+    /// Indicates the accumulation buffer.
+    /// </summary>
+    GL_ACCUM_BUFFER_BIT = 0x00000200,
+
+    /// <summary>
+    /// Indicates the stencil buffer.
+    /// </summary>
+    GL_STENCIL_BUFFER_BIT = 0x00000400,
+}
+
 [SuppressUnmanagedCodeSecurity]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "OpenGL functions have dumb naming conventions but I'm keeping these APIs pure.")]
 internal static class OpenGL32
@@ -48,7 +75,7 @@ internal static class OpenGL32
     /// </summary>
     /// <param name="mask">Bitwise OR of masks that indicate the buffers to be cleared. The three masks are GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT, and GL_STENCIL_BUFFER_BIT.</param>
     [DllImport(Library)]
-    public static extern void glClear(ClearMask mask);
+    public static extern void glClear(CLEAR_MASK mask);
 
     /// <summary>
     /// Specify clear values for the color buffers. Specify the red, green, blue, and alpha values used when the color buffers are cleared. The initial values are all 0.

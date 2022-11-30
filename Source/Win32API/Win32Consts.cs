@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace BearsEngine.Win32API;
+﻿namespace BearsEngine.Win32API;
 
 /// <summary>
 /// Appbar message value to send. https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shappbarmessage
@@ -71,32 +69,6 @@ internal enum APPBARMESSAGE : uint
     /// Windows XP and later: Registers or unregisters an autohide appbar for an edge of a particular monitor.
     /// </summary>
     ABM_SETAUTOHIDEBAREX = 0x0000000C,
-}
-
-/// <summary>
-/// A value that specifies an edge of the screen. https://learn.microsoft.com/en-us/windows/win32/api/shellapi/ns-shellapi-appbardata
-/// </summary>
-internal enum APPBARDATA_uEdge : uint
-{
-    /// <summary>
-    /// Bottom edge.
-    /// </summary>
-    ABE_BOTTOM = 3,
-    
-    /// <summary>
-    /// Left edge.
-    /// </summary>
-    ABE_LEFT = 0,
-
-    /// <summary>
-    /// Right edge.
-    /// </summary>
-    ABE_RIGHT = 2,
-
-    /// <summary>
-    /// Top edge.
-    /// </summary>
-    ABE_TOP = 1,
 }
 
 /// <summary>
@@ -478,87 +450,6 @@ internal enum GETDEVICECAPS_INDEX : int
 }
 
 /// <summary>
-/// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getqueuestatus
-/// For use with User32 GetQueueStatus
-/// </summary>
-[Flags]
-internal enum GetQueueStatus_flags : uint
-{
-    /// <summary>
-    /// An input, WM_TIMER, WM_PAINT, WM_HOTKEY, or posted message is in the queue.
-    /// </summary>
-    QS_ALLEVENTS = QS_INPUT | QS_POSTMESSAGE | QS_TIMER | QS_PAINT | QS_HOTKEY,
-
-    /// <summary>
-    /// Any message is in the queue.
-    /// </summary>
-    QS_ALLINPUT = QS_INPUT | QS_POSTMESSAGE | QS_TIMER | QS_PAINT | QS_HOTKEY | QS_SENDMESSAGE,
-
-    /// <summary>
-    /// A posted message (other than those listed here) is in the queue.
-    /// </summary>
-    QS_ALLPOSTMESSAGE = 0x0100,
-
-    /// <summary>
-    /// A WM_HOTKEY message is in the queue.
-    /// </summary>
-    QS_HOTKEY = 0x0080,
-
-    /// <summary>
-    /// An input message is in the queue.
-    /// </summary>
-    QS_INPUT = QS_MOUSE | QS_KEY | QS_RAWINPUT,
-
-    /// <summary>
-    /// A WM_KEYUP, WM_KEYDOWN, WM_SYSKEYUP, or WM_SYSKEYDOWN message is in the queue.
-    /// </summary>
-    QS_KEY = 0x0001,
-
-    /// <summary>
-    /// A WM_MOUSEMOVE message or mouse-button message (WM_LBUTTONUP, WM_RBUTTONDOWN, and so on).
-    /// </summary>
-    QS_MOUSE = QS_MOUSEMOVE | QS_MOUSEBUTTON,
-
-    /// <summary>
-    /// A mouse-button message (WM_LBUTTONUP, WM_RBUTTONDOWN, and so on).
-    /// </summary>
-    QS_MOUSEBUTTON = 0x0004,
-
-    /// <summary>
-    /// A WM_MOUSEMOVE message is in the queue.
-    /// </summary>
-    QS_MOUSEMOVE = 0x0002,
-
-    /// <summary>
-    /// A WM_PAINT message is in the queue.
-    /// </summary>
-    QS_PAINT = 0x0020,
-
-    /// <summary>
-    /// A posted message (other than those listed here) is in the queue.
-    /// </summary>
-    QS_POSTMESSAGE = 0x0008,
-
-    /// <summary>
-    /// A raw input message is in the queue. For more information, see Raw Input.
-    /// Windows 2000:  This flag is not supported.
-    /// </summary>
-    QS_RAWINPUT = 0x0400,
-
-    /// <summary>
-    /// A message sent by another thread or application is in the queue.
-    /// </summary>
-    QS_SENDMESSAGE = 0x0040,
-
-    /// <summary>
-    /// A WM_TIMER message is in the queue.
-    /// </summary>
-    QS_TIMER = 0x0010,
-}
-
-
-
-/// <summary>
 /// The resolution desired in <see cref="User32.GetMouseMovePointsEx"/>
 /// </summary>
 internal enum GMMP_RESOLUTION : uint
@@ -572,30 +463,6 @@ internal enum GMMP_RESOLUTION : uint
     /// Retrieves high resolution points. Points can range from zero to 65,535 (0xFFFF) in both x- and y-coordinates. This is the resolution provided by absolute coordinate pointing devices such as drawing tablets.
     /// </summary>
     GMMP_USE_HIGH_RESOLUTION_POINTS = 2,
-}
-
-/// <summary>
-/// glClear takes a single argument that is the bitwise OR of several values indicating which buffer is to be cleared.
-/// </summary>
-[Flags]
-internal enum ClearMask : uint
-{
-    /// <summary>
-    /// Indicates the buffers currently enabled for color writing.
-    /// </summary>
-    GL_COLOR_BUFFER_BIT = 0x00004000,
-    /// <summary>
-    /// Indicates the depth buffer.
-    /// </summary>
-    GL_DEPTH_BUFFER_BIT = 0x00000100,
-    /// <summary>
-    /// Indicates the accumulation buffer.
-    /// </summary>
-    GL_ACCUM_BUFFER_BIT = 0x00000200,
-    /// <summary>
-    /// Indicates the stencil buffer.
-    /// </summary>
-    GL_STENCIL_BUFFER_BIT = 0x00000400,
 }
 
 /// <summary>
@@ -635,207 +502,6 @@ internal enum GWL : int
     /// The address for the window procedure. You cannot change this attribute if the window does not belong to the same process as the calling thread. You must use the CallWindowProc function to call the window procedure.
     /// </summary>
     GWL_WNDPROC = -4,
-}
-
-/// <summary>
-/// Joystick capabilities
-/// </summary>
-[Flags]
-internal enum JOYCAPS_Caps
-{
-    /// <summary>
-    /// Joystick has z-coordinate information.
-    /// </summary>
-    JOYCAPS_HASZ = 0x1,
-
-    /// <summary>
-    /// Joystick has rudder (fourth axis) information.
-    /// </summary>
-    JOYCAPS_HASR = 0x2,
-
-    /// <summary>
-    /// Joystick has u-coordinate (fifth axis) information.
-    /// </summary>
-    JOYCAPS_HASU = 0x4,
-
-    /// <summary>
-    /// 	Joystick has v-coordinate (sixth axis) information.
-    /// </summary>
-    JOYCAPS_HASV = 0x8,
-
-    /// <summary>
-    /// Joystick has point-of-view information.
-    /// </summary>
-    JOYCAPS_HASPOV = 0x16,
-
-    /// <summary>
-    /// Joystick point-of-view supports discrete values (centered, forward, backward, left, and right).
-    /// </summary>
-    JOYCAPS_POV4DIR = 0x32,
-
-    /// <summary>
-    /// Joystick point-of-view supports continuous degree bearings.
-    /// </summary>
-    JOYCAPS_POVCTS = 0x64
-}
-
-/// <summary>
-/// Joystick buttons
-/// </summary>
-[Flags]
-internal enum JOYINFO_wButtons
-{
-    /// <summary>
-    /// First joystick button
-    /// </summary>
-    JOY_BUTTON1 = 1,
-
-    /// <summary>
-    /// Second joystick button
-    /// </summary>
-    JOY_BUTTON2 = 2,
-
-    /// <summary>
-    /// Third joystick button
-    /// </summary>
-    JOY_BUTTON3 = 4,
-
-    /// <summary>
-    /// Fourth jooystick button
-    /// </summary>
-    JOY_BUTTON4 = 8,
-}
-
-/// <summary>
-/// Flags indicating the valid information returned in JOYINFOEX. https://learn.microsoft.com/en-us/previous-versions/ms709358(v=vs.85)
-/// </summary>
-[Flags]
-internal enum JOYINFOEXdwFlags
-{
-    /// <summary>
-    /// Equivalent to setting all of the JOY_RETURN bits except JOY_RETURNRAWDATA.
-    /// </summary>
-    JOY_RETURNALL = JOY_RETURNX | JOY_RETURNY | JOY_RETURNZ | JOY_RETURNR | JOY_RETURNU | JOY_RETURNV | JOY_RETURNPOV | JOY_RETURNBUTTONS,
-
-    /// <summary>
-    /// The dwButtons member contains valid information about the state of each joystick button.
-    /// </summary>
-    JOY_RETURNBUTTONS = 128,
-
-    /// <summary>
-    /// Centers the joystick neutral position to the middle value of each axis of movement.
-    /// </summary>
-    JOY_RETURNCENTERED = 1024,
-
-    /// <summary>
-    /// The dwPOV member contains valid information about the point-of-view control, expressed in discrete units.
-    /// </summary>
-    JOY_RETURNPOV = 64,
-
-    /// <summary>
-    /// The dwPOV member contains valid information about the point-of-view control expressed in continuous, one-hundredth degree units.
-    /// </summary>
-    JOY_RETURNPOVCTS = 512,
-
-    /// <summary>
-    /// The dwRpos member contains valid rudder pedal data. This information represents another (fourth) axis.
-    /// </summary>
-    JOY_RETURNR = 8,
-
-    /// <summary>
-    /// Data stored in this structure is uncalibrated joystick readings.
-    /// </summary>
-    JOY_RETURNRAWDATA = 256,
-
-    /// <summary>
-    /// The dwUpos member contains valid data for a fifth axis of the joystick, if such an axis is available, or returns zero otherwise.
-    /// </summary>
-    JOY_RETURNU = 16,
-
-    /// <summary>
-    /// The dwVpos member contains valid data for a sixth axis of the joystick, if such an axis is available, or returns zero otherwise.
-    /// </summary>
-    JOY_RETURNV = 32,
-
-    /// <summary>
-    /// The dwXpos member contains valid data for the x-coordinate of the joystick.
-    /// </summary>
-    JOY_RETURNX = 1,
-
-    /// <summary>
-    /// The dwYpos member contains valid data for the y-coordinate of the joystick.
-    /// </summary>
-    JOY_RETURNY = 2,
-
-    /// <summary>
-    /// The dwZpos member contains valid data for the z-coordinate of the joystick.
-    /// </summary>
-    JOY_RETURNZ = 4,
-
-    /// <summary>
-    /// Expands the range for the neutral position of the joystick and calls this range the dead zone. The joystick driver returns a constant value for all positions in the dead zone.
-    /// </summary>
-    JOY_USEDEADZONE = 2048,
-
-    /// <summary>
-    /// Read the x-, y-, and z-coordinates and store the raw values in dwXpos, dwYpos, and dwZpos.
-    /// </summary>
-    JOY_CAL_READ3 = 0x40000,
-
-    /// <summary>
-    /// Read the rudder information and the x-, y-, and z-coordinates and store the raw values in dwXpos, dwYpos, dwZpos, and dwRpos.
-    /// </summary>
-    JOY_CAL_READ4 = 0x80000,
-
-    /// <summary>
-    /// Read the rudder information and the x-, y-, z-, and u-coordinates and store the raw values in dwXpos, dwYpos, dwZpos, dwRpos, and dwUpos.
-    /// </summary>
-    JOY_CAL_READ5 = 0x400000,
-
-    /// <summary>
-    /// Read the raw v-axis data if a joystick mini driver is present that will provide the data. Returns zero otherwise.
-    /// </summary>
-    JOY_CAL_READ6 = 0x800000,
-
-    /// <summary>
-    /// Read the joystick port even if the driver does not detect a device.
-    /// </summary>
-    JOY_CAL_READALWAYS = 0x10000,
-
-    /// <summary>
-    /// Read the rudder information if a joystick mini-driver is present that will provide the data and store the raw value in dwRpos. Return zero otherwise.
-    /// </summary>
-    JOY_CAL_READRONLY = 0x2000000,
-
-    /// <summary>
-    /// Read the x-coordinate and store the raw (uncalibrated) value in dwXpos.
-    /// </summary>
-    JOY_CAL_READXONLY = 0x100000,
-
-    /// <summary>
-    /// Reads the x- and y-coordinates and place the raw values in dwXpos and dwYpos.
-    /// </summary>
-    JOY_CAL_READXYONLY = 0x20000,
-
-    /// <summary>
-    /// Reads the y-coordinate and store the raw value in dwYpos.
-    /// </summary>
-    JOY_CAL_READYONLY = 0x200000,
-
-    /// <summary>
-    /// Read the z-coordinate and store the raw value in dwZpos.
-    /// </summary>
-    JOY_CAL_READZONLY = 0x1000000,
-
-    /// <summary>
-    /// Read the u-coordinate if a joystick mini-driver is present that will provide the data and store the raw value in dwUpos. Return zero otherwise.
-    /// </summary>
-    JOY_CAL_READUONLY = 0x4000000,
-
-    /// <summary>
-    /// Read the v-coordinate if a joystick mini-driver is present that will provide the data and store the raw value in dwVpos. Return zero otherwise.
-    /// </summary>
-    JOY_CAL_READVONLY = 0x8000000,
 }
 
 /// <summary>
@@ -946,22 +612,101 @@ internal enum PEEKMESSAGEFLAGS : uint
     /// <summary>
     /// Process mouse and keyboard messages.
     /// </summary>
-    PM_QS_INPUT = GetQueueStatus_flags.QS_INPUT << 16,
+    PM_QS_INPUT = QUEUESTATUSFLAGS.QS_INPUT << 16,
 
     /// <summary>
     /// Process paint messages.
     /// </summary>
-    PM_QS_PAINT = GetQueueStatus_flags.QS_PAINT << 16,
+    PM_QS_PAINT = QUEUESTATUSFLAGS.QS_PAINT << 16,
 
     /// <summary>
     /// Process all posted messages, including timers and hotkeys.
     /// </summary>
-    PM_QS_POSTMESSAGE = (GetQueueStatus_flags.QS_POSTMESSAGE | GetQueueStatus_flags.QS_HOTKEY | GetQueueStatus_flags.QS_TIMER) << 16,
+    PM_QS_POSTMESSAGE = (QUEUESTATUSFLAGS.QS_POSTMESSAGE | QUEUESTATUSFLAGS.QS_HOTKEY | QUEUESTATUSFLAGS.QS_TIMER) << 16,
 
     /// <summary>
     /// Process all sent messages.
     /// </summary>
-    PM_QS_SENDMESSAGE = GetQueueStatus_flags.QS_SENDMESSAGE << 16,
+    PM_QS_SENDMESSAGE = QUEUESTATUSFLAGS.QS_SENDMESSAGE << 16,
+}
+
+/// <summary>
+/// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getqueuestatus
+/// For use with User32 GetQueueStatus
+/// </summary>
+[Flags]
+internal enum QUEUESTATUSFLAGS : uint
+{
+    /// <summary>
+    /// An input, WM_TIMER, WM_PAINT, WM_HOTKEY, or posted message is in the queue.
+    /// </summary>
+    QS_ALLEVENTS = QS_INPUT | QS_POSTMESSAGE | QS_TIMER | QS_PAINT | QS_HOTKEY,
+
+    /// <summary>
+    /// Any message is in the queue.
+    /// </summary>
+    QS_ALLINPUT = QS_INPUT | QS_POSTMESSAGE | QS_TIMER | QS_PAINT | QS_HOTKEY | QS_SENDMESSAGE,
+
+    /// <summary>
+    /// A posted message (other than those listed here) is in the queue.
+    /// </summary>
+    QS_ALLPOSTMESSAGE = 0x0100,
+
+    /// <summary>
+    /// A WM_HOTKEY message is in the queue.
+    /// </summary>
+    QS_HOTKEY = 0x0080,
+
+    /// <summary>
+    /// An input message is in the queue.
+    /// </summary>
+    QS_INPUT = QS_MOUSE | QS_KEY | QS_RAWINPUT,
+
+    /// <summary>
+    /// A WM_KEYUP, WM_KEYDOWN, WM_SYSKEYUP, or WM_SYSKEYDOWN message is in the queue.
+    /// </summary>
+    QS_KEY = 0x0001,
+
+    /// <summary>
+    /// A WM_MOUSEMOVE message or mouse-button message (WM_LBUTTONUP, WM_RBUTTONDOWN, and so on).
+    /// </summary>
+    QS_MOUSE = QS_MOUSEMOVE | QS_MOUSEBUTTON,
+
+    /// <summary>
+    /// A mouse-button message (WM_LBUTTONUP, WM_RBUTTONDOWN, and so on).
+    /// </summary>
+    QS_MOUSEBUTTON = 0x0004,
+
+    /// <summary>
+    /// A WM_MOUSEMOVE message is in the queue.
+    /// </summary>
+    QS_MOUSEMOVE = 0x0002,
+
+    /// <summary>
+    /// A WM_PAINT message is in the queue.
+    /// </summary>
+    QS_PAINT = 0x0020,
+
+    /// <summary>
+    /// A posted message (other than those listed here) is in the queue.
+    /// </summary>
+    QS_POSTMESSAGE = 0x0008,
+
+    /// <summary>
+    /// A raw input message is in the queue. For more information, see Raw Input.
+    /// Windows 2000:  This flag is not supported.
+    /// </summary>
+    QS_RAWINPUT = 0x0400,
+
+    /// <summary>
+    /// A message sent by another thread or application is in the queue.
+    /// </summary>
+    QS_SENDMESSAGE = 0x0040,
+
+    /// <summary>
+    /// A WM_TIMER message is in the queue.
+    /// </summary>
+    QS_TIMER = 0x0010,
 }
 
 /// <summary>

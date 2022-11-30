@@ -392,7 +392,7 @@ internal static class User32
     /// <param name="flags">The types of messages for which to check.</param>
     /// <returns>The high-order word of the return value indicates the types of messages currently in the queue. The low-order word indicates the types of messages that have been added to the queue and that are still in the queue since the last call to the GetQueueStatus, GetMessage, or PeekMessage function.</returns>
     [DllImport(Library)]
-    public static extern uint GetQueueStatus(GetQueueStatus_flags flags);
+    public static extern uint GetQueueStatus(QUEUESTATUSFLAGS flags);
 
     /// <summary>
     /// Retrieves the raw input from the specified device.

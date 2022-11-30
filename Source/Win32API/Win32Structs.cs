@@ -9,6 +9,32 @@ namespace BearsEngine.Win32API;
 internal struct APPBARDATA
 {
     /// <summary>
+    /// A value that specifies an edge of the screen.
+    /// </summary>
+    internal enum ABEDGE : uint
+    {
+        /// <summary>
+        /// Bottom edge.
+        /// </summary>
+        ABE_BOTTOM = 3,
+
+        /// <summary>
+        /// Left edge.
+        /// </summary>
+        ABE_LEFT = 0,
+
+        /// <summary>
+        /// Right edge.
+        /// </summary>
+        ABE_RIGHT = 2,
+
+        /// <summary>
+        /// Top edge.
+        /// </summary>
+        ABE_TOP = 1,
+    }
+
+    /// <summary>
     /// The size of the structure, in bytes.
     /// </summary>
     public uint cbSize;
@@ -26,7 +52,7 @@ internal struct APPBARDATA
     /// <summary>
     /// A value that specifies an edge of the screen. This member is used when sending one of these messages: ABM_GETAUTOHIDEBAR, ABM_SETAUTOHIDEBAR, ABM_GETAUTOHIDEBAREX, ABM_SETAUTOHIDEBAREX, ABM_QUERYPOS, ABM_SETPOS
     /// </summary>
-    public APPBARDATA_uEdge uEdge;
+    public ABEDGE uEdge;
 
     /// <summary>
     /// A RECT structure whose use varies depending on the message:
@@ -138,6 +164,48 @@ internal struct CURSORINFO
 internal struct JOYCAPS
 {
     /// <summary>
+    /// Joystick capabilities
+    /// </summary>
+    [Flags]
+    public enum FLAGS
+    {
+        /// <summary>
+        /// Joystick has z-coordinate information.
+        /// </summary>
+        JOYCAPS_HASZ = 0x1,
+
+        /// <summary>
+        /// Joystick has rudder (fourth axis) information.
+        /// </summary>
+        JOYCAPS_HASR = 0x2,
+
+        /// <summary>
+        /// Joystick has u-coordinate (fifth axis) information.
+        /// </summary>
+        JOYCAPS_HASU = 0x4,
+
+        /// <summary>
+        /// 	Joystick has v-coordinate (sixth axis) information.
+        /// </summary>
+        JOYCAPS_HASV = 0x8,
+
+        /// <summary>
+        /// Joystick has point-of-view information.
+        /// </summary>
+        JOYCAPS_HASPOV = 0x16,
+
+        /// <summary>
+        /// Joystick point-of-view supports discrete values (centered, forward, backward, left, and right).
+        /// </summary>
+        JOYCAPS_POV4DIR = 0x32,
+
+        /// <summary>
+        /// Joystick point-of-view supports continuous degree bearings.
+        /// </summary>
+        JOYCAPS_POVCTS = 0x64
+    }
+
+    /// <summary>
     /// Manufacturer identifier. Manufacturer identifiers are defined in Manufacturer and Product Identifiers.
     /// </summary>
     public ushort wMid;
@@ -231,7 +299,7 @@ internal struct JOYCAPS
     /// <summary>
     /// Joystick capabilities
     /// </summary>
-    public JOYCAPS_Caps wCaps;
+    public FLAGS wCaps;
 
     /// <summary>
     /// Maximum number of axes supported by the joystick.
@@ -302,6 +370,33 @@ internal struct JOYCAPS
 internal struct JOYINFO
 {
     /// <summary>
+    /// Joystick buttons
+    /// </summary>
+    [Flags]
+    internal enum BUTTON
+    {
+        /// <summary>
+        /// First joystick button
+        /// </summary>
+        JOY_BUTTON1 = 1,
+
+        /// <summary>
+        /// Second joystick button
+        /// </summary>
+        JOY_BUTTON2 = 2,
+
+        /// <summary>
+        /// Third joystick button
+        /// </summary>
+        JOY_BUTTON3 = 4,
+
+        /// <summary>
+        /// Fourth jooystick button
+        /// </summary>
+        JOY_BUTTON4 = 8,
+    }
+
+    /// <summary>
     /// Current X-coordinate.
     /// </summary>
     public int wXpos;
@@ -319,7 +414,7 @@ internal struct JOYINFO
     /// <summary>
     /// Current state of joystick buttons.
     /// </summary>
-    public JOYINFO_wButtons wButtons;
+    public BUTTON wButtons;
 }
 
 /// <summary>
@@ -329,6 +424,138 @@ internal struct JOYINFO
 internal struct JOYINFOEX
 {
     /// <summary>
+    /// Flags indicating the valid information returned in JOYINFOEX. https://learn.microsoft.com/en-us/previous-versions/ms709358(v=vs.85)
+    /// </summary>
+    [Flags]
+    internal enum FLAGS
+    {
+        /// <summary>
+        /// Equivalent to setting all of the JOY_RETURN bits except JOY_RETURNRAWDATA.
+        /// </summary>
+        JOY_RETURNALL = JOY_RETURNX | JOY_RETURNY | JOY_RETURNZ | JOY_RETURNR | JOY_RETURNU | JOY_RETURNV | JOY_RETURNPOV | JOY_RETURNBUTTONS,
+
+        /// <summary>
+        /// The dwButtons member contains valid information about the state of each joystick button.
+        /// </summary>
+        JOY_RETURNBUTTONS = 128,
+
+        /// <summary>
+        /// Centers the joystick neutral position to the middle value of each axis of movement.
+        /// </summary>
+        JOY_RETURNCENTERED = 1024,
+
+        /// <summary>
+        /// The dwPOV member contains valid information about the point-of-view control, expressed in discrete units.
+        /// </summary>
+        JOY_RETURNPOV = 64,
+
+        /// <summary>
+        /// The dwPOV member contains valid information about the point-of-view control expressed in continuous, one-hundredth degree units.
+        /// </summary>
+        JOY_RETURNPOVCTS = 512,
+
+        /// <summary>
+        /// The dwRpos member contains valid rudder pedal data. This information represents another (fourth) axis.
+        /// </summary>
+        JOY_RETURNR = 8,
+
+        /// <summary>
+        /// Data stored in this structure is uncalibrated joystick readings.
+        /// </summary>
+        JOY_RETURNRAWDATA = 256,
+
+        /// <summary>
+        /// The dwUpos member contains valid data for a fifth axis of the joystick, if such an axis is available, or returns zero otherwise.
+        /// </summary>
+        JOY_RETURNU = 16,
+
+        /// <summary>
+        /// The dwVpos member contains valid data for a sixth axis of the joystick, if such an axis is available, or returns zero otherwise.
+        /// </summary>
+        JOY_RETURNV = 32,
+
+        /// <summary>
+        /// The dwXpos member contains valid data for the x-coordinate of the joystick.
+        /// </summary>
+        JOY_RETURNX = 1,
+
+        /// <summary>
+        /// The dwYpos member contains valid data for the y-coordinate of the joystick.
+        /// </summary>
+        JOY_RETURNY = 2,
+
+        /// <summary>
+        /// The dwZpos member contains valid data for the z-coordinate of the joystick.
+        /// </summary>
+        JOY_RETURNZ = 4,
+
+        /// <summary>
+        /// Expands the range for the neutral position of the joystick and calls this range the dead zone. The joystick driver returns a constant value for all positions in the dead zone.
+        /// </summary>
+        JOY_USEDEADZONE = 2048,
+
+        /// <summary>
+        /// Read the x-, y-, and z-coordinates and store the raw values in dwXpos, dwYpos, and dwZpos.
+        /// </summary>
+        JOY_CAL_READ3 = 0x40000,
+
+        /// <summary>
+        /// Read the rudder information and the x-, y-, and z-coordinates and store the raw values in dwXpos, dwYpos, dwZpos, and dwRpos.
+        /// </summary>
+        JOY_CAL_READ4 = 0x80000,
+
+        /// <summary>
+        /// Read the rudder information and the x-, y-, z-, and u-coordinates and store the raw values in dwXpos, dwYpos, dwZpos, dwRpos, and dwUpos.
+        /// </summary>
+        JOY_CAL_READ5 = 0x400000,
+
+        /// <summary>
+        /// Read the raw v-axis data if a joystick mini driver is present that will provide the data. Returns zero otherwise.
+        /// </summary>
+        JOY_CAL_READ6 = 0x800000,
+
+        /// <summary>
+        /// Read the joystick port even if the driver does not detect a device.
+        /// </summary>
+        JOY_CAL_READALWAYS = 0x10000,
+
+        /// <summary>
+        /// Read the rudder information if a joystick mini-driver is present that will provide the data and store the raw value in dwRpos. Return zero otherwise.
+        /// </summary>
+        JOY_CAL_READRONLY = 0x2000000,
+
+        /// <summary>
+        /// Read the x-coordinate and store the raw (uncalibrated) value in dwXpos.
+        /// </summary>
+        JOY_CAL_READXONLY = 0x100000,
+
+        /// <summary>
+        /// Reads the x- and y-coordinates and place the raw values in dwXpos and dwYpos.
+        /// </summary>
+        JOY_CAL_READXYONLY = 0x20000,
+
+        /// <summary>
+        /// Reads the y-coordinate and store the raw value in dwYpos.
+        /// </summary>
+        JOY_CAL_READYONLY = 0x200000,
+
+        /// <summary>
+        /// Read the z-coordinate and store the raw value in dwZpos.
+        /// </summary>
+        JOY_CAL_READZONLY = 0x1000000,
+
+        /// <summary>
+        /// Read the u-coordinate if a joystick mini-driver is present that will provide the data and store the raw value in dwUpos. Return zero otherwise.
+        /// </summary>
+        JOY_CAL_READUONLY = 0x4000000,
+
+        /// <summary>
+        /// Read the v-coordinate if a joystick mini-driver is present that will provide the data and store the raw value in dwVpos. Return zero otherwise.
+        /// </summary>
+        JOY_CAL_READVONLY = 0x8000000,
+    }
+
+    /// <summary>
     /// Size, in bytes, of this structure.
     /// </summary>
     public int dwSize;
@@ -337,7 +564,7 @@ internal struct JOYINFOEX
     /// Flags indicating the valid information returned in this structure. Members that do not contain valid information are set to zero.
     /// </summary>
     [MarshalAs(UnmanagedType.I4)]
-    public JOYINFOEXdwFlags dwFlags;
+    public FLAGS dwFlags;
 
     /// <summary>
     /// Current X-coordinate.
