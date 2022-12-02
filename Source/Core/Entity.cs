@@ -29,6 +29,11 @@ public class Entity : EntityBase, IClickable, ICollideable
     {
     }
 
+    public Entity(int layer, float x, float y, Point size, string graphicPath)
+    : this(layer, x, y, size.X, size.Y, new Image(graphicPath, size.X, size.Y))
+    {
+    }
+
     public Entity(int layer, Rect pos, Colour colour)
         : this(layer, pos.X, pos.Y, pos.W, pos.H, new Image(colour, pos.Size))
     {
