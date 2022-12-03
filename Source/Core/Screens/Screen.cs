@@ -22,7 +22,7 @@ public class Screen : IContainer, IScene
 
     public bool Visible { get; set; } = true;
 
-    private void OnIRenderableLayerChanged(object? sender, LayerChangedArgs args)
+    private void OnIRenderableLayerChanged(object? sender, LayerChangedEventArgs args)
     {
         _entitiesNeedSorting = true;
     }

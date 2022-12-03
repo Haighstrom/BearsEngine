@@ -9,16 +9,19 @@ public static class Types
     /// </summary>
     /// <param name="o">The object whose size is to be returned.</param>
     public static int GetUnmanagedSize(object o) => Marshal.SizeOf(o);
+
     /// <summary>
     /// Returns the unmanaged size, in bytes, of a type.
     /// </summary>
     /// <param name="t">The type whose size is to be returned.</param>
     public static int GetUnmanagedSize(Type t) => Marshal.SizeOf(t);
+
     /// <summary>
     /// Returns the unmanaged size in bytes of a type.
     /// </summary>
     /// <typeparam name="T">The type whose size is to be returned.</typeparam>
     public static int GetUnmanagedSize<T>() => Marshal.SizeOf<T>();
+
     /// <summary>
     /// Returns the unmanaged size, in bytes, of a type, cast to a specified type.
     /// </summary>

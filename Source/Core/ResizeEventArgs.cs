@@ -1,6 +1,6 @@
-﻿namespace BearsEngine;
+﻿namespace BearsEngine.Source.Core;
 
-public class ResizeEventArgs:EventArgs
+public class ResizeEventArgs : EventArgs
 {
     public Point OldSize, NewSize;
 

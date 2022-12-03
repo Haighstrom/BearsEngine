@@ -33,7 +33,7 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
             int oldvalue = _layer;
             _layer = value;
 
-            LayerChanged?.Invoke(this, new LayerChangedArgs(oldvalue, _layer));
+            LayerChanged?.Invoke(this, new LayerChangedEventArgs(oldvalue, _layer));
         }
     }
 
@@ -41,9 +41,9 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
 
     public bool Visible { get; set; } = true;
 
-    public event EventHandler<LayerChangedArgs>? LayerChanged;
+    public event EventHandler<LayerChangedEventArgs>? LayerChanged;
 
-    private void OnIRenderableLayerChanged(object? sender, LayerChangedArgs args)
+    private void OnIRenderableLayerChanged(object? sender, LayerChangedEventArgs args)
     {
         SortEntities();
     }

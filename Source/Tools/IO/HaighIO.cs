@@ -9,24 +9,6 @@ namespace BearsEngine;
 public static class HaighIO
 {
     private const int DeleteDirectoryRetries = 5;
-
-    [Flags]
-    public enum CopyOptions : uint
-    {
-        None = 0,
-        /// <summary>
-        /// Whether to overwrite files in the target directory
-        /// </summary>
-        Overwrite = 1,
-        /// <summary>
-        /// Bring top level folders
-        /// </summary>
-        BringFolders = 2,
-        /// <summary>
-        /// Bring all subdirectories and folders within them
-        /// </summary>
-        BringAll = 6,
-    }
     
     public static bool FileExists(string filePath) => File.Exists(filePath);
 

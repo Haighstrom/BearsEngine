@@ -68,13 +68,13 @@ namespace BearsEngine.Graphics
                 if (_layer == value)
                     return;
 
-                LayerChanged(this, new LayerChangedArgs(_layer, value));
+                LayerChanged(this, new LayerChangedEventArgs(_layer, value));
 
                 _layer = value;
             }
         }
 
-        public event EventHandler<LayerChangedArgs> LayerChanged = delegate { };
+        public event EventHandler<LayerChangedEventArgs> LayerChanged = delegate { };
 
         public void Dispose()
         {

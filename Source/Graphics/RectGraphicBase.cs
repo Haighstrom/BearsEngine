@@ -34,14 +34,14 @@ namespace BearsEngine.Graphics
                 if (_layer == value)
                     return;
 
-                LayerChanged?.Invoke(this, new LayerChangedArgs(_layer, value));
+                LayerChanged?.Invoke(this, new LayerChangedEventArgs(_layer, value));
 
                 _layer = value;
             }
         }
         
 
-        public event EventHandler<LayerChangedArgs> LayerChanged;
+        public event EventHandler<LayerChangedEventArgs> LayerChanged;
         
 
         public virtual Colour Colour { get; set; } = Colour.White;

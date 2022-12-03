@@ -1,4 +1,6 @@
-﻿namespace BearsEngine.Controllers;
+﻿using BearsEngine.Source.Core;
+
+namespace BearsEngine.Controllers;
 
 public class YIndexedLayerController : AddableBase, IUpdatable
 {
@@ -15,7 +17,7 @@ public class YIndexedLayerController : AddableBase, IUpdatable
 
     public bool Active { get; set; } = true;
 
-    private void OnTargetPositionChanged(object? sender, PositionChangedArgs e) => _target.Layer = (int)(_baseY - e.NewR.Y);
+    private void OnTargetPositionChanged(object? sender, PositionChangedEventArgs e) => _target.Layer = (int)(_baseY - e.NewR.Y);
 
     public void Update(float elapsed)
     {
