@@ -1,6 +1,4 @@
-﻿using BearsEngine.Source.Core;
-
-namespace BearsEngine.UI;
+﻿namespace BearsEngine.UI;
 
 /// <summary>
 /// Container Entity to add others too, where they will be neatly arranged in a grid. Add to a panel to use its scrollbars.

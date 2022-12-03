@@ -1,8 +1,7 @@
-﻿namespace BearsEngine
+﻿namespace BearsEngine;
+
+public interface IRenderable
 {
-    public interface IRenderable
-    {
-        bool Visible { get; set; }
-        void Render(ref Matrix4 projection, ref Matrix4 modelView);
-    }
+    bool Visible { get; set; }
+    void Render(ref Matrix4 projection, ref Matrix4 modelView);
 }

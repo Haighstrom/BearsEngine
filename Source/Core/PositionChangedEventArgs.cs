@@ -1,4 +1,4 @@
-﻿namespace BearsEngine.Source.Core;
+﻿namespace BearsEngine;
 
 public class PositionChangedEventArgs : EventArgs
 {

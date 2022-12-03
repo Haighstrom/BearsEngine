@@ -1,7 +1,6 @@
-﻿namespace BearsEngine.Worlds
+﻿namespace BearsEngine.Worlds;
+
+public interface IMoveable : IRectangular
 {
-    public interface IMoveable : IRectangular
-    {
-        float Speed { get; }
-    }
+    float Speed { get; }
 }

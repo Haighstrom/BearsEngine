@@ -1,8 +1,7 @@
-﻿namespace BearsEngine
+﻿namespace BearsEngine;
+
+public interface IRenderableOnLayer : IRenderable
 {
-    public interface IRenderableOnLayer : IRenderable
-    {
-        int Layer { get; set; }
-        event EventHandler<LayerChangedEventArgs>? LayerChanged;
-    }
+    int Layer { get; set; }
+    event EventHandler<LayerChangedEventArgs>? LayerChanged;
 }

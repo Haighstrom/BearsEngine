@@ -1,6 +1,4 @@
-﻿using BearsEngine.Source.Core;
-
-namespace BearsEngine;
+﻿namespace BearsEngine;
 
 public abstract class AddableRectBase : AddableBase, IRectAddable
 {

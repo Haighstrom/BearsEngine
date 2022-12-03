@@ -1,6 +1,4 @@
-﻿using BearsEngine.Source.Core;
-
-namespace BearsEngine.Controllers;
+﻿namespace BearsEngine.Controllers;
 
 public class YIndexedLayerController : AddableBase, IUpdatable
 {

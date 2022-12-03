@@ -1,4 +1,4 @@
-﻿namespace BearsEngine.Worlds;
+﻿namespace BearsEngine;
 
 public class LayerChangedEventArgs : EventArgs
 {

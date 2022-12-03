@@ -1,8 +1,7 @@
-﻿namespace BearsEngine
+﻿namespace BearsEngine;
+
+public interface IUpdatable
 {
-    public interface IUpdatable
-    {
-        bool Active { get; set; }
-        void Update(float elapsedTime);
-    }
+    bool Active { get; set; }
+    void Update(float elapsedTime);
 }
