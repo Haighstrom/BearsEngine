@@ -47,7 +47,7 @@ namespace BearsEngine.Graphics
                 BE.LastBoundTexture = Texture.ID;
             }
 
-            Shader.Render(ref projection, ref modelView, Vertices.Length, PrimitiveType.GL_TRIANGLES);
+            Shader.Render(ref projection, ref modelView, Vertices.Length, PRIMITIVEMODE.GL_TRIANGLES);
 
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, 0);
             BE.LastBoundVertexBuffer = 0;

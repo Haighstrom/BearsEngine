@@ -169,9 +169,9 @@ public static class HF
             OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
         }
 
-        public static void ResizeFramebuffer(uint framebufferID, ref Texture framebufferTexture, int newW, int newH)
+        public static void ResizeFramebuffer(ref Texture framebufferTexture, int newW, int newH)
         {
-            OpenGL32.DeleteTexture(framebufferTexture.ID);
+            OpenGL32.glDeleteTextures(1, new uint[1] { framebufferTexture.ID });
             framebufferTexture = new Texture(OpenGL32.GenTexture(), newW, newH);
 
             OpenGL32.glBindTexture(TextureTarget.Texture2D, framebufferTexture.ID);
@@ -199,9 +199,9 @@ public static class HF
             framebufferID = OpenGL32.GenFramebuffer();
         }
         
-        public static void ResizeMSAAFramebuffer(uint framebufferID, ref Texture framebufferTexture, int newW, int newH, MSAA_Samples newSamples)
+        public static void ResizeMSAAFramebuffer(ref Texture framebufferTexture, int newW, int newH, MSAA_Samples newSamples)
         {
-            OpenGL32.DeleteTexture(framebufferTexture.ID);
+            OpenGL32.glDeleteTextures(1, new uint[1] { framebufferTexture.ID });
             framebufferTexture = new Texture(OpenGL32.GenTexture(), newW, newH);
 
             OpenGL32.glBindTexture(TextureTarget.Texture2DMultisample, framebufferTexture.ID);

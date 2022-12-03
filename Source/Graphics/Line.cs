@@ -55,7 +55,7 @@ namespace BearsEngine.Graphics
 
             OpenGL32.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * Vertex.STRIDE, _vertices, BufferUsageHint.StreamDraw);
 
-            _shader.Render(ref projection, ref mv, _vertices.Length, PrimitiveType.GL_LINE_STRIP_ADJACENCY);
+            _shader.Render(ref projection, ref mv, _vertices.Length, PRIMITIVEMODE.GL_LINE_STRIP_ADJACENCY);
 
             Unbind();
         }

@@ -32,7 +32,7 @@ public class DefaultShader : IShader
     }
     
 
-    public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PrimitiveType drawType)
+    public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PRIMITIVEMODE drawType)
     {
         if (_ID != BE.LastBoundShader)
             HF.Graphics.BindShader(_ID);
@@ -49,7 +49,7 @@ public class DefaultShader : IShader
         OpenGL32.EnableVertexAttribArray(_locationTexture);
         OpenGL32.VertexAttribPointer(_locationTexture, 2, VertexAttribPointerType.Float, false, Vertex.STRIDE, 12);
 
-        OpenGL32.DrawArrays(drawType, 0, verticesLength);
+        OpenGL32.glDrawArrays(drawType, 0, verticesLength);
 
         OpenGL32.DisableVertexAttribArray(_locationPosition);
         OpenGL32.DisableVertexAttribArray(_locationColour);

@@ -3154,7 +3154,7 @@ public enum DebugType : int
     //PushGroup = 0x824B      unknown value      
 }
 
-public enum EnableCap : int
+public enum GLCAP : int
 {
     /// <summary>
     /// Original was GL_POINT_SMOOTH = 0x0B10
@@ -7450,7 +7450,7 @@ public enum PolygonMode : int
     Fill = 0x1B02,
 }
 
-public enum PrimitiveType : int
+public enum PRIMITIVEMODE : int
 {
     //todo: complete this. Look at other functions for docs? 
     //https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glBegin.xml
@@ -8069,7 +8069,7 @@ public enum TextureUnit
 }
 
 [Flags]
-public enum VertexArray : uint
+public enum STATEARRAY : uint
 {
     /// <summary>
     /// GL_VERTEX_ARRAY

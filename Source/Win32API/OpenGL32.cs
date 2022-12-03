@@ -102,39 +102,68 @@ internal static class OpenGL32
     /// <param name="colour">The new colour ([0-255] components).</param>
     public static void glClearColour(Colour colour) => glClearColor(((float)colour.R) / 255, ((float)colour.G) / 255, ((float)colour.B) / 255, ((float)colour.A) / 255);
 
+    /// <summary>
+    /// Sets the current color.
+    /// </summary>
+    /// <param name="red">The new red value for the current color. [0,1]</param>
+    /// <param name="green">The new green value for the current color. [0,1]</param>
+    /// <param name="blue">The new blue value for the current color. [0,1]</param>
+    /// <remarks>The current alpha value is set to 1.0 (full intensity) implicitly.</remarks>
+    [DllImport(Library)]
+    public static extern void glColor3f(float red, float green, float blue);
+
+    /// <summary>
+    /// Sets the current color.
+    /// </summary>
+    /// <param name="red">The new red value for the current color. [0,1]</param>
+    /// <param name="green">The new green value for the current color. [0,1]</param>
+    /// <param name="blue">The new blue value for the current color. [0,1]</param>
+    /// <param name="alpha">The new alpha value for the current color. [0,1]</param>
+    [DllImport(Library)]
+    public static extern void glColor4f(float red, float green, float blue, float alpha);
+
+    /// <summary>
+    /// Delete named textures.
+    /// </summary>
+    /// <param name="n">Specifies the number of textures to be deleted.</param>
+    /// <param name="textures">Specifies an array of textures to be deleted.</param>
+    [DllImport(Library)]
+    public static extern void glDeleteTextures(int n, uint[] textures);
+
+    /// <summary>
+    /// Enable or disable writing into the depth buffer. If flag is GL_FALSE, depth buffer writing is disabled. Otherwise, it is enabled. Initially, depth buffer writing is enabled.
+    /// </summary>
+    /// <param name="flag">Specifies whether the depth buffer is enabled for writing. If flag is GL_FALSE, depth buffer writing is disabled. Otherwise, it is enabled.</param>
+    [DllImport(Library)]
+    public static extern void glDepthMask(bool flag);
+
+    /// <summary>
+    /// The glEnable and glDisable functions enable or disable OpenGL capabilities.
+    /// </summary>
+    /// <param name="cap">A symbolic constant indicating an OpenGL capability. For discussion of the values cap can take, see the following Remarks section.</param>
+    [DllImport(Library)]
+    public static extern void glDisable(GLCAP cap);
+
+    /// <summary>
+    /// The glEnableClientState and glDisableClientState functions enable and disable arrays respectively.
+    /// </summary>
+    /// <param name="array">A symbolic constant for the array you want to enable or disable. </param>
+    [DllImport(Library)]
+    public static extern void glDisableClientState(STATEARRAY array);
+
+    /// <summary>
+    /// Render primitives from array data.
+    /// </summary>
+    /// <param name="mode">Specifies what kind of primitives to render.</param>
+    /// <param name="first">Specifies the starting index in the enabled arrays.</param>
+    /// <param name="count">Specifies the number of indices to be rendered.</param>
+    [DllImport(Library)]
+    public static extern void glDrawArrays(PRIMITIVEMODE mode, int first, int count);
+
     // ***CLEANED UP ABOVE THIS LINE***
 
     [DllImport(Library)]
-    public static extern void glColor3f(float red, float green, float blue);
-    
-
-    [DllImport(Library)]
-    public static extern void glColor4f(float red, float green, float blue, float alpha);
-    
-
-    [DllImport(Library)]
-    public static extern void glDeleteTextures(int n, uint[] textures);
-    
-
-    [DllImport(Library)]
-    public static extern void glDepthMask(bool flag);
-    
-
-    [DllImport(Library)]
-    public static extern void glDisable(int cap);
-    
-
-    [DllImport(Library)]
-    public static extern void glDisableClientState(uint array);
-    
-
-    [DllImport(Library)]
-    public static extern void glDrawArrays(int mode, int first, int count);
-    
-
-    [DllImport(Library)]
     public static extern void glEnable(int cap);
-    
 
     [DllImport(Library)]
     public static extern void glEnableClientState(uint array);
@@ -447,72 +476,15 @@ internal static class OpenGL32
             throw new Win32Exception($"Something went wrong with wglCreateContextAttribsARB: {Marshal.GetLastWin32Error()}");
 
         return rC;
-    }
-    
+    }    
 
-
-    
-
-    public static void Colour(Colour colour)
-    {
-        glColor4f(((float)colour.R) / 255, ((float)colour.G) / 255, ((float)colour.B) / 255, ((float)colour.A) / 255);
-    }
-    public static void Colour(byte red, byte green, byte blue)
-    {
-        glColor3f(((float)red) / 255, ((float)green) / 255, ((float)blue) / 255);
-    }
-
-    public static void Colour(byte red, byte green, byte blue, byte alpha)
-    {
-        glColor4f(((float)red) / 255, ((float)green) / 255, ((float)blue) / 255, ((float)alpha) / 255);
-    }
-                   
-
-    public static void DeleteTexture(uint texture)
-    {
-        uint[] textures = new uint[1];
-
-        glDeleteTextures(1, textures);
-    }
-    public static void DeleteTexture(uint[] textures)
-    {
-        int n = textures.Length;
-
-        glDeleteTextures(n, textures);
-    }
-    
-
-    public static void DepthMask(bool flag)
-    {
-        glDepthMask(flag);
-    }
-    
-
-    public static void Disable(EnableCap cap)
-    {
-        glDisable((int)cap);
-    }
-    
-
-    public static void DisableClientState(VertexArray array)
-    {
-        glDisableClientState((uint)array);
-    }
-    
-
-    public static void DrawArrays(PrimitiveType mode, int first, int count)
-    {
-        glDrawArrays((int)mode, first, count);
-    }
-    
-
-    public static void Enable(EnableCap cap)
+    public static void Enable(GLCAP cap)
     {
         glEnable((int)cap);
     }
     
 
-    public static void EnableClientState(VertexArray array)
+    public static void EnableClientState(STATEARRAY array)
     {
         glEnableClientState((uint)array);
     }
@@ -603,7 +575,7 @@ internal static class OpenGL32
     }
     
 
-    public static bool IsEnabled(EnableCap cap)
+    public static bool IsEnabled(GLCAP cap)
     {
         return glIsEnabled((int)cap) == 1;
     }

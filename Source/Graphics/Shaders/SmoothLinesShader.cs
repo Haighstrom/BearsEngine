@@ -36,9 +36,9 @@ public class SmoothLinesShader : IShader
     }
     
 
-    public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PrimitiveType drawType)
+    public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PRIMITIVEMODE drawType)
     {
-        if (drawType != PrimitiveType.GL_LINE_STRIP_ADJACENCY)
+        if (drawType != PRIMITIVEMODE.GL_LINE_STRIP_ADJACENCY)
             BE.Logging.Warning("Smooth lines shader is being used with PrimitiveType " + drawType + "instead of LineStripAdjacency.");
 
         if (_ID != BE.LastBoundShader)
@@ -56,7 +56,7 @@ public class SmoothLinesShader : IShader
         OpenGL32.EnableVertexAttribArray(_locationColour);
         OpenGL32.VertexAttribPointer(_locationColour, 4, VertexAttribPointerType.UnsignedByte, true, Vertex.STRIDE, 8);
 
-        OpenGL32.DrawArrays(drawType, 0, verticesLength);
+        OpenGL32.glDrawArrays(drawType, 0, verticesLength);
 
         OpenGL32.DisableVertexAttribArray(_locationPosition);
         OpenGL32.DisableVertexAttribArray(_locationColour);

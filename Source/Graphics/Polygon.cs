@@ -46,7 +46,7 @@ namespace BearsEngine.Graphics
 
             OpenGL32.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * Vertex.STRIDE, _vertices, BufferUsageHint.StreamDraw);
 
-            _shader.Render(ref projection, ref mv, _vertices.Length, PrimitiveType.GL_TRIANGLE_STRIP);
+            _shader.Render(ref projection, ref mv, _vertices.Length, PRIMITIVEMODE.GL_TRIANGLE_STRIP);
             Unbind();
         }
 

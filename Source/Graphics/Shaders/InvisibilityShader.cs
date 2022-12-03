@@ -52,7 +52,7 @@ public class InvisibilityShader : IShader
     }
     
 
-    public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PrimitiveType drawType)
+    public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PRIMITIVEMODE drawType)
     {
         HF.Graphics.BindShader(_ID);
 
@@ -75,7 +75,7 @@ public class InvisibilityShader : IShader
         OpenGL32.UniformMatrix3(_locationSourceInvMVMatrixUniform, 1, false, mdlMatrix.Inverse().Values);
 
 
-        OpenGL32.DrawArrays(drawType, 0, verticesLength);
+        OpenGL32.glDrawArrays(drawType, 0, verticesLength);
 
         OpenGL32.DisableVertexAttribArray(_locationPosition);
         OpenGL32.DisableVertexAttribArray(_locationColour);
