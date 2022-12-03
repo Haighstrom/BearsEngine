@@ -1,4 +1,6 @@
-﻿namespace BearsEngine.Controllers;
+﻿using BearsEngine.Source.Controllers.MotionControllers;
+
+namespace BearsEngine.Controllers;
 
 public class WaypointController : AddableBase, IUpdatable
 {

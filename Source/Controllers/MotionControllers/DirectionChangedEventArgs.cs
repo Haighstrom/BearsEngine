@@ -1,4 +1,4 @@
-﻿namespace BearsEngine;
+﻿namespace BearsEngine.Source.Controllers.MotionControllers;
 
 public class DirectionChangedEventArgs : EventArgs
 {
