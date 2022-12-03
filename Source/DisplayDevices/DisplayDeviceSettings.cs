@@ -5,16 +5,13 @@ public sealed class DisplayDeviceSettings
     private Rect _boundingRect;
     private int _colourDepth;
     private float _refreshRate;
-    
-
-    internal DisplayDeviceSettings() { }
 
     internal DisplayDeviceSettings(int x, int y, int width, int height, int colourDepth, float refreshRate)
     {
-        if (width <= 0) throw new ArgumentOutOfRangeException("width", "must be greater than zero");
-        if (height <= 0) throw new ArgumentOutOfRangeException("height", "must be greater than zero");
-        if (colourDepth <= 0) throw new ArgumentOutOfRangeException("colourDepth", "must be greater than zero");
-        if (refreshRate <= 0) throw new ArgumentOutOfRangeException("refreshRate", "must be greater than zero");
+        if (width <= 0) throw new ArgumentOutOfRangeException(nameof(width), "must be greater than zero");
+        if (height <= 0) throw new ArgumentOutOfRangeException(nameof(height), "must be greater than zero");
+        if (colourDepth <= 0) throw new ArgumentOutOfRangeException(nameof(colourDepth), "must be greater than zero");
+        if (refreshRate <= 0) throw new ArgumentOutOfRangeException(nameof(refreshRate), "must be greater than zero");
 
         _boundingRect = new Rect(x, y, width, height);
         _colourDepth = colourDepth;

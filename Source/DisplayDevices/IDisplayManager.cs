@@ -1,6 +1,4 @@
-﻿using BearsEngine.DisplayDevices;
-
-namespace BearsEngine.Display;
+﻿namespace BearsEngine.DisplayDevices;
 
 public interface IDisplayManager
 {

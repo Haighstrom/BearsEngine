@@ -1,11 +1,10 @@
-﻿using BearsEngine.DisplayDevices;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Immutable;
 
-namespace BearsEngine.Display;
+namespace BearsEngine.DisplayDevices;
 
 public interface IDisplay
 {
-    IList<DisplayDeviceSettings> AvailableSettings { get; }
+    IImmutableList<DisplayDeviceSettings> AvailableSettings { get; }
 
     Point Centre { get; }
 
