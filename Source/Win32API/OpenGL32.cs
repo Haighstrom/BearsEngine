@@ -160,37 +160,63 @@ internal static class OpenGL32
     [DllImport(Library)]
     public static extern void glDrawArrays(PRIMITIVEMODE mode, int first, int count);
 
-    // ***CLEANED UP ABOVE THIS LINE***
-
+    /// <summary>
+    /// glEnable and glDisable enable and disable various capabilities. Use glIsEnabled or glGet to determine the current setting of any capability. The initial value for each capability with the exception of GL_DITHER and GL_MULTISAMPLE is GL_FALSE. The initial value for GL_DITHER and GL_MULTISAMPLE is GL_TRUE.
+    /// </summary>
+    /// <param name="cap">Specifies a symbolic constant indicating a GL capability.</param>
     [DllImport(Library)]
-    public static extern void glEnable(int cap);
+    public static extern void glEnable(GLCAP cap);
 
+    /// <summary>
+    /// glEnableClientState and glDisableClientState enable or disable individual client-side capabilities. By default, all client-side capabilities are disabled. Both glEnableClientState and glDisableClientState take a single argument, cap, which can assume one of the following values:
+    /// </summary>
+    /// <param name="array">Specifies the capability to disable.</param>
     [DllImport(Library)]
-    public static extern void glEnableClientState(uint array);
-    
+    public static extern void glEnableClientState(STATEARRAY array);
 
+    /// <summary>
+    /// The glBegin and glEnd functions delimit the vertices of a primitive or a group of like primitives.
+    /// </summary>
     [DllImport(Library)]
     public static extern void glEnd();
-    
 
+    /// <summary>
+    /// glFlush — force execution of GL commands. Different GL implementations buffer commands in several different locations, including network buffers and the graphics accelerator itself. glFlush empties all of these buffers, causing all issued commands to be executed as quickly as they are accepted by the actual rendering engine. Though this execution may not be completed in any particular time period, it does complete in finite time.
+    /// </summary>
     [DllImport(Library)]
     public static extern void glFlush();
-    
 
+    /// <summary>
+    /// define front- and back-facing polygons
+    /// </summary>
+    /// <param name="mode">Specifies the orientation of front-facing polygons. GL_CW and GL_CCW are accepted. The initial value is GL_CCW.</param>
     [DllImport(Library)]
-    public static extern void glFrontFace(int mode);
-    
+    public static extern void glFrontFace(FRONTFACEMODE mode);
 
-    [DllImport(Library)]
-    public static extern void glGetBooleanv(int pname, [Out] out bool[] data);
-    
+    // ***CLEANED UP ABOVE THIS LINE***
 
+    /// <summary>
+    /// The glGetBooleanv function returns the value or values of a selected parameter.
+    /// </summary>
+    /// <param name="pname">The parameter value to be returned.</param>
+    /// <param name="data">Returns the value or values of the specified parameter.</param>
     [DllImport(Library)]
-    public static extern uint glGetError();
-    
+    public static extern void glGetBooleanv(GETENUMNAME pname, [Out] out bool[] data);
 
+    /// <summary>
+    /// Return error information. Each detectable error is assigned a numeric code and symbolic name. When an error occurs, the error flag is set to the appropriate error code value. No other errors are recorded until glGetError is called, the error code is returned, and the flag is reset to GL_NO_ERROR. If a call to glGetError returns GL_NO_ERROR, there has been no detectable error since the last call to glGetError, or since the GL was initialized.
+    /// </summary>
+    /// <returns>Returns the value of the error flag. </returns>
     [DllImport(Library)]
-    public static extern void glGetIntegerv(int pname, out int result);
+    public static extern OpenGLErrorCode glGetError();
+
+    /// <summary>
+    /// return the value or values of a selected parameter
+    /// </summary>
+    /// <param name="pname"></param>
+    /// <param name="result"></param>
+    [DllImport(Library)]
+    public static extern void glGetIntegerv(GETENUMNAME pname, out int result);
     
 
     [DllImport(Library)]
@@ -478,30 +504,6 @@ internal static class OpenGL32
         return rC;
     }    
 
-    public static void Enable(GLCAP cap)
-    {
-        glEnable((int)cap);
-    }
-    
-
-    public static void EnableClientState(STATEARRAY array)
-    {
-        glEnableClientState((uint)array);
-    }
-    
-
-    public static void Flush()
-    {
-        glFlush();
-    }
-    
-
-    public static void FrontFace(FrontFaceDirection mode)
-    {
-        glFrontFace((int)mode);
-    }
-    
-
     public static uint GenTexture()
     {
         uint[] textures = new uint[1];
@@ -520,15 +522,7 @@ internal static class OpenGL32
     }
     
 
-    public static bool[] GetBool(GLEnumPName pname)
-    {
-        glGetBooleanv((int)pname, out bool[] bools);
-
-        return bools;
-    }
-    
-
-    public static int GetInt(GLEnumPName pname)
+    public static int GetInt( pname)
     {
         glGetIntegerv((int)pname, out int i);
 
@@ -539,14 +533,8 @@ internal static class OpenGL32
     public static Rect GetViewport()
     {
         int[] ints = new int[4];
-        glGetIntegerv((int)GLEnumPName.Viewport, ints);
+        glGetIntegerv((int)GETENUMNAME.Viewport, ints);
         return new Rect(ints[0], ints[1], ints[2], ints[3]);
-    }
-    
-
-    public static OpenGLErrorCode GetError()
-    {
-        return (OpenGLErrorCode)glGetError();
     }
     
 

@@ -3954,7 +3954,7 @@ public enum FramebufferTarget : int
     FramebufferExt = 0x8D40,
 }
 
-public enum FrontFaceDirection : int
+public enum FRONTFACEMODE : int
 {
     /// <summary>
     /// Original was GL_CW = 0x0900
@@ -3966,7 +3966,7 @@ public enum FrontFaceDirection : int
     Ccw = 0x0901,
 }
 
-public enum GLEnumPName : int
+public enum GETENUMNAME : int
 {
     /// <summary>
     /// Original was GL_CURRENT_COLOR = 0x0B00
