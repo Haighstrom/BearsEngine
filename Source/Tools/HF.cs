@@ -464,7 +464,7 @@ public static class HF
             System.Drawing.Bitmap bmp = new(t.Width, t.Height);
             OpenGL32.glBindTexture(TextureTarget.Texture2D, t.ID);
             System.Drawing.Imaging.BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            OpenGL32.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+            OpenGL32.glGetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
             bmp.UnlockBits(data);
             return bmp;
         }

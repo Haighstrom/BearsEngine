@@ -116,7 +116,7 @@ namespace BearsEngine.Worlds.Cameras
             _frameBufferShaderPassID = OpenGL32.GenFramebuffer();
 
             //Check for OpenGL errors
-            var err = OpenGL32.GetError();
+            var err = OpenGL32.glGetError();
             if (err != OpenGLErrorCode.NO_ERROR)
                 BE.Logging.Warning($"OpenGL error! (Camera.Render) {err}");
         }

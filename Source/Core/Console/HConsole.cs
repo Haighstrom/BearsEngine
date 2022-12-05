@@ -10,7 +10,7 @@ public static class HConsole
 
     public static bool CheckOpenGLError(string callerID)
     {
-        var err = OpenGL32.GetError();
+        var err = OpenGL32.glGetError();
         if (err != OpenGLErrorCode.NO_ERROR)
         {
             //Log($"OpenGL error in {callerID} : {err}");

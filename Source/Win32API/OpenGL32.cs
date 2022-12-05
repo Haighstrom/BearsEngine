@@ -3,6 +3,15 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Drawing;
 using System.ComponentModel;
+using BearsEngine.Graphics;
+using System.Collections.Generic;
+using System.Runtime.Intrinsics.X86;
+using BearsEngine.Graphics.Shaders;
+using NAudio.SoundFont;
+using static BearsEngine.HF;
+using System.Reflection.Metadata;
+using System.Reflection;
+using System;
 
 namespace BearsEngine.Win32API;
 
@@ -193,6 +202,50 @@ internal static class OpenGL32
     [DllImport(Library)]
     public static extern void glFrontFace(FRONTFACEMODE mode);
 
+    /// <summary>
+    /// Return error information. Each detectable error is assigned a numeric code and symbolic name. When an error occurs, the error flag is set to the appropriate error code value. No other errors are recorded until glGetError is called, the error code is returned, and the flag is reset to GL_NO_ERROR. If a call to glGetError returns GL_NO_ERROR, there has been no detectable error since the last call to glGetError, or since the GL was initialized.
+    /// </summary>
+    /// <returns>Returns the value of the error flag. </returns>
+    [DllImport(Library)]
+    public static extern OpenGLErrorCode glGetError();
+
+    /// <summary>
+    /// return a texture image
+    /// </summary>
+    /// <param name="target">Specifies the target to which the texture is bound for glGetTexImage and glGetnTexImage functions.</param>
+    /// <param name="level">Specifies the level-of-detail number of the desired image. Level 0 is the base image level. Level n is the nth mipmap reduction image.</param>
+    /// <param name="format">Specifies a pixel format for the returned data.</param>
+    /// <param name="type">Specifies a pixel type for the returned data.</param>
+    /// <param name="pixels">Returns the texture image. Should be a pointer to an array of the type specified by type.</param>
+    [DllImport(Library)]
+    public static extern void glGetTexImage(TextureTarget target, int level, PixelFormat format, PixelType type, IntPtr pixels);
+
+    /// <summary>
+    /// returns n texture names in textures. There is no guarantee that the names form a contiguous set of integers; however, it is guaranteed that none of the returned names was in use immediately before the call to glGenTextures. The generated textures have no dimensionality; they assume the dimensionality of the texture target to which they are first bound(see glBindTexture). Texture names returned by a call to glGenTextures are not returned by subsequent calls, unless they are first deleted with glDeleteTextures.
+    /// </summary>
+    /// <param name="n">Specifies the number of texture names to be generated.</param>
+    /// <param name="textures">Specifies an array in which the generated texture names are stored.</param>
+    [DllImport(Library)]
+    public static extern void glGenTextures(int n, uint[] textures);
+
+    /// <summary>
+    /// returns GL_TRUE if cap is an enabled capability and returns GL_FALSE otherwise. Boolean states that are indexed may be tested with glIsEnabledi. For glIsEnabledi, index specifies the index of the capability to test. index must be between zero and the count of indexed capabilities for cap. Initially all capabilities except GL_DITHER are disabled; GL_DITHER is initially enabled.
+    /// </summary>
+    /// <param name="cap">Specifies a symbolic constant indicating a GL capability.</param>
+    /// <returns>returns GL_TRUE if cap is an enabled capability and returns GL_FALSE otherwise</returns>
+    [DllImport(Library)]
+    public static extern bool glIsEnabled(GLCAP cap); //marshalasbool?
+
+    /// <summary>
+    /// returns light source parameter values.
+    /// </summary>
+    /// <param name="light">The identifier of a light. The number of possible lights depends on the implementation, but at least eight lights are supported. They are identified by symbolic names of the form GL_LIGHTi where i is a value: 0 to GL_MAX_LIGHTS - 1.</param>
+    /// <param name="pname">A light source parameter for light.</param>
+    /// <param name="params">Specifies the value that parameter pname of light source light will be set to.</param>
+    /// <remarks>The glLightfv function sets the value or values of individual light source parameters. The light parameter names the light and is a symbolic name of the form GL_LIGHTi, where 0 = i less than GL_MAX_LIGHTS. The pname parameter specifies one of the light source parameters, again by symbolic name.The params parameter is either a single value or a pointer to an array that contains the new values. Lighting calculation is enabled and disabled using glEnable and glDisable with argument GL_LIGHTING.When lighting is enabled, light sources that are enabled contribute to the lighting calculation.Light source i is enabled and disabled using glEnable and glDisable with argument GL_LIGHTi. It is always the case that GL_LIGHTi = GL_LIGHT0 + i.</remarks>
+    [DllImport(Library)]
+    public static extern void glLightfv(LightName light, LightParameter pname, float[] @params);
+
     // ***CLEANED UP ABOVE THIS LINE***
 
     /// <summary>
@@ -204,13 +257,6 @@ internal static class OpenGL32
     public static extern void glGetBooleanv(GETENUMNAME pname, [Out] out bool[] data);
 
     /// <summary>
-    /// Return error information. Each detectable error is assigned a numeric code and symbolic name. When an error occurs, the error flag is set to the appropriate error code value. No other errors are recorded until glGetError is called, the error code is returned, and the flag is reset to GL_NO_ERROR. If a call to glGetError returns GL_NO_ERROR, there has been no detectable error since the last call to glGetError, or since the GL was initialized.
-    /// </summary>
-    /// <returns>Returns the value of the error flag. </returns>
-    [DllImport(Library)]
-    public static extern OpenGLErrorCode glGetError();
-
-    /// <summary>
     /// return the value or values of a selected parameter
     /// </summary>
     /// <param name="pname"></param>
@@ -218,29 +264,11 @@ internal static class OpenGL32
     [DllImport(Library)]
     public static extern void glGetIntegerv(GETENUMNAME pname, out int result);
     
-
     [DllImport(Library)]
     public static extern void glGetIntegerv(int pname, int[] result);
-    
-
-    [DllImport(Library)]
-    public static extern void glGetTexImage(int target, int level, int format, int type, IntPtr pixels);
-    
-
-    [DllImport(Library)]
-    public static extern void glGenTextures(int n, uint[] textures);
-    
 
     [DllImport(Library)]
     public unsafe static extern sbyte* glGetString(uint name);
-    
-
-    [DllImport(Library)]
-    public static extern byte glIsEnabled(int cap);
-    
-
-    [DllImport(Library)]
-    public static extern void glLightfv(int light, int pname, float[] @params);
     
 
     [DllImport(Library)]
@@ -512,23 +540,6 @@ internal static class OpenGL32
 
         return textures[0];
     }
-    public static uint[] GenTextures(int n)
-    {
-        uint[] textures = new uint[n];
-
-        glGenTextures(n, textures);
-
-        return textures;
-    }
-    
-
-    public static int GetInt( pname)
-    {
-        glGetIntegerv((int)pname, out int i);
-
-        return i;
-    }
-    
 
     public static Rect GetViewport()
     {
@@ -547,43 +558,21 @@ internal static class OpenGL32
     }
     
 
-    public static void GetTexImage(TextureTarget target, int level, PixelFormat format, PixelType type, IntPtr pixels)
-    {
-        glGetTexImage((int)target, level, (int)format, (int)type, pixels);
-    }
     public static void GetTexImage<T>(TextureTarget target, int level, PixelFormat format, PixelType type, T[] pixels)
     {
         GCHandle pinnedArray = GCHandle.Alloc(pixels, GCHandleType.Pinned);
 
         IntPtr pointer = pinnedArray.AddrOfPinnedObject();
 
-        glGetTexImage((int)target, level, (int)format, (int)type, pointer);
+        glGetTexImage(target, level, format, type, pointer);
 
         pinnedArray.Free();
-    }
-    
-
-    public static bool IsEnabled(GLCAP cap)
-    {
-        return glIsEnabled((int)cap) == 1;
-    }
-    
-
-    public static void Light(LightName light, LightParameter pname, float[] @params)
-    {
-        glLightfv((int)light, (int)pname, @params);
     }
     
 
     public static void LineWidth(float width)
     {
         glLineWidth(width);
-    }
-    
-
-    public static void LoadIdentity()
-    {
-        glLoadIdentity();
     }
     
 
@@ -746,8 +735,6 @@ internal static class OpenGL32
     {
         glViewport((int)viewport.X, (int)viewport.Y, (int)viewport.W, (int)viewport.H);
     }
-    
-    
 
     private delegate string wglGetExtensionsStringARB(IntPtr hDc);
     private static wglGetExtensionsStringARB _wglGetExtensionsStringARB;
