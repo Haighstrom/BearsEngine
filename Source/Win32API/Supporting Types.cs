@@ -3966,7 +3966,7 @@ public enum FRONTFACEMODE : int
     Ccw = 0x0901,
 }
 
-public enum GETENUMNAME : int
+public enum GLGET : int
 {
     /// <summary>
     /// Original was GL_CURRENT_COLOR = 0x0B00

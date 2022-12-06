@@ -3,15 +3,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Drawing;
 using System.ComponentModel;
-using BearsEngine.Graphics;
-using System.Collections.Generic;
-using System.Runtime.Intrinsics.X86;
-using BearsEngine.Graphics.Shaders;
-using NAudio.SoundFont;
-using static BearsEngine.HF;
-using System.Reflection.Metadata;
-using System.Reflection;
-using System;
 
 namespace BearsEngine.Win32API;
 
@@ -203,11 +194,43 @@ internal static class OpenGL32
     public static extern void glFrontFace(FRONTFACEMODE mode);
 
     /// <summary>
+    /// The glGetBooleanv function returns the value or values of a selected parameter.
+    /// </summary>
+    /// <param name="pname">The parameter value to be returned.</param>
+    /// <param name="data">Returns the value or values of the specified parameter.</param>
+    [DllImport(Library)]
+    public static extern void glGetBooleanv(GLGET pname, [Out] out bool[] data);
+
+    /// <summary>
     /// Return error information. Each detectable error is assigned a numeric code and symbolic name. When an error occurs, the error flag is set to the appropriate error code value. No other errors are recorded until glGetError is called, the error code is returned, and the flag is reset to GL_NO_ERROR. If a call to glGetError returns GL_NO_ERROR, there has been no detectable error since the last call to glGetError, or since the GL was initialized.
     /// </summary>
     /// <returns>Returns the value of the error flag. </returns>
     [DllImport(Library)]
     public static extern OpenGLErrorCode glGetError();
+
+    /// <summary>
+    /// return the value or values of a selected parameter
+    /// </summary>
+    /// <param name="pname">Specifies the parameter value to be returned for non-indexed versions of glGet.</param>
+    /// <param name="result">Returns the value or values of the specified parameter.</param>
+    [DllImport(Library)]
+    public static extern void glGetIntegerv(GLGET pname, out int result);
+
+    /// <summary>
+    /// Return the value or values of a selected parameter
+    /// </summary>
+    /// <param name="pname">Specifies the parameter value to be returned for non-indexed versions of glGet</param>
+    /// <param name="result">Returns the values of the specified parameter.</param>
+    [DllImport(Library)]
+    public static extern void glGetIntegerv(int pname, int[] result);
+
+    /// <summary>
+    /// Returns a pointer to a static string describing some aspect of the current GL connection.
+    /// </summary>
+    /// <param name="name">Specifies a symbolic constant</param>
+    /// <returns>Returns a pointer to a static string describing some aspect of the current GL connection</returns>
+    [DllImport(Library)]
+    public unsafe static extern sbyte* glGetString(GetStringEnum name);
 
     /// <summary>
     /// return a texture image
@@ -246,54 +269,57 @@ internal static class OpenGL32
     [DllImport(Library)]
     public static extern void glLightfv(LightName light, LightParameter pname, float[] @params);
 
-    // ***CLEANED UP ABOVE THIS LINE***
-
     /// <summary>
-    /// The glGetBooleanv function returns the value or values of a selected parameter.
+    /// specify the width of rasterized lines
     /// </summary>
-    /// <param name="pname">The parameter value to be returned.</param>
-    /// <param name="data">Returns the value or values of the specified parameter.</param>
-    [DllImport(Library)]
-    public static extern void glGetBooleanv(GETENUMNAME pname, [Out] out bool[] data);
-
-    /// <summary>
-    /// return the value or values of a selected parameter
-    /// </summary>
-    /// <param name="pname"></param>
-    /// <param name="result"></param>
-    [DllImport(Library)]
-    public static extern void glGetIntegerv(GETENUMNAME pname, out int result);
-    
-    [DllImport(Library)]
-    public static extern void glGetIntegerv(int pname, int[] result);
-
-    [DllImport(Library)]
-    public unsafe static extern sbyte* glGetString(uint name);
-    
-
+    /// <param name="width">Specifies the width of rasterized lines. The initial value is 1.</param>
     [DllImport(Library)]
     public static extern void glLineWidth(float width);
-    
 
+    /// <summary>
+    /// replace the current matrix with the identity matrix
+    /// </summary>
     [DllImport(Library)]
     public static extern void glLoadIdentity();
-    
 
+    /// <summary>
+    /// The glMaterialfv function specifies material parameters for the lighting model.
+    /// </summary>
+    /// <param name="face">The face or faces that are being updated. Must be one of the following: GL_FRONT, GL_BACK, or GL_FRONT and GL_BACK.</param>
+    /// <param name="pname">The material parameter of the face or faces being updated.</param>
+    /// <param name="params">The value to which parameter GL_SHININESS will be set.</param>
     [DllImport(Library)]
-    public static extern void glMaterialfv(int face, int pname, float[] @params);
-    
+    public static extern void glMaterialfv(MaterialFace face, MaterialParameter pname, float[] @params);
 
+    /// <summary>
+    /// specify which matrix is the current matrix
+    /// </summary>
+    /// <param name="mode">Specifies which matrix stack is the target for subsequent matrix operations.</param>
     [DllImport(Library)]
-    public static extern void glMatrixMode(int mode);
-    
+    public static extern void glMatrixMode(MatrixMode mode);
 
+    /// <summary>
+    /// Sets the current normal vector.
+    /// </summary>
+    /// <param name="nx">Specifies the x-coordinate for the new current normal vector.</param>
+    /// <param name="ny">Specifies the y-coordinate for the new current normal vector.</param>
+    /// <param name="nz">Specifies the z-coordinate for the new current normal vector.</param>
     [DllImport(Library)]
     public static extern void glNormal3f(float nx, float ny, float nz);
-    
 
+    /// <summary>
+    /// glOrtho describes a transformation that produces a parallel projection. The current matrix (see glMatrixMode) is multiplied by the orthographic matrix and the result replaces the current matrix.
+    /// </summary>
+    /// <param name="left">Specify the coordinates for the left and right vertical clipping planes.</param>
+    /// <param name="right">Specify the coordinates for the left and right vertical clipping planes.</param>
+    /// <param name="bottom">Specify the coordinates for the bottom and top horizontal clipping planes.</param>
+    /// <param name="top">Specify the coordinates for the bottom and top horizontal clipping planes.</param>
+    /// <param name="zNear">Specify the distances to the nearer and farther depth clipping planes. These values are negative if the plane is to be behind the viewer.</param>
+    /// <param name="zFar">Specify the distances to the nearer and farther depth clipping planes. These values are negative if the plane is to be behind the viewer.</param>
     [DllImport(Library)]
     public static extern void glOrtho(double left, double right, double bottom, double top, double zNear, double zFar);
-    
+
+    // ***CLEANED UP ABOVE THIS LINE***
 
     [DllImport(Library)]
     public static extern void glReadPixels(int x, int y, int width, int height, int format, int type, [Out] IntPtr data);
@@ -544,7 +570,7 @@ internal static class OpenGL32
     public static Rect GetViewport()
     {
         int[] ints = new int[4];
-        glGetIntegerv((int)GETENUMNAME.Viewport, ints);
+        glGetIntegerv((int)GLGET.Viewport, ints);
         return new Rect(ints[0], ints[1], ints[2], ints[3]);
     }
     
@@ -553,7 +579,7 @@ internal static class OpenGL32
     {
         unsafe
         {
-            return new string(glGetString((uint)name));
+            return new string(glGetString(name));
         }
     }
     
@@ -570,63 +596,15 @@ internal static class OpenGL32
     }
     
 
-    public static void LineWidth(float width)
-    {
-        glLineWidth(width);
-    }
-    
-
-    public static void Material(MaterialFace face, MaterialParameter pname, float[] @params)
-    {
-        glMaterialfv((int)face, (int)pname, @params);
-    }
-    
-
-    public static void MatrixMode(MatrixMode mode)
-    {
-        glMatrixMode((int)mode);
-    }
-    
-
-    public static void Normal(float nx, float ny, float nz)
-    {
-        glNormal3f(nx, ny, nz);
-    }
-    
-
-    public static void Ortho(double left, double right, double bottom, double top, double zNear, double zFar)
-    {
-        glOrtho(left, right, bottom, top, zNear, zFar);
-    }
-    
-
     public static void PixelStore(PixelStoreParameter pname, int param)
     {
         glPixelStorei((int)pname, param);
     }
     
 
-    public static void PointSize(float size)
-    {
-        glPointSize(size);
-    }
-    
-
     public static void PolygonMode(MaterialFace face, PolygonMode mode)
     {
         glPolygonMode((int)face, (int)mode);
-    }
-    
-
-    public static void PopMatrix()
-    {
-        glPopMatrix();
-    }
-    
-
-    public static void PushMatrix()
-    {
-        glPushMatrix();
     }
     
 
