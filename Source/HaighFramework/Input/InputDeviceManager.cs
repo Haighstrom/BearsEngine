@@ -46,11 +46,11 @@ public class InputDeviceManager : IInputDeviceManager
     }
     private void CreateDrivers()
     {
-        LoggingManager.Instance.Information("--------Input Devices--------\n");
+        Log.Information("--------Input Devices--------\n");
         _mouseManager = new MouseManager(_inputWindow.Handle);
         _keyboardManager = new KeyboardManager(_inputWindow.Handle);
         _gamePadManager = new GamePadManager(_inputWindow.Handle);
-        LoggingManager.Instance.Information("\n-----------------------------\n");
+        Log.Information("\n-----------------------------\n");
 
         RegisterForRawInput();
     }
@@ -103,7 +103,7 @@ public class InputDeviceManager : IInputDeviceManager
             
 
             case WINDOWMESSAGE.WM_DEVICECHANGE:
-                LoggingManager.Instance.Information("Input Devices Change detected. Identifying new devices...");
+                Log.Information("Input Devices Change detected. Identifying new devices...");
 
                 _mouseManager.RefreshDevices();
                 _keyboardManager.RefreshDevices();

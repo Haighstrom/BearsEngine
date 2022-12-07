@@ -118,7 +118,7 @@ namespace BearsEngine.Worlds.Cameras
             //Check for OpenGL errors
             var err = OpenGL32.glGetError();
             if (err != OpenGLErrorCode.NO_ERROR)
-                LoggingManager.Instance.Warning($"OpenGL error! (Camera.Render) {err}");
+                Log.Warning($"OpenGL error! (Camera.Render) {err}");
         }
 
         public override Point GetWindowPosition(Point localCoords)

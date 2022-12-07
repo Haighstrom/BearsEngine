@@ -2,16 +2,16 @@
 
 namespace BearsEngine.Tools;
 
-internal class LoggingStringConverter : ILoggingStringConverter
+internal class MessageFormatter : IMessageFormatter
 {
     private const string NullString = "null";
 
-    private string ConvertIDictionaryToString(IDictionary dict)
+    private string FormatToStringInternal(IDictionary dict)
     {
         string dictString = "[";
 
         foreach (DictionaryEntry entry in dict)
-            dictString += $"({ConvertToLoggableString(entry.Key)},{ConvertToLoggableString(entry.Value)}),";
+            dictString += $"({FormatToString(entry.Key)},{FormatToString(entry.Value)}),";
 
         dictString = dictString[0..^1]; //remove last comma
 
@@ -20,12 +20,12 @@ internal class LoggingStringConverter : ILoggingStringConverter
         return dictString;
     }
 
-    private string ConvertIEnumerableToString(IEnumerable collection)
+    private string FormatToStringInternal(IEnumerable collection)
     {
         string collectionString = "[";
 
         foreach (object item in collection)
-            collectionString += $"{ConvertToLoggableString(item)},";
+            collectionString += $"{FormatToString(item)},";
 
         collectionString = collectionString[0..^1]; //remove last comma
 
@@ -34,12 +34,12 @@ internal class LoggingStringConverter : ILoggingStringConverter
         return collectionString;
     }
 
-    public string ConvertToLoggableString(object? o) => o switch
+    public string FormatToString(object? o) => o switch
     {
         null => NullString,
         string str => str,
-        IDictionary dict => ConvertIDictionaryToString(dict),
-        IEnumerable enumerable => ConvertIEnumerableToString(enumerable),
+        IDictionary dict => FormatToStringInternal(dict),
+        IEnumerable enumerable => FormatToStringInternal(enumerable),
         _ => o.ToString() ?? o.GetType().ToString(),
     };
 }

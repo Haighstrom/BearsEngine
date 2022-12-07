@@ -112,7 +112,7 @@ public static class HF
             //Check for errors in compiling shader
             var log = OpenGL32.GetProgramInfoLog(programID);
             if (log.Length > 0)
-                LoggingManager.Instance.Error("Shader compilation error: " + log);
+                Log.Error("Shader compilation error: " + log);
 
             //Cleanup
             OpenGL32.DetachShader(programID, vs);
@@ -145,7 +145,7 @@ public static class HF
             var log = OpenGL32.GetShaderInfoLog(shaderID);
 
             if (log.Length > 0)
-                LoggingManager.Instance.Error("Shader compilation error: " + log);
+                Log.Error("Shader compilation error: " + log);
 
             return shaderID;
         }

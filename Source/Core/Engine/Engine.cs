@@ -24,7 +24,7 @@ internal class Engine : IEngine
         {
             int newRate = Maths.Clamp(settings.TargetUPS, MinimumUpdateRate, MaximumUpdateRate);
 
-            LoggingManager.Instance.Warning($"Requested an update rate of {settings.TargetUPS}, which is outside the bounds of the allowed values ({MaximumUpdateRate}-{MinimumUpdateRate}). Adjusting to {newRate}.");
+            Log.Warning($"Requested an update rate of {settings.TargetUPS}, which is outside the bounds of the allowed values ({MaximumUpdateRate}-{MinimumUpdateRate}). Adjusting to {newRate}.");
 
             settings.TargetUPS = newRate;
         }
@@ -33,7 +33,7 @@ internal class Engine : IEngine
         {
             int newRate = Maths.Clamp(settings.TargetFramesPerSecond, MinimumRenderRate, MaximumRenderRate);
 
-            LoggingManager.Instance.Warning($"Requested a render rate of {settings.TargetFramesPerSecond}, which is outside the bounds of the allowed values ({MinimumRenderRate}-{MaximumRenderRate}). Adjusting to {newRate}.");
+            Log.Warning($"Requested a render rate of {settings.TargetFramesPerSecond}, which is outside the bounds of the allowed values ({MinimumRenderRate}-{MaximumRenderRate}). Adjusting to {newRate}.");
 
             settings.TargetFramesPerSecond = newRate;
         }
@@ -45,7 +45,7 @@ internal class Engine : IEngine
 
     public Engine(IDisplayDeviceManager displayManager, IInputDeviceManager inputManager, IWindow window, EngineSettings settings, Func<IScene> initialiser)
     {
-        LoggingManager.Instance.Debug($"Initialising {nameof(Engine)}.");
+        Log.Debug($"Initialising {nameof(Engine)}.");
 
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             throw new InvalidOperationException("Only Windows is currently supported.");
@@ -54,7 +54,7 @@ internal class Engine : IEngine
         InputManager = inputManager;
         Window = window;
 
-        LoggingManager.Instance.Debug($"Environment Information:\nMachine: {Environment.MachineName}\nOS: {RuntimeInformation.OSDescription}\nUser: {Environment.UserName}\nProcessors: {Environment.ProcessorCount}\nSystem Architecture: {(Environment.Is64BitOperatingSystem ? "64-bit" : "32-bit")}\nProcess Arcitecture: {(Environment.Is64BitProcess ? "64-bit" : "32-bit")}");
+        Log.Debug($"Environment Information:\nMachine: {Environment.MachineName}\nOS: {RuntimeInformation.OSDescription}\nUser: {Environment.UserName}\nProcessors: {Environment.ProcessorCount}\nSystem Architecture: {(Environment.Is64BitOperatingSystem ? "64-bit" : "32-bit")}\nProcess Arcitecture: {(Environment.Is64BitProcess ? "64-bit" : "32-bit")}");
 
         _sceneManager = new SceneManager(initialiser());
 
@@ -73,7 +73,7 @@ internal class Engine : IEngine
 
         Window.Resized += OnWindowResize;
 
-        LoggingManager.Instance.Debug($"{nameof(Engine)} initialised.");
+        Log.Debug($"{nameof(Engine)} initialised.");
     }
 
     public IConsoleManager ConsoleManager => throw new NotImplementedException(); //todo: build these after removing logging from ctr
@@ -96,7 +96,7 @@ internal class Engine : IEngine
 
     private void LogPeriodicInfo()
     {
-        LoggingManager.Instance.Information($"FPS: {UpdateFramesPerSecond}, RPS: {RenderFramesPerSecond}");
+        Log.Information($"FPS: {UpdateFramesPerSecond}, RPS: {RenderFramesPerSecond}");
     }
 
     private void OnWindowResize(object? sender, EventArgs e)
@@ -171,7 +171,7 @@ internal class Engine : IEngine
                 if (timeSinceLastUpdate > 2 * targetUpdateTime)
                 {
                     timeOfFrame = timeSinceLastUpdate;
-                    LoggingManager.Instance.Warning($"A frame took {timeSinceLastUpdate / targetUpdateTime: 0.0}x as long as expected. Render took {_testTime / targetUpdateTime:0.0}x");
+                    Log.Warning($"A frame took {timeSinceLastUpdate / targetUpdateTime: 0.0}x as long as expected. Render took {_testTime / targetUpdateTime:0.0}x");
                 }
                 else
                 {

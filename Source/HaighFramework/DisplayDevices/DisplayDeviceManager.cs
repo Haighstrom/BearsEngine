@@ -16,13 +16,13 @@ public sealed class DisplayDeviceManager : IDisplayDeviceManager
     
     private void OnDisplaySettingsChanged(object sender, EventArgs e)
     {
-        LoggingManager.Instance.Information("Change in display settings detected. Refreshing display devices.");
+        Log.Information("Change in display settings detected. Refreshing display devices.");
         RefreshDevices();
     }
 
     private void RefreshDevices()
     {
-        LoggingManager.Instance.Information("-------Display Devices-------");
+        Log.Information("-------Display Devices-------");
 
         //save old device list so we can copy device "original settings" if it existed before
         //this is to cover the case that user has changed resolution from this program (which will later want to be restored), and then changed windows settings, triggering this function
@@ -75,11 +75,11 @@ public sealed class DisplayDeviceManager : IDisplayDeviceManager
             _availableDevices.Add(device);
             if (isPrimary) _primaryDevice = device;
 
-            LoggingManager.Instance.Information(device.ToString());
-            LoggingManager.Instance.Information("");
+            Log.Information(device.ToString());
+            Log.Information("");
         }
 
-        LoggingManager.Instance.Information("-----------------------------\n");
+        Log.Information("-----------------------------\n");
     }
     
     

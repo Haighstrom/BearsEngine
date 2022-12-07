@@ -374,10 +374,10 @@ namespace BearsEngine.Worlds.Graphics.Text
         public Point MeasureString(string s)
         {
             if (Multiline)
-                LoggingManager.Instance.Warning("Trying to measure strings when Text is multiline. This function will not take into account line breaks.");
+                Log.Warning("Trying to measure strings when Text is multiline. This function will not take into account line breaks.");
 
             if (UseCommandTags)
-                LoggingManager.Instance.Warning("Trying to measure strings when UseCommandTags is true. This function only measures against the default font.");
+                Log.Warning("Trying to measure strings when UseCommandTags is true. This function only measures against the default font.");
 
             return Font.MeasureString(s);
         }
@@ -396,7 +396,7 @@ namespace BearsEngine.Worlds.Graphics.Text
 
                 if (!_textCommandTagKeys.ContainsKey(keyValue[0].ToLower()))
                 {
-                    LoggingManager.Instance.Warning($"HText/ParseTag: ({keyValue[0]}) is not a valid tag value, fulltag: ({tag})");
+                    Log.Warning($"HText/ParseTag: ({keyValue[0]}) is not a valid tag value, fulltag: ({tag})");
                     return null;
                 }
                 var key = _textCommandTagKeys[keyValue[0].ToLower()];
@@ -418,7 +418,7 @@ namespace BearsEngine.Worlds.Graphics.Text
                 }
                 catch
                 {
-                    LoggingManager.Instance.Warning($"HText/ParseTag: Value ({valueString}) is not valid with Key ({key}), fulltag: ({tag})");
+                    Log.Warning($"HText/ParseTag: Value ({valueString}) is not valid with Key ({key}), fulltag: ({tag})");
                     return null;
                 }
             }
@@ -428,7 +428,7 @@ namespace BearsEngine.Worlds.Graphics.Text
                     return _textCommandTags[tagWithoutBrackets.ToLower()];
                 else
                 {
-                    LoggingManager.Instance.Warning($"HText/ParseTag: ({tagWithoutBrackets}) is not a valid command value, fulltag: ({tag})");
+                    Log.Warning($"HText/ParseTag: ({tagWithoutBrackets}) is not a valid command value, fulltag: ({tag})");
                     return null;
                 }
             }
@@ -448,7 +448,7 @@ namespace BearsEngine.Worlds.Graphics.Text
                 return _textCommandTags[tagWithoutBrackets].Type;
             else
             {
-                LoggingManager.Instance.Warning("HText/ParseCloseTag: ({tagWithoutBrackets}) is not a valid tag key, fulltag: ({tag})");
+                Log.Warning("HText/ParseCloseTag: ({tagWithoutBrackets}) is not a valid tag key, fulltag: ({tag})");
                 return null;
             }
         }
@@ -560,13 +560,13 @@ namespace BearsEngine.Worlds.Graphics.Text
                                 currentAttributes = GetCurrentAttributes(activeOverrides);
                             }
                             else
-                                LoggingManager.Instance.Warning($"HText/SplitTextToLines: close tag ({nextCloseTag.Value}) was applied but nothing to close");
+                                Log.Warning($"HText/SplitTextToLines: close tag ({nextCloseTag.Value}) was applied but nothing to close");
                         }
                         else //remove specified tag on LIFO basis
                         {
                             var lastEntry = activeOverrides.LastOrDefault(t => t.Type == typeToRemove.Value);
                             if (lastEntry == null)
-                                LoggingManager.Instance.Warning($"HText/SplitTextToLines: close tag ({nextCloseTag.Value}) was applied but nothing to close");
+                                Log.Warning($"HText/SplitTextToLines: close tag ({nextCloseTag.Value}) was applied but nothing to close");
                             else
                             {
                                 activeOverrides.Remove(lastEntry);
@@ -638,13 +638,13 @@ namespace BearsEngine.Worlds.Graphics.Text
             if (VAlignment != VAlignment.Full)
                 height += Math.Max(lines.Count - 1, 0) * ScaleY * ExtraLineSpacing;
             if (height > H)
-                LoggingManager.Instance.Warning($"HText/SplitTextToLines: lines total height ({height}) is bigger than text box height ({H})");
+                Log.Warning($"HText/SplitTextToLines: lines total height ({height}) is bigger than text box height ({H})");
 
             if (lines.Count > 0 && lines.Max(l => l.Length > W))
-                LoggingManager.Instance.Warning($"HText/SplitTextToLines: line is wider ({lines.Max(l => l.Length)}) than text box width ({W})");
+                Log.Warning($"HText/SplitTextToLines: line is wider ({lines.Max(l => l.Length)}) than text box width ({W})");
 
             if (sizeOfLetterLongerThanWholeLine > 0)
-                LoggingManager.Instance.Warning($"HText/SplitTextToLines: a single letter is wider ({sizeOfLetterLongerThanWholeLine}) than the text box width ({W})");
+                Log.Warning($"HText/SplitTextToLines: a single letter is wider ({sizeOfLetterLongerThanWholeLine}) than the text box width ({W})");
             
 
             return lines;
@@ -833,10 +833,10 @@ namespace BearsEngine.Worlds.Graphics.Text
                 _vertGroups.Add(new SimpleGraphic(new DefaultShader(), HF.Graphics.LoadTexture(Font.CharSpriteSheet, Font.LongName), vertices.ToArray()));
 
             if (Font.HighestChar > H)
-                LoggingManager.Instance.Warning($"HText/SetVerticesSimple: line height ({Font.HighestChar}) is bigger than text box height ({H})");
+                Log.Warning($"HText/SetVerticesSimple: line height ({Font.HighestChar}) is bigger than text box height ({H})");
 
             if (len > W)
-                LoggingManager.Instance.Warning($"HText/SetVerticesSimple: line is longer ({len}) than text box width ({W})");
+                Log.Warning($"HText/SetVerticesSimple: line is longer ({len}) than text box width ({W})");
             
         }
         

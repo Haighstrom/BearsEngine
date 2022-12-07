@@ -89,7 +89,7 @@ namespace BearsEngine.Worlds.Graphics.Text
                 }
                 catch (Exception e)
                 {
-                    LoggingManager.Instance.Warning($".details file for font {longName} existed but couldn't successfully load due to exception ({e})");
+                    Log.Warning($".details file for font {longName} existed but couldn't successfully load due to exception ({e})");
                 }
             }
 
@@ -169,7 +169,7 @@ namespace BearsEngine.Worlds.Graphics.Text
             //if not, use the default font
             if (font == null)
             {
-                LoggingManager.Instance.Warning($"Font ({fontName}) not found. Reverting to {DEFAULT_FONT}.");
+                Log.Warning($"Font ({fontName}) not found. Reverting to {DEFAULT_FONT}.");
                 font = LoadFontPreinstalled(DEFAULT_FONT, DEFAULT_SIZE, DEFAULT_FONTSTYLE);
             }
 
@@ -223,7 +223,7 @@ namespace BearsEngine.Worlds.Graphics.Text
             if (r.W == 0 || r.H == 0)
             {
                 if (c != ' ')
-                    LoggingManager.Instance.Warning($"Character '{c}' is alleged to have size (W:{r.W},H:{r.H}) in font {FontName}, size {FontSize}. Reverting to trying character 't'.");
+                    Log.Warning($"Character '{c}' is alleged to have size (W:{r.W},H:{r.H}) in font {FontName}, size {FontSize}. Reverting to trying character 't'.");
 
                 g.DrawString("t", font, new SolidBrush(Color.White), 0, 0, stringFormat);
 
@@ -372,7 +372,7 @@ namespace BearsEngine.Worlds.Graphics.Text
                 }
                 else
                 {
-                    LoggingManager.Instance.Warning($"{GetType().FullName} did not dispose correctly, did you forget to call Dispose()?");
+                    Log.Warning($"{GetType().FullName} did not dispose correctly, did you forget to call Dispose()?");
                 }
                 _disposed = true;
             }

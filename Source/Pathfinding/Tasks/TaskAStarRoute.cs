@@ -24,7 +24,7 @@ public class TaskAStarRoute<N> : Task where N : IPathfindNode<N>, IPosition
 
         if (route == null)
         {
-            LoggingManager.Instance.Warning($"{_entity} could not find path from {_entity.CurrentNode} to {_destination}");
+            Log.Warning($"{_entity} could not find path from {_entity.CurrentNode} to {_destination}");
             route = new List<N>();
         }
 

@@ -245,7 +245,7 @@ internal static class KeyMap
             
 
             default:
-                LoggingManager.Instance.Warning($"Unknown extended Key Scancode {scancode}");
+                Log.Warning($"Unknown extended Key Scancode {scancode}");
                 return Key.Unknown;
         }
     }
