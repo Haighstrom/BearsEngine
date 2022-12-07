@@ -1,4 +1,6 @@
-﻿using BearsEngine.Logging;
+﻿using BearsEngine.DisplayDevices;
+using BearsEngine.Input;
+using BearsEngine.Logging;
 using BearsEngine.Win32API;
 using BearsEngine.Window;
 
@@ -39,8 +41,6 @@ public static class BE
 
     public static IConsoleManager Console { get; } = new ConsoleManager();
 
-    public static ILoggingManager Logging { get; } = new LoggingManager();
-
     public static bool RunWhenUnfocussed { get; set; } = true;
 
     public static IScene Scene
@@ -71,12 +71,16 @@ public static class BE
             Console.ShowConsole(settings.ConsoleSettings.X, settings.ConsoleSettings.Y, settings.ConsoleSettings.Width, settings.ConsoleSettings.Height);
         }
 
-        Logging.AddConsoleLogging(settings.LogSettings.ConsoleLogLevel);
+        LoggingManager.Instance.AddConsoleLogging(settings.LogSettings.ConsoleLogLevel);
 
         foreach (var writeLogSettings in settings.LogSettings.FileLogging)
-            Logging.AddFileLogging(writeLogSettings);
+            LoggingManager.Instance.AddFileLogging(writeLogSettings);
 
-        Engine = new Engine(settings, initialiser);
+        IDisplayDeviceManager displayManager = new DisplayDeviceManager();
+        IInputDeviceManager inputManager = new InputDeviceManager();
+        IWindow window = new HaighWindow(settings.WindowSettings);
+
+        Engine = new Engine(displayManager, inputManager, window, settings.EngineSettings, initialiser);
         Engine.Run();
         Engine.Dispose();
     }

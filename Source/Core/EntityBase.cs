@@ -63,7 +63,7 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
     public void Add(IAddable e)
     {
         if (e.Parent is not null)
-            BE.Logging.Warning($"Added Entity {e} to Container {this} when it was already in Container {e.Parent}.");
+            LoggingManager.Instance.Warning($"Added Entity {e} to Container {this} when it was already in Container {e.Parent}.");
 
         e.Parent = this;
 
@@ -169,7 +169,7 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
     public void Remove(IAddable e)
     {
         if (e.Parent != this)
-            BE.Logging.Warning($"Requested Entity {e} to be removed from Container {this} when its Parent was {e.Parent}.");
+            LoggingManager.Instance.Warning($"Requested Entity {e} to be removed from Container {this} when its Parent was {e.Parent}.");
 
         e.Parent = null;
 

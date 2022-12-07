@@ -2,6 +2,8 @@
 
 public class LoggingManager : ILoggingManager
 {
+    public static ILoggingManager Instance { get; private set; } = new LoggingManager();
+
     private readonly ILogger _logger = new Logger();
 
     public LoggingManager()

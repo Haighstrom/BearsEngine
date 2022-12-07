@@ -24,7 +24,7 @@ internal class Engine : IEngine
         {
             int newRate = Maths.Clamp(settings.TargetUPS, MinimumUpdateRate, MaximumUpdateRate);
 
-            BE.Logging.Warning($"Requested an update rate of {settings.TargetUPS}, which is outside the bounds of the allowed values ({MaximumUpdateRate}-{MinimumUpdateRate}). Adjusting to {newRate}.");
+            LoggingManager.Instance.Warning($"Requested an update rate of {settings.TargetUPS}, which is outside the bounds of the allowed values ({MaximumUpdateRate}-{MinimumUpdateRate}). Adjusting to {newRate}.");
 
             settings.TargetUPS = newRate;
         }
@@ -33,7 +33,7 @@ internal class Engine : IEngine
         {
             int newRate = Maths.Clamp(settings.TargetFramesPerSecond, MinimumRenderRate, MaximumRenderRate);
 
-            BE.Logging.Warning($"Requested a render rate of {settings.TargetFramesPerSecond}, which is outside the bounds of the allowed values ({MinimumRenderRate}-{MaximumRenderRate}). Adjusting to {newRate}.");
+            LoggingManager.Instance.Warning($"Requested a render rate of {settings.TargetFramesPerSecond}, which is outside the bounds of the allowed values ({MinimumRenderRate}-{MaximumRenderRate}). Adjusting to {newRate}.");
 
             settings.TargetFramesPerSecond = newRate;
         }
@@ -43,20 +43,19 @@ internal class Engine : IEngine
     private readonly int _targetUPS, _targetRPS;
     private readonly ISceneManager _sceneManager;
 
-    public Engine(GameSettings settings, Func<IScene> initialiser)
+    public Engine(IDisplayDeviceManager displayManager, IInputDeviceManager inputManager, IWindow window, EngineSettings settings, Func<IScene> initialiser)
     {
-        BE.Logging.Debug($"{nameof(Engine)} being initialised.");
-
-        ValidateEngineSettings(settings.EngineSettings);
+        LoggingManager.Instance.Debug($"Initialising {nameof(Engine)}.");
 
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             throw new InvalidOperationException("Only Windows is currently supported.");
 
-        BE.Logging.Debug($"Environment Information:\nMachine: {Environment.MachineName}\nOS: {RuntimeInformation.OSDescription}\nUser: {Environment.UserName}\nProcessors: {Environment.ProcessorCount}\nSystem Architecture: {(Environment.Is64BitOperatingSystem ? "64-bit" : "32-bit")}\nProcess Arcitecture: {(Environment.Is64BitProcess ? "64-bit" : "32-bit")}");
+        DisplayManager = displayManager;
+        InputManager = inputManager;
+        Window = window;
 
-        DisplayDM = new();
-        InputDM = new();
-        Window = new HaighWindow(settings.WindowSettings);
+        LoggingManager.Instance.Debug($"Environment Information:\nMachine: {Environment.MachineName}\nOS: {RuntimeInformation.OSDescription}\nUser: {Environment.UserName}\nProcessors: {Environment.ProcessorCount}\nSystem Architecture: {(Environment.Is64BitOperatingSystem ? "64-bit" : "32-bit")}\nProcess Arcitecture: {(Environment.Is64BitProcess ? "64-bit" : "32-bit")}");
+
         _sceneManager = new SceneManager(initialiser());
 
         //Window.MouseLeftDoubleClicked += (o, a) => HI.MouseLeftDoubleClicked = true;
@@ -64,24 +63,24 @@ internal class Engine : IEngine
         //OpenGL32.DebugMessageCallback(HConsole.HandleOpenGLOutput);
         //OpenGL32.DebugMessageControl(DebugSource.DontCare, DebugType.DontCare, DebugSeverity.DontCare, true);
 
-        _targetUPS = settings.EngineSettings.TargetUPS;
-        _targetRPS = settings.EngineSettings.TargetFramesPerSecond;
+        ValidateEngineSettings(settings);
+
+        _targetUPS = settings.TargetUPS;
+        _targetRPS = settings.TargetFramesPerSecond;
 
         OpenGL32.Viewport(Window.Viewport);
         BE.OrthoMatrix = Matrix4.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
 
         Window.Resized += OnWindowResize;
 
-        BE.Logging.Debug($"{nameof(Engine)} initialised.");
+        LoggingManager.Instance.Debug($"{nameof(Engine)} initialised.");
     }
 
     public IConsoleManager ConsoleManager => throw new NotImplementedException(); //todo: build these after removing logging from ctr
 
-    public ILoggingManager LoggingManager => throw new NotImplementedException();//todo: build these after removing logging from ctr
+    public IDisplayDeviceManager DisplayManager { get; }
 
-    public DisplayDeviceManager DisplayDM { get; }
-
-    public InputDeviceManager InputDM { get; }
+    public IInputDeviceManager InputManager { get; }
 
     public int RenderFramesPerSecond { get; private set; }
 
@@ -97,7 +96,7 @@ internal class Engine : IEngine
 
     private void LogPeriodicInfo()
     {
-        BE.Logging.Information($"FPS: {UpdateFramesPerSecond}, RPS: {RenderFramesPerSecond}");
+        LoggingManager.Instance.Information($"FPS: {UpdateFramesPerSecond}, RPS: {RenderFramesPerSecond}");
     }
 
     private void OnWindowResize(object? sender, EventArgs e)
@@ -120,7 +119,7 @@ internal class Engine : IEngine
 
     private void Update(float elapsedTime)
     {
-        HI.SetStates(InputDM.MouseManager.State, InputDM.KeyboardManager.State);
+        HI.SetStates(InputManager.MouseManager.State, InputManager.KeyboardManager.State);
 
         if (BE.RunWhenUnfocussed || Window.Focussed)
         {
@@ -172,7 +171,7 @@ internal class Engine : IEngine
                 if (timeSinceLastUpdate > 2 * targetUpdateTime)
                 {
                     timeOfFrame = timeSinceLastUpdate;
-                    BE.Logging.Warning($"A frame took {timeSinceLastUpdate / targetUpdateTime: 0.0}x as long as expected. Render took {_testTime / targetUpdateTime:0.0}x");
+                    LoggingManager.Instance.Warning($"A frame took {timeSinceLastUpdate / targetUpdateTime: 0.0}x as long as expected. Render took {_testTime / targetUpdateTime:0.0}x");
                 }
                 else
                 {
@@ -229,8 +228,8 @@ internal class Engine : IEngine
             {
                 // TODO: dispose managed state (managed objects)
                 Scene.Dispose(); //last scene will never have been disposed by SceneManager, since that only disposes when changing scene
-                DisplayDM.Dispose();
-                InputDM.Dispose();
+                DisplayManager.Dispose();
+                InputManager.Dispose();
                 Window.Dispose();
             }
 

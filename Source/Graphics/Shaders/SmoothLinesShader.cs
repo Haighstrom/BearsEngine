@@ -39,7 +39,7 @@ public class SmoothLinesShader : IShader
     public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PRIMITIVEMODE drawType)
     {
         if (drawType != PRIMITIVEMODE.GL_LINE_STRIP_ADJACENCY)
-            BE.Logging.Warning("Smooth lines shader is being used with PrimitiveType " + drawType + "instead of LineStripAdjacency.");
+            LoggingManager.Instance.Warning("Smooth lines shader is being used with PrimitiveType " + drawType + "instead of LineStripAdjacency.");
 
         if (_ID != BE.LastBoundShader)
             HF.Graphics.BindShader(_ID);

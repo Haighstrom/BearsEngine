@@ -5,6 +5,7 @@ using System.IO;
 using BearsEngine.Win32API;
 
 using Encoding = System.Text.Encoding;
+using BearsEngine.Logging;
 
 namespace BearsEngine;
 public static class HF
@@ -111,7 +112,7 @@ public static class HF
             //Check for errors in compiling shader
             var log = OpenGL32.GetProgramInfoLog(programID);
             if (log.Length > 0)
-                BE.Logging.Error("Shader compilation error: " + log);
+                LoggingManager.Instance.Error("Shader compilation error: " + log);
 
             //Cleanup
             OpenGL32.DetachShader(programID, vs);
@@ -144,7 +145,7 @@ public static class HF
             var log = OpenGL32.GetShaderInfoLog(shaderID);
 
             if (log.Length > 0)
-                BE.Logging.Error("Shader compilation error: " + log);
+                LoggingManager.Instance.Error("Shader compilation error: " + log);
 
             return shaderID;
         }

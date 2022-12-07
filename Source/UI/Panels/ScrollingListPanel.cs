@@ -52,7 +52,7 @@ namespace BearsEngine.UI
 
             if (_itemsOnPage.Count > 0)
             {
-                BE.Logging.Warning("ScrollingListPanel.ClearItems: items not all cleared successfully.");
+                LoggingManager.Instance.Warning("ScrollingListPanel.ClearItems: items not all cleared successfully.");
                 _itemsOnPage.Clear();
             }
 

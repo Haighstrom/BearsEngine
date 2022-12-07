@@ -7,8 +7,6 @@ internal interface IEngine : IDisposable
 {
     IConsoleManager ConsoleManager { get; }
 
-    ILoggingManager LoggingManager { get; }
-
     IScene Scene { get; set; }
 
     IWindow Window { get; }

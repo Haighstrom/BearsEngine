@@ -29,7 +29,7 @@ public class ConsoleManager : IConsoleManager
     {
         if (!IsOpen)
         {
-            BE.Logging.Warning("Tried to hide console when it is not currently shown.");
+            LoggingManager.Instance.Warning("Tried to hide console when it is not currently shown.");
             return;
         }
 
@@ -46,7 +46,7 @@ public class ConsoleManager : IConsoleManager
     {
         if (IsOpen)
         {
-            BE.Logging.Warning("Tried to show console when it is already shown.");
+            LoggingManager.Instance.Warning("Tried to show console when it is already shown.");
                 return;
         }
 
@@ -58,7 +58,7 @@ public class ConsoleManager : IConsoleManager
     {
         if (IsOpen)
         {
-            BE.Logging.Warning("Tried to show console when it is already shown.");
+            LoggingManager.Instance.Warning("Tried to show console when it is already shown.");
             return;
         }
 

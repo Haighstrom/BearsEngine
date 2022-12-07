@@ -75,7 +75,7 @@ namespace BearsEngine.Graphics
                 }
                 else
                 {
-                    BE.Logging.Warning($"{nameof(SimpleGraphic)} did not dispose correctly, did you forget to call Dispose()?");
+                    LoggingManager.Instance.Warning($"{nameof(SimpleGraphic)} did not dispose correctly, did you forget to call Dispose()?");
                 }
                 _disposed = true;
             }
