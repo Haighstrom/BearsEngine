@@ -194,7 +194,7 @@ internal static class User32
     /// <returns></returns>
     [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool EnumDisplayDevices([MarshalAs(UnmanagedType.LPTStr)] string lpDevice, int iDevNum, [In, Out] DISPLAY_DEVICE lpDisplayDevice, ENUMDISPLAYDEVICEFLAG dwFlags);
+    public static extern bool EnumDisplayDevices(IntPtr lpDevice, int iDevNum, [In, Out] DISPLAY_DEVICE lpDisplayDevice, ENUMDISPLAYDEVICEFLAG dwFlags);
 
     /// <summary>
     /// The EnumDisplaySettingsEx function retrieves information about one of the graphics modes for a display device. To retrieve information for all the graphics modes for a display device, make a series of calls to this function. This function differs from EnumDisplaySettings in that there is a dwFlags parameter.

@@ -1,4 +1,4 @@
-﻿using BearsEngine.DisplayDevices;
+﻿using BearsEngine.Displays;
 using BearsEngine.Input;
 using BearsEngine.Logging;
 using BearsEngine.Win32API;
@@ -76,7 +76,7 @@ public static class BE
         foreach (var writeLogSettings in settings.LogSettings.FileLogging)
             Log.AddFileLogging(writeLogSettings);
 
-        IDisplayDeviceManager displayManager = new DisplayDeviceManager();
+        IDisplayManager displayManager = new DisplayManager();
         IInputDeviceManager inputManager = new InputDeviceManager();
         IWindow window = new HaighWindow(settings.WindowSettings);
 

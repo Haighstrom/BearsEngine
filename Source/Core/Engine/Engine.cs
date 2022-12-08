@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
-using BearsEngine.DisplayDevices;
+using BearsEngine.Displays;
 using BearsEngine.Input;
 using BearsEngine.Logging;
 using BearsEngine.Win32API;
@@ -43,7 +43,7 @@ internal class Engine : IEngine
     private readonly int _targetUPS, _targetRPS;
     private readonly ISceneManager _sceneManager;
 
-    public Engine(IDisplayDeviceManager displayManager, IInputDeviceManager inputManager, IWindow window, EngineSettings settings, Func<IScene> initialiser)
+    public Engine(IDisplayManager displayManager, IInputDeviceManager inputManager, IWindow window, EngineSettings settings, Func<IScene> initialiser)
     {
         Log.Debug($"Initialising {nameof(Engine)}.");
 
@@ -78,7 +78,7 @@ internal class Engine : IEngine
 
     public IConsoleManager ConsoleManager => throw new NotImplementedException(); //todo: build these after removing logging from ctr
 
-    public IDisplayDeviceManager DisplayManager { get; }
+    public IDisplayManager DisplayManager { get; }
 
     public IInputDeviceManager InputManager { get; }
 
