@@ -11,8 +11,7 @@ public static class Log
     public static ILogger Logger { get; set; } = new Logger(new ConsoleOutputStream(LogLevel.Information));
 
     /// <summary>
-    /// If messages are written using the default Logger with priority equal to or higher than this level, an <see cref="LoggingException"/> will be thrown. 
-    /// This might be useful when debugging.
+    /// If messages are written to the default logger (i.e. using <see cref="Log"/>) with priority equal to or higher than this level, an <see cref="LoggingException"/> will be thrown. Off by default.
     /// </summary>
     public static LogLevel LogLevelToThrowErrors { get; set; } = LogLevel.None;
 
