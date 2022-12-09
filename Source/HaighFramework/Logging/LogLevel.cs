@@ -1,7 +1,7 @@
 ﻿namespace BearsEngine.Logging;
 
 /// <summary>
-/// Specifies the level of logging that a messages should write or that a logger should display.
+/// Specifies the level of logging that a messages should write or the minimum level that a logger should display.
 /// </summary>
 public enum LogLevel : int
 {

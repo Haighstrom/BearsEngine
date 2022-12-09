@@ -71,10 +71,7 @@ public static class BE
             Console.ShowConsole(settings.ConsoleSettings.X, settings.ConsoleSettings.Y, settings.ConsoleSettings.Width, settings.ConsoleSettings.Height);
         }
 
-        Log.AddConsoleLogging(settings.LogSettings.ConsoleLogLevel);
-
-        foreach (var writeLogSettings in settings.LogSettings.FileLogging)
-            Log.AddFileLogging(writeLogSettings);
+        Log.Logger = new Logger(settings.LogSettings);
 
         IDisplayManager displayManager = new DisplayManager();
         IInputDeviceManager inputManager = new InputDeviceManager();

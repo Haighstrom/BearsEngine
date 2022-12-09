@@ -2,7 +2,10 @@
 
 namespace BearsEngine.Tools;
 
-internal class MessageFormatter : IMessageFormatter
+/// <summary>
+/// Default formatter for translating objects into strings for the purposes of logging
+/// </summary>
+internal class LoggerMessageFormatter : ILoggerMessageFormatter
 {
     private const string NullString = "null";
 
@@ -11,7 +14,7 @@ internal class MessageFormatter : IMessageFormatter
         string dictString = "[";
 
         foreach (DictionaryEntry entry in dict)
-            dictString += $"({FormatToString(entry.Key)},{FormatToString(entry.Value)}),";
+            dictString += $"({FormatToLoggingString(entry.Key)},{FormatToLoggingString(entry.Value)}),";
 
         dictString = dictString[0..^1]; //remove last comma
 
@@ -25,7 +28,7 @@ internal class MessageFormatter : IMessageFormatter
         string collectionString = "[";
 
         foreach (object item in collection)
-            collectionString += $"{FormatToString(item)},";
+            collectionString += $"{FormatToLoggingString(item)},";
 
         collectionString = collectionString[0..^1]; //remove last comma
 
@@ -34,7 +37,12 @@ internal class MessageFormatter : IMessageFormatter
         return collectionString;
     }
 
-    public string FormatToString(object? o) => o switch
+    /// <summary>
+    /// Translate an object into a logging string
+    /// </summary>
+    /// <param name="o">the object to translate</param>
+    /// <returns>Returns a loggable string</returns>
+    public string FormatToLoggingString(object? o) => o switch
     {
         null => NullString,
         string str => str,
