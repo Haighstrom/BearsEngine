@@ -319,55 +319,119 @@ internal static class OpenGL32
     [DllImport(Library)]
     public static extern void glOrtho(double left, double right, double bottom, double top, double zNear, double zFar);
 
-    // ***CLEANED UP ABOVE THIS LINE***
-
+    /// <summary>
+    /// glReadPixels and glReadnPixels return pixel data from the frame buffer, starting with the pixel whose lower left corner is at location (x, y), into client memory starting at location data.
+    /// </summary>
+    /// <param name="x">Specify the window coordinates of the first pixel that is read from the frame buffer. This location is the lower left corner of a rectangular block of pixels.</param>
+    /// <param name="y">Specify the window coordinates of the first pixel that is read from the frame buffer. This location is the lower left corner of a rectangular block of pixels.</param>
+    /// <param name="width">Specify the dimensions of the pixel rectangle. width and height of one correspond to a single pixel.</param>
+    /// <param name="height">Specify the dimensions of the pixel rectangle. width and height of one correspond to a single pixel.</param>
+    /// <param name="format">Specifies the format of the pixel data.</param>
+    /// <param name="type">Specifies the data type of the pixel data.</param>
+    /// <param name="data">Returns the pixel data.</param>
     [DllImport(Library)]
-    public static extern void glReadPixels(int x, int y, int width, int height, int format, int type, [Out] IntPtr data);
-    
+    public static extern void glReadPixels(int x, int y, int width, int height, PixelFormat format, PixelType type, [Out] IntPtr data);
 
+    /// <summary>
+    /// glPixelStorei sets pixel storage modes that affect the operation of subsequent glReadPixels as well as the unpacking of texture patterns (see glTexImage2D and glTexSubImage2D).
+    /// </summary>
+    /// <param name="pname">a symbolic constant indicating the parameter to be set</param>
+    /// <param name="param">the new value</param>
     [DllImport(Library)]
-    public static extern void glPixelStorei(int pname, int param);
-    
+    public static extern void glPixelStorei(PixelStoreParameter pname, int param);
 
+    /// <summary>
+    /// glPointSize specifies the rasterized diameter of points
+    /// </summary>
+    /// <param name="size">The size in pixels</param>
+    /// <remarks>If point size mode is disabled (see glEnable with parameter GL_PROGRAM_POINT_SIZE), this value will be used to rasterize points. Otherwise, the value written to the shading language built-in variable gl_PointSize will be used.</remarks>
     [DllImport(Library)]
     public static extern void glPointSize(float size);
-    
 
+    /// <summary>
+    /// glPolygonMode controls the interpretation of polygons for rasterization.
+    /// </summary>
+    /// <param name="face">Specifies the polygons that mode applies to.</param>
+    /// <param name="mode">Specifies how polygons will be rasterized.</param>
     [DllImport(Library)]
-    public static extern void glPolygonMode(int face, int mode);
-    
+    public static extern void glPolygonMode(MaterialFace face, PolygonMode mode);
 
+    /// <summary>
+    /// glPopMatrix pops the current matrix stack, replacing the current matrix with the one below it on the stack.
+    /// </summary>
     [DllImport(Library)]
     public static extern void glPopMatrix();
-    
 
+    /// <summary>
+    /// glPushMatrix pushes the current matrix stack down by one, duplicating the current matrix. That is, after a glPushMatrix call, the matrix on top of the stack is identical to the one below it.
+    /// </summary>
     [DllImport(Library)]
     public static extern void glPushMatrix();
-    
 
+    /// <summary>
+    /// multiply the current matrix by a rotation matrix
+    /// </summary>
+    /// <param name="angle">Specifies the angle of rotation, in degrees.</param>
+    /// <param name="x">Specify the x, y, and z coordinates of a vector, respectively.</param>
+    /// <param name="y">Specify the x, y, and z coordinates of a vector, respectively.</param>
+    /// <param name="z">Specify the x, y, and z coordinates of a vector, respectively.</param>
     [DllImport(Library)]
     public static extern void glRotatef(float angle, float x, float y, float z);
-    
 
+    /// <summary>
+    /// The glScaled and glScalef functions multiply the current matrix by a general scaling matrix.
+    /// </summary>
+    /// <param name="x">Scale factors along the x axis.</param>
+    /// <param name="y">Scale factors along the y axis.</param>
+    /// <param name="z">Scale factors along the z axis.</param>
     [DllImport(Library)]
     public static extern void glScalef(float x, float y, float z);
-    
 
+    /// <summary>
+    /// Select flat or smooth shading
+    /// </summary>
+    /// <param name="mode">Specifies a symbolic value representing a shading technique.</param>
     [DllImport(Library)]
-    public static extern void glShadeModel(int mode);
-    
+    public static extern void glShadeModel(ShadingModel mode);
 
+    /// <summary>
+    /// set the current texture coordinates
+    /// </summary>
+    /// <param name="s">Specify s texture coordinate.</param>
+    /// <param name="t">Specify t texture coordinate.</param>
     [DllImport(Library)]
     public static extern void glTexCoord2f(float s, float t);
-    
 
+    /// <summary>
+    /// specify a one-dimensional texture image
+    /// </summary>
+    /// <param name="target">Specifies the target texture.</param>
+    /// <param name="level">Specifies the level-of-detail number.</param>
+    /// <param name="internalformat">Specifies the number of color components in the texture.</param>
+    /// <param name="width">Specifies the width of the texture image. All implementations support texture images that are at least 1024 texels wide. The height of the 1D texture image is 1.</param>
+    /// <param name="border">This value must be 0.</param>
+    /// <param name="format">Specifies the format of the pixel data.</param>
+    /// <param name="type">Specifies the data type of the pixel data.</param>
+    /// <param name="data">Specifies a pointer to the image data in memory.</param>
     [DllImport(Library)]
-    public static extern void glTexImage1D(int target, int level, int internalformat, int width, int border, int format, int type, IntPtr pixels);
-    
+    public static extern void glTexImage1D(TextureTarget target, int level, PixelInternalFormat internalFormat, int width, int border, PixelFormat format, PixelType type, IntPtr data);
 
+    /// <summary>
+    /// specify a two-dimensional texture image
+    /// </summary>
+    /// <param name="target">Specifies the target texture.</param>
+    /// <param name="level">Specifies the level-of-detail number. Level 0 is the base image level. Level n is the nth mipmap reduction image.</param>
+    /// <param name="internalformat">Specifies the number of color components in the texture.</param>
+    /// <param name="width">Specifies the width of the texture image. All implementations support texture images that are at least 1024 texels wide.</param>
+    /// <param name="height">Specifies the height of the texture image, or the number of layers in a texture array, in the case of the GL_TEXTURE_1D_ARRAY and GL_PROXY_TEXTURE_1D_ARRAY targets. All implementations support 2D texture images that are at least 1024 texels high, and texture arrays that are at least 256 layers deep.</param>
+    /// <param name="border">This value must be 0.</param>
+    /// <param name="format">Specifies the format of the pixel data.</param>
+    /// <param name="type">Specifies the data type of the pixel data.</param>
+    /// <param name="data">Specifies a pointer to the image data in memory.</param>
     [DllImport(Library)]
-    public static extern void glTexImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type, IntPtr pixels);
+    public static extern void glTexImage2D(TextureTarget target, int level, PixelInternalFormat internalFormat, int width, int height, int border, PixelFormat format, PixelType type, IntPtr data);
     
+    // ***CLEANED UP ABOVE THIS LINE***
 
     [DllImport(Library)]
     public static extern void glTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, IntPtr pixels);
@@ -594,67 +658,13 @@ internal static class OpenGL32
 
         pinnedArray.Free();
     }
-    
-
-    public static void PixelStore(PixelStoreParameter pname, int param)
-    {
-        glPixelStorei((int)pname, param);
-    }
-    
-
-    public static void PolygonMode(MaterialFace face, PolygonMode mode)
-    {
-        glPolygonMode((int)face, (int)mode);
-    }
-    
-
-    public static void ReadPixels(int x, int y, int w, int h, PixelFormat format, PixelType type, IntPtr data)
-    {
-        glReadPixels(x, y, w, h, (int)format, (int)type, data);
-    }
-    
-
-    public static void Rotate(float angle, float x, float y, float z)
-    {
-        glRotatef(angle, x, y, z);
-    }
-    
-
-    public static void Scale(float x, float y, float z)
-    {
-        glScalef(x, y, z);
-    }
-    
-
-    public static void ShadeModel(ShadingModel mode)
-    {
-        glShadeModel((int)mode);
-    }
-    
-
-    public static void TexCoord(float s, float t)
-    {
-        glTexCoord2f(s, t);
-    }
-    
-
-    public static void TexImage1D(TextureTarget target, int level, PixelInternalFormat internalFormat, int width, int border, PixelFormat format, PixelType type, IntPtr pixels)
-    {
-        glTexImage1D((int)target, level, (int)internalFormat, width, border, (int)format, (int)type, pixels);
-    }
-    
-
-    public static void TexImage2D(TextureTarget target, int level, PixelInternalFormat internalFormat, int width, int height, int border, PixelFormat format, PixelType type, IntPtr pixels)
-    {
-        glTexImage2D((int)target, level, (int)internalFormat, width, height, border, (int)format, (int)type, pixels);
-    }
     public static void TexImage2D<T>(TextureTarget target, int level, PixelInternalFormat internalFormat, int width, int height, int border, PixelFormat format, PixelType type, T[] pixels)
     {
         GCHandle pinnedArray = GCHandle.Alloc(pixels, GCHandleType.Pinned);
 
         IntPtr pointer = pinnedArray.AddrOfPinnedObject();
 
-        glTexImage2D((int)target, level, (int)internalFormat, width, height, border, (int)format, (int)type, pointer);
+        glTexImage2D(target, level, internalFormat, width, height, border, format, type, pointer);
 
         pinnedArray.Free();
     }
@@ -664,7 +674,7 @@ internal static class OpenGL32
 
         IntPtr pointer = pinnedArray.AddrOfPinnedObject();
 
-        glTexImage2D((int)target, level, (int)internalFormat, width, height, border, (int)format, (int)type, pointer);
+        glTexImage2D(target, level, internalFormat, width, height, border, format, type, pointer);
 
         pinnedArray.Free();
     }

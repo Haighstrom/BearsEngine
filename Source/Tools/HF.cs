@@ -241,7 +241,7 @@ public static class HF
             OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, minMagFilter);
 
             System.Drawing.Imaging.BitmapData bmpd = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            OpenGL32.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmpd.Width, bmpd.Height, 0, PixelFormat.Bgra, PixelType.UnsignedByte, bmpd.Scan0);
+            OpenGL32.glTexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmpd.Width, bmpd.Height, 0, PixelFormat.Bgra, PixelType.UnsignedByte, bmpd.Scan0);
             bmp.UnlockBits(bmpd);
 
             return t;
@@ -252,14 +252,14 @@ public static class HF
             pixels = pixels.Transpose();
             Texture t = new(OpenGL32.GenTexture(), pixels.GetLength(1), pixels.GetLength(0));
 
-            OpenGL32.PixelStore(PixelStoreParameter.GL_UNPACK_ALIGNMENT, 1);
+            OpenGL32.glPixelStorei(PixelStoreParameter.GL_UNPACK_ALIGNMENT, 1);
 
             t.Bind();
 
             GCHandle pinned = GCHandle.Alloc(pixels, GCHandleType.Pinned);
             IntPtr pointer = pinned.AddrOfPinnedObject();
 
-            OpenGL32.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, t.Width, t.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pointer);
+            OpenGL32.glTexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, t.Width, t.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pointer);
 
             pinned.Free();
 
@@ -313,7 +313,7 @@ public static class HF
 
             var bmpData = paddedBMP.LockBits(new System.Drawing.Rectangle(0, 0, paddedBMP.Width, paddedBMP.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-            OpenGL32.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmpData.Width, bmpData.Height, 0, PixelFormat.Bgra, PixelType.UnsignedByte, bmpData.Scan0);
+            OpenGL32.glTexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmpData.Width, bmpData.Height, 0, PixelFormat.Bgra, PixelType.UnsignedByte, bmpData.Scan0);
 
             paddedBMP.UnlockBits(bmpData);
 
