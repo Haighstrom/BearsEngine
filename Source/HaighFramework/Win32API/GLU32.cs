@@ -23,7 +23,7 @@ internal static class GLU32
     /// <param name="data">Specifies a pointer to the image data in memory.</param>
     /// <returns>A return value of zero indicates success, otherwise a GLU error code is returned.</returns>
     [DllImport(Library)]
-    public extern static int gluBuild2DMipmaps(int target, int internalFormat, int width, int height, int format, int type, IntPtr data);
+    public static extern int gluBuild2DMipmaps(int target, int internalFormat, int width, int height, int format, int type, IntPtr data);
 
     /// <summary>
     /// Define a viewing transformation
