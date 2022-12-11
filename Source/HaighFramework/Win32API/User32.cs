@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using NAudio.CoreAudioApi;
+using System;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 
@@ -61,12 +63,22 @@ internal static class User32
     /// <summary>
     /// The ChangeDisplaySettings function changes the settings of the default display device to the specified graphics mode.
     /// </summary>
-    /// <param name="lpDevMode">Pointer to a <see cref="DEVMODE"/> structure that describes the new graphics mode. If <see cref="lpDevMode"/> is NULL, all the values currently in the registry will be used for the display setting. Passing NULL for the <see cref="lpDevMode"/> parameter and 0 for the dwFlags parameter is the easiest way to return to the default mode after a dynamic mode change.</param>
+    /// <param name="lpDevMode">Pointer to a <see cref="DEVMODE"/> structure that describes the new graphics mode. If lpDevMode is NULL, all the values currently in the registry will be used for the display setting. Passing NULL for the lpDevMode parameter and 0 for the dwFlags parameter is the easiest way to return to the default mode after a dynamic mode change.</param>
     /// <param name="dwFlags">Indicates how the graphics mode should be changed.</param>
     /// <returns>Returns a <see cref="DISPCHANGERESULT"/> to indicate the result.</returns>
     /// <remarks>To change the settings of a specified display device, use the ChangeDisplaySettingsEx function. To ensure that the DEVMODE structure passed to ChangeDisplaySettings is valid and contains only values supported by the display driver, use the DEVMODE returned by the EnumDisplaySettings function. When the display mode is changed dynamically, the WM_DISPLAYCHANGE message is sent to all running applications. </remarks>
     [DllImport(Library, SetLastError = true)]
     public static extern DISPCHANGERESULT ChangeDisplaySettings(DEVMODE lpDevMode, CHANGEDISPLAYSETTINGSFLAGS dwFlags);
+
+    /// <summary>
+    /// The ChangeDisplaySettings function changes the settings of the default display device to the specified graphics mode.
+    /// </summary>
+    /// <param name="lpDevMode">Pointer to a <see cref="DEVMODE"/> structure that describes the new graphics mode. If lpDevMode is NULL, all the values currently in the registry will be used for the display setting. Passing NULL for the lpDevMode parameter and 0 for the dwFlags parameter is the easiest way to return to the default mode after a dynamic mode change.</param>
+    /// <param name="dwFlags">Indicates how the graphics mode should be changed.</param>
+    /// <returns>Returns a <see cref="DISPCHANGERESULT"/> to indicate the result.</returns>
+    /// <remarks>To change the settings of a specified display device, use the ChangeDisplaySettingsEx function. To ensure that the DEVMODE structure passed to ChangeDisplaySettings is valid and contains only values supported by the display driver, use the DEVMODE returned by the EnumDisplaySettings function. When the display mode is changed dynamically, the WM_DISPLAYCHANGE message is sent to all running applications. </remarks>
+    [DllImport(Library, SetLastError = true)]
+    public static extern DISPCHANGERESULT ChangeDisplaySettings(IntPtr lpDevMode, CHANGEDISPLAYSETTINGSFLAGS dwFlags);
 
     /// <summary>
     /// The ChangeDisplaySettingsEx function changes the settings of the specified display device to the specified graphics mode.
@@ -191,7 +203,7 @@ internal static class User32
     /// <param name="iDevNum">An index value that specifies the display device of interest. The operating system identifies each display device in the current session with an index value.The index values are consecutive integers, starting at 0. If the current session has three display devices, for example, they are specified by the index values 0, 1, and 2.</param>
     /// <param name="lpDisplayDevice">A pointer to a DISPLAY_DEVICE structure that receives information about the display device specified by iDevNum. Before calling EnumDisplayDevices, you must initialize the cb member of DISPLAY_DEVICE to the size, in bytes, of DISPLAY_DEVICE.</param>
     /// <param name="dwFlags">Set this flag to EDD_GET_DEVICE_INTERFACE_NAME (0x00000001) to retrieve the device interface name for GUID_DEVINTERFACE_MONITOR, which is registered by the operating system on a per monitor basis. The value is placed in the DeviceID member of the DISPLAY_DEVICE structure returned in lpDisplayDevice. The resulting device interface name can be used with SetupAPI functions and serves as a link between GDI monitor devices and SetupAPI monitor devices.</param>
-    /// <returns></returns>
+    /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero. The function fails if iDevNum is greater than the largest device index.</returns>
     [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool EnumDisplayDevices(IntPtr lpDevice, int iDevNum, [In, Out] DISPLAY_DEVICE lpDisplayDevice, ENUMDISPLAYDEVICEFLAG dwFlags);
@@ -204,7 +216,8 @@ internal static class User32
     /// <param name="lpDevMode">A pointer to a <see cref="DEVMODE"/> structure into which the function stores information about the specified graphics mode. Before calling EnumDisplaySettingsEx, set the dmSize member to sizeof (DEVMODE), and set the dmDriverExtra member to indicate the size, in bytes, of the additional space available to receive private driver data.</param>
     /// <param name="dwFlags">This parameter can be the following value.</param>
     /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.</returns>
-    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
+    [DllImport(Library, CharSet = CharSet.Auto)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool EnumDisplaySettingsEx([MarshalAs(UnmanagedType.LPTStr)] string lpszDeviceName, DisplayModeSettingsEnum iModeNum, [In, Out] DEVMODE lpDevMode, ENUMDISPLAYSETTINGSFLAG dwFlags);
 
     /// <summary>

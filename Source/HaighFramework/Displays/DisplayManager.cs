@@ -1,129 +1,116 @@
-﻿using BearsEngine.Win32API;
-using Microsoft.Win32;
+﻿using HaighFramework.Displays.WinAPI;
+using System.Collections.Immutable;
+using System.Runtime.InteropServices;
 
-namespace BearsEngine.Displays;
+namespace HaighFramework.Displays;
 
+/// <summary>
+/// A utility for identifying and managing displays
+/// </summary>
 public sealed class DisplayManager : IDisplayManager
-{    
-    public DisplayManager() 
+{
+    private readonly IDisplayAPI _api;
+    private bool _disposed = false;
+
+    /// <summary>
+    /// Initialise the default DisplayManager
+    /// </summary>
+    /// <exception cref="NotImplementedException">Throws an exception if there is no API available for the current OS.</exception>
+    public DisplayManager()
     {
-        RefreshDevices();
-        SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            _api = new WindowsDisplayAPI();
+        else
+            throw new NotImplementedException();
+
+        Log.Information("-------Display Devices-------");
+
+        (AvailableDisplays, PrimaryDisplay) = _api.GetAvailableDevices();
+
+        foreach (DisplayInfo display in AvailableDisplays)
+            Log.Information(display);
+        Log.Information("-----------------------------\n");
+
+        _api.DisplaySettingsChanged += OnDisplaySettingsChanged;
     }
-    
+
+    /// <summary>
+    /// The displays currently available to this computer
+    /// </summary>
+    public IImmutableList<DisplayInfo> AvailableDisplays { get; private set; }
+
+    /// <summary>
+    /// The main display
+    /// </summary>
+    public DisplayInfo PrimaryDisplay { get; private set; }
+
     private void OnDisplaySettingsChanged(object? sender, EventArgs e)
     {
         Log.Information("Change in display settings detected. Refreshing display devices.");
-        RefreshDevices();
+
+        (AvailableDisplays, PrimaryDisplay) = _api.GetAvailableDevices();
+
+        foreach (DisplayInfo display in AvailableDisplays)
+            Log.Information(display);
     }
 
-    private void RefreshDevices()
+    /// <summary>
+    /// Change the settings of a display. Valid settings can be identified via the <see cref="AvailableDisplays"/> property.
+    /// </summary>
+    /// <param name="display">The display to be changed.</param>
+    /// <param name="newWidth">The new width of the display.</param>
+    /// <param name="newHeight">The new height of the display.</param>
+    /// <param name="newRefreshRate">The new refresh rate of the display.</param>
+    public void ChangeSettings(DisplayInfo device, int newWidth, int newHeight, int newRefreshRate)
     {
-        Log.Information("-------Display Devices-------");
+        _api.ChangeSettings(device.DisplayName, newWidth, newHeight, newRefreshRate);
+        OnDisplaySettingsChanged(this, EventArgs.Empty);
+    }
 
-        //save old device list so we can copy device "original settings" if it existed before
-        //this is to cover the case that user has changed resolution from this program (which will later want to be restored), and then changed windows settings, triggering this function
-        IDisplay[] previousDevices = AvailableDevices.ToArray();
+    /// <summary>
+    /// Change the settings of a display. Valid settings can be identified via the <see cref="AvailableDisplays"/> property.
+    /// </summary>
+    /// <param name="display">The display to be changed.</param>
+    /// <param name="newSettings">The new settings to be applied.</param>
+    public void ChangeSettings(DisplayInfo device, DisplaySettings newSettings) => ChangeSettings(device, newSettings.Width, newSettings.Height, newSettings.RefreshRate);
 
-        AvailableDevices.Clear();
+    /// <summary>
+    /// Change the settings of a display. Valid settings can be identified via the <see cref="AvailableDisplays"/> property.
+    /// </summary>
+    /// <param name="display">The display to be changed.</param>
+    /// <param name="newWidth">The new width of the display.</param>
+    /// <param name="newHeight">The new height of the display.</param>
+    public void ChangeSettings(DisplayInfo device, int newWidth, int newHeight) => ChangeSettings(device, newWidth, newHeight, device.RefreshRate);
 
-        IDisplay device;
-        DisplaySettings curSettings = null;
-        List<DisplaySettings> availableSettings = new();
-        bool isPrimary = false;
-        int deviceCount = 0, settingsCount = 0;
-        DISPLAY_DEVICE win32DisplayDevice = new();
+    /// <summary>
+    /// Revert all displays back to their original settings.
+    /// </summary>
+    public void ResetSettings()
+    {
+        _api.ResetSettings();
+    }
 
-        while (User32.EnumDisplayDevices(IntPtr.Zero, deviceCount++, win32DisplayDevice, 0))
+    private void Dispose(bool disposedCorrectly)
+    {
+        if (!_disposed)
         {
-            if ((win32DisplayDevice.StateFlags & DisplayDeviceStateFlags.AttachedToDesktop) == 0) continue;
-
-            DEVMODE dm = new();
-
-            if (User32.EnumDisplaySettingsEx(win32DisplayDevice.DeviceName, DisplayModeSettingsEnum.CurrentSettings, dm, 0) || User32.EnumDisplaySettingsEx(win32DisplayDevice.DeviceName, DisplayModeSettingsEnum.RegistrySettings, dm, 0))
+            if (disposedCorrectly)
             {
-                //todo: DPI (GetSCale())
-                curSettings = new DisplaySettings(dm.Position.X, dm.Position.Y, dm.PelsWidth, dm.PelsHeight, dm.DisplayFrequency);
-
-                isPrimary = (win32DisplayDevice.StateFlags & DisplayDeviceStateFlags.PrimaryDevice) != 0;
+                _api.Dispose();
+            }
+            else
+            {
+                Log.Warning($"Did not dispose {nameof(DisplayManager)} correctly.");
             }
 
-            availableSettings.Clear();
-            settingsCount = 0;
-            while (User32.EnumDisplaySettingsEx(win32DisplayDevice.DeviceName, settingsCount++, dm, 0))
-            {
-                //todo: DPI
-                DisplaySettings settings = new(dm.Position.X, dm.Position.Y, dm.PelsWidth, dm.PelsHeight, dm.DisplayFrequency);
-
-                availableSettings.Add(settings);
-            }
-
-            device = new Display(win32DisplayDevice.DeviceName, deviceCount - 1, isPrimary, dm.BitsPerPel, curSettings, availableSettings);
-
-            //set device.
-            foreach (IDisplay prevDevice in previousDevices)
-            {
-                if (device.DeviceID == prevDevice.DeviceID)
-                {
-                    ((Display)device).OriginalSettings = prevDevice.OriginalSettings;
-                }
-            }
-
-            AvailableDevices.Add(device);
-            if (isPrimary) PrimaryDevice = device;
-
-            Log.Information(device.ToString());
-            Log.Information("");
+            _disposed = true;
         }
-
-        Log.Information("-----------------------------\n");
-    }
-    
-    public IDisplay PrimaryDevice { get; private set; }
-
-    public IList<IDisplay> AvailableDevices { get; } = new List<IDisplay>();
-    
-    public void ChangeSettings(IDisplay device, DisplaySettings settings)
-    {
-        device.ChangeSettings(settings);
     }
 
-    public void ChangeSettings(IDisplay device, int width, int height, float refreshRate)
+    void IDisposable.Dispose()
     {
-        device.ChangeSettings(width, height, refreshRate);
-    }
-    
-    public void ChangeResolution(IDisplay device, int width, int height)
-    {
-        device.ChangeResolution(width, height);
-    }
-    
-    public void RestoreSettings()
-    {
-        foreach (IDisplay device in AvailableDevices)
-            device.RestoreSettings();
-    }
-
-    public void RestoreSettings(IDisplay device)
-    {
-        device.RestoreSettings();
-    }
-
-    public void Dispose()
-    {
-        Dispose(true);
+        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        Dispose(disposedCorrectly: true);
         GC.SuppressFinalize(this);
-    }
-
-    private void Dispose(bool calledFromDispose)
-    {
-        //todo: get this working again
-        SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
-        RestoreSettings();
-    }
-
-    ~DisplayManager()
-    {
-        Dispose(false);
     }
 }

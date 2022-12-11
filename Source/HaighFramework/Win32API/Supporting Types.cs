@@ -1883,18 +1883,18 @@ internal enum DeviceBroadcastType
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 internal class DEVMODE
 {
-    internal DEVMODE()
+    public DEVMODE()
     {
         Size = (short)Marshal.SizeOf(this);
     }
 
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-    internal string DeviceName;
-    internal short SpecVersion;
-    internal short DriverVersion;
+    public string DeviceName;
+    public short SpecVersion;
+    public short DriverVersion;
     private short Size;
-    internal short DriverExtra;
-    internal DeviceModeEnum Fields;
+    public short DriverExtra;
+    public DeviceModeEnum Fields;
 
     //internal short Orientation;
     //internal short PaperSize;
@@ -1905,31 +1905,31 @@ internal class DEVMODE
     //internal short DefaultSource;
     //internal short PrintQuality;
 
-    internal POINT Position;
-    internal int DisplayOrientation;
-    internal int DisplayFixedOutput;
+    public POINT Position;
+    public int DisplayOrientation;
+    public int DisplayFixedOutput;
 
-    internal short Color;
-    internal short Duplex;
-    internal short YResolution;
-    internal short TTOption;
-    internal short Collate;
+    public short Color;
+    public short Duplex;
+    public short YResolution;
+    public short TTOption;
+    public short Collate;
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-    internal string FormName;
-    internal short LogPixels;
-    internal int BitsPerPel;
-    internal int PelsWidth;
-    internal int PelsHeight;
-    internal int DisplayFlags;
-    internal int DisplayFrequency;
-    internal int ICMMethod;
-    internal int ICMIntent;
-    internal int MediaType;
-    internal int DitherType;
-    internal int Reserved1;
-    internal int Reserved2;
-    internal int PanningWidth;
-    internal int PanningHeight;
+    public string FormName;
+    public short LogPixels;
+    public int BitsPerPel;
+    public int PelsWidth;
+    public int PelsHeight;
+    public int DisplayFlags;
+    public int DisplayFrequency;
+    public int ICMMethod;
+    public int ICMIntent;
+    public int MediaType;
+    public int DitherType;
+    public int Reserved1;
+    public int Reserved2;
+    public int PanningWidth;
+    public int PanningHeight;
 }
 
 [Flags]
@@ -1955,7 +1955,7 @@ internal class DISPLAY_DEVICE
     internal string DeviceName;
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
     internal string DeviceString;
-    internal DisplayDeviceStateFlags StateFlags;    // Int32
+    internal DisplayDeviceStateFlags StateFlags;
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
     internal string DeviceID;
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
