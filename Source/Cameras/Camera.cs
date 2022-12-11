@@ -167,10 +167,10 @@ namespace BearsEngine.Worlds.Cameras
                 OpenGL32.glBindTexture(TextureTarget.Texture2DMultisample, _frameBufferMSAATexture.ID);
                 OpenGL32.TexImage2DMultisample(TextureTargetMultisample.Texture2DMultisample, MSAASamples, PixelInternalFormat.Rgba8, width, height, false);
 
-                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, TextureParameter.Linear);
-                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, TextureParameter.Linear);
-                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
-                OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
+                OpenGL32.glTexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, TextureParameter.Linear);
+                OpenGL32.glTexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, TextureParameter.Linear);
+                OpenGL32.glTexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
+                OpenGL32.glTexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
 
                 OpenGL32.glBindTexture(TextureTarget.Texture2DMultisample, 0);
 
@@ -183,10 +183,10 @@ namespace BearsEngine.Worlds.Cameras
             OpenGL32.glBindTexture(TextureTarget.Texture2D, _frameBufferShaderPassTexture.ID);
             OpenGL32.TexStorage2D(TextureTarget.Texture2D, 1, TexInternalFormat.RGBA8, width, height);
 
-            OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, TextureParameter.Linear);
-            OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, TextureParameter.Linear);
-            OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
-            OpenGL32.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
+            OpenGL32.glTexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, TextureParameter.Linear);
+            OpenGL32.glTexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, TextureParameter.Linear);
+            OpenGL32.glTexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
+            OpenGL32.glTexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
 
             OpenGL32.glBindTexture(TextureTarget.Texture2D, 0);
             BE.LastBoundTexture = 0;
@@ -273,7 +273,7 @@ namespace BearsEngine.Worlds.Cameras
 
             //Save the previous viewport and set the viewport to match the size of the texture we are now drawing to - the FBO
             Rect prevVP = OpenGL32.GetViewport();
-            OpenGL32.Viewport(0, 0, (int)base.W, (int)base.H);
+            OpenGL32.glViewport(0, 0, (int)base.W, (int)base.H);
 
             //Locally save the current render target, we will then set this camera as the current render target for child cameras, then put it back
             uint tempFBID = BE.LastBoundFrameBuffer;
@@ -323,7 +323,7 @@ namespace BearsEngine.Worlds.Cameras
             OpenGL32.glBlendFunc(BlendScaleFactor.GL_ONE, BlendScaleFactor.GL_ONE_MINUS_SRC_ALPHA);
 
             //reset viewport
-            OpenGL32.Viewport(prevVP);
+            OpenGL32.glViewport((int)prevVP.X, (int)prevVP.Y, (int)prevVP.W, (int)prevVP.H);
 
             Matrix4 mv = modelView;
             if (Angle != 0)

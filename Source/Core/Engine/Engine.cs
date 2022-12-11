@@ -67,7 +67,7 @@ internal class Engine : IEngine
         _targetUPS = settings.TargetUPS;
         _targetRPS = settings.TargetFramesPerSecond;
 
-        OpenGL32.Viewport(Window.Viewport);
+        OpenGL32.glViewport((int)window.Viewport.X, (int)window.Viewport.Y, (int)window.Viewport.W, (int)window.Viewport.H);
         BE.OrthoMatrix = Matrix4.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
 
         Window.Resized += OnWindowResize;
@@ -100,7 +100,7 @@ internal class Engine : IEngine
 
     private void OnWindowResize(object? sender, EventArgs e)
     {
-        OpenGL32.Viewport(Window.Viewport);
+        OpenGL32.glViewport((int)Window.Viewport.X, (int)Window.Viewport.Y, (int)Window.Viewport.W, (int)Window.Viewport.H);
         BE.OrthoMatrix = Matrix4.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
     }
 

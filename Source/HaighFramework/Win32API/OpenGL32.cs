@@ -433,35 +433,83 @@ internal static class OpenGL32
     /// <param name="data">Specifies a pointer to the image data in memory.</param>
     [DllImport(Library)]
     public static extern void glTexImage2D(TextureTarget target, int level, PixelInternalFormat internalFormat, int width, int height, int border, PixelFormat format, PixelType type, IntPtr data);
-    
-    // ***CLEANED UP ABOVE THIS LINE***
 
+    /// <summary>
+    /// specify a two-dimensional texture subimage
+    /// </summary>
+    /// <param name="target">Specifies the target to which the texture is bound for glTexSubImage2D.</param>
+    /// <param name="level">Specifies the level-of-detail number. Level 0 is the base image level. Level n is the nth mipmap reduction image.</param>
+    /// <param name="xoffset">Specifies a texel offset in the x direction within the texture array.</param>
+    /// <param name="yoffset">Specifies a texel offset in the y direction within the texture array.</param>
+    /// <param name="width">Specifies the width of the texture subimage.</param>
+    /// <param name="height">Specifies the height of the texture subimage.</param>
+    /// <param name="format">Specifies the format of the pixel data.</param>
+    /// <param name="type">Specifies the data type of the pixel data.</param>
+    /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
     [DllImport(Library)]
-    public static extern void glTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, IntPtr pixels);
-    
+    public static extern void glTexSubImage2D(TextureTarget target, int level, int xOffset, int yOffset, int width, int height, PixelFormat format, PixelType type, IntPtr pixels);
 
+    /// <summary>
+    /// set texture parameters
+    /// </summary>
+    /// <param name="target">Specifies the target to which the texture is bound for glTexParameter functions.</param>
+    /// <param name="pname">Specifies the symbolic name of a single-valued texture parameter.</param>
+    /// <param name="param">Specifies the value of pname.</param>
     [DllImport(Library)]
-    public static extern void glTexParameteri(int target, int pname, int param);
-    
+    public static extern void glTexParameteri(TextureTarget target, TextureParameterName pname, TextureParameter param);
 
+    /// <summary>
+    /// multiply the current matrix by a translation matrix
+    /// </summary>
+    /// <param name="x">Specify the x, y, and z coordinates of a translation vector.</param>
+    /// <param name="y">Specify the x, y, and z coordinates of a translation vector.</param>
+    /// <param name="z">Specify the x, y, and z coordinates of a translation vector.</param>
     [DllImport(Library)]
     public static extern void glTranslatef(float x, float y, float z);
-    
 
+    /// <summary>
+    /// The glVertex function commands are used within glBegin/glEnd pairs to specify point, line, and polygon vertices. The current color, normal, and texture coordinates are associated with the vertex when glVertex is called. When only x and y are specified, z defaults to 0.0 and w defaults to 1.0. When x, y, and z are specified, w defaults to 1.0. Invoking glVertex outside of a glBegin/glEnd pair results in undefined behavior.
+    /// </summary>
+    /// <param name="x">Specifies the x-coordinate of a vertex.</param>
+    /// <param name="y">Specifies the y-coordinate of a vertex.</param>
     [DllImport(Library)]
     public static extern void glVertex2f(float x, float y);
-    
 
+    /// <summary>
+    /// The glVertex function commands are used within glBegin/glEnd pairs to specify point, line, and polygon vertices. The current color, normal, and texture coordinates are associated with the vertex when glVertex is called. When only x and y are specified, z defaults to 0.0 and w defaults to 1.0. When x, y, and z are specified, w defaults to 1.0. Invoking glVertex outside of a glBegin/glEnd pair results in undefined behavior.
+    /// </summary>
+    /// <param name="x">Specifies the x-coordinate of a vertex.</param>
+    /// <param name="y">Specifies the y-coordinate of a vertex.</param>
+    /// <param name="z">Specifies the z-coordinate of a vertex.</param>
     [DllImport(Library)]
     public static extern void glVertex3f(float x, float y, float z);
-    
 
+    /// <summary>
+    /// glVertexPointer specifies the location and data format of an array of vertex coordinates to use when rendering
+    /// </summary>
+    /// <param name="size">Specifies the number of coordinates per vertex. Must be 2, 3, or 4. The initial value is 4.</param>
+    /// <param name="type">Specifies the data type of each coordinate in the array. Symbolic constants GL_SHORT, GL_INT, GL_FLOAT, or GL_DOUBLE are accepted. The initial value is GL_FLOAT.</param>
+    /// <param name="stride">Specifies the byte offset between consecutive vertices. If stride is 0, the vertices are understood to be tightly packed in the array. The initial value is 0.</param>
+    /// <param name="pointer">Specifies a pointer to the first coordinate of the first vertex in the array. The initial value is 0.</param>
     [DllImport(Library)]
-    public static extern void glVertexPointer(int size, uint type, int stride, float[] pointer);
-    
+    public static extern void glVertexPointer(int size, DataType type, int stride, float[] pointer);
 
+    /// <summary>
+    /// Specifies the affine transformation of x and y from normalized device coordinates to window coordinates.
+    /// </summary>
+    /// <param name="x">Specify the lower left corner of the viewport rectangle, in pixels. The initial value is (0,0).</param>
+    /// <param name="y">Specify the lower left corner of the viewport rectangle, in pixels. The initial value is (0,0).</param>
+    /// <param name="width">Specify the width and height of the viewport. When a GL context is first attached to a window, width and height are set to the dimensions of that window.</param>
+    /// <param name="height">Specify the width and height of the viewport. When a GL context is first attached to a window, width and height are set to the dimensions of that window.</param>
     [DllImport(Library)]
     public static extern void glViewport(int x, int y, int width, int height);
+
+    // ***CLEANED UP ABOVE THIS LINE***
+
+
+
+
+
     
     
 
@@ -680,51 +728,6 @@ internal static class OpenGL32
         glTexImage2D(target, level, internalFormat, width, height, border, format, type, pointer);
 
         pinnedArray.Free();
-    }
-    
-
-    public static void TexSubImage2D(TextureTarget target, int level, int xOffset, int yOffset, int width, int height, PixelFormat format, PixelType type, IntPtr pixels)
-    {
-        glTexSubImage2D((int)target, level, xOffset, yOffset, width, height, (int)format, (int)type, pixels);
-    }
-    
-
-    public static void TexParameter(TextureTarget target, TextureParameterName pname, TextureParameter param)
-    {
-        glTexParameteri((int)target, (int)pname, (int)param);
-    }
-    
-
-    public static void Translate(float x, float y, float z)
-    {
-        glTranslatef(x, y, z);
-    }
-    
-
-    public static void Vertex(float x, float y)
-    {
-        glVertex2f(x, y);
-    }
-
-    public static void Vertex(float x, float y, float z)
-    {
-        glVertex3f(x, y, z);
-    }
-    
-
-    public static void VertexPointer(int size, DataType type, int stride, float[] pointer)
-    {
-        glVertexPointer(size, (uint)type, stride, pointer);
-    }
-    
-
-    public static void Viewport(int x, int y, int w, int h)
-    {
-        glViewport(x, y, w, h);
-    }
-    public static void Viewport(Rect viewport)
-    {
-        glViewport((int)viewport.X, (int)viewport.Y, (int)viewport.W, (int)viewport.H);
     }
 
     private delegate string wglGetExtensionsStringARB(IntPtr hDc);
