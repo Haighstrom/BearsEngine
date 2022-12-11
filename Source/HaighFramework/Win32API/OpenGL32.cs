@@ -506,19 +506,12 @@ internal static class OpenGL32
 
     // ***CLEANED UP ABOVE THIS LINE***
 
-
-
-
-
-    
+    [DllImport(Library)]
+    public static extern IntPtr wglCreateContext(IntPtr hDc);
     
 
     [DllImport(Library)]
-    public extern static IntPtr wglCreateContext(IntPtr hDc);
-    
-
-    [DllImport(Library)]
-    public extern static bool wglDeleteContext(IntPtr hRC);
+    public static extern bool wglDeleteContext(IntPtr hRC);
     
 
     [DllImport(Library)]
@@ -526,19 +519,19 @@ internal static class OpenGL32
     
 
     [DllImport(Library)]
-    public extern static IntPtr wglGetCurrentContext();
+    public static extern IntPtr wglGetCurrentContext();
     
 
     [DllImport(Library)]
-    public extern static IntPtr wglGetProcAddress(string lpszProc);
+    public static extern IntPtr wglGetProcAddress(string lpszProc);
     
 
     [DllImport(Library)]
-    public extern static bool wglMakeCurrent(IntPtr hDc, IntPtr hRC);
+    public static extern bool wglMakeCurrent(IntPtr hDc, IntPtr hRC);
     
 
     [DllImport(Library)]
-    public extern static bool wglShareLists(IntPtr hglrc1, IntPtr hglrc2);
+    public static extern bool wglShareLists(IntPtr hglrc1, IntPtr hglrc2);
     
     
 
