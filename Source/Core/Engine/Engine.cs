@@ -1,10 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 using BearsEngine.Input;
-using BearsEngine.Logging;
-using BearsEngine.Win32API;
 using BearsEngine.Window;
 using HaighFramework.Displays;
+using HaighFramework.OpenGL;
 
 namespace BearsEngine;
 

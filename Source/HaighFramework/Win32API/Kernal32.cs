@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Security;
 
-namespace BearsEngine.Win32API;
+namespace HaighFramework.Win32API;
 
 /// <summary>
 /// Low-level operating system functions for memory management and resource handling.

@@ -1,5 +1,6 @@
 ﻿using BearsEngine.Graphics.Shaders;
-using BearsEngine.Win32API;
+using HaighFramework.OpenGL;
+using HaighFramework.Win32API;
 
 namespace BearsEngine.Worlds.Cameras
 {

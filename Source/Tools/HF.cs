@@ -2,10 +2,10 @@
 using System.Text;
 using System.Reflection;
 using System.IO;
-using BearsEngine.Win32API;
 
 using Encoding = System.Text.Encoding;
-using BearsEngine.Logging;
+using HaighFramework.Win32API;
+using HaighFramework.OpenGL;
 
 namespace BearsEngine;
 public static class HF

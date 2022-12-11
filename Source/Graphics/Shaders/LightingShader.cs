@@ -1,4 +1,5 @@
-﻿using BearsEngine.Win32API;
+﻿using HaighFramework.OpenGL;
+using HaighFramework.Win32API;
 
 namespace BearsEngine.Graphics.Shaders;
 
@@ -144,7 +145,7 @@ public class LightingShader : IShader
     {
         for (int i = 0; i < _lights.Count; i++)
         {
-            OpenGL32.Uniform2(_locationLights_PosUniformArray[i], _lights[i].Position);
+            OpenGL32.glUniform2f(_locationLights_PosUniformArray[i], _lights[i].Position.X, _lights[i].Position.Y);
             OpenGL32.Uniform4(_locationLights_ColourUniformArray[i], _lights[i].Colour);
             OpenGL32.Uniform(_locationLights_RadiusUniformArray[i], _lights[i].Radius);
             OpenGL32.Uniform(_locationLights_CutoffRadiusUniformArray[i], _lights[i].CutoffRadius);

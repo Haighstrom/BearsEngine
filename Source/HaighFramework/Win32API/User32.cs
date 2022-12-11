@@ -1,10 +1,8 @@
-﻿using NAudio.CoreAudioApi;
-using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 
-namespace BearsEngine.Win32API;
+namespace HaighFramework.Win32API;
 
 /// <summary>
 /// Windows management functions for message handling, timers, menus, and communications.

@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Security;
 
-namespace BearsEngine.Win32API;
+namespace HaighFramework.Win32API;
 
 /// <summary>
 /// Graphics Device Interface (GDI) functions for device output, such as those for drawing and font management. https://docs.microsoft.com/en-us/windows/win32/gdi/windows-gdi

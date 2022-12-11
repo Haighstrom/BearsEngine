@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace BearsEngine.Win32API;
+namespace HaighFramework.Win32API;
 
 /// <summary>
 /// Contains information about a system appbar message.

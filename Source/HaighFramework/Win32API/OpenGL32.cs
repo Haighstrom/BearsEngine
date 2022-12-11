@@ -3,9 +3,11 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Drawing;
 using System.ComponentModel;
+using HaighFramework.Win32API;
 
-namespace BearsEngine.Win32API;
+namespace HaighFramework.OpenGL;
 
+#region Enums
 /// <summary>
 /// <see cref="OpenGL32.glClear"/> takes a single argument that is the bitwise OR of several values indicating which buffer(s) are to be cleared.
 /// </summary>
@@ -32,6 +34,7 @@ internal enum CLEAR_MASK : uint
     /// </summary>
     GL_STENCIL_BUFFER_BIT = 0x00000400,
 }
+#endregion
 
 [SuppressUnmanagedCodeSecurity]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "OpenGL functions have dumb naming conventions but I'm keeping these APIs pure.")]
@@ -549,7 +552,7 @@ internal static class OpenGL32
         GetProcAddress("glTexStorage2D", out _glTexStorage2D);
         GetProcAddress("glUniform1f", out _glUniform1f);
         GetProcAddress("glUniform1i", out _glUniform1i);
-        GetProcAddress("glUniform2f", out _glUniform2f);
+        GetProcAddress("glUniform2f", out glUniform2f);
         GetProcAddress("glUniform3f", out _glUniform3f);
         GetProcAddress("glUniform4f", out _glUniform4f);
         GetProcAddress("glUniformMatrix3fv", out _glUniformMatrix3fv);
@@ -1202,19 +1205,11 @@ internal static class OpenGL32
     }
     
 
-    private delegate void DEL_glUniform2f(int location, float v0, float v1);
-    private static DEL_glUniform2f _glUniform2f;
+    public delegate void DEL_glUniform2f(int location, float v0, float v1);
+    public static DEL_glUniform2f? glUniform2f;
 
     private delegate void DEL_glUniform2i(int location, int v0, int v1);
     private static DEL_glUniform2i _glUniform2i;
-
-    /// <summary>
-    /// glUniform2f
-    /// </summary>
-    public static void Uniform2(int location, Point value)
-    {
-        _glUniform2f(location, value.X, value.Y);
-    }
     
 
     private delegate void DEL_glUniform3f(int location, float v0, float v1, float v2);

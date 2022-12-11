@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using BearsEngine.Input;
-using BearsEngine.Win32API;
+using HaighFramework.OpenGL;
+using HaighFramework.Win32API;
 
 namespace BearsEngine.Window;
 

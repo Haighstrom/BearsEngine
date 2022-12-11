@@ -1,4 +1,4 @@
-﻿namespace BearsEngine.Win32API;
+﻿namespace HaighFramework.Win32API;
 
 /// <summary>
 /// Appbar message value to send. https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shappbarmessage

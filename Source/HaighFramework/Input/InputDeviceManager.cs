@@ -1,7 +1,7 @@
-﻿using BearsEngine.Win32API;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using BearsEngine.Window;
 using System.Threading;
+using HaighFramework.Win32API;
 
 namespace BearsEngine.Input;
 

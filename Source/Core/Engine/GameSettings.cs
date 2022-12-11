@@ -1,5 +1,4 @@
-﻿using BearsEngine.Logging;
-using BearsEngine.Window;
+﻿using BearsEngine.Window;
 
 namespace BearsEngine;
 

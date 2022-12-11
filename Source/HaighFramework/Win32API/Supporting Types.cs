@@ -1,7 +1,6 @@
 ﻿using System.Runtime.InteropServices;
-using static BearsEngine.Win32API.PIXELFORMATDESCRIPTOR;
 
-namespace BearsEngine.Win32API;
+namespace HaighFramework.Win32API;
 
 internal enum User32Cursors : ushort
 {

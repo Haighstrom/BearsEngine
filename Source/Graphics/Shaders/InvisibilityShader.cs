@@ -1,4 +1,5 @@
-﻿using BearsEngine.Win32API;
+﻿using HaighFramework.OpenGL;
+using HaighFramework.Win32API;
 
 namespace BearsEngine.Graphics.Shaders;
 
@@ -71,7 +72,7 @@ public class InvisibilityShader : IShader
 
         OpenGL32.Uniform(_locationRadiusUniform, Radius);
         OpenGL32.Uniform(_locationInnerRadiusUniform, InnerRadius);
-        OpenGL32.Uniform2(_locationSourcePositionUniform, Centre);
+        OpenGL32.glUniform2f(_locationSourcePositionUniform, Centre.X, Centre.Y);
         OpenGL32.UniformMatrix3(_locationSourceInvMVMatrixUniform, 1, false, mdlMatrix.Inverse().Values);
 
 

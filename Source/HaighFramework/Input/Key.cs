@@ -145,6 +145,6 @@ public static class KeyExtensions
         }
 
 
-        return Win32API.User32.GetKeyNameText(KeyMap.GetExtendedScanCodeFromKey(k));
+        return HaighFramework.Win32API.User32.GetKeyNameText(KeyMap.GetExtendedScanCodeFromKey(k));
     }
 }

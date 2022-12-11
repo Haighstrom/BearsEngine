@@ -1,4 +1,4 @@
-﻿namespace BearsEngine.Win32API;
+﻿namespace HaighFramework.Win32API;
 
 internal static class Extensions
 {

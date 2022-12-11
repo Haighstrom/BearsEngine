@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace BearsEngine.Win32API;
+namespace HaighFramework.Win32API;
 
 internal static class Shell32
 {
