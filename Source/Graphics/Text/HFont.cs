@@ -3,6 +3,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
+using Point = HaighFramework.Point;
 
 namespace BearsEngine.Worlds.Graphics.Text
 {

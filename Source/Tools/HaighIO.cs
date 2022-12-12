@@ -9,7 +9,7 @@ namespace BearsEngine;
 public static class HaighIO
 {
     private const int DeleteDirectoryRetries = 5;
-    
+
     public static bool FileExists(string filePath) => File.Exists(filePath);
 
     public static DirectoryInfo CreateDirectory(string directoryPath)
@@ -159,7 +159,7 @@ public static class HaighIO
 
         File.WriteAllText(filename, csv.ToString());
     }
-    
+
     /// <summary>
     /// Loads a .csv file into a 2D array
     /// </summary>
@@ -222,10 +222,10 @@ public static class HaighIO
         JsonSerializer.Serialize(@object, new JsonSerializerOptions
         {
             WriteIndented = indent,
-            Converters = { new JSON.Array2DConverter() },
+            Converters = { new Array2DConverter() },
             IncludeFields = true,
         });
-    
+
 
     /// <summary>
     /// Creates a text file with a single line of JSON representing a struct
@@ -238,10 +238,10 @@ public static class HaighIO
     public static M? DeserialiseFromJSON<M>(string json) =>
         JsonSerializer.Deserialize<M>(json, new JsonSerializerOptions
         {
-            Converters = { new JSON.Array2DConverter() },
+            Converters = { new Array2DConverter() },
             IncludeFields = true,
         });
-    
+
     /// <summary>
     /// Creates a struct from a file containing a single line of JSON
     /// </summary>

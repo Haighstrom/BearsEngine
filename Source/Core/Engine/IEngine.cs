@@ -1,4 +1,4 @@
-﻿using BearsEngine.Window;
+﻿using HaighFramework.Window;
 
 namespace BearsEngine;
 

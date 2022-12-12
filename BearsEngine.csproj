@@ -19,6 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HaighFramework\HaighFramework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Resources\Shaders.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

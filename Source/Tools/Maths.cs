@@ -126,7 +126,6 @@ public static class Maths
         return (end - start).ToDirection();
     }
 
-
     public static bool IsInt(string s)
     {
         return int.TryParse(s, out _);

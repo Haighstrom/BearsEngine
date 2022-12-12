@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace BearsEngine.JSON;
+namespace BearsEngine;
 
 public class Array2DConverter : JsonConverterFactory
 {
