@@ -200,13 +200,13 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
         }
     }
 
-    public virtual void Update(float elapsedTime)
+    public virtual void Update(float elapsed)
     {
         foreach (IAddable a in Entities)
         {
             if (a is IUpdatable u && u.Active && a.Parent == this)
             {
-                u.Update(elapsedTime);
+                u.Update(elapsed);
             }
         }
     }

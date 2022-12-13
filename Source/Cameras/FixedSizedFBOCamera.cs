@@ -1,6 +1,6 @@
 ﻿using BearsEngine.Graphics.Shaders;
 using HaighFramework.OpenGL;
-using HaighFramework.Win32API;
+using HaighFramework.WinAPI;
 
 namespace BearsEngine.Worlds.Cameras
 {
@@ -85,7 +85,7 @@ namespace BearsEngine.Worlds.Cameras
             if (MSAAEnabled)
             {
                 //Generate FBO and texture to use with the MSAA antialising pass
-                _frameBufferMSAATexture = new Texture(OpenGL32.GenTexture(), (int)View.W, (int)View.H);
+                _frameBufferMSAATexture = new Texture(OpenGLHelpers.GenTexture(), (int)View.W, (int)View.H);
 
                 OpenGL32.glBindTexture(TextureTarget.Texture2DMultisample, _frameBufferMSAATexture.ID);
                 OpenGL32.TexImage2DMultisample(TextureTargetMultisample.Texture2DMultisample, MSAASamples, PixelInternalFormat.Rgba8, (int)View.W, (int)View.H, false);
@@ -101,7 +101,7 @@ namespace BearsEngine.Worlds.Cameras
             }
 
             //Generate FBO and texture to use for the final pass, where the camera's shader will be applied to the result of the MSAA pass
-            _frameBufferShaderPassTexture = new Texture(OpenGL32.GenTexture(), (int)View.W, (int)View.H);
+            _frameBufferShaderPassTexture = new Texture(OpenGLHelpers.GenTexture(), (int)View.W, (int)View.H);
 
             OpenGL32.glBindTexture(TextureTarget.Texture2D, _frameBufferShaderPassTexture.ID);
             OpenGL32.TexStorage2D(TextureTarget.Texture2D, 1, TexInternalFormat.RGBA8, (int)View.W, (int)View.H);
@@ -180,14 +180,14 @@ namespace BearsEngine.Worlds.Cameras
             }
 
             //Clear the FBO
-            OpenGL32.glClearColour(BackgroundColour);
+            OpenGL32.glClearColor(BackgroundColour.R / 255f, BackgroundColour.G / 255f, BackgroundColour.B / 255f, BackgroundColour.A / 255f);
             OpenGL32.glClear(CLEAR_MASK.GL_COLOR_BUFFER_BIT);
 
             //Set normal blend function for within the layers
             OpenGL32.glBlendFunc(BlendScaleFactor.GL_ONE, BlendScaleFactor.GL_ONE_MINUS_SRC_ALPHA);
 
             //Save the previous viewport and set the viewport to match the size of the texture we are now drawing to - the FBO
-            Rect prevVP = OpenGL32.GetViewport();
+            Rect prevVP = OpenGLHelpers.GetViewport();
             OpenGL32.glViewport(0, 0, (int)View.W, (int)View.H); //not W,H??
 
             //Locally save the current render target, we will then set this camera as the current render target for child cameras, then put it back
@@ -214,7 +214,7 @@ namespace BearsEngine.Worlds.Cameras
                 //Bind the 2nd pass FBO and draw from the first to do MSAA sampling
                 OpenGL32.BindFramebuffer(FramebufferTarget.Framebuffer, _frameBufferShaderPassID);
                 OpenGL32.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColourAttachment0, TextureTarget.Texture2D, _frameBufferShaderPassTexture.ID, 0);
-                OpenGL32.glClearColour(new Colour(0, 0, 0, 0));
+                OpenGL32.glClearColor(0, 0, 0, 0);
                 OpenGL32.glClear(CLEAR_MASK.GL_COLOR_BUFFER_BIT);
 
                 //Bind the FBO to be drawn

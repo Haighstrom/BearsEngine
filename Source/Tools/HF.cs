@@ -4,7 +4,7 @@ using System.Reflection;
 using System.IO;
 
 using Encoding = System.Text.Encoding;
-using HaighFramework.Win32API;
+using HaighFramework.WinAPI;
 using HaighFramework.OpenGL;
 
 namespace BearsEngine;
@@ -159,7 +159,7 @@ public static class HF
         public static void CreateFramebuffer(int width, int height, out uint framebufferID, out Texture framebufferTexture)
         {
             framebufferID = OpenGL32.GenFramebuffer();
-            framebufferTexture = new Texture(OpenGL32.GenTexture(), width, height);
+            framebufferTexture = new Texture(OpenGLHelpers.GenTexture(), width, height);
 
             OpenGL32.glBindTexture(TextureTarget.Texture2D, framebufferTexture.ID);
             OpenGL32.TexStorage2D(TextureTarget.Texture2D, 1, TexInternalFormat.RGBA8, width, height);
@@ -173,7 +173,7 @@ public static class HF
         public static void ResizeFramebuffer(ref Texture framebufferTexture, int newW, int newH)
         {
             OpenGL32.glDeleteTextures(1, new uint[1] { framebufferTexture.ID });
-            framebufferTexture = new Texture(OpenGL32.GenTexture(), newW, newH);
+            framebufferTexture = new Texture(OpenGLHelpers.GenTexture(), newW, newH);
 
             OpenGL32.glBindTexture(TextureTarget.Texture2D, framebufferTexture.ID);
             OpenGL32.TexStorage2D(TextureTarget.Texture2D, 1, TexInternalFormat.RGBA8, newW, newH);
@@ -187,7 +187,7 @@ public static class HF
         public static void CreateMSAAFramebuffer(int width, int height, MSAA_Samples samples, out uint framebufferID, out Texture framebufferTexture)
         {
             //Generate FBO and texture to use with the MSAA antialising pass
-            framebufferTexture = new Texture(OpenGL32.GenTexture(), width, height);
+            framebufferTexture = new Texture(OpenGLHelpers.GenTexture(), width, height);
 
             OpenGL32.glBindTexture(TextureTarget.Texture2DMultisample, framebufferTexture.ID);
             OpenGL32.TexImage2DMultisample(TextureTargetMultisample.Texture2DMultisample, (int)samples, PixelInternalFormat.Rgba8, width, height, false);
@@ -203,7 +203,7 @@ public static class HF
         public static void ResizeMSAAFramebuffer(ref Texture framebufferTexture, int newW, int newH, MSAA_Samples newSamples)
         {
             OpenGL32.glDeleteTextures(1, new uint[1] { framebufferTexture.ID });
-            framebufferTexture = new Texture(OpenGL32.GenTexture(), newW, newH);
+            framebufferTexture = new Texture(OpenGLHelpers.GenTexture(), newW, newH);
 
             OpenGL32.glBindTexture(TextureTarget.Texture2DMultisample, framebufferTexture.ID);
             OpenGL32.TexImage2DMultisample(TextureTargetMultisample.Texture2DMultisample, newSamples, PixelInternalFormat.Rgba8, newW, newH, false);
@@ -224,14 +224,14 @@ public static class HF
         /// </summary>
         public static Texture GenTexture(System.Drawing.Bitmap bmp, TextureParameter minMagFilter = TextureParameter.Nearest)
         {
-            bmp = OpenGL32.PremultiplyAlpha(bmp);
+            bmp = BitmapTools.PremultiplyAlpha(bmp);
 
             Texture t = new()
             {
                 Width = bmp.Width,
                 Height = bmp.Height,
 
-                ID = OpenGL32.GenTexture()
+                ID = OpenGLHelpers.GenTexture()
             };
 
             OpenGL32.glBindTexture(TextureTarget.Texture2D, t.ID);
@@ -250,7 +250,7 @@ public static class HF
         public static Texture GenTexture(Colour[,] pixels, TextureParameter minMagFilter = TextureParameter.Nearest)
         {
             pixels = pixels.Transpose();
-            Texture t = new(OpenGL32.GenTexture(), pixels.GetLength(1), pixels.GetLength(0));
+            Texture t = new(OpenGLHelpers.GenTexture(), pixels.GetLength(1), pixels.GetLength(0));
 
             OpenGL32.glPixelStorei(PixelStoreParameter.GL_UNPACK_ALIGNMENT, 1);
 
@@ -282,7 +282,7 @@ public static class HF
 
             var t = new Texture()
             {
-                ID = OpenGL32.GenTexture()
+                ID = OpenGLHelpers.GenTexture()
             };
             t.Bind();
 
@@ -309,7 +309,7 @@ public static class HF
 
             t.Width = newW;
             t.Height = newH;
-            paddedBMP = OpenGL32.PremultiplyAlpha(paddedBMP);
+            paddedBMP = BitmapTools.PremultiplyAlpha(paddedBMP);
 
             var bmpData = paddedBMP.LockBits(new System.Drawing.Rectangle(0, 0, paddedBMP.Width, paddedBMP.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
@@ -696,133 +696,6 @@ public static class HF
         }
         
     }
-
-    //public static class Pathfinding
-    //{
-    //    public static List<INode> ChooseRandomRoute<N>(N startNode, Func<N, bool> passableTest, int maximumSteps)
-    //        where N : INode
-    //    {
-    //        int steps = 0;
-    //        List<N> openNodes = new();
-    //        openNodes.Add(startNode);
-    //        List<INode> path = new();
-    //        N currentNode;
-
-    //        while (steps <= maximumSteps)
-    //        {
-    //            currentNode = openNodes[Randomisation.Rand(openNodes.Count)];
-    //            //replace open nodes with current node's connections, skipping any already in path
-    //            openNodes.Clear();
-    //            foreach (N n in currentNode.ConnectedNodes)
-    //            {
-    //                if (passableTest(n) && !path.Contains(n))
-    //                    openNodes.Insert(Randomisation.Rand(0, openNodes.Count), n);
-    //            }
-
-    //            path.Add(currentNode);
-    //            steps++;
-    //            if (openNodes.Count == 0)
-    //                break;
-    //        }
-    //        return path;
-    //    }
-
-    //    public static List<N>? GetAStarRoute<N>(N start, N end, Func<N, bool> passableTest)
-    //        where N : INode
-    //    {
-    //        List<N> openNodes = new();
-    //        List<N> closedNodes = new();
-
-    //        N currentNode = start;
-    //        N testNode;
-
-    //        float f, g, h;
-
-    //        currentNode.AStarGValue = 0;
-    //        currentNode.AStarHValue = Heuristic(currentNode, end);
-    //        currentNode.AStarFValue = currentNode.AStarGValue + currentNode.AStarHValue;
-
-    //        while (!currentNode.Equals(end))
-    //        {
-    //            for (int i = 0; i < currentNode.ConnectedNodes.Count; ++i)
-    //            {
-    //                testNode = (N)currentNode.ConnectedNodes[i];
-
-    //                if (testNode.Equals(currentNode) || !passableTest(testNode))
-    //                    continue;
-
-    //                g = (float)currentNode.AStarGValue + 1;
-    //                h = (float)Heuristic(testNode, end);
-    //                f = g + h;
-
-    //                if (openNodes.Contains(testNode) || closedNodes.Contains(testNode))
-    //                {
-    //                    if (testNode.AStarFValue > f)
-    //                    {
-    //                        testNode.AStarFValue = f;
-    //                        testNode.AStarGValue = g;
-    //                        testNode.AStarHValue = h;
-    //                        testNode.ParentNode = currentNode;
-    //                    }
-    //                }
-    //                else
-    //                {
-    //                    testNode.AStarFValue = f;
-    //                    testNode.AStarGValue = g;
-    //                    testNode.AStarHValue = h;
-    //                    testNode.ParentNode = currentNode;
-    //                    openNodes.Add(testNode);
-    //                }
-
-    //            }
-    //            closedNodes.Add(currentNode);
-
-    //            //HANDLE FAILURE TO FIND PATH
-    //            if (openNodes.Count == 0)
-    //            {
-    //                return null;
-    //            }
-
-    //            openNodes.Sort(CompareNodeF);
-    //            currentNode = openNodes[0];
-    //            openNodes.RemoveAt(0);
-    //        }
-
-    //        return BuildPath(start, end);
-    //    }
-
-
-    //    private static List<N> BuildPath<N>(N start, N end)
-    //        where N : INode
-    //    {
-    //        List<N> path = new();
-    //        N node = end;
-    //        path.Add(node);
-    //        while (!(node.X == start.X && node.Y == start.Y))
-    //        {
-    //            node = (N)node.ParentNode!;
-
-    //            path.Insert(0, node);
-    //        }
-
-    //        return path;
-    //    }
-
-
-    //    private static float Heuristic(INode node1, INode node2) => Math.Abs(node1.X - node2.X) + Math.Abs(node1.Y - node2.Y);
-
-
-    //    private static int CompareNodeF<N>(N x, N y)
-    //        where N : INode
-    //    {
-    //        if (x.AStarFValue < y.AStarFValue) 
-    //            return -1;
-    //        else if (x.AStarFValue == y.AStarFValue) 
-    //            return 0;
-    //        else 
-    //            return 1;
-    //    }
-    //}
 
     public static class Types
     {

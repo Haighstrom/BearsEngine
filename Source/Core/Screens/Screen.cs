@@ -1,5 +1,5 @@
 ﻿using HaighFramework.OpenGL;
-using HaighFramework.Win32API;
+using HaighFramework.WinAPI;
 
 namespace BearsEngine;
 
@@ -183,7 +183,7 @@ public class Screen : IContainer, IScene
             _entitiesNeedSorting = false;
         }
 
-        OpenGL32.glClearColour(BackgroundColour);
+        OpenGL32.glClearColor(BackgroundColour.R / 255f, BackgroundColour.G / 255f, BackgroundColour.B / 255f, BackgroundColour.A / 255f);
         OpenGL32.glClear(CLEAR_MASK.GL_COLOR_BUFFER_BIT | CLEAR_MASK.GL_DEPTH_BUFFER_BIT);
 
         OpenGL32.glEnable(GLCAP.Blend);

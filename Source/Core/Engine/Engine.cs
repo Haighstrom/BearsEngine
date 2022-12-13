@@ -106,9 +106,6 @@ internal class Engine : IEngine
 
     private void Render()
     {
-        OpenGL32.glClearColour(Scene.BackgroundColour);
-        OpenGL32.glClear(CLEAR_MASK.GL_COLOR_BUFFER_BIT | CLEAR_MASK.GL_DEPTH_BUFFER_BIT);
-
         Matrix4 projection = new(BE.OrthoMatrix);
         Matrix4 identity = Matrix4.Identity;
         Scene.Render(ref projection, ref identity);

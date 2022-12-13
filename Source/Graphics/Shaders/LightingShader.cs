@@ -1,5 +1,5 @@
 ﻿using HaighFramework.OpenGL;
-using HaighFramework.Win32API;
+using HaighFramework.WinAPI;
 
 namespace BearsEngine.Graphics.Shaders;
 
@@ -128,7 +128,7 @@ public class LightingShader : IShader
 
         OpenGL32.Uniform(_locationGammaUniform, Gamma);
 
-        OpenGL32.Uniform4(_locationAmbientLightColourUniform, AmbientLightColour);
+        OpenGL32.glUniform4f(_locationAmbientLightColourUniform, AmbientLightColour.R / 255f, AmbientLightColour.G / 255f, AmbientLightColour.B / 255f, AmbientLightColour.A / 255f);
         OpenGL32.UniformMatrix3(_locationSourceInvMVMatrixUniform, 1, false, mdlMatrix.Inverse().Values);
 
         BindLightsArrayData();
@@ -146,7 +146,8 @@ public class LightingShader : IShader
         for (int i = 0; i < _lights.Count; i++)
         {
             OpenGL32.glUniform2f(_locationLights_PosUniformArray[i], _lights[i].Position.X, _lights[i].Position.Y);
-            OpenGL32.Uniform4(_locationLights_ColourUniformArray[i], _lights[i].Colour);
+
+            OpenGL32.glUniform4f(_locationLights_ColourUniformArray[i], _lights[i].Colour.R / 255f, _lights[i].Colour.G / 255f, _lights[i].Colour.B / 255f, _lights[i].Colour.A / 255f);
             OpenGL32.Uniform(_locationLights_RadiusUniformArray[i], _lights[i].Radius);
             OpenGL32.Uniform(_locationLights_CutoffRadiusUniformArray[i], _lights[i].CutoffRadius);
         }
