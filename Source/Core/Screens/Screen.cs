@@ -198,7 +198,7 @@ public class Screen : IContainer, IScene
 
     public virtual void Start() { }
 
-    public virtual void Update(float elapsedTime)
+    public virtual void Update(float elapsed)
     {
         if (_entitiesNeedSorting)
         {
@@ -210,7 +210,7 @@ public class Screen : IContainer, IScene
         {
             if (a is IUpdatable u && u.Active && a.Parent == this)
             {
-                u.Update(elapsedTime);
+                u.Update(elapsed);
             }
         }
 
