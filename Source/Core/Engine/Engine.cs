@@ -42,7 +42,7 @@ internal class Engine : IEngine
     private readonly int _targetUPS, _targetRPS;
     private readonly ISceneManager _sceneManager;
 
-    public Engine(IDisplayManager displayManager, IInputDeviceManager inputManager, IWindow window, EngineSettings settings, Func<IScene> initialiser)
+    public Engine(IDisplayManager displayManager, IInputDeviceManager inputManager, IWindow window, ZMouse mouse, EngineSettings settings, Func<IScene> initialiser)
     {
         Log.Debug($"Initialising {nameof(Engine)}.");
 
@@ -52,6 +52,7 @@ internal class Engine : IEngine
         DisplayManager = displayManager;
         InputManager = inputManager;
         Window = window;
+        ZMouse = mouse;
 
         Log.Debug($"Environment Information:\nMachine: {Environment.MachineName}\nOS: {RuntimeInformation.OSDescription}\nUser: {Environment.UserName}\nProcessors: {Environment.ProcessorCount}\nSystem Architecture: {(Environment.Is64BitOperatingSystem ? "64-bit" : "32-bit")}\nProcess Arcitecture: {(Environment.Is64BitProcess ? "64-bit" : "32-bit")}");
 
@@ -80,6 +81,8 @@ internal class Engine : IEngine
     public IDisplayManager DisplayManager { get; }
 
     public IInputDeviceManager InputManager { get; }
+
+    public ZMouse ZMouse { get; }
 
     public int RenderFramesPerSecond { get; private set; }
 

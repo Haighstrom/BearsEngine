@@ -1,4 +1,5 @@
-﻿using HaighFramework.Window;
+﻿using HaighFramework.Input;
+using HaighFramework.Window;
 
 namespace BearsEngine;
 
@@ -9,6 +10,7 @@ internal interface IEngine : IDisposable
     IScene Scene { get; set; }
 
     IWindow Window { get; }
+    ZMouse ZMouse { get; }
 
     void Run();
 }

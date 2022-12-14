@@ -49,6 +49,8 @@ public static class BE
 
     public static IWindow Window => Engine.Window;
 
+    public static ZMouse ZMouse => Engine.ZMouse;
+
     public static void Exit()
     {
         if (Engine is null)
@@ -74,8 +76,9 @@ public static class BE
         IDisplayManager displayManager = new DisplayManager();
         IInputDeviceManager inputManager = new InputDeviceManager();
         IWindow window = new HaighWindow(settings.WindowSettings);
+        ZMouse mouse = new ZMouse(window);
 
-        Engine = new Engine(displayManager, inputManager, window, settings.EngineSettings, initialiser);
+        Engine = new Engine(displayManager, inputManager, window, mouse, settings.EngineSettings, initialiser);
         Engine.Run();
         Engine.Dispose();
     }
