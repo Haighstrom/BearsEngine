@@ -57,13 +57,13 @@ namespace BearsEngine.Graphics
         {
             var mv = Matrix4.Translate(ref modelView, X, Y, 0);
 
-            if (BE.LastBoundTexture != _texture.ID)
+            if (OpenGL.LastBoundTexture != _texture.ID)
             {
-                OpenGL32.glBindTexture(TextureTarget.Texture2D, _texture.ID);
-                BE.LastBoundTexture = _texture.ID;
+                OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, _texture.ID);
+                OpenGL.LastBoundTexture = _texture.ID;
             }
 
-            if (BE.LastBoundVertexBuffer != _ID)
+            if (OpenGL.LastBoundVertexBuffer != _ID)
                 Bind();
 
             Matrix4 tileMatrix = Matrix4.Identity;
@@ -77,7 +77,7 @@ namespace BearsEngine.Graphics
                     tileMatrix = Matrix4.Translate(ref mv, i * W, j * H, 0);
                     _shader.IndexX = Maths.Mod(MapValues[i, j], _ssColumns);
                     _shader.IndexY = MapValues[i, j] / _ssColumns;
-                    _shader.Render(ref projection, ref tileMatrix, _vertices.Length, PRIMITIVEMODE.GL_TRIANGLE_STRIP);
+                    _shader.Render(ref projection, ref tileMatrix, _vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLE_STRIP);
                 }
         }
         
@@ -148,14 +148,14 @@ namespace BearsEngine.Graphics
         public void Bind()
         {
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, _ID);
-            BE.LastBoundVertexBuffer = _ID;
+            OpenGL.LastBoundVertexBuffer = _ID;
         }
         
 
         public void Unbind()
         {
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            BE.LastBoundVertexBuffer = 0;
+            OpenGL.LastBoundVertexBuffer = 0;
         }
         
 

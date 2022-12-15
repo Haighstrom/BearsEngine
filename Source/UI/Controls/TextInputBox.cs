@@ -23,8 +23,8 @@ public class TextInputBox : Entity, IActivatable
     public TextInputBox(UITheme theme, Colour bg, int layer, Rect r, string initialValue = "")
         : base(layer, r, bg)
     {
-        BE.Window.CharEntered += OnCharPressed;
-        BE.Window.KeyDown += OnKeyDown;
+        Window.CharEntered += OnCharPressed;
+        Window.KeyDown += OnKeyDown;
 
         if (initialValue == null)
             initialValue = "";
@@ -183,7 +183,7 @@ public class TextInputBox : Entity, IActivatable
         switch (_mode)
         {
             case Mode.Unfocussed:
-                if (HI.MouseLeftPressed && MouseIntersecting)
+                if (Mouse.LeftPressed && MouseIntersecting)
                 {
                     _resetValue = _text;
                     _selection.Visible = true;
@@ -197,7 +197,7 @@ public class TextInputBox : Entity, IActivatable
             case Mode.Selecting:
                 _cursorPosition = MouseXAsTextIndex;
                 SetSelectionGraphic();
-                if (HI.MouseLeftReleased)
+                if (Mouse.LeftReleased)
                 {
                     ShowCursor();
                     _cursor.OffsetX = _textGraphic.MeasureString(_firstCharDisplayed, MouseXAsTextIndex - _firstCharDisplayed).X;
@@ -215,7 +215,7 @@ public class TextInputBox : Entity, IActivatable
                     _cursorFlashTimer += CursorFlashTime;
                 }
 
-                if (HI.MouseLeftDoubleClicked)
+                if (Mouse.LeftDoubleClicked)
                 {
                     _selectionStart = 0;
                     _cursorPosition = _text.Length;
@@ -223,7 +223,7 @@ public class TextInputBox : Entity, IActivatable
                     SetSelectionGraphic();
                     _selection.Visible = true;
                 }
-                else if (HI.MouseLeftPressed && MouseIntersecting)
+                else if (Mouse.LeftPressed && MouseIntersecting)
                 {
                     _cursor.Visible = false;
 
@@ -233,7 +233,7 @@ public class TextInputBox : Entity, IActivatable
                     _selection.Visible = true;
                     return;
                 }
-                else if (HI.MouseLeftPressed && !MouseIntersecting)
+                else if (Mouse.LeftPressed && !MouseIntersecting)
                     ConfirmEdit();
                 break;
             
@@ -325,7 +325,7 @@ public class TextInputBox : Entity, IActivatable
             
 
             case Key.Left:
-                if (HI.KeyDown(Key.LeftShift) || HI.KeyDown(Key.RightShift))
+                if (Keyboard.KeyDown(Key.LeftShift) || Keyboard.KeyDown(Key.RightShift))
                 {
                     if (!_selection.Visible && _cursorPosition > 0)
                     {
@@ -359,7 +359,7 @@ public class TextInputBox : Entity, IActivatable
             
 
             case Key.Right:
-                if (HI.KeyDown(Key.LeftShift) || HI.KeyDown(Key.RightShift))
+                if (Keyboard.KeyDown(Key.LeftShift) || Keyboard.KeyDown(Key.RightShift))
                 {
                     if (!_selection.Visible && _cursorPosition < _text.Length)
                     {

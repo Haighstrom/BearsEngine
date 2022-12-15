@@ -30,28 +30,28 @@ namespace BearsEngine.Graphics
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, VertexBuffer);
             OpenGL32.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * Vertex.STRIDE, Vertices, BufferUsageHint.StreamDraw);
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            BE.LastBoundVertexBuffer = 0;
+            OpenGL.LastBoundVertexBuffer = 0;
         }
         
 
         public void Render(ref Matrix4 projection, ref Matrix4 modelView)
         {
-            if (BE.LastBoundVertexBuffer != VertexBuffer)
+            if (OpenGL.LastBoundVertexBuffer != VertexBuffer)
             {
                 OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, VertexBuffer);
-                BE.LastBoundVertexBuffer = VertexBuffer;
+                OpenGL.LastBoundVertexBuffer = VertexBuffer;
             }
 
-            if (BE.LastBoundTexture != Texture.ID)
+            if (OpenGL.LastBoundTexture != Texture.ID)
             {
-                OpenGL32.glBindTexture(TextureTarget.Texture2D, Texture.ID);
-                BE.LastBoundTexture = Texture.ID;
+                OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, Texture.ID);
+                OpenGL.LastBoundTexture = Texture.ID;
             }
 
-            Shader.Render(ref projection, ref modelView, Vertices.Length, PRIMITIVEMODE.GL_TRIANGLES);
+            Shader.Render(ref projection, ref modelView, Vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLES);
 
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            BE.LastBoundVertexBuffer = 0;
+            OpenGL.LastBoundVertexBuffer = 0;
         }
         
 

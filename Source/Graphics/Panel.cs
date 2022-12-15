@@ -86,10 +86,10 @@ namespace BearsEngine.Graphics
 
             var mv = Matrix4.Translate(ref modelView, X, Y, 0);
 
-            if (BE.LastBoundTexture != Texture.ID)
+            if (OpenGL.LastBoundTexture != Texture.ID)
             {
-                OpenGL32.glBindTexture(TextureTarget.Texture2D, Texture.ID);
-                BE.LastBoundTexture = Texture.ID;
+                OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, Texture.ID);
+                OpenGL.LastBoundTexture = Texture.ID;
             }
 
             BindVertexBuffer();
@@ -149,7 +149,7 @@ namespace BearsEngine.Graphics
                 _verticesChanged = false;
             }
 
-            Shader.Render(ref projection, ref mv, _vertices.Length, PRIMITIVEMODE.GL_TRIANGLE_STRIP);
+            Shader.Render(ref projection, ref mv, _vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLE_STRIP);
 
             UnbindVertexBuffer();
         }

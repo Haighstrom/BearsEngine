@@ -31,8 +31,8 @@ public class NumberInputBox<T> : Entity, IActivatable
     public NumberInputBox(UITheme theme, Colour bg, int layer, Rect r, T initialValue = default)
         : base(layer, r, bg)
     {
-        BE.Window.CharEntered += OnCharPressed;
-        BE.Window.KeyDown += OnKeyDown;
+        Window.CharEntered += OnCharPressed;
+        Window.KeyDown += OnKeyDown;
 
         Add(_textGraphic = new HText(theme, r.Zeroed, initialValue.ToString()) { Multiline = false, UseCommandTags = false });
 
@@ -208,7 +208,7 @@ public class NumberInputBox<T> : Entity, IActivatable
         switch (_mode)
         {
             case Mode.Unfocussed:
-                if (HI.MouseLeftPressed && MouseIntersecting)
+                if (Mouse.LeftPressed && MouseIntersecting)
                 {
                     _resetValue = _text.ParseTo<T>();
                     _selection.Visible = true;
@@ -221,7 +221,7 @@ public class NumberInputBox<T> : Entity, IActivatable
             case Mode.Selecting:
                 _cursorPosition = MouseXAsTextIndex;
                 SetSelectionGraphic();
-                if (HI.MouseLeftReleased)
+                if (Mouse.LeftReleased)
                 {
                     ShowCursor();
                     _cursor.OffsetX = _textGraphic.MeasureString(_firstCharDisplayed, MouseXAsTextIndex - _firstCharDisplayed).X;
@@ -238,7 +238,7 @@ public class NumberInputBox<T> : Entity, IActivatable
                     _cursorFlashTimer += CursorFlashTime;
                 }
 
-                if (HI.MouseLeftDoubleClicked)
+                if (Mouse.LeftDoubleClicked)
                 {
                     _selectionStart = 0;
                     _cursorPosition = _text.Length;
@@ -246,7 +246,7 @@ public class NumberInputBox<T> : Entity, IActivatable
                     SetSelectionGraphic();
                     _selection.Visible = true;
                 }
-                else if (HI.MouseLeftPressed && MouseIntersecting)
+                else if (Mouse.LeftPressed && MouseIntersecting)
                 {
                     _cursor.Visible = false;
 
@@ -256,7 +256,7 @@ public class NumberInputBox<T> : Entity, IActivatable
                     _selection.Visible = true;
                     return;
                 }
-                else if (HI.MouseLeftPressed && !MouseIntersecting)
+                else if (Mouse.LeftPressed && !MouseIntersecting)
                     ConfirmEdit();
                 break;
             
@@ -341,7 +341,7 @@ public class NumberInputBox<T> : Entity, IActivatable
                 break;
             
             case Key.Left:
-                if (HI.KeyDown(Key.LeftShift) || HI.KeyDown(Key.RightShift))
+                if (Keyboard.KeyDown(Key.LeftShift) || Keyboard.KeyDown(Key.RightShift))
                 {
                     if (!_selection.Visible && _cursorPosition > 0)
                     {
@@ -374,7 +374,7 @@ public class NumberInputBox<T> : Entity, IActivatable
                 break;
             
             case Key.Right:
-                if (HI.KeyDown(Key.LeftShift) || HI.KeyDown(Key.RightShift))
+                if (Keyboard.KeyDown(Key.LeftShift) || Keyboard.KeyDown(Key.RightShift))
                 {
                     if (!_selection.Visible && _cursorPosition < _text.Length)
                     {

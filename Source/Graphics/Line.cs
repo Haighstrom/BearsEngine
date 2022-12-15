@@ -56,7 +56,7 @@ namespace BearsEngine.Graphics
 
             OpenGL32.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * Vertex.STRIDE, _vertices, BufferUsageHint.StreamDraw);
 
-            _shader.Render(ref projection, ref mv, _vertices.Length, PRIMITIVEMODE.GL_LINE_STRIP_ADJACENCY);
+            _shader.Render(ref projection, ref mv, _vertices.Length, PRIMITIVE_TYPE.GL_LINE_STRIP_ADJACENCY);
 
             Unbind();
         }
@@ -110,12 +110,12 @@ namespace BearsEngine.Graphics
         public void Bind()
         {
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, _ID);
-            BE.LastBoundVertexBuffer = _ID;
+            OpenGL.LastBoundVertexBuffer = _ID;
         }
         public void Unbind()
         {
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            BE.LastBoundVertexBuffer = 0;
+            OpenGL.LastBoundVertexBuffer = 0;
         }
     }
 }

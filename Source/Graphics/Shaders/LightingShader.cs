@@ -110,7 +110,7 @@ public class LightingShader : IShader
     
     
 
-    public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PRIMITIVEMODE drawType)
+    public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PRIMITIVE_TYPE drawType)
     {
         HF.Graphics.BindShader(_ID);
 

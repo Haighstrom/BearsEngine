@@ -78,16 +78,16 @@ public class Scrollbar : Entity
             _dragging = true;
 
             if (_direction == ScrollbarDirection.Horizontal)
-                _dragStart = HI.MouseWindowX - X;
+                _dragStart = Mouse.WindowX - X;
             else
-                _dragStart = HI.MouseWindowY - Y;
+                _dragStart = Mouse.WindowY - Y;
         }
 
         public override void Update(float elapsed)
         {
             base.Update(elapsed);
 
-            if (_dragging && HI.MouseLeftUp)
+            if (_dragging && Mouse.LeftUp)
                 _dragging = false;
 
             if (_dragging)
@@ -95,7 +95,7 @@ public class Scrollbar : Entity
                 {
                     var oldX = X;
 
-                    X = Maths.Clamp(HI.MouseWindowX - _dragStart, _fullPosition.X, _fullPosition.Right - W);
+                    X = Maths.Clamp(Mouse.WindowX - _dragStart, _fullPosition.X, _fullPosition.Right - W);
 
                     if (MinIncrement > 0 && R.Right != _fullPosition.Right)
                         X -= Maths.Mod(X - _fullPosition.Left, MinIncrement);
@@ -107,7 +107,7 @@ public class Scrollbar : Entity
                 {
                     var oldY = Y;
 
-                    Y = Maths.Clamp(HI.MouseWindowY - _dragStart, _fullPosition.Y, _fullPosition.Bottom - H);
+                    Y = Maths.Clamp(Mouse.WindowY - _dragStart, _fullPosition.Y, _fullPosition.Bottom - H);
 
                     if (MinIncrement > 0 && R.Bottom != _fullPosition.Bottom)
                         Y -= Maths.Mod(Y - _fullPosition.Top, MinIncrement);

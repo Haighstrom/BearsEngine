@@ -73,10 +73,10 @@ namespace BearsEngine.Graphics
 
         public void BindVertexBuffer()
         {
-            if (BE.LastBoundVertexBuffer != VertexBuffer)
+            if (OpenGL.LastBoundVertexBuffer != VertexBuffer)
             {
                 OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, VertexBuffer);
-                BE.LastBoundVertexBuffer = VertexBuffer;
+                OpenGL.LastBoundVertexBuffer = VertexBuffer;
             }
         }
         
@@ -84,7 +84,7 @@ namespace BearsEngine.Graphics
         public void UnbindVertexBuffer()
         {
             OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            BE.LastBoundVertexBuffer = 0;
+            OpenGL.LastBoundVertexBuffer = 0;
         }
         
         

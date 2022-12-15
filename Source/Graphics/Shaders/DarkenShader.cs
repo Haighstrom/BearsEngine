@@ -40,9 +40,9 @@ public class DarkenShader : IShader
     /// </summary>
     public static float DarkenValue { get; set; } = 1f;
 
-    public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PRIMITIVEMODE drawType)
+    public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PRIMITIVE_TYPE drawType)
     {
-        if (_ID != BE.LastBoundShader)
+        if (_ID != OpenGL.LastBoundShader)
             HF.Graphics.BindShader(_ID);
 
         OpenGL32.Uniform(_locationDarkenValue, DarkenValue);
