@@ -62,7 +62,7 @@ public static class Engine
 
         _runCalled = true;
 
-        Console.Instance = new ConsoleManager(consoleSettings);
+        Console.Instance = new ConsoleWindow(consoleSettings);
 
         Log.Instance = new Logger(logSettings);
 
