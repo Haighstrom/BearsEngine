@@ -7,7 +7,7 @@ using HaighFramework.Window;
 
 namespace BearsEngine;
 
-internal class Engine : IEngine
+public class GameEngine : IGameEngine
 {
     private const int MinimumUpdateRate = 5;
     private const int MaximumUpdateRate = 120;
@@ -41,48 +41,39 @@ internal class Engine : IEngine
     private bool _disposed = false;
     private readonly int _targetUPS, _targetRPS;
     private readonly ISceneManager _sceneManager;
+    private double _testTime = 0;
 
-    public Engine(IDisplayManager displayManager, IInputDeviceManager inputManager, IWindow window, ZMouse mouse, EngineSettings settings, Func<IScene> initialiser)
+    public static bool RunWhenUnfocussed { get; set; } = true;
+
+    public GameEngine(EngineSettings settings, Func<IScene> initialiser)
     {
-        Log.Debug($"Initialising {nameof(Engine)}.");
+        Log.Debug($"Initialising {nameof(GameEngine)}.");
 
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             throw new InvalidOperationException("Only Windows is currently supported.");
 
-        DisplayManager = displayManager;
-        InputManager = inputManager;
-        Window = window;
-        ZMouse = mouse;
+        InputManager = new InputManager();
 
         Log.Debug($"Environment Information:\nMachine: {Environment.MachineName}\nOS: {RuntimeInformation.OSDescription}\nUser: {Environment.UserName}\nProcessors: {Environment.ProcessorCount}\nSystem Architecture: {(Environment.Is64BitOperatingSystem ? "64-bit" : "32-bit")}\nProcess Arcitecture: {(Environment.Is64BitProcess ? "64-bit" : "32-bit")}");
 
         _sceneManager = new SceneManager(initialiser());
 
-        //Window.MouseLeftDoubleClicked += (o, a) => HI.MouseLeftDoubleClicked = true;
-
-        //OpenGL32.DebugMessageCallback(HConsole.HandleOpenGLOutput);
-        //OpenGL32.DebugMessageControl(DebugSource.DontCare, DebugType.DontCare, DebugSeverity.DontCare, true);
+        //TODO: Window.MouseLeftDoubleClicked += (o, a) => HI.MouseLeftDoubleClicked = true;
 
         ValidateEngineSettings(settings);
 
         _targetUPS = settings.TargetUPS;
         _targetRPS = settings.TargetFramesPerSecond;
 
-        OpenGL32.glViewport((int)window.Viewport.X, (int)window.Viewport.Y, (int)window.Viewport.W, (int)window.Viewport.H);
-        BE.OrthoMatrix = Matrix4.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
+        OpenGL32.glViewport((int)Window.Instance.Viewport.X, (int)Window.Instance.Viewport.Y, (int)Window.Instance.Viewport.W, (int)Window.Instance.Viewport.H);
+        OpenGL.OrthoMatrix = Matrix4.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
 
         Window.Resized += OnWindowResize;
 
-        Log.Debug($"{nameof(Engine)} initialised.");
+        Log.Debug($"{nameof(GameEngine)} initialised.");
     }
 
-    public IConsoleManager ConsoleManager => throw new NotImplementedException(); //todo: build these after removing logging from ctr
-
-    public IDisplayManager DisplayManager { get; }
-
-    public IInputDeviceManager InputManager { get; }
-
-    public ZMouse ZMouse { get; }
+    public IInputManager InputManager { get; }
 
     public int RenderFramesPerSecond { get; private set; }
 
@@ -94,8 +85,6 @@ internal class Engine : IEngine
 
     public int UpdateFramesPerSecond { get; private set; }
 
-    public IWindow Window { get; }
-
     private void LogPeriodicInfo()
     {
         Log.Information($"FPS: {UpdateFramesPerSecond}, RPS: {RenderFramesPerSecond}");
@@ -103,33 +92,33 @@ internal class Engine : IEngine
 
     private void OnWindowResize(object? sender, EventArgs e)
     {
-        OpenGL32.glViewport((int)Window.Viewport.X, (int)Window.Viewport.Y, (int)Window.Viewport.W, (int)Window.Viewport.H);
-        BE.OrthoMatrix = Matrix4.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
+        OpenGL32.glViewport((int)Window.Instance.Viewport.X, (int)Window.Instance.Viewport.Y, (int)Window.Instance.Viewport.W, (int)Window.Instance.Viewport.H);
+        OpenGL.OrthoMatrix = Matrix4.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
     }
 
     private void Render()
     {
-        Matrix4 projection = new(BE.OrthoMatrix);
+        Matrix4 projection = new(OpenGL.OrthoMatrix);
         Matrix4 identity = Matrix4.Identity;
         Scene.Render(ref projection, ref identity);
 
-        Window.SwapBuffers();
+        Window.Instance.SwapBuffers();
     }
 
     private void Update(float elapsedTime)
     {
-        HI.SetStates(InputManager.MouseManager.State, InputManager.KeyboardManager.State);
+        Mouse.Update(InputManager.MouseState);
+        Keyboard.Update(InputManager.KeyboardState);
 
-        if (BE.RunWhenUnfocussed || Window.Focussed)
+        if (RunWhenUnfocussed || Window.Focussed)
         {
             _sceneManager.UpdateScene(elapsedTime);
         }
     }
 
-    private double _testTime = 0;
     public void Run()
     {
-        Window.ProcessEvents(); //get any initial crap out the way before we start timing
+        Window.Instance.ProcessEvents(); //get any initial crap out the way before we start timing
 
         double targetUpdateTime = 1.0 / _targetUPS;
         double targetRenderTime = 1.0 / _targetRPS;
@@ -147,9 +136,9 @@ internal class Engine : IEngine
 
         double periodicLoggingTimer = 0; //for logging things once per second
 
-        while (Window.IsOpen)
+        while (Window.Instance.IsOpen)
         {
-            Window.ProcessEvents();
+            Window.Instance.ProcessEvents();
 
             double currentTime = timer.Elapsed.TotalSeconds;
             double elapsed = currentTime - previousTime;
@@ -177,7 +166,7 @@ internal class Engine : IEngine
                     timeOfFrame = targetUpdateTime;
                 }
 
-                if (Window.IsOpen)
+                if (Window.Instance.IsOpen)
                     Update((float)timeOfFrame);
 
                 timeSinceLastUpdate -= timeOfFrame;
@@ -188,7 +177,7 @@ internal class Engine : IEngine
             if (timeSinceLastRender >= targetRenderTime)
             {
                 _testTime = timer.Elapsed.TotalSeconds;
-                if (Window.IsOpen)
+                if (Window.Instance.IsOpen)
                     Render();
                 _testTime = timer.Elapsed.TotalSeconds - _testTime;
 
@@ -227,9 +216,9 @@ internal class Engine : IEngine
             {
                 // TODO: dispose managed state (managed objects)
                 Scene.Dispose(); //last scene will never have been disposed by SceneManager, since that only disposes when changing scene
-                DisplayManager.Dispose();
+                Displays.Instance.Dispose();
                 InputManager.Dispose();
-                Window.Dispose();
+                Window.Instance.Dispose();
             }
 
             // TODO: free unmanaged resources (unmanaged objects) and override finalizer
