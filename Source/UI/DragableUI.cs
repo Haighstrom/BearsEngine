@@ -32,15 +32,15 @@ public class DragableUI : Entity
         if (!Visible)
             return;
 
-        if (Dragable && HI.MouseLeftPressed && MouseIntersecting)
+        if (Dragable && Mouse.LeftPressed && MouseIntersecting)
         {
             Dragging = true;
             OnStartedDragging();
-            _dragStartX = (int)(HI.MouseWindowX - X);
-            _dragStartY = (int)(HI.MouseWindowY - Y);
+            _dragStartX = (int)(Mouse.WindowX - X);
+            _dragStartY = (int)(Mouse.WindowY - Y);
         }
 
-        if (Dragging && (HI.MouseLeftUp || !Dragable))
+        if (Dragging && (Mouse.LeftUp || !Dragable))
         {
             Dragging = false;
             OnStoppedDragging();
@@ -48,8 +48,8 @@ public class DragableUI : Entity
 
         if (Dragging)
         {
-            X = HI.MouseWindowX - _dragStartX;
-            Y = HI.MouseWindowY - _dragStartY;
+            X = Mouse.WindowX - _dragStartX;
+            Y = Mouse.WindowY - _dragStartY;
         }
     }
     
