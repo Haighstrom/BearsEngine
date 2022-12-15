@@ -5,9 +5,9 @@
 /// </summary>
 public static class Console
 {
-    private static IConsoleManager? _instance;
+    private static IConsoleWindow? _instance;
 
-    internal static IConsoleManager Instance
+    internal static IConsoleWindow Instance
     {
         get
         {
@@ -32,7 +32,7 @@ public static class Console
     /// <summary>
     /// Returns true if the console is currently visible.
     /// </summary>
-    public static bool Visible => Instance.IsOpen;
+    public static bool Visible => Instance.Visible;
 
     /// <summary>
     /// Hides/closes the console.
