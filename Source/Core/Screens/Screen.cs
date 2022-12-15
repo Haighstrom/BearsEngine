@@ -19,7 +19,7 @@ public class Screen : IContainer, IScene
 
     public ICollection<IAddable> Entities => _entities.ToArray(); //recast to avoid collection modification
 
-    public Point LocalMousePosition => HI.MouseWindowP;
+    public Point LocalMousePosition => Mouse.WindowP;
 
     public bool Visible { get; set; } = true;
 
@@ -184,10 +184,10 @@ public class Screen : IContainer, IScene
         }
 
         OpenGL32.glClearColor(BackgroundColour.R / 255f, BackgroundColour.G / 255f, BackgroundColour.B / 255f, BackgroundColour.A / 255f);
-        OpenGL32.glClear(CLEAR_MASK.GL_COLOR_BUFFER_BIT | CLEAR_MASK.GL_DEPTH_BUFFER_BIT);
+        OpenGL32.glClear(BUFFER_MASK.GL_COLOR_BUFFER_BIT | BUFFER_MASK.GL_DEPTH_BUFFER_BIT);
 
         OpenGL32.glEnable(GLCAP.Blend);
-        OpenGL32.glBlendFunc(BlendScaleFactor.GL_ONE, BlendScaleFactor.GL_ONE_MINUS_SRC_ALPHA);
+        OpenGL32.glBlendFunc(BLEND_SCALE_FACTOR.GL_ONE, BLEND_SCALE_FACTOR.GL_ONE_MINUS_SRC_ALPHA);
 
         foreach (IAddable a in Entities)
         {

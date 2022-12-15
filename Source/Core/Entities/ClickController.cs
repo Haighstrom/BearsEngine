@@ -108,11 +108,11 @@ internal class ClickController : AddableBase, IUpdatable
             _target.OnMouseExited();
             _target.OnNoMouseEvent();
         }
-        else if (HI.MouseLeftReleased)
+        else if (Mouse.LeftReleased)
         {
             RequestOnLeftReleased(_target);
         }
-        else if (HI.MouseLeftPressed)
+        else if (Mouse.LeftPressed)
         {
             _state = ClickState.PushedAndHovered;
             RequestOnLeftPressed(_target);
@@ -140,7 +140,7 @@ internal class ClickController : AddableBase, IUpdatable
 
     private void HandleClickStatePushedAndHovered(float elapsed)
     {
-        if (HI.MouseLeftReleased)
+        if (Mouse.LeftReleased)
         {
             _state = ClickState.None;
             RequestOnLeftReleased(_target);
@@ -162,7 +162,7 @@ internal class ClickController : AddableBase, IUpdatable
 
     private void HandleClickStatePushedNotHovered()
     {
-        if (HI.MouseLeftReleased)
+        if (Mouse.LeftReleased)
         {
             _state = ClickState.None;
             _target.OnNoMouseEvent();

@@ -81,9 +81,9 @@ public class Entity : EntityBase, IClickable, ICollideable
 
     public bool IsOnScreen => Exists;//todo: HEngine2.Window.ClientSize.ToRect().Intersects(WindowPosition);
 
-    public override Point LocalMousePosition => GetLocalPosition(HI.MouseWindowP);
+    public override Point LocalMousePosition => GetLocalPosition(Mouse.WindowP);
 
-    public virtual bool MouseIntersecting => WindowPosition.Contains(HI.MouseWindowP);
+    public virtual bool MouseIntersecting => WindowPosition.Contains(Mouse.WindowP);
     
     public virtual Point RotationCentre => R.Centre;
 

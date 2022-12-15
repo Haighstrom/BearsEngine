@@ -15,7 +15,7 @@ internal class SceneManager : ISceneManager
     public void ChangeScene(IScene nextScene)
     {
         if (_nextScene != null)
-            Console.WriteLine("Tried to set a new scene before a previous one had started.");
+            Log.Warning("Set a new scene before a previous one had started.");
 
         _nextScene = nextScene;
     }
