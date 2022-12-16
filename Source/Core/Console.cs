@@ -1,4 +1,6 @@
-﻿namespace BearsEngine;
+﻿using HaighFramework.Console;
+
+namespace BearsEngine;
 
 /// <summary>
 /// Provides a static entrypoint to Console information and features

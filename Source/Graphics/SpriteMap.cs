@@ -10,7 +10,7 @@ namespace BearsEngine.Graphics
         private int _layer = 999;
         private readonly SpritesheetShader _shader;
         private Texture _texture;
-        private readonly uint _ID;
+        private readonly int _ID;
         private Vertex[] _vertices;
         private readonly float _ssTileW;
         private readonly float _ssTileH;
@@ -36,7 +36,7 @@ namespace BearsEngine.Graphics
 
             DrawArea = new Rect(0, 0, MapW, MapH);
 
-            _ID = OpenGL32.GenBuffer();
+            _ID = OpenGL.GenBuffer();
             _texture = HF.Graphics.LoadTexture(spritesheetPath);
             _shader = new SpritesheetShader(_ssTileW, _ssTileH);
 
@@ -147,14 +147,14 @@ namespace BearsEngine.Graphics
 
         public void Bind()
         {
-            OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, _ID);
+            OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, _ID);
             OpenGL.LastBoundVertexBuffer = _ID;
         }
         
 
         public void Unbind()
         {
-            OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, 0);
             OpenGL.LastBoundVertexBuffer = 0;
         }
         
@@ -169,7 +169,7 @@ namespace BearsEngine.Graphics
                 new Vertex(new Point(0, H), Colour, new Point(0, _ssTileH)),
                 new Vertex(new Point(W, H), Colour, new Point(_ssTileW, _ssTileH))
             };
-            OpenGL32.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * Vertex.STRIDE, _vertices, BufferUsageHint.StreamDraw);
+            OpenGL.BufferData(BUFFER_TARGET.ArrayBuffer, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.StreamDraw);
             Unbind();
         }
         

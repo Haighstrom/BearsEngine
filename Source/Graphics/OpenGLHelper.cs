@@ -1,0 +1,127 @@
+﻿using System.Runtime.InteropServices;
+using System.Text;
+using HaighFramework.OpenGL;
+
+namespace BearsEngine;
+
+internal static class OpenGL
+{
+    internal static int LastBoundFrameBuffer { get; set; }
+
+    internal static int LastBoundShader { get; set; }
+
+    internal static int LastBoundTexture { get; set; }
+
+    internal static int LastBoundVertexBuffer { get; set; }
+
+    internal static Matrix4 OrthoMatrix { get; set; }
+
+    internal static Dictionary<string, Texture> TextureDictionary { get; set; } = new();
+
+    public static int GenTexture()
+    {
+        int[] textures = new int[1];
+
+        OpenGL32.glGenTextures(1, textures);
+
+        return textures[0];
+    }
+
+    public static Rect GetViewport()
+    {
+        int[] ints = new int[4];
+        OpenGL32.glGetIntegerv((int)GLGET.Viewport, ints);
+        return new Rect(ints[0], ints[1], ints[2], ints[3]);
+    }
+
+    public static string GetString(GETSTRING_NAME name)
+    {
+        unsafe
+        {
+            return new string(OpenGL32.glGetString(name));
+        }
+    }
+
+    public static void BufferData<T>(BUFFER_TARGET target, int size, T[] data, USAGE_PATTERN usage) where T : struct
+    {
+        GCHandle pinnedArray = GCHandle.Alloc(data, GCHandleType.Pinned);
+
+        IntPtr pointer = pinnedArray.AddrOfPinnedObject();
+
+        OpenGL32.glBufferData(target, (IntPtr)size, pointer, usage);
+
+        pinnedArray.Free();
+    }
+
+    public static void DeleteBuffer(int buffer)
+    {
+        int[] buffers = { buffer };
+
+        OpenGL32.glDeleteBuffers(1, buffers);
+    }
+
+    public static int GenBuffer()
+    {
+        int[] buffers = new int[1];
+
+        OpenGL32.glGenBuffers(1, buffers);
+
+        return buffers[0];
+    }
+
+    public static int GenFramebuffer()
+    {
+        int[] buffers = new int[1];
+
+        OpenGL32.glGenFramebuffers(1, buffers);
+
+        return buffers[0];
+    }
+
+    public static string GetProgramInfoLog(int program)
+    {
+        StringBuilder stringPtr = new(255);
+
+        OpenGL32.glGetProgramInfoLog(program, 255, out _, stringPtr);
+
+        return stringPtr.ToString();
+    }
+
+    public static string GetShaderInfoLog(int shader)
+    {
+        StringBuilder stringPtr = new(255);
+        int count;
+        OpenGL32.glGetShaderInfoLog(shader, 255, out count, stringPtr);
+
+        return stringPtr.ToString();
+    }
+
+    public static void ShaderSource(int shader, string source)
+    {
+        string[] strings = new string[1] { source };
+
+        OpenGL32.glShaderSource(shader, 1, strings, null);
+    }
+
+    public static void UniformMatrix3(int location, Matrix3 matrix)
+    {
+        unsafe
+        {
+            fixed (float* valuePointer = matrix.Values)
+            {
+                OpenGL32.glUniformMatrix3fv(location, 1, false, valuePointer);
+            }
+        }
+    }
+
+    public static void UniformMatrix4(int location, Matrix4 matrix)
+    {
+        unsafe
+        {
+            fixed (float* valuePointer = matrix.Values)
+            {
+                OpenGL32.glUniformMatrix4fv(location, 1, false, valuePointer);
+            }
+        }
+    }
+}

@@ -18,7 +18,7 @@ namespace BearsEngine.Graphics
             : base(x, y, w, h)
         {
             Shader = shader;
-            VertexBuffer = OpenGL32.GenBuffer();
+            VertexBuffer = OpenGL.GenBuffer();
         }
         
 
@@ -68,14 +68,14 @@ namespace BearsEngine.Graphics
 
         public IShader Shader { get; set; }
 
-        public uint VertexBuffer { get; }
+        public int VertexBuffer { get; }
         
 
         public void BindVertexBuffer()
         {
             if (OpenGL.LastBoundVertexBuffer != VertexBuffer)
             {
-                OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, VertexBuffer);
+                OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, VertexBuffer);
                 OpenGL.LastBoundVertexBuffer = VertexBuffer;
             }
         }
@@ -83,7 +83,7 @@ namespace BearsEngine.Graphics
 
         public void UnbindVertexBuffer()
         {
-            OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, 0);
             OpenGL.LastBoundVertexBuffer = 0;
         }
         

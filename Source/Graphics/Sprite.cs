@@ -32,7 +32,7 @@ namespace BearsEngine.Graphics
         public Sprite(string imgPath, float x, float y, float w, float h, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
             : base(new DefaultShader(), x, y, w, h)
         {
-            Texture = HF.Graphics.LoadSpriteTexture(imgPath, spriteSheetRows, spriteSheetColumns, TextureParameter.Nearest);
+            Texture = HF.Graphics.LoadSpriteTexture(imgPath, spriteSheetRows, spriteSheetColumns, TEXPARAMETER_VALUE.GL_NEAREST);
 
             FramesAcross = spriteSheetColumns;
             FramesDown = spriteSheetRows;
@@ -154,7 +154,7 @@ namespace BearsEngine.Graphics
                     new Vertex(new Point(W, H), Colour, _UV4)
                 };
 
-                OpenGL32.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * Vertex.STRIDE, _vertices, BufferUsageHint.StreamDraw);
+                OpenGL.BufferData(BUFFER_TARGET.ArrayBuffer, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.StreamDraw);
 
                 _verticesChanged = false;
             }

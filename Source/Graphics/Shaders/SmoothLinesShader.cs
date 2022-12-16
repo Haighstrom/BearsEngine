@@ -6,7 +6,7 @@ namespace BearsEngine.Graphics.Shaders;
 public class SmoothLinesShader : IShader
 {
     private static bool _initialised = false;
-    private static uint _ID;
+    private static int _ID;
     private static int _locationMVMatrix;
     private static int _locationPMatrix;
     private static int _locationPosition;
@@ -18,12 +18,12 @@ public class SmoothLinesShader : IShader
     {
         _ID = HF.Graphics.CreateShader(Resources.Shaders.vs_nomatrixsolidcolour, Resources.Shaders.gs_smoothlines, Resources.Shaders.fs_solidcolour);
         HF.Graphics.BindShader(_ID);
-        _locationMVMatrix = OpenGL32.GetUniformLocation(_ID, "MVMatrix");
-        _locationPMatrix = OpenGL32.GetUniformLocation(_ID, "PMatrix");
-        _locationPosition = OpenGL32.GetAttribLocation(_ID, "Position");
-        _locationColour = OpenGL32.GetAttribLocation(_ID, "Colour");
-        _locationThicknessUniform = OpenGL32.GetUniformLocation(_ID, "Thickness");
-        _locationThicknessInPixelsUniform = OpenGL32.GetUniformLocation(_ID, "ThicknessInPixels");
+        _locationMVMatrix = OpenGL32.glGetUniformLocation(_ID, "MVMatrix");
+        _locationPMatrix = OpenGL32.glGetUniformLocation(_ID, "PMatrix");
+        _locationPosition = OpenGL32.glGetAttribLocation(_ID, "Position");
+        _locationColour = OpenGL32.glGetAttribLocation(_ID, "Colour");
+        _locationThicknessUniform = OpenGL32.glGetUniformLocation(_ID, "Thickness");
+        _locationThicknessInPixelsUniform = OpenGL32.glGetUniformLocation(_ID, "ThicknessInPixels");
         _initialised = true;
     }
     
@@ -45,22 +45,22 @@ public class SmoothLinesShader : IShader
         if (_ID != OpenGL.LastBoundShader)
             HF.Graphics.BindShader(_ID);
 
-        OpenGL32.UniformMatrix4(_locationMVMatrix, 1, false, modelView.Values);
-        OpenGL32.UniformMatrix4(_locationPMatrix, 1, false, projection.Values);
+        OpenGL.UniformMatrix4(_locationMVMatrix, modelView);
+        OpenGL.UniformMatrix4(_locationPMatrix, projection);
 
-        OpenGL32.Uniform(_locationThicknessUniform, Thickness);
-        OpenGL32.Uniform(_locationThicknessInPixelsUniform, ThicknessInPixels.ParseTo<int>());
+        OpenGL32.glUniform1f(_locationThicknessUniform, Thickness);
+        OpenGL32.glUniform1i(_locationThicknessInPixelsUniform, ThicknessInPixels.ParseTo<int>());
 
-        OpenGL32.EnableVertexAttribArray(_locationPosition);
-        OpenGL32.VertexAttribPointer(_locationPosition, 2, VertexAttribPointerType.Float, false, Vertex.STRIDE, 0);
+        OpenGL32.glEnableVertexAttribArray(_locationPosition);
+        OpenGL32.glVertexAttribPointer(_locationPosition, 2, VERTEX_DATA_TYPE.GL_FLOAT, false, Vertex.STRIDE, 0);
 
-        OpenGL32.EnableVertexAttribArray(_locationColour);
-        OpenGL32.VertexAttribPointer(_locationColour, 4, VertexAttribPointerType.UnsignedByte, true, Vertex.STRIDE, 8);
+        OpenGL32.glEnableVertexAttribArray(_locationColour);
+        OpenGL32.glVertexAttribPointer(_locationColour, 4, VERTEX_DATA_TYPE.GL_UNSIGNED_BYTE, true, Vertex.STRIDE, 8);
 
         OpenGL32.glDrawArrays(drawType, 0, verticesLength);
 
-        OpenGL32.DisableVertexAttribArray(_locationPosition);
-        OpenGL32.DisableVertexAttribArray(_locationColour);
+        OpenGL32.glDisableVertexAttribArray(_locationPosition);
+        OpenGL32.glDisableVertexAttribArray(_locationColour);
     }
     
     

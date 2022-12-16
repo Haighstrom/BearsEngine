@@ -5,9 +5,9 @@ namespace BearsEngine.Graphics;
 
 public struct Texture
 {
-    public uint ID;
+    public int ID;
     public int Width, Height;
-    public Texture(uint id, int width, int height)
+    public Texture(int id, int width, int height)
     {
         ID = id;
         Width = width;

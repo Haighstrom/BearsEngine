@@ -1,6 +1,6 @@
 ﻿using HaighFramework.Window;
 using HaighFramework.Displays;
-using HaighFramework.Input;
+using HaighFramework.Console;
 
 namespace BearsEngine;
 

@@ -27,7 +27,7 @@ public static class Keyboard
     /// <returns>Returns true if the specified key is currently held down, false otherwise.</returns>
     public static bool KeyDown(Key k)
     {
-        return CurrentState.IsKeyDown(k);
+        return CurrentState.IsDown(k);
     }
 
     /// <summary>
@@ -93,8 +93,8 @@ public static class Keyboard
     /// <returns>Returns true if the specified key was pressed in the last frame, false otherwise.</returns>
     public static bool KeyPressed(Key k)
     {
-        return _previousState.IsKeyUp(k) &&
-            CurrentState.IsKeyDown(k);
+        return !_previousState.IsDown(k) &&
+            CurrentState.IsDown(k);
     }
 
     /// <summary>
@@ -104,7 +104,7 @@ public static class Keyboard
     /// <returns>Returns true if the specified key was released in the last frame, false otherwise.</returns>
     public static bool KeyReleased(Key k)
     {
-        return _previousState.IsKeyDown(k) &&
-            CurrentState.IsKeyUp(k);
+        return _previousState.IsDown(k) &&
+            !CurrentState.IsDown(k);
     }
 }

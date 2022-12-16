@@ -6,7 +6,7 @@ namespace BearsEngine.Graphics
 {
     public class Polygon : IGraphic
     {
-        private readonly uint _ID;
+        private readonly int _ID;
         private readonly IShader _shader;
         private Vertex[] _vertices;
         private int _layer = 0;
@@ -15,7 +15,7 @@ namespace BearsEngine.Graphics
 
         public Polygon(Colour colour, params Point[] points)
         {
-            _ID = OpenGL32.GenBuffer();
+            _ID = OpenGL.GenBuffer();
             _shader = new SolidColourShader();
 
             Colour = colour;
@@ -45,7 +45,7 @@ namespace BearsEngine.Graphics
 
             _vertices = Points.Select(p => new Vertex(p, Colour, Point.Zero)).ToArray();
 
-            OpenGL32.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * Vertex.STRIDE, _vertices, BufferUsageHint.StreamDraw);
+            OpenGL.BufferData(BUFFER_TARGET.ArrayBuffer, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.StreamDraw);
 
             _shader.Render(ref projection, ref mv, _vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLE_STRIP);
             Unbind();
@@ -112,14 +112,14 @@ namespace BearsEngine.Graphics
 
         public void Bind()
         {
-            OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, _ID);
+            OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, _ID);
             OpenGL.LastBoundVertexBuffer = _ID;
         }
         
 
         public void Unbind()
         {
-            OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, 0);
             OpenGL.LastBoundVertexBuffer = 0;
         }
         

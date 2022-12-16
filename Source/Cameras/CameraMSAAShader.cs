@@ -10,7 +10,7 @@ namespace BearsEngine.Worlds.Cameras
     public class CameraMSAAShader : IShader
     {
         private static bool _initialised = false;
-        private static uint _ID;
+        private static int _ID;
         private static int _locationMVMatrix;
         private static int _locationPMatrix;
         private static int _locationPosition;
@@ -21,11 +21,11 @@ namespace BearsEngine.Worlds.Cameras
         {
             _ID = HF.Graphics.CreateShader(Resources.Shaders.vs_camera_msaa, Resources.Shaders.fs_cameraMSAA);
             HF.Graphics.BindShader(_ID);
-            _locationMVMatrix = OpenGL32.GetUniformLocation(_ID, "MVMatrix");
-            _locationPMatrix = OpenGL32.GetUniformLocation(_ID, "PMatrix");
-            _locationPosition = OpenGL32.GetAttribLocation(_ID, "Position");
-            _locationTexture = OpenGL32.GetAttribLocation(_ID, "TexCoord");
-            _locationSamplesUniform = OpenGL32.GetUniformLocation(_ID, "MSAASamples");
+            _locationMVMatrix = OpenGL32.glGetUniformLocation(_ID, "MVMatrix");
+            _locationPMatrix = OpenGL32.glGetUniformLocation(_ID, "PMatrix");
+            _locationPosition = OpenGL32.glGetAttribLocation(_ID, "Position");
+            _locationTexture = OpenGL32.glGetAttribLocation(_ID, "TexCoord");
+            _locationSamplesUniform = OpenGL32.glGetUniformLocation(_ID, "MSAASamples");
             _initialised = true;
         }
         
@@ -37,30 +37,28 @@ namespace BearsEngine.Worlds.Cameras
         }
         
 
-        public MSAA_Samples Samples { get; set; }
+        public MSAA_SAMPLES Samples { get; set; }
 
         public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PRIMITIVE_TYPE drawType)
         {
             HF.Graphics.BindShader(_ID);
 
-            OpenGL32.UniformMatrix4(_locationMVMatrix, 1, false, modelView.Values);
-            OpenGL32.UniformMatrix4(_locationPMatrix, 1, false, projection.Values);
+            OpenGL.UniformMatrix4(_locationMVMatrix, modelView);
+            OpenGL.UniformMatrix4(_locationPMatrix, projection);
 
             //Bind MSAA sample numbers uniform
-            OpenGL32.Uniform(_locationSamplesUniform, (int)Samples);
+            OpenGL32.glUniform1i(_locationSamplesUniform, (int)Samples);
 
-            OpenGL32.EnableVertexAttribArray(_locationPosition);
-            OpenGL32.VertexAttribPointer(_locationPosition, 2, VertexAttribPointerType.Float, false, Vertex.STRIDE, 0);
+            OpenGL32.glEnableVertexAttribArray(_locationPosition);
+            OpenGL32.glVertexAttribPointer(_locationPosition, 2, VERTEX_DATA_TYPE.GL_FLOAT, false, Vertex.STRIDE, 0);
 
-            OpenGL32.EnableVertexAttribArray(_locationTexture);
-            OpenGL32.VertexAttribPointer(_locationTexture, 2, VertexAttribPointerType.Float, false, Vertex.STRIDE, 12);
+            OpenGL32.glEnableVertexAttribArray(_locationTexture);
+            OpenGL32.glVertexAttribPointer(_locationTexture, 2, VERTEX_DATA_TYPE.GL_FLOAT, false, Vertex.STRIDE, 12);
 
             OpenGL32.glDrawArrays(drawType, 0, verticesLength);
 
-            OpenGL32.DisableVertexAttribArray(_locationPosition);
-            OpenGL32.DisableVertexAttribArray(_locationTexture);
+            OpenGL32.glDisableVertexAttribArray(_locationPosition);
+            OpenGL32.glDisableVertexAttribArray(_locationTexture);
         }
-        
-        
     }
 }

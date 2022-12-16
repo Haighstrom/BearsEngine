@@ -14,7 +14,7 @@ public class InvisibilityShader : IShader
     public static Matrix3 mdlMatrix = Matrix3.Identity;
 
     private static bool _initialised = false;
-    private static uint _ID;
+    private static int _ID;
     private static int _locationMVMatrix;
     private static int _locationPMatrix;
     private static int _locationPosition;
@@ -30,17 +30,17 @@ public class InvisibilityShader : IShader
     {
         _ID = HF.Graphics.CreateShader(Resources.Shaders.vs_default, Resources.Shaders.fs_invisibility);
         HF.Graphics.BindShader(_ID);
-        _locationMVMatrix = OpenGL32.GetUniformLocation(_ID, "MVMatrix");
-        _locationPMatrix = OpenGL32.GetUniformLocation(_ID, "PMatrix");
-        _locationPosition = OpenGL32.GetAttribLocation(_ID, "Position");
-        _locationColour = OpenGL32.GetAttribLocation(_ID, "Colour");
-        _locationTexture = OpenGL32.GetAttribLocation(_ID, "TexCoord");
+        _locationMVMatrix = OpenGL32.glGetUniformLocation(_ID, "MVMatrix");
+        _locationPMatrix = OpenGL32.glGetUniformLocation(_ID, "PMatrix");
+        _locationPosition = OpenGL32.glGetAttribLocation(_ID, "Position");
+        _locationColour = OpenGL32.glGetAttribLocation(_ID, "Colour");
+        _locationTexture = OpenGL32.glGetAttribLocation(_ID, "TexCoord");
 
-        _locationRadiusUniform = OpenGL32.GetUniformLocation(_ID, "radius");
-        _locationInnerRadiusUniform = OpenGL32.GetUniformLocation(_ID, "innerRadius");
-        _locationSourcePositionUniform = OpenGL32.GetUniformLocation(_ID, "source");
+        _locationRadiusUniform = OpenGL32.glGetUniformLocation(_ID, "radius");
+        _locationInnerRadiusUniform = OpenGL32.glGetUniformLocation(_ID, "innerRadius");
+        _locationSourcePositionUniform = OpenGL32.glGetUniformLocation(_ID, "source");
 
-        _locationSourceInvMVMatrixUniform = OpenGL32.GetUniformLocation(_ID, "InverseSourceMVMatrix");
+        _locationSourceInvMVMatrixUniform = OpenGL32.glGetUniformLocation(_ID, "InverseSourceMVMatrix");
 
         _initialised = true;
     }
@@ -57,30 +57,30 @@ public class InvisibilityShader : IShader
     {
         HF.Graphics.BindShader(_ID);
 
-        OpenGL32.UniformMatrix4(_locationMVMatrix, 1, false, modelView.Values);
-        OpenGL32.UniformMatrix4(_locationPMatrix, 1, false, projection.Values);
+        OpenGL.UniformMatrix4(_locationMVMatrix, modelView);
+        OpenGL.UniformMatrix4(_locationPMatrix, projection);
 
-        OpenGL32.EnableVertexAttribArray(_locationPosition);
-        OpenGL32.VertexAttribPointer(_locationPosition, 2, VertexAttribPointerType.Float, false, Vertex.STRIDE, 0);
+        OpenGL32.glEnableVertexAttribArray(_locationPosition);
+        OpenGL32.glVertexAttribPointer(_locationPosition, 2, VERTEX_DATA_TYPE.GL_FLOAT, false, Vertex.STRIDE, 0);
 
-        OpenGL32.EnableVertexAttribArray(_locationColour);
-        OpenGL32.VertexAttribPointer(_locationColour, 4, VertexAttribPointerType.UnsignedByte, true, Vertex.STRIDE, 8);
+        OpenGL32.glEnableVertexAttribArray(_locationColour);
+        OpenGL32.glVertexAttribPointer(_locationColour, 4, VERTEX_DATA_TYPE.GL_UNSIGNED_BYTE, true, Vertex.STRIDE, 8);
 
-        OpenGL32.EnableVertexAttribArray(_locationTexture);
-        OpenGL32.VertexAttribPointer(_locationTexture, 2, VertexAttribPointerType.Float, false, Vertex.STRIDE, 12);
+        OpenGL32.glEnableVertexAttribArray(_locationTexture);
+        OpenGL32.glVertexAttribPointer(_locationTexture, 2, VERTEX_DATA_TYPE.GL_FLOAT, false, Vertex.STRIDE, 12);
 
 
-        OpenGL32.Uniform(_locationRadiusUniform, Radius);
-        OpenGL32.Uniform(_locationInnerRadiusUniform, InnerRadius);
+        OpenGL32.glUniform1f(_locationRadiusUniform, Radius);
+        OpenGL32.glUniform1f(_locationInnerRadiusUniform, InnerRadius);
         OpenGL32.glUniform2f(_locationSourcePositionUniform, Centre.X, Centre.Y);
-        OpenGL32.UniformMatrix3(_locationSourceInvMVMatrixUniform, 1, false, mdlMatrix.Inverse().Values);
+        OpenGL.UniformMatrix3(_locationSourceInvMVMatrixUniform, mdlMatrix.Inverse());
 
 
         OpenGL32.glDrawArrays(drawType, 0, verticesLength);
 
-        OpenGL32.DisableVertexAttribArray(_locationPosition);
-        OpenGL32.DisableVertexAttribArray(_locationColour);
-        OpenGL32.DisableVertexAttribArray(_locationTexture);
+        OpenGL32.glDisableVertexAttribArray(_locationPosition);
+        OpenGL32.glDisableVertexAttribArray(_locationColour);
+        OpenGL32.glDisableVertexAttribArray(_locationTexture);
     }
     
     

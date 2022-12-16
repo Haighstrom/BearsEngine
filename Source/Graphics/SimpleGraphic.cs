@@ -11,7 +11,7 @@ namespace BearsEngine.Graphics
         
 
         public IShader Shader { get; }
-        public uint VertexBuffer { get; }
+        public int VertexBuffer { get; }
         public Texture Texture { get; }
         public Vertex[] Vertices { get; }
         public bool Visible { get; set; } = true;
@@ -23,13 +23,13 @@ namespace BearsEngine.Graphics
                 throw new ArgumentException("Cannot make a SimpleGraphic with fewer than 3 vertices", nameof(vertices));
 
             Shader = shader;
-            VertexBuffer = OpenGL32.GenBuffer();
+            VertexBuffer = OpenGL.GenBuffer();
             Texture = texture;
             Vertices = vertices;
 
-            OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, VertexBuffer);
-            OpenGL32.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * Vertex.STRIDE, Vertices, BufferUsageHint.StreamDraw);
-            OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, VertexBuffer);
+            OpenGL.BufferData(BUFFER_TARGET.ArrayBuffer, Vertices.Length * Vertex.STRIDE, Vertices, USAGE_PATTERN.StreamDraw);
+            OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, 0);
             OpenGL.LastBoundVertexBuffer = 0;
         }
         
@@ -38,7 +38,7 @@ namespace BearsEngine.Graphics
         {
             if (OpenGL.LastBoundVertexBuffer != VertexBuffer)
             {
-                OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, VertexBuffer);
+                OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, VertexBuffer);
                 OpenGL.LastBoundVertexBuffer = VertexBuffer;
             }
 
@@ -50,7 +50,7 @@ namespace BearsEngine.Graphics
 
             Shader.Render(ref projection, ref modelView, Vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLES);
 
-            OpenGL32.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, 0);
             OpenGL.LastBoundVertexBuffer = 0;
         }
         
@@ -71,7 +71,7 @@ namespace BearsEngine.Graphics
                 {
                     lock (_syncRoot)
                     {
-                        OpenGL32.DeleteBuffer(VertexBuffer);
+                        OpenGL.DeleteBuffer(VertexBuffer);
                     }
                 }
                 else

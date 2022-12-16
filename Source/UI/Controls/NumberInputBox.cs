@@ -266,7 +266,7 @@ public class NumberInputBox<T> : Entity, IActivatable
         }
     }
     
-    private void OnCharPressed(object? sender, KeyboardCharEventArgs e)
+    private void OnCharPressed(object? sender, HaighFramework.Window.KeyboardCharEventArgs e)
     {
         if (_mode != Mode.Editing)
             return;
@@ -288,7 +288,7 @@ public class NumberInputBox<T> : Entity, IActivatable
         SetTextPositions();
     }
     
-    private void OnKeyDown(object? sender, KeyboardKeyEventArgs e)
+    private void OnKeyDown(object? sender, HaighFramework.Window.KeyboardKeyEventArgs e)
     {
         if (_mode != Mode.Editing)
             return;
