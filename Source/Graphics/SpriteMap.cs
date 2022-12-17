@@ -147,14 +147,14 @@ namespace BearsEngine.Graphics
 
         public void Bind()
         {
-            OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, _ID);
+            OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, _ID);
             OpenGL.LastBoundVertexBuffer = _ID;
         }
         
 
         public void Unbind()
         {
-            OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, 0);
+            OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, 0);
             OpenGL.LastBoundVertexBuffer = 0;
         }
         
@@ -169,7 +169,7 @@ namespace BearsEngine.Graphics
                 new Vertex(new Point(0, H), Colour, new Point(0, _ssTileH)),
                 new Vertex(new Point(W, H), Colour, new Point(_ssTileW, _ssTileH))
             };
-            OpenGL.BufferData(BUFFER_TARGET.ArrayBuffer, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.StreamDraw);
+            OpenGL.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
             Unbind();
         }
         

@@ -152,7 +152,7 @@ namespace BearsEngine.Graphics
                     new Vertex(new Point(W, H), Colour, new Point(1, 1))
                 };
 
-                OpenGL.BufferData(BUFFER_TARGET.ArrayBuffer, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.StreamDraw);
+                OpenGL.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
 
                 _verticesChanged = false;
             }

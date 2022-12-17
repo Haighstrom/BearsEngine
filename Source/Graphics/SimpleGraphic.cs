@@ -27,9 +27,9 @@ namespace BearsEngine.Graphics
             Texture = texture;
             Vertices = vertices;
 
-            OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, VertexBuffer);
-            OpenGL.BufferData(BUFFER_TARGET.ArrayBuffer, Vertices.Length * Vertex.STRIDE, Vertices, USAGE_PATTERN.StreamDraw);
-            OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, 0);
+            OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, VertexBuffer);
+            OpenGL.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, Vertices.Length * Vertex.STRIDE, Vertices, USAGE_PATTERN.GL_STREAM_DRAW);
+            OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, 0);
             OpenGL.LastBoundVertexBuffer = 0;
         }
         
@@ -38,7 +38,7 @@ namespace BearsEngine.Graphics
         {
             if (OpenGL.LastBoundVertexBuffer != VertexBuffer)
             {
-                OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, VertexBuffer);
+                OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, VertexBuffer);
                 OpenGL.LastBoundVertexBuffer = VertexBuffer;
             }
 
@@ -50,7 +50,7 @@ namespace BearsEngine.Graphics
 
             Shader.Render(ref projection, ref modelView, Vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLES);
 
-            OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, 0);
+            OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, 0);
             OpenGL.LastBoundVertexBuffer = 0;
         }
         

@@ -30,7 +30,7 @@ internal static class OpenGL
     public static Rect GetViewport()
     {
         int[] ints = new int[4];
-        OpenGL32.glGetIntegerv((int)GLGET.Viewport, ints);
+        OpenGL32.glGetIntegerv(GLCAP.GL_VIEWPORT, ints);
         return new Rect(ints[0], ints[1], ints[2], ints[3]);
     }
 

@@ -10,20 +10,6 @@ using HaighFramework.OpenGL;
 namespace BearsEngine;
 public static class HF
 {
-    public static class BitOps
-    {
-        //.net core3 = System.Numerics.BitwiseOperations.TrailingZeroCount(int n)
-
-        static readonly int[] _DeBruijnPositions =
-        {
-        0, 1, 28, 2, 29, 14, 24, 3, 30, 22, 20, 15, 25, 17, 4, 8,
-        31, 27, 13, 23, 21, 19, 16, 7, 26, 12, 18, 6, 11, 5, 10, 9
-        };
-
-        public static int TrailingZeroCount(int number) => _DeBruijnPositions[unchecked((uint)(number & -number) * 0x077CB531U) >> 27];
-        
-    }
-
     public static class Arrays
     {
         public static T[] FillArray<T>(int size, T value)
@@ -101,11 +87,11 @@ public static class HF
             int programID = OpenGL32.glCreateProgram();
 
             int vs, gs = 0, fs = 0;
-            vs = CompileShader(programID, SHADER_TYPE.VertexShader, vertexSource);
+            vs = CompileShader(programID, SHADER_TYPE.GL_VERTEX_SHADER, vertexSource);
             if (geometrySource != null)
-                gs = CompileShader(programID, SHADER_TYPE.GeometryShader, geometrySource);
+                gs = CompileShader(programID, SHADER_TYPE.GL_GEOMETRY_SHADER, geometrySource);
             if (fragmentSource != null)
-                fs = CompileShader(programID, SHADER_TYPE.FragmentShader, fragmentSource);
+                fs = CompileShader(programID, SHADER_TYPE.GL_FRAGMENT_SHADER, fragmentSource);
 
             OpenGL32.glLinkProgram(programID);
 
@@ -241,7 +227,7 @@ public static class HF
             OpenGL32.glTexParameteri(TEXTURE_TARGET.GL_TEXTURE_2D, TEXPARAMETER_NAME.GL_TEXTURE_MIN_FILTER, minMagFilter);
 
             System.Drawing.Imaging.BitmapData bmpd = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            OpenGL32.glTexImage2D(TEXTURE_TARGET.GL_TEXTURE_2D, 0, TEXTURE_INTERNALFORMAT.GL_RGBA, bmpd.Width, bmpd.Height, 0, PIXEL_FORMAT.Bgra, PixelType.GL_UNSIGNED_BYTE, bmpd.Scan0);
+            OpenGL32.glTexImage2D(TEXTURE_TARGET.GL_TEXTURE_2D, 0, TEXTURE_INTERNALFORMAT.GL_RGBA, bmpd.Width, bmpd.Height, 0, PIXEL_FORMAT.GL_BGRA, PIXEL_TYPE.GL_UNSIGNED_BYTE, bmpd.Scan0);
             bmp.UnlockBits(bmpd);
 
             return t;
@@ -259,7 +245,7 @@ public static class HF
             GCHandle pinned = GCHandle.Alloc(pixels, GCHandleType.Pinned);
             IntPtr pointer = pinned.AddrOfPinnedObject();
 
-            OpenGL32.glTexImage2D(TEXTURE_TARGET.GL_TEXTURE_2D, 0, TEXTURE_INTERNALFORMAT.GL_RGBA, t.Width, t.Height, 0, PIXEL_FORMAT.GL_RGBA, PixelType.GL_UNSIGNED_BYTE, pointer);
+            OpenGL32.glTexImage2D(TEXTURE_TARGET.GL_TEXTURE_2D, 0, TEXTURE_INTERNALFORMAT.GL_RGBA, t.Width, t.Height, 0, PIXEL_FORMAT.GL_RGBA, PIXEL_TYPE.GL_UNSIGNED_BYTE, pointer);
 
             pinned.Free();
 
@@ -313,7 +299,7 @@ public static class HF
 
             var bmpData = paddedBMP.LockBits(new System.Drawing.Rectangle(0, 0, paddedBMP.Width, paddedBMP.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-            OpenGL32.glTexImage2D(TEXTURE_TARGET.GL_TEXTURE_2D, 0, TEXTURE_INTERNALFORMAT.GL_RGBA, bmpData.Width, bmpData.Height, 0, PIXEL_FORMAT.Bgra, PixelType.GL_UNSIGNED_BYTE, bmpData.Scan0);
+            OpenGL32.glTexImage2D(TEXTURE_TARGET.GL_TEXTURE_2D, 0, TEXTURE_INTERNALFORMAT.GL_RGBA, bmpData.Width, bmpData.Height, 0, PIXEL_FORMAT.GL_BGRA, PIXEL_TYPE.GL_UNSIGNED_BYTE, bmpData.Scan0);
 
             paddedBMP.UnlockBits(bmpData);
 
@@ -465,7 +451,7 @@ public static class HF
             System.Drawing.Bitmap bmp = new(t.Width, t.Height);
             OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, t.ID);
             System.Drawing.Imaging.BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            OpenGL32.glGetTexImage(TEXTURE_TARGET.GL_TEXTURE_2D, 0, PIXEL_FORMAT.Bgra, PixelType.GL_UNSIGNED_BYTE, data.Scan0);
+            OpenGL32.glGetTexImage(TEXTURE_TARGET.GL_TEXTURE_2D, 0, PIXEL_FORMAT.GL_BGRA, PIXEL_TYPE.GL_UNSIGNED_BYTE, data.Scan0);
             bmp.UnlockBits(data);
             return bmp;
         }

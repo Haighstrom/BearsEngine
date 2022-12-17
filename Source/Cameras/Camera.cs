@@ -254,14 +254,14 @@ namespace BearsEngine.Worlds.Cameras
             if (MSAAEnabled)
             {
                 //Bind MSAA FBO to be the draw destination and clear it
-                OpenGL32.glBindFramebuffer(FRAMEBUFFER_TARGET.Framebuffer, _frameBufferMSAAID);
-                OpenGL32.glFramebufferTexture2D(FRAMEBUFFER_TARGET.Framebuffer, FRAMEBUFFER_ATTACHMENT_POINT.ColourAttachment0, TEXTURE_TARGET.GL_PROXY_TEXTURE_2D_MULTISAMPLE, _frameBufferMSAATexture.ID, 0);
+                OpenGL32.glBindFramebuffer(FRAMEBUFFER_TARGET.GL_FRAMEBUFFER, _frameBufferMSAAID);
+                OpenGL32.glFramebufferTexture2D(FRAMEBUFFER_TARGET.GL_FRAMEBUFFER, FRAMEBUFFER_ATTACHMENT_POINT.GL_COLOR_ATTACHMENT0, TEXTURE_TARGET.GL_PROXY_TEXTURE_2D_MULTISAMPLE, _frameBufferMSAATexture.ID, 0);
             }
             else
             {
                 //Bind Shader Pass FBO to be the draw destination and clear it
-                OpenGL32.glBindFramebuffer(FRAMEBUFFER_TARGET.Framebuffer, _frameBufferShaderPassID);
-                OpenGL32.glFramebufferTexture2D(FRAMEBUFFER_TARGET.Framebuffer, FRAMEBUFFER_ATTACHMENT_POINT.ColourAttachment0, TEXTURE_TARGET.GL_TEXTURE_2D, _frameBufferShaderPassTexture.ID, 0);
+                OpenGL32.glBindFramebuffer(FRAMEBUFFER_TARGET.GL_FRAMEBUFFER, _frameBufferShaderPassID);
+                OpenGL32.glFramebufferTexture2D(FRAMEBUFFER_TARGET.GL_FRAMEBUFFER, FRAMEBUFFER_ATTACHMENT_POINT.GL_COLOR_ATTACHMENT0, TEXTURE_TARGET.GL_TEXTURE_2D, _frameBufferShaderPassTexture.ID, 0);
             }
 
             //Clear the FBO
@@ -290,15 +290,15 @@ namespace BearsEngine.Worlds.Cameras
             OpenGL.LastBoundFrameBuffer = tempFBID;
 
             //Bind vertex buffer - optimise this later            
-            OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, VertexBuffer);
-            OpenGL.BufferData(BUFFER_TARGET.ArrayBuffer, Vertices.Length * Vertex.STRIDE, Vertices, USAGE_PATTERN.DynamicDraw);
+            OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, VertexBuffer);
+            OpenGL.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, Vertices.Length * Vertex.STRIDE, Vertices, USAGE_PATTERN.GL_DYNAMIC_DRAW);
             OpenGL.LastBoundVertexBuffer = VertexBuffer;
 
             if (MSAAEnabled)
             {
                 //Bind the 2nd pass FBO and draw from the first to do MSAA sampling
-                OpenGL32.glBindFramebuffer(FRAMEBUFFER_TARGET.Framebuffer, _frameBufferShaderPassID);
-                OpenGL32.glFramebufferTexture2D(FRAMEBUFFER_TARGET.Framebuffer, FRAMEBUFFER_ATTACHMENT_POINT.ColourAttachment0, TEXTURE_TARGET.GL_TEXTURE_2D, _frameBufferShaderPassTexture.ID, 0);
+                OpenGL32.glBindFramebuffer(FRAMEBUFFER_TARGET.GL_FRAMEBUFFER, _frameBufferShaderPassID);
+                OpenGL32.glFramebufferTexture2D(FRAMEBUFFER_TARGET.GL_FRAMEBUFFER, FRAMEBUFFER_ATTACHMENT_POINT.GL_COLOR_ATTACHMENT0, TEXTURE_TARGET.GL_TEXTURE_2D, _frameBufferShaderPassTexture.ID, 0);
                 OpenGL32.glClearColor(0, 0, 0, 0);
                 OpenGL32.glClear(BUFFER_MASK.GL_COLOR_BUFFER_BIT);
 
@@ -314,7 +314,7 @@ namespace BearsEngine.Worlds.Cameras
             }
 
             //Bind the render target back to either the screen, or a camera higher up the heirachy, depending on what called this
-            OpenGL32.glBindFramebuffer(FRAMEBUFFER_TARGET.Framebuffer, OpenGL.LastBoundFrameBuffer);
+            OpenGL32.glBindFramebuffer(FRAMEBUFFER_TARGET.GL_FRAMEBUFFER, OpenGL.LastBoundFrameBuffer);
 
             //Bind the FBO to be drawn
             _frameBufferShaderPassTexture.Bind();

@@ -45,7 +45,7 @@ namespace BearsEngine.Graphics
 
             _vertices = Points.Select(p => new Vertex(p, Colour, Point.Zero)).ToArray();
 
-            OpenGL.BufferData(BUFFER_TARGET.ArrayBuffer, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.StreamDraw);
+            OpenGL.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
 
             _shader.Render(ref projection, ref mv, _vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLE_STRIP);
             Unbind();
@@ -112,14 +112,14 @@ namespace BearsEngine.Graphics
 
         public void Bind()
         {
-            OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, _ID);
+            OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, _ID);
             OpenGL.LastBoundVertexBuffer = _ID;
         }
         
 
         public void Unbind()
         {
-            OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, 0);
+            OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, 0);
             OpenGL.LastBoundVertexBuffer = 0;
         }
         

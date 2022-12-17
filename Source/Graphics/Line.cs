@@ -53,7 +53,7 @@ public class Line : AddableBase, IGraphic
             _vertices[n + 1] = new Vertex(2 * Points[n - 1] - Points[n - 2], Colour, Point.Zero); //append forwards from p(n-1)
         }
 
-        OpenGL.BufferData(BUFFER_TARGET.ArrayBuffer, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.StreamDraw);
+        OpenGL.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
 
         _shader.Render(ref projection, ref mv, _vertices.Length, PRIMITIVE_TYPE.GL_LINE_STRIP_ADJACENCY);
 
@@ -108,12 +108,12 @@ public class Line : AddableBase, IGraphic
     
     public void Bind()
     {
-        OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, _ID);
+        OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, _ID);
         OpenGL.LastBoundVertexBuffer = _ID;
     }
     public void Unbind()
     {
-        OpenGL32.glBindBuffer(BUFFER_TARGET.ArrayBuffer, 0);
+        OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, 0);
         OpenGL.LastBoundVertexBuffer = 0;
     }
 }
