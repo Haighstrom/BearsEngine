@@ -136,4 +136,9 @@ internal static class OpenGL
             }
         }
     }
+
+    public static void Viewport(Rect newViewport)
+    {
+        OpenGL32.glViewport((int)newViewport.X, (int)newViewport.Y, (int)newViewport.W, (int)newViewport.H);
+    }
 }

@@ -188,7 +188,7 @@ namespace BearsEngine.Worlds.Cameras
 
             //Save the previous viewport and set the viewport to match the size of the texture we are now drawing to - the FBO
             Rect prevVP = OpenGL.GetViewport();
-            OpenGL32.glViewport(0, 0, (int)View.W, (int)View.H); //not W,H??
+            OpenGL32.glViewport(0, 0, (int)View.W, (int)View.H);
 
             //Locally save the current render target, we will then set this camera as the current render target for child cameras, then put it back
             int tempFBID = OpenGL.LastBoundFrameBuffer;
@@ -237,7 +237,7 @@ namespace BearsEngine.Worlds.Cameras
             OpenGL32.glBlendFunc(BLEND_SCALE_FACTOR.GL_ONE, BLEND_SCALE_FACTOR.GL_ONE_MINUS_SRC_ALPHA);
 
             //reset viewport
-            OpenGL32.glViewport((int)prevVP.X, (int)prevVP.Y, (int)prevVP.W, (int)prevVP.H);
+            OpenGL.Viewport(prevVP);
 
             Matrix4 mv = modelView;
             if (Angle != 0)

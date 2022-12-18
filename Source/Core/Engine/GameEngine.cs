@@ -65,7 +65,7 @@ public class GameEngine : IGameEngine
         _targetUPS = settings.TargetUPS;
         _targetRPS = settings.TargetFramesPerSecond;
 
-        OpenGL32.glViewport((int)Window.Instance.Viewport.X, (int)Window.Instance.Viewport.Y, (int)Window.Instance.Viewport.W, (int)Window.Instance.Viewport.H);
+        OpenGL.Viewport(Window.Instance.Viewport);
         OpenGL.OrthoMatrix = Matrix4.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
 
         Window.Resized += OnWindowResize;
@@ -92,7 +92,7 @@ public class GameEngine : IGameEngine
 
     private void OnWindowResize(object? sender, EventArgs e)
     {
-        OpenGL32.glViewport((int)Window.Instance.Viewport.X, (int)Window.Instance.Viewport.Y, (int)Window.Instance.Viewport.W, (int)Window.Instance.Viewport.H);
+        OpenGL.Viewport(Window.Instance.Viewport);
         OpenGL.OrthoMatrix = Matrix4.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
     }
 

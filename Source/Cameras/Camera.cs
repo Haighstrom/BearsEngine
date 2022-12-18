@@ -323,7 +323,7 @@ namespace BearsEngine.Worlds.Cameras
             OpenGL32.glBlendFunc(BLEND_SCALE_FACTOR.GL_ONE, BLEND_SCALE_FACTOR.GL_ONE_MINUS_SRC_ALPHA);
 
             //reset viewport
-            OpenGL32.glViewport((int)prevVP.X, (int)prevVP.Y, (int)prevVP.W, (int)prevVP.H);
+            OpenGL.Viewport(prevVP);
 
             Matrix4 mv = modelView;
             if (Angle != 0)
