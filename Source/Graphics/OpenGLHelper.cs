@@ -2,7 +2,19 @@
 using System.Text;
 using HaighFramework.OpenGL;
 
-namespace BearsEngine;
+namespace BearsEngine.Graphics;
+
+/// <summary>
+/// Valid Samples values for <see cref="OpenGL32.glTexImage2DMultisample"/>
+/// </summary>
+public enum MSAA_SAMPLES
+{
+    Disabled = 0,
+    X2 = 2,
+    X4 = 4,
+    X8 = 8,
+    X16 = 16
+}
 
 internal static class OpenGL
 {
