@@ -21,6 +21,8 @@ public static class Console
         set => _instance = value;
     }
 
+    public static int DefaultWidth => ConsoleSettings.DefaultWidth;
+
     /// <summary>
     /// The maximum height the console can be without exceeding the screen height.
     /// </summary>
