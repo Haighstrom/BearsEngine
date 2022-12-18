@@ -10,9 +10,8 @@ public class TextLabel : Entity
     public TextLabel(int layer, Rect position, Colour labelColour, HFont font, string text, Colour textColour)
         : base(layer, position, labelColour)
     {
-        Add(_hText = new HText(font, position.Zeroed, text)
+        Add(_hText = new HText(font, textColour, position.Zeroed, text)
         {
-            Colour = textColour,
             HAlignment = HAlignment.Centred,
             VAlignment = VAlignment.Centred,
         });
@@ -20,9 +19,8 @@ public class TextLabel : Entity
     public TextLabel(int layer, Rect position, string labelGraphic, HFont font, string text, Colour textColour)
         : base(layer, position, labelGraphic)
     {
-        Add(_hText = new HText(font, position.Zeroed, text)
+        Add(_hText = new HText(font, textColour, position.Zeroed, text)
         {
-            Colour = textColour,
             HAlignment = HAlignment.Centred,
             VAlignment = VAlignment.Centred,
         });

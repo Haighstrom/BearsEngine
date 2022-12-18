@@ -16,9 +16,8 @@ public class DropdownList<T> : Entity
             _parent = parent;
             _listIndex = listIndex;
 
-            Add(_text = new HText(font, position.Zeroed, name)
+            Add(_text = new HText(font, textColour, position.Zeroed, name)
             {
-                Colour = textColour,
                 HAlignment = HAlignment.Left,
                 VAlignment = VAlignment.Centred,
             });
@@ -43,9 +42,8 @@ public class DropdownList<T> : Entity
         : base(layer, boxPosition, bgColour)
     {
         _optionHeight = optionHeight;
-        Add(_currentSelectionText = new HText(font, boxPosition.Zeroed, "")
+        Add(_currentSelectionText = new HText(font, textColour, boxPosition.Zeroed, "")
         {
-            Colour = textColour,
             HAlignment = HAlignment.Left,
             VAlignment = VAlignment.Centred,
         });

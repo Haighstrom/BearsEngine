@@ -282,7 +282,7 @@ public class NumberInputBox<T> : Entity, IActivatable
             _selection.Visible = false;
         }
 
-        _text = _text.Substring(0, _cursorPosition) + e.Key + _text.Substring(_cursorPosition);
+        _text = _text.Substring(0, _cursorPosition) + e.Char + _text.Substring(_cursorPosition);
         _cursorPosition++;
 
         SetTextPositions();

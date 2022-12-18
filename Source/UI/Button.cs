@@ -77,6 +77,7 @@ public class Button : Entity, IClickable
     public Button(int layer, Rect r, Colour graphic, HFont font, Colour fontColour, string text = "", Action? actionOnClicked = null)
         : this(layer, r.X, r.Y, r.W, r.H, new Image(graphic, r.Size), font, fontColour, text, actionOnClicked)
     {
+        DefaultColour = graphic; //ignore theme colour if colour is set
     }
 
     public Button(int layer, Rect r, string graphic, HFont font, Colour fontColour, string text = "", Action? actionOnClicked = null)
@@ -84,13 +85,13 @@ public class Button : Entity, IClickable
     {
     }
 
-    public Button(int layer = 0, float x = 0, float y = 0, float w = 0, float h = 0, IGraphic? graphic = null, HFont? font = null, Colour? fontColour = null, string? text = null, Action? actionOnClicked = null)
+    public Button(int layer = 0, float x = 0, float y = 0, float w = 0, float h = 0, IGraphic? graphic = null, HFont? font = null, Colour? fontColour = null, string text = "", Action? actionOnClicked = null)
         : base(layer, x, y, w, h)
     {
         if (graphic != null)
             Add(BackgroundGraphic = graphic);
 
-        Add(_text = new HText(font ?? UITheme.Default.Text.Font, new Rect(w, h), text ?? "", fontColour ?? UITheme.Default.Text.FontColour)
+        Add(_text = new HText(font ?? UITheme.Default.Text.Font, fontColour ?? UITheme.Default.Text.FontColour, new Point(w, h), text)
         {
             HAlignment = HAlignment.Centred,
             VAlignment = VAlignment.Centred

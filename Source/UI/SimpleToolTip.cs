@@ -90,9 +90,8 @@ public class SimpleToolTip : Entity
         W = _bg.W;
         H = _bg.H;
 
-        _text = new HText(font, new Rect(_textToEdgeGap, _textToEdgeGap, textW, textH), text)
+        _text = new HText(font, textColour, new Rect(_textToEdgeGap, _textToEdgeGap, textW, textH), text)
         {
-            Colour = textColour,
             HAlignment = HAlignment.Centred,
             VAlignment = VAlignment.Centred
         };
