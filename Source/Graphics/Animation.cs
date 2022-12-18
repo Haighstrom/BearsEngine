@@ -12,7 +12,7 @@
         private int _playIndex = 0;
         private float _timeToNextFrame;
         private LoopType _looping;
-        private Action _onComplete;
+        private Action? _onComplete;
         
 
         public Animation(string imgPath, Point size, int spriteSheetColumns, int spriteSheetRows, float animationStepTime = 0.1f)
@@ -117,6 +117,6 @@
         
         
 
-        public event EventHandler AnimationComplete;
+        public event EventHandler? AnimationComplete;
     }
 }

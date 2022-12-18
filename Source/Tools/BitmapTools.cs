@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace BearsEngine;
 
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "This is part of the Windows API which will only be invoked if on Windows platform.")]
 internal static class BitmapTools
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
