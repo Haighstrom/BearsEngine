@@ -70,7 +70,7 @@ public class Button : Entity, IClickable
     }
 
     public Button(int layer, Rect r, IGraphic? graphic = null, Action? actionOnClicked = null)
-        : this(layer, r.X, r.Y, r.W, r.H, graphic, null, null, null, actionOnClicked)
+        : this(layer, r.X, r.Y, r.W, r.H, graphic, null, null, "", actionOnClicked)
     {
     }
 
