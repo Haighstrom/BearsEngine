@@ -7,7 +7,6 @@
         protected readonly List<Func<bool>> CompletionConditions = new();
         protected readonly List<Action> ActionsOnComplete = new();
         
-
         public TaskGroup(params ITask[] tasks)
         {
             if (tasks.Length == 0)
@@ -19,7 +18,7 @@
                 tasks[i].NextTask = tasks[i + 1];
         }
 
-        public TaskGroup(ITask firstTask = null)
+        public TaskGroup(ITask? firstTask = null)
         {
             CurrentTask = firstTask;
         }
@@ -71,9 +70,7 @@
                 }
             }
         }
-        
-        
 
-        public event EventHandler TaskStarted, TaskCompleted;
+        public event EventHandler? TaskStarted, TaskCompleted;
     }
 }

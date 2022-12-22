@@ -22,8 +22,7 @@ internal static class BitmapTools
 
         // Lock the entire bitmap for Read/Write access as we'll be reading the pixel
         // colour values and altering them in-place.
-        var bmlock = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
-                                     System.Drawing.Imaging.ImageLockMode.ReadWrite, bitmap.PixelFormat);
+        var bmlock = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, bitmap.PixelFormat);
 
         // This code only works with 32bit argb images - assume no alpha if not this format
         if (bmlock.PixelFormat != System.Drawing.Imaging.PixelFormat.Format32bppArgb)
