@@ -191,7 +191,7 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
         }
     }
 
-    public virtual void Render(ref Matrix4 projection, ref Matrix4 modelView)
+    public virtual void Render(ref Matrix3 projection, ref Matrix3 modelView)
     {
         foreach (IAddable a in Entities)
         {

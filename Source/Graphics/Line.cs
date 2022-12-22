@@ -27,14 +27,14 @@ public class Line : AddableBase, IGraphic
 
     public bool Visible { get; set; } = true;
 
-    public void Render(ref Matrix4 projection, ref Matrix4 modelView)
+    public void Render(ref Matrix3 projection, ref Matrix3 modelView)
     {
         if (Thickness == 0 || Points.Count <= 1)
             return;
 
         Bind();
 
-        var mv = Matrix4.Translate(ref modelView, OffsetX, OffsetY, 0);
+        var mv = Matrix3.Translate(ref modelView, OffsetX, OffsetY);
 
         var n = Points.Count;
         _vertices = new Vertex[n + 2];

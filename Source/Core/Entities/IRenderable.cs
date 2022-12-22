@@ -3,5 +3,5 @@
 public interface IRenderable
 {
     bool Visible { get; set; }
-    void Render(ref Matrix4 projection, ref Matrix4 modelView);
+    void Render(ref Matrix3 projection, ref Matrix3 modelView);
 }

@@ -174,7 +174,7 @@ public class Screen : IContainer, IScene
         }
     }
 
-    public virtual void Render(ref Matrix4 projection, ref Matrix4 modelView)
+    public virtual void Render(ref Matrix3 projection, ref Matrix3 modelView)
     {
         //should this be here? i don't like logic in render, but if render is called before update after the list changes...
         if (_entitiesNeedSorting)

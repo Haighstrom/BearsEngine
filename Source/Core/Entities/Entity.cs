@@ -153,11 +153,11 @@ public class Entity : EntityBase, IClickable, ICollideable
 
     public virtual bool Collides(ICollideable i) => WindowPosition.Intersects(i.WindowPosition);
 
-    public override void Render(ref Matrix4 projection, ref Matrix4 modelView)
+    public override void Render(ref Matrix3 projection, ref Matrix3 modelView)
     {
-        Matrix4 mv = modelView;
+        Matrix3 mv = modelView;
 
-        mv = Matrix4.Translate(ref mv, X, Y, 0);
+        mv = Matrix3.Translate(ref mv, X, Y);
 
         base.Render(ref projection, ref mv);
     }

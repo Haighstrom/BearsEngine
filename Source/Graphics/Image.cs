@@ -122,7 +122,7 @@ namespace BearsEngine.Graphics
 
         public float Angle { get; set; }
 
-        public override void Render(ref Matrix4 projection, ref Matrix4 modelView)
+        public override void Render(ref Matrix3 projection, ref Matrix3 modelView)
         {
             if (W == 0 || H == 0)
                 return;
@@ -130,9 +130,9 @@ namespace BearsEngine.Graphics
             var mv = modelView;
 
             if (Angle != 0)
-                mv = Matrix4.RotateAroundPoint(ref mv, Angle, R.Centre.X, R.Centre.Y);
+                mv = Matrix3.RotateAroundPoint(ref mv, Angle, R.Centre.X, R.Centre.Y);
 
-            mv = Matrix4.Translate(ref mv, X, Y, 0);
+            mv = Matrix3.Translate(ref mv, X, Y);
 
             if (OpenGL.LastBoundTexture != Texture.ID)
             {

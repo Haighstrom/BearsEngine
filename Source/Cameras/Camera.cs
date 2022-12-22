@@ -11,7 +11,7 @@ namespace BearsEngine.Worlds.Cameras
         private int _frameBufferShaderPassID;
         private Texture _frameBufferShaderPassTexture;
         private readonly CameraMSAAShader _mSAAShader;
-        private Matrix4 _ortho;
+        private Matrix3 _ortho;
         private float _tileWidth, _tileHeight;
         private Rect _view = new();
 
@@ -45,7 +45,7 @@ namespace BearsEngine.Worlds.Cameras
 
             //HF.Graphics.CreateFramebuffer(W, H, out _frameBufferShaderPassID, out _frameBufferShaderPassTexture);
             //_graphic = new Image(_frameBufferShaderPassTexture);
-            _ortho = Matrix4.CreateFBOOrtho(W, H);
+            _ortho = Matrix3.CreateFBOOrtho(W, H);
 
             //_frameBufferShaderPassID = OpenGL.GenFramebuffer();
         }
@@ -249,7 +249,7 @@ namespace BearsEngine.Worlds.Cameras
             _ => throw new ArgumentException(string.Format("edgeDirection value not handled: {0}", edgeDirection), nameof(edgeDirection)),
         };
 
-        public override void Render(ref Matrix4 projection, ref Matrix4 modelView)
+        public override void Render(ref Matrix3 projection, ref Matrix3 modelView)
         {
             if (MSAAEnabled)
             {
@@ -279,9 +279,9 @@ namespace BearsEngine.Worlds.Cameras
             int tempFBID = OpenGL.LastBoundFrameBuffer;
             OpenGL.LastBoundFrameBuffer = MSAAEnabled ? _frameBufferMSAAID : _frameBufferShaderPassID;
 
-            Matrix4 identity = Matrix4.Identity;
-            Matrix4 MV = Matrix4.ScaleAroundOrigin(ref identity, TileWidth, TileHeight, 0);
-            MV = Matrix4.Translate(ref MV, -View.X, -View.Y, 0);
+            Matrix3 identity = Matrix3.Identity;
+            Matrix3 MV = Matrix3.ScaleAroundOrigin(ref identity, TileWidth, TileHeight);
+            MV = Matrix3.Translate(ref MV, -View.X, -View.Y);
 
             //draw stuff here 
             base.Render(ref _ortho, ref MV);
@@ -325,10 +325,10 @@ namespace BearsEngine.Worlds.Cameras
             //reset viewport
             OpenGL.Viewport(prevVP);
 
-            Matrix4 mv = modelView;
+            Matrix3 mv = modelView;
             if (Angle != 0)
-                mv = Matrix4.RotateAroundPoint(ref mv, Angle, R.Centre.X, R.Centre.Y);
-            mv = Matrix4.Translate(ref mv, X, Y, 0);
+                mv = Matrix3.RotateAroundPoint(ref mv, Angle, R.Centre.X, R.Centre.Y);
+            mv = Matrix3.Translate(ref mv, X, Y);
 
             //Render with assigned shader
             Shader.Render(ref projection, ref mv, Vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLE_STRIP);
@@ -361,7 +361,7 @@ namespace BearsEngine.Worlds.Cameras
 
             SetUpFBOTex((int)W, (int)H);
 
-            _ortho = Matrix4.CreateFBOOrtho(W, H);
+            _ortho = Matrix3.CreateFBOOrtho(W, H);
 
             if (FixedTileSize)
             {

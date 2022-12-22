@@ -24,7 +24,7 @@ namespace BearsEngine.Graphics
 
         public bool Visible { get; set; } = true;
 
-        public abstract void Render(ref Matrix4 projection, ref Matrix4 modelView);
+        public abstract void Render(ref Matrix3 projection, ref Matrix3 modelView);
         
 
         public int Layer

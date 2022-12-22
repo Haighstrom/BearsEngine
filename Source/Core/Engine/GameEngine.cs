@@ -66,7 +66,7 @@ public class GameEngine : IGameEngine
         _targetRPS = settings.TargetFramesPerSecond;
 
         OpenGL.Viewport(Window.Instance.Viewport);
-        OpenGL.OrthoMatrix = Matrix4.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
+        OpenGL.OrthoMatrix = Matrix3.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
 
         Window.Resized += OnWindowResize;
 
@@ -93,13 +93,13 @@ public class GameEngine : IGameEngine
     private void OnWindowResize(object? sender, EventArgs e)
     {
         OpenGL.Viewport(Window.Instance.Viewport);
-        OpenGL.OrthoMatrix = Matrix4.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
+        OpenGL.OrthoMatrix = Matrix3.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
     }
 
     private void Render()
     {
-        Matrix4 projection = new(OpenGL.OrthoMatrix);
-        Matrix4 identity = Matrix4.Identity;
+        Matrix3 projection = new(OpenGL.OrthoMatrix.Values);
+        Matrix3 identity = Matrix3.Identity;
         Scene.Render(ref projection, ref identity);
 
         Window.Instance.SwapBuffers();

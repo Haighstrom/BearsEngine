@@ -95,12 +95,12 @@ namespace BearsEngine.Graphics
         }
         
 
-        public override void Render(ref Matrix4 projection, ref Matrix4 modelView)
+        public override void Render(ref Matrix3 projection, ref Matrix3 modelView)
         {
             if (W == 0 || H == 0)
                 return;
 
-            var mv = Matrix4.Translate(ref modelView, X, Y, 0);
+            var mv = Matrix3.Translate(ref modelView, X, Y);
 
             if (OpenGL.LastBoundTexture != _texture.ID)
             {

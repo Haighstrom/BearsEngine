@@ -41,7 +41,7 @@ public class Button : Entity, IClickable
     }
 
     public Button(int layer, Rect position, IGraphic graphic, UITheme theme, Action? actionOnClicked = null)
-        : this(layer, position.X, position.Y, position.W, position.H, graphic, null, null, null, actionOnClicked)
+        : this(layer, position.X, position.Y, position.W, position.H, graphic, null, null, "", actionOnClicked)
     {
         DefaultColour = theme.Button.DefaultColour;
         UnclickableColour = theme.Button.UnclickableColour;

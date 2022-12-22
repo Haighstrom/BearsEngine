@@ -34,7 +34,7 @@ namespace BearsEngine.Graphics
         }
         
 
-        public void Render(ref Matrix4 projection, ref Matrix4 modelView)
+        public void Render(ref Matrix3 projection, ref Matrix3 modelView)
         {
             if (OpenGL.LastBoundVertexBuffer != VertexBuffer)
             {

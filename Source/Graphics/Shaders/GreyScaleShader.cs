@@ -33,13 +33,13 @@ public class GreyScaleShader : IShader
     }
     
 
-    public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PRIMITIVE_TYPE drawType)
+    public void Render(ref Matrix3 projection, ref Matrix3 modelView, int verticesLength, PRIMITIVE_TYPE drawType)
     {
         if (_ID != OpenGL.LastBoundShader)
             HF.Graphics.BindShader(_ID);
 
-        OpenGL.UniformMatrix4(_locationMVMatrix, modelView);
-        OpenGL.UniformMatrix4(_locationPMatrix, projection);
+        OpenGL.UniformMatrix3(_locationMVMatrix, modelView);
+        OpenGL.UniformMatrix3(_locationPMatrix, projection);
 
         OpenGL32.glEnableVertexAttribArray(_locationPosition);
         OpenGL32.glVertexAttribPointer(_locationPosition, 2, VERTEX_DATA_TYPE.GL_FLOAT, false, Vertex.STRIDE, 0);

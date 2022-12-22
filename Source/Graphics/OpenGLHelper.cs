@@ -26,7 +26,7 @@ internal static class OpenGL
 
     internal static int LastBoundVertexBuffer { get; set; }
 
-    internal static Matrix4 OrthoMatrix { get; set; }
+    internal static Matrix3 OrthoMatrix { get; set; }
 
     internal static Dictionary<string, Texture> TextureDictionary { get; set; } = new();
 

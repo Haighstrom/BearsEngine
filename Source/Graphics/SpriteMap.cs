@@ -53,9 +53,9 @@ namespace BearsEngine.Graphics
 
         public bool Visible { get; set; } = true;
 
-        public void Render(ref Matrix4 projection, ref Matrix4 modelView)
+        public void Render(ref Matrix3 projection, ref Matrix3 modelView)
         {
-            var mv = Matrix4.Translate(ref modelView, X, Y, 0);
+            var mv = Matrix3.Translate(ref modelView, X, Y);
 
             if (OpenGL.LastBoundTexture != _texture.ID)
             {
@@ -66,7 +66,7 @@ namespace BearsEngine.Graphics
             if (OpenGL.LastBoundVertexBuffer != _ID)
                 Bind();
 
-            Matrix4 tileMatrix = Matrix4.Identity;
+            Matrix3 tileMatrix = Matrix3.Identity;
 
             for (int i = (int)DrawArea.X; i < DrawArea.Right; ++i)
                 for (int j = (int)DrawArea.Y; j < DrawArea.Bottom; ++j)
@@ -74,7 +74,7 @@ namespace BearsEngine.Graphics
                     if (!IsInBounds(i, j))
                         continue;
 
-                    tileMatrix = Matrix4.Translate(ref mv, i * W, j * H, 0);
+                    tileMatrix = Matrix3.Translate(ref mv, i * W, j * H);
                     _shader.IndexX = Maths.Mod(MapValues[i, j], _ssColumns);
                     _shader.IndexY = MapValues[i, j] / _ssColumns;
                     _shader.Render(ref projection, ref tileMatrix, _vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLE_STRIP);

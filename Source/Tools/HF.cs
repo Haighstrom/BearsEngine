@@ -98,7 +98,9 @@ public static class HF
             //Check for errors in compiling shader
             var log = OpenGL.GetProgramInfoLog(programID);
             if (log.Length > 0)
+            {
                 Log.Error("Shader compilation error: " + log);
+            }
 
             //Cleanup
             OpenGL32.glDetachShader(programID, vs);

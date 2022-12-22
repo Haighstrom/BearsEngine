@@ -5,5 +5,5 @@ namespace BearsEngine.Graphics.Shaders;
 
 public interface IShader
 {
-    void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PRIMITIVE_TYPE drawType);
+    void Render(ref Matrix3 projection, ref Matrix3 modelView, int verticesLength, PRIMITIVE_TYPE drawType);
 }

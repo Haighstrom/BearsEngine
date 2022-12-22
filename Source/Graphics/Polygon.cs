@@ -38,10 +38,10 @@ namespace BearsEngine.Graphics
 
         public bool Visible { get; set; } = true;
 
-        public void Render(ref Matrix4 projection, ref Matrix4 modelView)
+        public void Render(ref Matrix3 projection, ref Matrix3 modelView)
         {
             Bind();
-            var mv = Matrix4.Translate(ref modelView, OffsetX, OffsetY, 0);
+            var mv = Matrix3.Translate(ref modelView, OffsetX, OffsetY);
 
             _vertices = Points.Select(p => new Vertex(p, Colour, Point.Zero)).ToArray();
 

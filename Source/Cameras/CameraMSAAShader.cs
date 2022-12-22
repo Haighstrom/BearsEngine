@@ -39,12 +39,12 @@ namespace BearsEngine.Worlds.Cameras
 
         public MSAA_SAMPLES Samples { get; set; }
 
-        public void Render(ref Matrix4 projection, ref Matrix4 modelView, int verticesLength, PRIMITIVE_TYPE drawType)
+        public void Render(ref Matrix3 projection, ref Matrix3 modelView, int verticesLength, PRIMITIVE_TYPE drawType)
         {
             HF.Graphics.BindShader(_ID);
 
-            OpenGL.UniformMatrix4(_locationMVMatrix, modelView);
-            OpenGL.UniformMatrix4(_locationPMatrix, projection);
+            OpenGL.UniformMatrix3(_locationMVMatrix, modelView);
+            OpenGL.UniformMatrix3(_locationPMatrix, projection);
 
             //Bind MSAA sample numbers uniform
             OpenGL32.glUniform1i(_locationSamplesUniform, (int)Samples);
