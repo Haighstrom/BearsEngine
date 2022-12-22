@@ -37,7 +37,7 @@
 
         public virtual void Update(float elapsed)
         {
-            if (Parent == null)
+            if (Parent is null)
                 return;
 
             if (CurrentTask != null && CurrentTask.Active)
@@ -47,9 +47,14 @@
                 if (CurrentTask.IsComplete)
                 {
                     CurrentTask.Complete();
+                    if (Parent is IAddable ie && ie.Parent is null) //kind of a hack?
+                        return;
                     CurrentTask = CurrentTask.NextTask;
                 }
             }
+
+            if (Parent is IAddable a && a.Parent is null) //kind of a hack?
+                return;
 
             if (CurrentTask == null && GetNextTask != null)
                 CurrentTask = GetNextTask();
