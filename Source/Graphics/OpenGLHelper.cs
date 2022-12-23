@@ -30,6 +30,21 @@ internal static class OpenGL
 
     internal static Dictionary<string, Texture> TextureDictionary { get; set; } = new();
 
+    /// <summary>
+    /// Check for any OpenGL errors thrown since last check was called
+    /// </summary>
+    public static bool CheckOpenGLError(string callerID)
+    {
+        var err = OpenGL32.glGetError();
+        if (err != GL_ERROR.GL_NO_ERROR)
+        {
+            Log.Warning($"OpenGL error: {err} - thrown in {callerID}.");
+            return true;
+        }
+
+        return false;
+    }
+
     public static int GenTexture()
     {
         int[] textures = new int[1];
