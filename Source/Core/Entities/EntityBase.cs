@@ -1,9 +1,10 @@
 ﻿namespace BearsEngine.Worlds;
 
-public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLayer, IContainer, IPosition
+public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLayer, IContainer, IPosition, IDisposable
 {
     private readonly List<IAddable> _entities = new();
     private int _layer;
+    private bool _disposed;
 
     public EntityBase(int layer, float x, float y, float w, float h)
         : base(x, y, w, h)
@@ -209,5 +210,38 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
                 u.Update(elapsed);
             }
         }
+    }
+
+    protected virtual void Dispose(bool disposedCorrectly)
+    {
+        if (!_disposed)
+        {
+            if (disposedCorrectly)
+            {
+                //is this good? if direct children are IDisposables they will also try and cascade down dispose calls and they will be repeated?
+                foreach (var child in GetEntities<IDisposable>()) 
+                {
+                    child.Dispose();
+                }
+            }
+
+            // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+            // TODO: set large fields to null
+            _disposed = true;
+        }
+    }
+
+    // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+    // ~EntityBase()
+    // {
+    //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+    //     Dispose(disposing: false);
+    // }
+
+    public void Dispose()
+    {
+        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        Dispose(disposedCorrectly: true);
+        GC.SuppressFinalize(this);
     }
 }
