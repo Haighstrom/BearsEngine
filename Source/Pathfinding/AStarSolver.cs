@@ -43,7 +43,7 @@ public class AStarSolver<N> : IPathSolver<N> where N : IPathfindNode<N>
             float h = _heuristic(testNode, _end); //and this estimates how much further from the goal
             float f = g + h; //total estimate for how close this node is to the end point
 
-            if ((!_openNodes.Contains(testNode) && !_closedNodes.Contains(testNode)) || f < ((AStarData)testNode.GraphSearchData).F) //if we found a better route to here, or we never looked at this node before
+            if ((!_openNodes.Contains(testNode) && !_closedNodes.Contains(testNode)) || f < ((AStarData)testNode.GraphSearchData!).F) //if we found a better route to here, or we never looked at this node before
             {
                 testNode.GraphSearchData = new AStarData() { F = f, G = g };
                 testNode.ParentNode = _currentNode;
@@ -60,10 +60,15 @@ public class AStarSolver<N> : IPathSolver<N> where N : IPathfindNode<N>
     /// <returns>Returns the nodes that have been evaluated, the nodes next to be evaluated, and the current status of the Solver after this step.</returns>
     public SolveStatus Step()
     {
+        if (_start.Equals(_end))
+            return _state = SolveStatus.Success;
+
         _closedNodes.Add(_currentNode);
 
         if (_openNodes.Count == 0)
+        {
             return _state = SolveStatus.Failure;
+        }
 
         _openNodes.Sort((n1, n2) => ((AStarData)n2.GraphSearchData!).F.CompareTo(((AStarData)n1.GraphSearchData!).F));
         _currentNode = _openNodes[^1];
