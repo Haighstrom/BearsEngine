@@ -41,7 +41,6 @@ public class GameEngine : IGameEngine
     private bool _disposed = false;
     private readonly int _targetUPS, _targetRPS;
     private readonly ISceneManager _sceneManager;
-    private double _testTime = 0;
 
     public static bool RunWhenUnfocussed { get; set; } = true;
 
@@ -159,15 +158,18 @@ public class GameEngine : IGameEngine
                 if (timeSinceLastUpdate > 2 * targetUpdateTime)
                 {
                     timeOfFrame = timeSinceLastUpdate;
-                    Log.Warning($"A frame took {timeSinceLastUpdate / targetUpdateTime: 0.0}x as long as expected. Render took {_testTime / targetUpdateTime:0.0}x");
+                    Log.Warning($"A frame took {timeSinceLastUpdate / targetUpdateTime: 0.00}x as long as expected.");
                 }
                 else
                 {
                     timeOfFrame = targetUpdateTime;
                 }
 
+                //var updateTimer = new Stopwatch();
+                //updateTimer.Start();
                 if (Window.Instance.IsOpen)
                     Update((float)timeOfFrame);
+                //Log.Debug($"Update: {updateTimer.ElapsedMilliseconds}");
 
                 timeSinceLastUpdate -= timeOfFrame;
 
@@ -176,10 +178,11 @@ public class GameEngine : IGameEngine
 
             if (timeSinceLastRender >= targetRenderTime)
             {
-                _testTime = timer.Elapsed.TotalSeconds;
+                //var renderTimer = new Stopwatch();
+                //renderTimer.Start();
                 if (Window.Instance.IsOpen)
                     Render();
-                _testTime = timer.Elapsed.TotalSeconds - _testTime;
+                //Log.Debug($"Render: {renderTimer.ElapsedMilliseconds}");
 
                 while (timeSinceLastRender >= targetRenderTime)
                     timeSinceLastRender -= targetRenderTime;
