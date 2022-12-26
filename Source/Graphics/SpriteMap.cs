@@ -42,15 +42,20 @@ namespace BearsEngine.Graphics
 
             UpdateVertices();
         }
-        
 
         public int this[int x, int y]
         {
             get => MapValues[x, y];
-            set => MapValues[x, y] = value;
+            set
+            {
+                if (MapValues[x, y] != value)
+                {
+                    MapValues[x, y] = value;
+                    MapIndexChanged?.Invoke(this, new(x, y, value));
+                }
+            }
         }
         
-
         public bool Visible { get; set; } = true;
 
         public void Render(ref Matrix3 projection, ref Matrix3 modelView)
@@ -81,8 +86,6 @@ namespace BearsEngine.Graphics
                 }
         }
         
-        
-
         public int Layer
         {
             get => _layer;
@@ -91,14 +94,15 @@ namespace BearsEngine.Graphics
                 if (_layer == value)
                     return;
 
-                LayerChanged(this, new LayerChangedEventArgs(_layer, value));
+                LayerChanged?.Invoke(this, new LayerChangedEventArgs(_layer, value));
 
                 _layer = value;
             }
         }
-        
 
-        public event EventHandler<LayerChangedEventArgs> LayerChanged = delegate { };
+        public event EventHandler<LayerChangedEventArgs>? LayerChanged;
+
+        public event EventHandler<SpriteMapIndexChangedEventArgs>? MapIndexChanged;
         
 
         public Colour Colour
@@ -128,7 +132,8 @@ namespace BearsEngine.Graphics
         
 
         public int[,] MapValues { get; set; }
-        public int DefaultIndex { get; set; }
+
+        public int DefaultIndex { get; }
 
         public int MapW { get; private set; }
 
@@ -143,7 +148,6 @@ namespace BearsEngine.Graphics
         public bool IsOnEdge(float x, float y) => x == 0 || y == 0 || x == MapW - 1 || y == MapH - 1;
 
         public Rect DrawArea { get; set; }
-        
 
         public void Bind()
         {
