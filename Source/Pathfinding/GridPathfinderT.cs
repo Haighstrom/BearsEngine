@@ -42,6 +42,13 @@ public class GridPathfinder<TNode> : Pathfinder<TNode> where TNode : IPathfindNo
         return this[x, y];
     }
 
+    public TNode FindClosestNode(float nodeX, float nodeY)
+    {
+        int x = (int)Maths.Clamp(nodeX, 0, Width - 1);
+        int y = (int)Maths.Clamp(nodeY, 0, Height - 1);
+        return this[x, y];
+    }
+
     public int Height => _nodegrid.GetLength(1);
 
     public int Width => _nodegrid.GetLength(0);
