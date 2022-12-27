@@ -1,14 +1,14 @@
 ﻿namespace BearsEngine.Pathfinding;
 
-public class Pathfinder<N> : IPathfinder<N> where N : IPathfindNode<N>, IPosition
+public class Pathfinder<TNode> : IPathfinder<TNode> where TNode : IPathfindNode<TNode>, IPosition
 {
-    protected static readonly Func<N, N, float> DefaultHeuristic = (n1, n2) => Math.Abs(n1.X - n2.X) + Math.Abs(n1.Y - n2.Y);
+    protected static readonly Func<TNode, TNode, float> DefaultHeuristic = (n1, n2) => Math.Abs(n1.X - n2.X) + Math.Abs(n1.Y - n2.Y);
 
-    public Func<N, N, float> Heuristic { get; set; } = DefaultHeuristic;
+    public Func<TNode, TNode, float> Heuristic { get; set; } = DefaultHeuristic;
 
-    public IList<N>? FindPath(N start, N end, Func<N, N, bool> passableTest)
+    public IList<TNode>? FindPath(TNode start, TNode end, Func<TNode, TNode, bool> passableTest)
     {
-        AStarSolver<N> solver = new(start, end, passableTest, Heuristic);
+        AStarSolver<TNode> solver = new(start, end, passableTest, Heuristic);
 
         var result = solver.TrySolve();
 
@@ -18,9 +18,9 @@ public class Pathfinder<N> : IPathfinder<N> where N : IPathfindNode<N>, IPositio
             return null;
     }
 
-    public IList<N> FindRandomPath(N startNode, Func<N,N, bool> passableTest, int targetSteps, bool canBacktrack)
+    public IList<TNode> FindRandomPath(TNode startNode, Func<TNode,TNode, bool> passableTest, int targetSteps, bool canBacktrack)
     {
-        RandomPathSolver<N> solver = new(startNode, passableTest, targetSteps, canBacktrack);
+        RandomPathSolver<TNode> solver = new(startNode, passableTest, targetSteps, canBacktrack);
 
         solver.TrySolve();
 
