@@ -3,7 +3,7 @@
 /// <summary>
 /// A controller which will attach an object to the side of another one, and move with it
 /// </summary>
-public class AttachToSideController : AddableBase, IUpdatable
+public class AttachToSideController : UpdateableBase
 {
     private readonly Rect _target;
     private readonly Direction _direction;
@@ -23,11 +23,6 @@ public class AttachToSideController : AddableBase, IUpdatable
 
         UpdatePosition();
     }
-
-    /// <summary>
-    /// Whether this object should be updated
-    /// </summary>
-    public bool Active { get; set; } = true;
 
     private void UpdatePosition()
     {
@@ -54,7 +49,7 @@ public class AttachToSideController : AddableBase, IUpdatable
     /// Update this object
     /// </summary>
     /// <param name="elapsed">How much time should pass for the object</param>
-    public virtual void Update(float elapsed)
+    public override void Update(float elapsed)
     {
         UpdatePosition();
     }
