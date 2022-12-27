@@ -23,20 +23,7 @@ public static class EXTENSIONS
 
     public static float ToSingle(this string s) => float.Parse(s, System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
 
-    public static bool IsNullOrEmpty(this string s) => string.IsNullOrEmpty(s);
-    
-
-    /// <summary>
-    /// applies the specified action on each element of the collection
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public static void Each<T>(this IEnumerable<T> ie, Action<T, int> action)
-    {
-        var i = 0;
-        foreach (var e in ie)
-            action(e, i++);
-    }
-    
+    public static bool IsNullOrEmpty(this string s) => string.IsNullOrEmpty(s);    
 
     public static string ToCommaSeparatedString(this IEnumerable<string> list) => string.Join(",", list);
     

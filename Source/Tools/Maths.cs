@@ -5,6 +5,55 @@ public static class Maths
     public static readonly double Sqrt2 = Math.Sqrt(2);
     public static readonly double Sqrt2Reciprocal = 1 / Math.Sqrt(2);
 
+    public static Direction GetNearestSide(Rect r, Point p)
+    {
+        float left = DistSquared(p, r.CentreLeft);
+        float right = DistSquared(p, r.CentreRight);
+        float top = DistSquared(p, r.TopCentre);
+        float bottom = DistSquared(p, r.BottomCentre);
+
+        float smallest = Min(left, right, top, bottom);
+
+        if (left == smallest)
+            return Direction.Left;
+        else if (right == smallest)
+            return Direction.Right;
+        else if (top == smallest)
+            return Direction.Up;
+        else
+            return Direction.Down;
+    }
+
+    /// <summary>
+    /// Clamps a value to the nearest of two other values.
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="clampOption1">The first value to potentially clamp to.</param>
+    /// <param name="clampOption2">The second value to potentially clamp to.</param>
+    /// <returns>Returns clampOption1 if value is closer to it than clampOption2, clampOption2 if that is closer, and clampOption1 if value is equally far from both.</returns>
+    public static float ClampToNearest(float value, float clampOption1, float clampOption2)
+    {
+        if (Math.Abs(value - clampOption1) <= Math.Abs(value - clampOption2))
+            return clampOption1;
+        else
+            return clampOption2;
+    }
+
+    /// <summary>
+    /// Clamps a value to the nearest of two other values.
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="clampOption1">The first value to potentially clamp to.</param>
+    /// <param name="clampOption2">The second value to potentially clamp to.</param>
+    /// <returns>Returns clampOption1 if value is closer to it than clampOption2, clampOption2 if that is closer, and clampOption1 if value is equally far from both.</returns>
+    public static int ClampToNearest(int value, int clampOption1, int clampOption2)
+    {
+        if (Math.Abs(value - clampOption1) <= Math.Abs(value - clampOption2))
+            return clampOption1;
+        else
+            return clampOption2;
+    }
+
     public static float LengthSquared(float x1, float y1, float x2, float y2) => (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
 
     public static float Clamp(float value, float min, float max)
