@@ -7,7 +7,7 @@ namespace BearsEngine.Graphics
     public class SpriteMap : AddableRectBase, IRectGraphic
     {
         private Colour _colour = Colour.White;
-        private int _layer = 999;
+        private float _layer = 999;
         private readonly SpritesheetShader _shader;
         private Texture _texture;
         private readonly int _ID;
@@ -86,7 +86,7 @@ namespace BearsEngine.Graphics
                 }
         }
         
-        public int Layer
+        public float Layer
         {
             get => _layer;
             set

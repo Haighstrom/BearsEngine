@@ -9,7 +9,7 @@ namespace BearsEngine.Graphics
         private readonly int _ID;
         private readonly IShader _shader;
         private Vertex[] _vertices;
-        private int _layer = 0;
+        private float _layer = 0;
         private List<Point> _points;
         
 
@@ -54,7 +54,7 @@ namespace BearsEngine.Graphics
         
         
 
-        public int Layer
+        public float Layer
         {
             get => _layer;
             set

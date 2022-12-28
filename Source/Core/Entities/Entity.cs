@@ -4,67 +4,67 @@ public class Entity : EntityBase, IClickable, ICollideable
 {
     private const float DefaultHoverTime = 2f;
 
-    public Entity(int layer, Rect pos, string graphicPath)
+    public Entity(float layer, Rect pos, string graphicPath)
         : this(layer, pos.X, pos.Y, pos.W, pos.H, new Image(graphicPath, pos.W, pos.H))
     {
     }
 
-    public Entity(int layer, Point pos, float w, float h, string graphicPath)
+    public Entity(float layer, Point pos, float w, float h, string graphicPath)
         : this(layer, pos.X, pos.Y, w, h, new Image(graphicPath, w, h))
     {
     }
 
-    public Entity(int layer, Point size, string graphicPath)
+    public Entity(float layer, Point size, string graphicPath)
         : this(layer, 0, 0, size.X, size.Y, new Image(graphicPath, size))
     {
     }
 
-    public Entity(int layer, float w, float h, string graphicPath)
+    public Entity(float layer, float w, float h, string graphicPath)
         : this(layer, 0, 0, w, h, new Image(graphicPath, w, h))
     {
     }
 
-    public Entity(int layer, float x, float y, float w, float h, string graphicPath)
+    public Entity(float layer, float x, float y, float w, float h, string graphicPath)
         : this(layer, x, y, w, h, new Image(graphicPath, w, h))
     {
     }
 
-    public Entity(int layer, float x, float y, Point size, string graphicPath)
+    public Entity(float layer, float x, float y, Point size, string graphicPath)
     : this(layer, x, y, size.X, size.Y, new Image(graphicPath, size.X, size.Y))
     {
     }
 
-    public Entity(int layer, Rect pos, Colour colour)
+    public Entity(float layer, Rect pos, Colour colour)
         : this(layer, pos.X, pos.Y, pos.W, pos.H, new Image(colour, pos.Size))
     {
     }
 
-    public Entity(int layer, Point size, Colour colour)
+    public Entity(float layer, Point size, Colour colour)
         : this(layer, 0, 0, size.X, size.Y, new Image(colour, size))
     {
     }
 
-    public Entity(int layer, float x, float y, float w, float h, Colour colour)
+    public Entity(float layer, float x, float y, float w, float h, Colour colour)
         : this(layer, x, y, w, h, new Image(colour, w, h))
     {
     }
 
-    public Entity(int layer, float x, float y, Point size, params IGraphic[] graphics)
+    public Entity(float layer, float x, float y, Point size, params IGraphic[] graphics)
         : this(layer, x, y, size.X, size.Y, graphics)
     {
     }
 
-    public Entity(int layer, Rect pos, params IGraphic[] graphics)
+    public Entity(float layer, Rect pos, params IGraphic[] graphics)
         : this(layer, pos.X, pos.Y, pos.W, pos.H, graphics)
     {
     }
 
-    public Entity(int layer, Point size, params IGraphic[] graphics)
+    public Entity(float layer, Point size, params IGraphic[] graphics)
         : this(layer, 0, 0, size.X, size.Y, graphics)
     {
     }
 
-    public Entity(int layer = 0, float x = 0, float y = 0, float w = 0, float h = 0, params IGraphic[] graphics)
+    public Entity(float layer = 0, float x = 0, float y = 0, float w = 0, float h = 0, params IGraphic[] graphics)
         : base(layer, x, y, w, h)
     {
         Add(graphics);

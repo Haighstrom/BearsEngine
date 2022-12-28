@@ -6,7 +6,7 @@ namespace BearsEngine.Graphics;
 public class Line : AddableBase, IGraphic
 {
     private Vertex[] _vertices;
-    private int _layer = 0;
+    private float _layer = 0;
     private readonly int _ID;
     private readonly SmoothLinesShader _shader;
 
@@ -60,7 +60,7 @@ public class Line : AddableBase, IGraphic
         Unbind();
     }
 
-    public int Layer
+    public float Layer
     {
         get => _layer;
         set

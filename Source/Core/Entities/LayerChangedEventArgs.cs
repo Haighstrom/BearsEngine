@@ -2,9 +2,9 @@
 
 public class LayerChangedEventArgs : EventArgs
 {
-    public int OldLayer, NewLayer;
+    public float OldLayer, NewLayer;
 
-    public LayerChangedEventArgs(int oldLayer, int newLayer)
+    public LayerChangedEventArgs(float oldLayer, float newLayer)
     {
         OldLayer = oldLayer;
         NewLayer = newLayer;

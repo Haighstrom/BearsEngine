@@ -3,16 +3,16 @@
 public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLayer, IContainer, IPosition, IDisposable
 {
     private readonly List<IAddable> _entities = new();
-    private int _layer;
+    private float _layer;
     private bool _disposed;
 
-    public EntityBase(int layer, float x, float y, float w, float h)
+    public EntityBase(float layer, float x, float y, float w, float h)
         : base(x, y, w, h)
     {
         Layer = layer;
     }
 
-    public EntityBase(int layer, Rect r)
+    public EntityBase(float layer, Rect r)
         : base(r)
     {
         Layer = layer;
@@ -22,7 +22,7 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
 
     public ICollection<IAddable> Entities => _entities.ToArray(); //recast to avoid collection modification
 
-    public int Layer
+    public float Layer
     {
         get => _layer;
         set
@@ -30,7 +30,7 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
             if (_layer == value)
                 return;
 
-            int oldvalue = _layer;
+            float oldvalue = _layer;
             _layer = value;
 
             LayerChanged?.Invoke(this, new LayerChangedEventArgs(oldvalue, _layer));
@@ -50,7 +50,7 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
 
     private void SortEntities()
     {
-        static int GetEntityLayer(IAddable a)
+        static float GetEntityLayer(IAddable a)
         {
             if (a is IRenderableOnLayer r)
                 return r.Layer;

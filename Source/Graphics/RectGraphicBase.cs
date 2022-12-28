@@ -6,7 +6,7 @@ namespace BearsEngine.Graphics
 {
     public abstract class RectGraphicBase : AddableRectBase, IRectGraphic
     {
-        private int _layer = 999;
+        private float _layer = 999;
         
 
         public RectGraphicBase(IShader shader, Rect r)
@@ -27,7 +27,7 @@ namespace BearsEngine.Graphics
         public abstract void Render(ref Matrix3 projection, ref Matrix3 modelView);
         
 
-        public int Layer
+        public float Layer
         {
             get => _layer;
             set

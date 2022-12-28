@@ -30,7 +30,7 @@ public class Screen : IContainer, IScene
 
     private void SortEntities()
     {
-        static int GetEntityLayer(IAddable a)
+        static float GetEntityLayer(IAddable a)
         {
             if (a is IRenderableOnLayer r)
                 return r.Layer;
