@@ -39,7 +39,7 @@ public class AStarSolver<N> : IPathSolver<N> where N : IPathfindNode<N>
             if (!_passableTest(_currentNode, testNode))
                 continue;
 
-            float g = ((AStarData)_currentNode.GraphSearchData!).G + _currentNode.DistToConnectedNode; //this node is one node further than the last one
+            float g = ((AStarData)_currentNode.GraphSearchData!).G + _currentNode.DistanceBetweenConnectedNodes; //this node is one node further than the last one
             float h = _heuristic(testNode, _end); //and this estimates how much further from the goal
             float f = g + h; //total estimate for how close this node is to the end point
 

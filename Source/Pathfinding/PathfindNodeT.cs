@@ -11,7 +11,7 @@ public class PathfindNode<TEnum> : IPathfindNode<PathfindNode<TEnum>>, IPosition
 
     public IList<PathfindNode<TEnum>> ConnectedNodes { get; } = new List<PathfindNode<TEnum>>();
 
-    public virtual float DistToConnectedNode { get; } = 1; //todo: make abstract to force consideration?
+    public virtual float DistanceBetweenConnectedNodes { get; } = 1; //todo: make abstract to force consideration?
 
     public object? GraphSearchData { get; set; }
 

@@ -9,7 +9,7 @@ public interface IPathfindNode<TNode> : INode<TNode> where TNode : IPathfindNode
     /// <summary>
     /// The distance between two connected nodes
     /// </summary>
-    public float DistToConnectedNode { get; } //todo - make static in .NET 7
+    public float DistanceBetweenConnectedNodes { get; } //todo - make static in .NET 7
 
     /// <summary>
     /// The preceding node in a path formed by the algorithm
