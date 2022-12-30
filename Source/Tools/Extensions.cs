@@ -2,6 +2,18 @@
 
 public static class EXTENSIONS
 {
+    private static Random rng = new Random();
+    public static void Shuffle<T>(this IList<T> list)
+    {
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            (list[n], list[k]) = (list[k], list[n]);
+        }
+    }
+
     public static object ToType(this object o, Type targetType) => Convert.ChangeType(o, targetType);
 
     public static T ParseTo<T>(this object obj) => (T)Convert.ChangeType(obj, typeof(T));
