@@ -76,11 +76,6 @@ public class Line : AddableBase, IGraphic
 
     public event EventHandler<LayerChangedEventArgs> LayerChanged = delegate { };
 
-    public void Dispose()
-    {
-        throw new NotImplementedException();
-    }
-
     public Colour Colour { get; set; }
 
     public byte Alpha { get; set; }

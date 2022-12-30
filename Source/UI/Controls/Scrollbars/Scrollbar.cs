@@ -78,9 +78,9 @@ public class Scrollbar : Entity
             _dragging = true;
 
             if (_direction == ScrollbarDirection.Horizontal)
-                _dragStart = Mouse.WindowX - X;
+                _dragStart = Mouse.ClientX - X;
             else
-                _dragStart = Mouse.WindowY - Y;
+                _dragStart = Mouse.ClientY - Y;
         }
 
         public override void Update(float elapsed)
@@ -95,7 +95,7 @@ public class Scrollbar : Entity
                 {
                     var oldX = X;
 
-                    X = Maths.Clamp(Mouse.WindowX - _dragStart, _fullPosition.X, _fullPosition.Right - W);
+                    X = Maths.Clamp(Mouse.ClientX - _dragStart, _fullPosition.X, _fullPosition.Right - W);
 
                     if (MinIncrement > 0 && R.Right != _fullPosition.Right)
                         X -= Maths.Mod(X - _fullPosition.Left, MinIncrement);
@@ -107,7 +107,7 @@ public class Scrollbar : Entity
                 {
                     var oldY = Y;
 
-                    Y = Maths.Clamp(Mouse.WindowY - _dragStart, _fullPosition.Y, _fullPosition.Bottom - H);
+                    Y = Maths.Clamp(Mouse.ClientY - _dragStart, _fullPosition.Y, _fullPosition.Bottom - H);
 
                     if (MinIncrement > 0 && R.Bottom != _fullPosition.Bottom)
                         Y -= Maths.Mod(Y - _fullPosition.Top, MinIncrement);
@@ -175,7 +175,7 @@ public class Scrollbar : Entity
     private readonly Action<int> _actionOnMove;
     
 
-    public Scrollbar(int layer, Rect r, ScrollbarDirection direction, UITheme theme)
+    public Scrollbar(float layer, Rect r, ScrollbarDirection direction, UITheme theme)
         : this(layer,
               r,
               direction,
@@ -195,7 +195,7 @@ public class Scrollbar : Entity
     }
     
 
-    public Scrollbar(int layer, Rect fullPosition, ScrollbarDirection direction, Colour barBackgroundColour, Colour barDefaultColour, Colour barHoverColour, Colour barPressedColour, Colour barUnclickableButton, int edgeToBarSpace, Colour arrowBG, IGraphic minusArrow, IGraphic plusArrow, Colour arrowHoverColour, Colour arrowPressedColour, Colour arrowUnclickableColour)
+    public Scrollbar(float layer, Rect fullPosition, ScrollbarDirection direction, Colour barBackgroundColour, Colour barDefaultColour, Colour barHoverColour, Colour barPressedColour, Colour barUnclickableButton, int edgeToBarSpace, Colour arrowBG, IGraphic minusArrow, IGraphic plusArrow, Colour arrowHoverColour, Colour arrowPressedColour, Colour arrowUnclickableColour)
         : base(layer, fullPosition)
     {
         _direction = direction;

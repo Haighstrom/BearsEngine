@@ -8,7 +8,7 @@ namespace BearsEngine.UI
         private readonly Camera _camera;
         private readonly Scrollbar _sb;
 
-        public ScrollingListPanel(int layer, Rect listPosition, int listToScrollbarGap, int scrollbarWidth, UITheme theme, int minIncrement = 0)
+        public ScrollingListPanel(float layer, Rect listPosition, int listToScrollbarGap, int scrollbarWidth, UITheme theme, int minIncrement = 0)
             : base(layer, new Rect(listPosition.X, listPosition.Y, listPosition.W + listToScrollbarGap + scrollbarWidth, listPosition.H))
         {
             Add(_camera = new Camera(1, listPosition.Zeroed, listPosition.Zeroed) { BackgroundColour = theme.ScrollingListPanel.PanelColour });

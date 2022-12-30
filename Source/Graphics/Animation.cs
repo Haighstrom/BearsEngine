@@ -25,7 +25,7 @@
         {
         }
 
-        public Animation(string imgPath, int x, int y, float width, float height, int spriteSheetColumns, int spriteSheetRows, float animationStepTime = 0.1f)
+        public Animation(string imgPath, float x, float y, float width, float height, int spriteSheetColumns, int spriteSheetRows, float animationStepTime = 0.1f)
             : this(imgPath, new Rect(x, y, width, height), spriteSheetColumns, spriteSheetRows, animationStepTime)
         {
         }

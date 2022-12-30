@@ -5,7 +5,7 @@
     //{
     //    private P[] _terrainToPMap;
 
-    //    public GridCamera(int mapW, int mapH, int defaultTerrain, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, int layer, Rect position, float tileSizeW, float tileSizeH, Func<int,int,N> createNodeFunc, P[] terrainToPMap)
+    //    public GridCamera(int mapW, int mapH, int defaultTerrain, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, float layer, Rect position, float tileSizeW, float tileSizeH, Func<int,int,N> createNodeFunc, P[] terrainToPMap)
     //        : this(HF.Arrays.FillArray(mapW, mapH, defaultTerrain), defaultTerrain, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, tileSizeW, tileSizeH, createNodeFunc, terrainToPMap)
     //    {
     //    }

@@ -1,6 +1,5 @@
 ﻿using BearsEngine.Graphics.Shaders;
 using HaighFramework.OpenGL;
-using HaighFramework.WinAPI;
 
 namespace BearsEngine.Graphics
 {

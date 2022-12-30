@@ -11,7 +11,7 @@ namespace BearsEngine.UI
         private readonly Button _minusArrow, _plusArrow;
         
 
-        public PagedPanel(int layer, UITheme uiTheme, Rect textPosition, Rect arrow1Pos, Rect arrow2Pos, string arrow1GFX, string arrow2GFX, List<Entity> pages)
+        public PagedPanel(float layer, UITheme uiTheme, Rect textPosition, Rect arrow1Pos, Rect arrow2Pos, string arrow1GFX, string arrow2GFX, List<Entity> pages)
             : base(layer)
         {
             if (pages.Count == 0)

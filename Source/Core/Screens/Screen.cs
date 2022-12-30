@@ -1,5 +1,4 @@
 ﻿using HaighFramework.OpenGL;
-using HaighFramework.WinAPI;
 
 namespace BearsEngine;
 
@@ -19,7 +18,7 @@ public class Screen : IContainer, IScene
 
     public ICollection<IAddable> Entities => _entities.ToArray(); //recast to avoid collection modification
 
-    public Point LocalMousePosition => Mouse.WindowP;
+    public Point LocalMousePosition => Mouse.ClientP;
 
     public bool Visible { get; set; } = true;
 

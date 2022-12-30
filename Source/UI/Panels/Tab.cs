@@ -13,7 +13,7 @@ namespace BearsEngine.UI
         public Tab(Point size, string activatedGFX, string deactivatedGFX, UITheme theme, string tabText, int tabBorder = 0, HAlignment ha = HAlignment.Centred, VAlignment va = VAlignment.Centred)
             : this(size, activatedGFX, deactivatedGFX)
         {
-            Add(_title = new HText(theme, new Rect(tabBorder, tabBorder, size.X - tabBorder * 2, size.Y - tabBorder * 2), tabText));
+            Add(_title = new HText(theme, new Rect(tabBorder, tabBorder, size.X - tabBorder * 2, size.Y - tabBorder * 2), tabText) { HAlignment = ha, VAlignment = va });
         }
 
         public Tab(Point size, string tabGFX, UITheme theme, string tabText, int tabBorder = 0, HAlignment ha = HAlignment.Centred, VAlignment va = VAlignment.Centred)
@@ -32,7 +32,7 @@ namespace BearsEngine.UI
         {
             Add(_activatedGraphic = new Image(theme.TabbedPanel.ActivatedTabColour, Size) { Visible = false });
             Add(_deactivatedGraphic = new Image(theme.TabbedPanel.DeactivatedTabColour, Size));
-            Add(_title = new HText(theme, new Rect(0, 0, size.X - 0 * 2, size.Y - 0 * 2), text));
+            Add(_title = new HText(theme, new Rect(0, 0, size.X - 0 * 2, size.Y - 0 * 2), text) { HAlignment = theme.TabbedPanel.TabTextHAlignment, VAlignment = theme.TabbedPanel.TabTextVAlignment });
         }
 
         public Tab(Point size, string activatedGFX, string deactivatedGFX)

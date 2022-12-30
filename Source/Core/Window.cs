@@ -1,5 +1,4 @@
-﻿using HaighFramework.Input;
-using HaighFramework.Window;
+﻿using HaighFramework.Window;
 
 namespace BearsEngine;
 
@@ -24,7 +23,9 @@ public static class Window
 
     public static BorderStyle Border { get => Instance.Border; set => Instance.Border = value; }
 
+    public static int ClientHeight { get => Instance.ClientHeight; set => Instance.ClientHeight = value; }
     public static Point ClientSize { get => Instance.ClientSize; set => Instance.ClientSize = value; }
+    public static int ClientWidth { get => Instance.ClientWidth; set => Instance.ClientWidth = value; }
 
     public static Cursor Cursor { get => Instance.Cursor; set => Instance.Cursor = value; }
 
@@ -36,7 +37,7 @@ public static class Window
 
     public static bool Focussed => Instance.Focussed;
 
-    public static int Height { get => Instance.Height; set => Instance.Height = value; }
+    public static int WindowHeight { get => Instance.WindowHeight; set => Instance.WindowHeight = value; }
    
     public static Icon Icon { get => Instance.Icon; set => Instance.Icon = value; }
     
@@ -52,7 +53,7 @@ public static class Window
 
     public static bool Visible { get => Instance.Visible; set => Instance.Visible = value; }
     
-    public static int Width { get => Instance.Width; set => Instance.Width = value; }
+    public static int WindowWidth { get => Instance.WindowWidth; set => Instance.WindowWidth = value; }
     
     public static int X { get => Instance.X; set => Instance.X = value; }
     

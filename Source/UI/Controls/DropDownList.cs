@@ -38,7 +38,7 @@ public class DropdownList<T> : Entity
     private bool _isOpen = false;
     private float _optionHeight;
 
-    public DropdownList(int layer, Rect boxPosition, float optionHeight, Colour bgColour, HFont font, Colour textColour)
+    public DropdownList(float layer, Rect boxPosition, float optionHeight, Colour bgColour, HFont font, Colour textColour)
         : base(layer, boxPosition, bgColour)
     {
         _optionHeight = optionHeight;

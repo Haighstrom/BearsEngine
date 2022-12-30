@@ -28,7 +28,7 @@ public class NumberInputBox<T> : Entity, IActivatable
     private float _cursorFlashTimer;
     
 
-    public NumberInputBox(UITheme theme, Colour bg, int layer, Rect r, T initialValue = default)
+    public NumberInputBox(UITheme theme, Colour bg, float layer, Rect r, T initialValue = default)
         : base(layer, r, bg)
     {
         Window.CharEntered += OnCharPressed;

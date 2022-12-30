@@ -4,15 +4,15 @@ public class DragableUI : Entity
 {
     private int _dragStartX, _dragStartY;
 
-    public DragableUI(int layer, Rect pos, Colour colour)
+    public DragableUI(float layer, Rect pos, Colour colour)
         : base(layer, pos, colour)
     {
     }
-    public DragableUI(int layer, Rect pos, string gfx)
+    public DragableUI(float layer, Rect pos, string gfx)
         : base(layer, pos, gfx)
     {
     }
-    public DragableUI(int layer, Rect pos, IGraphic gfx)
+    public DragableUI(float layer, Rect pos, IGraphic gfx)
         : base(layer, pos, gfx)
     {
     }
@@ -36,8 +36,8 @@ public class DragableUI : Entity
         {
             Dragging = true;
             OnStartedDragging();
-            _dragStartX = (int)(Mouse.WindowX - X);
-            _dragStartY = (int)(Mouse.WindowY - Y);
+            _dragStartX = (int)(Mouse.ClientX - X);
+            _dragStartY = (int)(Mouse.ClientY - Y);
         }
 
         if (Dragging && (Mouse.LeftUp || !Dragable))
@@ -48,8 +48,8 @@ public class DragableUI : Entity
 
         if (Dragging)
         {
-            X = Mouse.WindowX - _dragStartX;
-            Y = Mouse.WindowY - _dragStartY;
+            X = Mouse.ClientX - _dragStartX;
+            Y = Mouse.ClientY - _dragStartY;
         }
     }
     

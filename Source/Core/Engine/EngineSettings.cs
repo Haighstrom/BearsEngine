@@ -1,6 +1,4 @@
-﻿using HaighFramework.Window;
-
-namespace BearsEngine;
+﻿namespace BearsEngine;
 
 public class EngineSettings
 {

@@ -84,7 +84,7 @@ public class GridLayout : Entity
     private List<CellFormat> _columnFormat = new();
     
 
-    public GridLayout(int layer, Rect position, List<CellFormat> rowFormat, List<CellFormat> columnFormat)
+    public GridLayout(float layer, Rect position, List<CellFormat> rowFormat, List<CellFormat> columnFormat)
         : base(layer, position)
     {
         Rows = rowFormat.Count;
@@ -96,7 +96,7 @@ public class GridLayout : Entity
         Children = new IRectangular[Rows, Columns];
         GridAlignments = new GridAlignment[Rows, Columns];
     }
-    public GridLayout(int layer, Rect position, int rows, int columns)
+    public GridLayout(float layer, Rect position, int rows, int columns)
         : base(layer, position)
     {
 

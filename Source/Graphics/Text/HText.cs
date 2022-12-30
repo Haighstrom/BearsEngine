@@ -862,8 +862,9 @@ public class HText : RectGraphicBase, IDisposable
     public void Dispose()
     {
         _font?.Dispose();
-        foreach (var l in _linesToDraw)
-            l.Dispose();
+        //todo: do graphics need disposing?
+        //foreach (var l in _linesToDraw)
+        //    l.Dispose();
         foreach (var v in _vertGroups)
             v.Dispose();
     }

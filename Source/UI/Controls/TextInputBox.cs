@@ -20,7 +20,7 @@ public class TextInputBox : Entity, IActivatable
     private int _selectionStart, _cursorPosition;
     private float _cursorFlashTimer;
     
-    public TextInputBox(UITheme theme, Colour bg, int layer, Rect r, string initialValue = "")
+    public TextInputBox(UITheme theme, Colour bg, float layer, Rect r, string initialValue = "")
         : base(layer, r, bg)
     {
         Window.CharEntered += OnCharPressed;

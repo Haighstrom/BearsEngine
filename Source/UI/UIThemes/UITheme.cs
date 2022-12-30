@@ -1,6 +1,6 @@
 ﻿namespace BearsEngine.UI;
 
-public struct UITheme
+public class UITheme
 {
     public static UITheme Default => new()
     {

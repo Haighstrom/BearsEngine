@@ -1,6 +1,5 @@
 ﻿using BearsEngine.Graphics.Shaders;
 using HaighFramework.OpenGL;
-using HaighFramework.WinAPI;
 
 namespace BearsEngine.Worlds.Cameras
 {
@@ -15,7 +14,7 @@ namespace BearsEngine.Worlds.Cameras
         private float _tileWidth, _tileHeight;
         private Rect _view = new();
 
-        private Camera(int layer, Rect position)
+        private Camera(float layer, Rect position)
             : base(layer, position)
         {
             Shader = new DefaultShader();
@@ -50,12 +49,12 @@ namespace BearsEngine.Worlds.Cameras
             //_frameBufferShaderPassID = OpenGL.GenFramebuffer();
         }
 
-        public Camera(int layer, Rect position, Point tileSize)
+        public Camera(float layer, Rect position, Point tileSize)
             : this(layer, position, tileSize.X, tileSize.Y)
         {
         }
 
-        public Camera(int layer, Rect position, float tileW, float tileH)
+        public Camera(float layer, Rect position, float tileW, float tileH)
             : this(layer, position)
         {
             FixedTileSize = true;
@@ -66,7 +65,7 @@ namespace BearsEngine.Worlds.Cameras
 
         }
 
-        public Camera(int layer, Rect position, Rect viewport)
+        public Camera(float layer, Rect position, Rect viewport)
             : this(layer, position)
         {
             FixedTileSize = false;
@@ -90,7 +89,7 @@ namespace BearsEngine.Worlds.Cameras
 
         public bool FixedTileSize { get; set; }
 
-        public override Point LocalMousePosition => GetLocalPosition(Mouse.WindowP);
+        public override Point LocalMousePosition => GetLocalPosition(Mouse.ClientP);
 
         public float MaxX { get; set; }
 

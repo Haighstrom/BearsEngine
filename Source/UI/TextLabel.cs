@@ -7,7 +7,7 @@ public class TextLabel : Entity
     private readonly HText _hText;
     
 
-    public TextLabel(int layer, Rect position, Colour labelColour, HFont font, string text, Colour textColour)
+    public TextLabel(float layer, Rect position, Colour labelColour, HFont font, string text, Colour textColour)
         : base(layer, position, labelColour)
     {
         Add(_hText = new HText(font, textColour, position.Zeroed, text)
@@ -16,7 +16,7 @@ public class TextLabel : Entity
             VAlignment = VAlignment.Centred,
         });
     }
-    public TextLabel(int layer, Rect position, string labelGraphic, HFont font, string text, Colour textColour)
+    public TextLabel(float layer, Rect position, string labelGraphic, HFont font, string text, Colour textColour)
         : base(layer, position, labelGraphic)
     {
         Add(_hText = new HText(font, textColour, position.Zeroed, text)

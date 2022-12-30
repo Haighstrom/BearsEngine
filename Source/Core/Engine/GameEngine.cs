@@ -1,9 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
-using HaighFramework.Displays;
 using HaighFramework.Input;
-using HaighFramework.OpenGL;
-using HaighFramework.Window;
 
 namespace BearsEngine;
 

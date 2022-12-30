@@ -1,6 +1,5 @@
 ﻿using BearsEngine.Graphics.Shaders;
 using HaighFramework.OpenGL;
-using HaighFramework.WinAPI;
 
 namespace BearsEngine.Worlds.Cameras
 {
@@ -13,7 +12,7 @@ namespace BearsEngine.Worlds.Cameras
         private readonly CameraMSAAShader _mSAAShader;
         private int _frameBufferShaderPassID;
 
-        public FixedSizedFBOCamera(int layer, Rect position, Point FBOSize)
+        public FixedSizedFBOCamera(float layer, Rect position, Point FBOSize)
             : base(layer, position)
         {
             View = FBOSize.ToRect();
@@ -62,7 +61,7 @@ namespace BearsEngine.Worlds.Cameras
 
         public Colour BackgroundColour { get; set; } = Colour.White;
 
-        public override Point LocalMousePosition => GetLocalPosition(Mouse.WindowP);
+        public override Point LocalMousePosition => GetLocalPosition(Mouse.ClientP);
 
         public MSAA_SAMPLES MSAASamples { get; set; } = MSAA_SAMPLES.Disabled; //todo: trigger resize if this changes?
 

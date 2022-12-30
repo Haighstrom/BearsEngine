@@ -94,17 +94,17 @@ public static class Mouse
     /// <summary>
     /// The mouse cursor's position relative to the top left of the window, in pixels.
     /// </summary>
-    public static Point WindowP => new(WindowX, WindowY);
+    public static Point ClientP => new(ClientX, ClientY);
 
     /// <summary>
     /// The mouse cursor's X position relative to the top left of the window, in pixels.
     /// </summary>
-    public static float WindowX => Window.ScreenToClient(ScreenP).X;
+    public static float ClientX => Window.ScreenToClient(ScreenP).X;
 
     /// <summary>
     /// The mouse cursor's Y position relative to the top left of the window, in pixels.
     /// </summary>
-    public static float WindowY => Window.ScreenToClient(ScreenP).Y;
+    public static float ClientY => Window.ScreenToClient(ScreenP).Y;
 
     /// <summary>
     /// The change in the mouse cursor's X position since the last frame, in pixels
