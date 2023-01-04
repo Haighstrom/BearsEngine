@@ -4,8 +4,15 @@ namespace BearsEngine;
 
 public class Screen : IContainer, IScene
 {
+    private static float GetEntityLayer(IAddable a)
+    {
+        if (a is IRenderableOnLayer r)
+            return r.Layer;
+        else
+            return float.MaxValue;
+    }
+
     private bool _disposed = false;
-    private bool _entitiesNeedSorting = false;
     private readonly List<IAddable> _entities = new();
 
     public Screen()
@@ -24,20 +31,27 @@ public class Screen : IContainer, IScene
 
     private void OnIRenderableLayerChanged(object? sender, LayerChangedEventArgs args)
     {
-        _entitiesNeedSorting = true;
+        var entity = (IAddable)sender!;
+
+        _entities.Remove(entity);
+
+        InsertEntityAtLayerSortedLocation(entity);
     }
 
-    private void SortEntities()
+    private void InsertEntityAtLayerSortedLocation(IAddable entityToAdd)
     {
-        static float GetEntityLayer(IAddable a)
+        float layer = GetEntityLayer(entityToAdd);
+
+        for (int i = 0; i < _entities.Count; i++)
         {
-            if (a is IRenderableOnLayer r)
-                return r.Layer;
-            else
-                return -1;
+            if (layer > GetEntityLayer(_entities[i])) //sorted descending by layer, with new entities on top of others of the same layer
+            {
+                _entities.Insert(i, entityToAdd);
+                return;
+            }
         }
 
-        _entities.Sort((a1, a2) => GetEntityLayer(a2).CompareTo(GetEntityLayer(a1))); //sort descending by layer
+        _entities.Add(entityToAdd);
     }
 
     public void Add(IAddable e)
@@ -47,13 +61,12 @@ public class Screen : IContainer, IScene
 
         e.Parent = this;
 
-        _entities.Add(e);
-        _entitiesNeedSorting = true;
+        InsertEntityAtLayerSortedLocation(e);
 
         if (e is IRenderableOnLayer r)
         {
             r.LayerChanged += OnIRenderableLayerChanged;
-        } 
+        }
 
         e.OnAdded();
     }
@@ -175,13 +188,6 @@ public class Screen : IContainer, IScene
 
     public virtual void Render(ref Matrix3 projection, ref Matrix3 modelView)
     {
-        //should this be here? i don't like logic in render, but if render is called before update after the list changes...
-        if (_entitiesNeedSorting)
-        {
-            SortEntities();
-            _entitiesNeedSorting = false;
-        }
-
         OpenGL32.glClearColor(BackgroundColour.R / 255f, BackgroundColour.G / 255f, BackgroundColour.B / 255f, BackgroundColour.A / 255f);
         OpenGL32.glClear(BUFFER_MASK.GL_COLOR_BUFFER_BIT | BUFFER_MASK.GL_DEPTH_BUFFER_BIT);
 
@@ -191,7 +197,9 @@ public class Screen : IContainer, IScene
         foreach (IAddable a in Entities)
         {
             if (a is IRenderable r && r.Visible && a.Parent == this)
+            {
                 r.Render(ref projection, ref modelView);
+            }
         }
     }
 
@@ -199,12 +207,6 @@ public class Screen : IContainer, IScene
 
     public virtual void Update(float elapsed)
     {
-        if (_entitiesNeedSorting)
-        {
-            SortEntities();
-            _entitiesNeedSorting = false;
-        }
-
         foreach (IAddable a in Entities)
         {
             if (a is IUpdatable u && u.Active && a.Parent == this)

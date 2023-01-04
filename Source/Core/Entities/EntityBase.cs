@@ -2,6 +2,14 @@
 
 public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLayer, IContainer, IPosition, IDisposable
 {
+    private static float GetEntityLayer(IAddable a)
+    {
+        if (a is IRenderableOnLayer r)
+            return r.Layer;
+        else
+            return float.MaxValue;
+    }
+
     private readonly List<IAddable> _entities = new();
     private float _layer;
     private bool _disposed;
@@ -27,13 +35,13 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
         get => _layer;
         set
         {
-            if (_layer == value)
-                return;
+            if (_layer != value)
+            {
+                float oldvalue = _layer;
+                _layer = value;
 
-            float oldvalue = _layer;
-            _layer = value;
-
-            LayerChanged?.Invoke(this, new LayerChangedEventArgs(oldvalue, _layer));
+                LayerChanged?.Invoke(this, new LayerChangedEventArgs(oldvalue, _layer));
+            }
         }
     }
 
@@ -45,20 +53,27 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
 
     private void OnIRenderableLayerChanged(object? sender, LayerChangedEventArgs args)
     {
-        SortEntities();
+        var entity = (IAddable)sender!;
+
+        _entities.Remove(entity);
+
+        InsertEntityAtLayerSortedLocation(entity);
     }
 
-    private void SortEntities()
+    private void InsertEntityAtLayerSortedLocation(IAddable entityToAdd)
     {
-        static float GetEntityLayer(IAddable a)
+        float layer = GetEntityLayer(entityToAdd);
+
+        for (int i = 0; i < _entities.Count; i++)
         {
-            if (a is IRenderableOnLayer r)
-                return r.Layer;
-            else
-                return int.MaxValue;
+            if (layer > GetEntityLayer(_entities[i])) //sorted descending by layer, with new entities on top of others of the same layer
+            {
+                _entities.Insert(i, entityToAdd);
+                return;
+            }
         }
 
-        _entities.Sort((a1, a2) => GetEntityLayer(a2).CompareTo(GetEntityLayer(a1))); //sort descending by layer
+        _entities.Add(entityToAdd);
     }
 
     public void Add(IAddable e)
@@ -68,8 +83,7 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
 
         e.Parent = this;
 
-        _entities.Add(e);
-        SortEntities();
+        InsertEntityAtLayerSortedLocation(e);
 
         if (e is IRenderableOnLayer r)
         {
