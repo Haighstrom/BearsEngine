@@ -57,13 +57,11 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
 
         _entities.Remove(entity);
 
-        InsertEntityAtLayerSortedLocation(entity);
+        InsertEntityAtLayerSortedLocation(entity, args.NewLayer);
     }
 
-    private void InsertEntityAtLayerSortedLocation(IAddable entityToAdd)
+    private void InsertEntityAtLayerSortedLocation(IAddable entityToAdd, float layer)
     {
-        float layer = GetEntityLayer(entityToAdd);
-
         for (int i = 0; i < _entities.Count; i++)
         {
             if (layer > GetEntityLayer(_entities[i])) //sorted descending by layer, with new entities on top of others of the same layer
@@ -83,7 +81,7 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
 
         e.Parent = this;
 
-        InsertEntityAtLayerSortedLocation(e);
+        InsertEntityAtLayerSortedLocation(e, GetEntityLayer(e));
 
         if (e is IRenderableOnLayer r)
         {
@@ -233,7 +231,7 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
             if (disposedCorrectly)
             {
                 //is this good? if direct children are IDisposables they will also try and cascade down dispose calls and they will be repeated?
-                foreach (var child in GetEntities<IDisposable>()) 
+                foreach (var child in GetEntities<IDisposable>())
                 {
                     child.Dispose();
                 }

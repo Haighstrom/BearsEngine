@@ -35,13 +35,11 @@ public class Screen : IContainer, IScene
 
         _entities.Remove(entity);
 
-        InsertEntityAtLayerSortedLocation(entity);
+        InsertEntityAtLayerSortedLocation(entity, args.NewLayer);
     }
 
-    private void InsertEntityAtLayerSortedLocation(IAddable entityToAdd)
+    private void InsertEntityAtLayerSortedLocation(IAddable entityToAdd, float layer)
     {
-        float layer = GetEntityLayer(entityToAdd);
-
         for (int i = 0; i < _entities.Count; i++)
         {
             if (layer > GetEntityLayer(_entities[i])) //sorted descending by layer, with new entities on top of others of the same layer
@@ -61,7 +59,7 @@ public class Screen : IContainer, IScene
 
         e.Parent = this;
 
-        InsertEntityAtLayerSortedLocation(e);
+        InsertEntityAtLayerSortedLocation(e, GetEntityLayer(e));
 
         if (e is IRenderableOnLayer r)
         {

@@ -103,7 +103,7 @@ public abstract class AddableRectBase : AddableBase, IRectAddable
         }
     }
 
-    public Point Centre => new Point(X + W / 2, Y + H / 2);
+    public Point Centre => new(X + W / 2, Y + H / 2);
 
     protected virtual void OnPositionChanged() => PositionChanged?.Invoke(this, new PositionChangedEventArgs(new Rect(X, Y, W, H)));
     protected virtual void OnSizeChanged(ResizeEventArgs args) => SizeChanged?.Invoke(this, args);

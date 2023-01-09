@@ -39,8 +39,10 @@ namespace BearsEngine.Graphics
             {
                 if (_layer != value)
                 {
-                    LayerChanged?.Invoke(this, new LayerChangedEventArgs(_layer, value));
+                    float oldvalue = _layer;
                     _layer = value;
+
+                    LayerChanged?.Invoke(this, new LayerChangedEventArgs(oldvalue, _layer));
                 }
             }
         }
