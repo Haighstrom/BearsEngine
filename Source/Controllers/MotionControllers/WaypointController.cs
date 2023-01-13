@@ -69,7 +69,7 @@ public class WaypointController : AddableBase, IUpdatable
             _direction = null;
         }
 
-        if (_direction != _lastDirection && _direction is not null)
+        if (_direction != _lastDirection)
             DirectionChanged?.Invoke(this, new DirectionChangedEventArgs(_lastDirection, _direction));
 
         _lastDirection = _direction;
