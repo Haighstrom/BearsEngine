@@ -101,9 +101,9 @@ public static class EXTENSIONS
     public static List<T> GetRange<T>(this List<T> l, int first) => l.GetRange(first, l.Count - first);
     
 
-    public static Rect NonZeroAlphaRegion(this System.Drawing.Bitmap b) => HF.Graphics.NonZeroAlphaRegion(b);
+    public static Rect NonZeroAlphaRegion(this System.Drawing.Bitmap b) => OpenGL.NonZeroAlphaRegion(b);
 
-    public static void WriteToFile(this System.Drawing.Bitmap b, string targetPath) => HF.Graphics.WriteBitmapToFile(b, targetPath);
+    public static void WriteToFile(this System.Drawing.Bitmap b, string targetPath) => OpenGL.WriteBitmapToFile(b, targetPath);
     
 
     public static Direction ToDirection(this Point p)

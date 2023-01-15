@@ -86,7 +86,7 @@ public class SimpleToolTip : Entity
         _bg?.Remove();
         _text?.Remove();
 
-        _bg = new Image(HF.Graphics.GenRectangle((int)(textW + 2 * _textToEdgeGap), (int)(textH + 2 * _textToEdgeGap), (int)_borderThickness, _borderColour, _backgroundColour));
+        _bg = new Image(OpenGL.GenRectangle((int)(textW + 2 * _textToEdgeGap), (int)(textH + 2 * _textToEdgeGap), (int)_borderThickness, _borderColour, _backgroundColour));
         W = _bg.W;
         H = _bg.H;
 

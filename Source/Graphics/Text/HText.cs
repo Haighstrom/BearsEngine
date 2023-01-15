@@ -722,7 +722,7 @@ public class HText : RectGraphicBase, IDisposable
                     {
                         if (w.Font != lastFont)
                         {
-                            _vertGroups.Add(new SimpleGraphic(new DefaultShader(), HF.Graphics.LoadTexture(lastFont.CharSpriteSheet, lastFont.LongName), vertices.ToArray()));
+                            _vertGroups.Add(new SimpleGraphic(new DefaultShader(), OpenGL.LoadTexture(lastFont.CharSpriteSheet, lastFont.LongName), vertices.ToArray()));
                             vertices = new List<Vertex>();
                             lastFont = w.Font;
                         }
@@ -760,7 +760,7 @@ public class HText : RectGraphicBase, IDisposable
         }
 
         if (vertices.Count > 0)
-            _vertGroups.Add(new SimpleGraphic(new DefaultShader(), HF.Graphics.LoadTexture(lastFont.CharSpriteSheet, lastFont.LongName), vertices.ToArray()));
+            _vertGroups.Add(new SimpleGraphic(new DefaultShader(), OpenGL.LoadTexture(lastFont.CharSpriteSheet, lastFont.LongName), vertices.ToArray()));
     }
 
     private void SetVerticesSimple()
@@ -820,7 +820,7 @@ public class HText : RectGraphicBase, IDisposable
         }
 
         if (vertices.Count > 0)
-            _vertGroups.Add(new SimpleGraphic(new DefaultShader(), HF.Graphics.LoadTexture(Font.CharSpriteSheet, Font.LongName), vertices.ToArray()));
+            _vertGroups.Add(new SimpleGraphic(new DefaultShader(), OpenGL.LoadTexture(Font.CharSpriteSheet, Font.LongName), vertices.ToArray()));
 
         if (Font.HighestChar > H)
             Log.Warning($"HText/SetVerticesSimple: line height ({Font.HighestChar}) is bigger than text box height ({H})");

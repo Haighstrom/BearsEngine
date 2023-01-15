@@ -51,8 +51,8 @@ public class LightingShader : IShader
 
     private static void Initialise()
     {
-        _ID = HF.Graphics.CreateShader(Resources.Shaders.vs_default, Resources.Shaders.fs_lighting);
-        HF.Graphics.BindShader(_ID);
+        _ID = OpenGL.CreateShader(Resources.Shaders.vs_default, Resources.Shaders.fs_lighting);
+        OpenGL.BindShader(_ID);
         _locationMVMatrix = OpenGL32.glGetUniformLocation(_ID, "MVMatrix");
         _locationPMatrix = OpenGL32.glGetUniformLocation(_ID, "PMatrix");
         _locationPosition = OpenGL32.glGetAttribLocation(_ID, "Position");
@@ -111,7 +111,7 @@ public class LightingShader : IShader
 
     public void Render(ref Matrix3 projection, ref Matrix3 modelView, int verticesLength, PRIMITIVE_TYPE drawType)
     {
-        HF.Graphics.BindShader(_ID);
+        OpenGL.BindShader(_ID);
 
         OpenGL.UniformMatrix3(_locationMVMatrix, modelView);
         OpenGL.UniformMatrix3(_locationPMatrix, projection);

@@ -15,8 +15,8 @@ public class SmoothLinesShader : IShader
 
     private static void Initialise()
     {
-        _ID = HF.Graphics.CreateShader(Resources.Shaders.vs_nomatrixsolidcolour, Resources.Shaders.gs_smoothlines, Resources.Shaders.fs_solidcolour);
-        HF.Graphics.BindShader(_ID);
+        _ID = OpenGL.CreateShader(Resources.Shaders.vs_nomatrixsolidcolour, Resources.Shaders.gs_smoothlines, Resources.Shaders.fs_solidcolour);
+        OpenGL.BindShader(_ID);
         _locationMVMatrix = OpenGL32.glGetUniformLocation(_ID, "MVMatrix");
         _locationPMatrix = OpenGL32.glGetUniformLocation(_ID, "PMatrix");
         _locationPosition = OpenGL32.glGetAttribLocation(_ID, "Position");
@@ -42,7 +42,7 @@ public class SmoothLinesShader : IShader
             Log.Warning("Smooth lines shader is being used with PrimitiveType " + drawType + "instead of LineStripAdjacency.");
 
         if (_ID != OpenGL.LastBoundShader)
-            HF.Graphics.BindShader(_ID);
+            OpenGL.BindShader(_ID);
 
         OpenGL.UniformMatrix3(_locationMVMatrix, modelView);
         OpenGL.UniformMatrix3(_locationPMatrix, projection);

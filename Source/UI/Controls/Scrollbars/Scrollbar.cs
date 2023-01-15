@@ -186,8 +186,8 @@ public class Scrollbar : Entity
               theme.Scrollbar.Bar.UnclickableColour,
               theme.Scrollbar.EdgeToBarSpace,
               theme.Scrollbar.ButtonBackgroundColour,
-              HF.Graphics.GenTrianglePolygon(new Rect(r.SmallestSide, r.SmallestSide), theme.Scrollbar.EdgeToArrowSpace, direction == ScrollbarDirection.Horizontal ? Direction.Left : Direction.Up, theme.Scrollbar.Arrow.DefaultColour),
-              HF.Graphics.GenTrianglePolygon(new Rect(r.SmallestSide, r.SmallestSide), theme.Scrollbar.EdgeToArrowSpace, direction == ScrollbarDirection.Horizontal ? Direction.Right : Direction.Down, theme.Scrollbar.Arrow.DefaultColour),
+              OpenGL.GenTrianglePolygon(new Rect(r.SmallestSide, r.SmallestSide), theme.Scrollbar.EdgeToArrowSpace, direction == ScrollbarDirection.Horizontal ? Direction.Left : Direction.Up, theme.Scrollbar.Arrow.DefaultColour),
+              OpenGL.GenTrianglePolygon(new Rect(r.SmallestSide, r.SmallestSide), theme.Scrollbar.EdgeToArrowSpace, direction == ScrollbarDirection.Horizontal ? Direction.Right : Direction.Down, theme.Scrollbar.Arrow.DefaultColour),
               theme.Scrollbar.Arrow.HoverColour,
               theme.Scrollbar.Arrow.PressedColour,
               theme.Scrollbar.Arrow.UnclickableColour)

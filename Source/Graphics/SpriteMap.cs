@@ -36,7 +36,7 @@ namespace BearsEngine.Graphics
             DrawArea = new Rect(0, 0, MapW, MapH);
 
             _ID = OpenGL.GenBuffer();
-            _texture = HF.Graphics.LoadTexture(spritesheetPath);
+            _texture = OpenGL.LoadTexture(spritesheetPath);
             _shader = new SpritesheetShader(_ssTileW, _ssTileH);
 
             UpdateVertices();

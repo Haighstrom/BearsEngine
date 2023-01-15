@@ -46,7 +46,7 @@ public class Image : RectGraphicBase
     public Image(float layer, string imgPath, float x, float y, float width, float height)
         : base(new DefaultShader(), layer, x, y, width, height)
     {
-        Texture = HF.Graphics.LoadTexture(imgPath);
+        Texture = OpenGL.LoadTexture(imgPath);
     }
 
 

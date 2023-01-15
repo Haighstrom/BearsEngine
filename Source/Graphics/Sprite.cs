@@ -52,7 +52,7 @@ public class Sprite : RectGraphicBase
     public Sprite(float layer, string imgPath, float x, float y, float w, float h, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
         : base(new DefaultShader(), layer, x, y, w, h)
     {
-        Texture = HF.Graphics.LoadSpriteTexture(imgPath, spriteSheetRows, spriteSheetColumns, TEXPARAMETER_VALUE.GL_NEAREST);
+        Texture = OpenGL.LoadSpriteTexture(imgPath, spriteSheetRows, spriteSheetColumns, TEXPARAMETER_VALUE.GL_NEAREST);
 
         FramesAcross = spriteSheetColumns;
         FramesDown = spriteSheetRows;
@@ -146,8 +146,8 @@ public class Sprite : RectGraphicBase
 
     public int LastFrame => TotalFrames - 1;
 
-    protected float PaddingWidth => (float)HF.Graphics.TEXTURE_SPRITE_PADDING / Texture.Width;
-    protected float PaddingHeight => (float)HF.Graphics.TEXTURE_SPRITE_PADDING / Texture.Height;
+    protected float PaddingWidth => (float)OpenGL.TEXTURE_SPRITE_PADDING / Texture.Width;
+    protected float PaddingHeight => (float)OpenGL.TEXTURE_SPRITE_PADDING / Texture.Height;
 
     public override void Render(ref Matrix3 projection, ref Matrix3 modelView)
     {

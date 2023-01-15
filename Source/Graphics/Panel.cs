@@ -34,7 +34,7 @@ namespace BearsEngine.Graphics
         public Panel(string imgPath, float x, float y, float w, float h)
             : base(new DefaultShader(), x, y, w, h)
         {
-            Texture = HF.Graphics.LoadTexture(imgPath);
+            Texture = OpenGL.LoadTexture(imgPath);
         }
         
         public override float W

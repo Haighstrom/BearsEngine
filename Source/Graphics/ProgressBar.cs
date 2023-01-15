@@ -35,7 +35,7 @@ namespace BearsEngine.Graphics
         public ProgressBar(string graphicPath, float x, float y, float w, float h, float initialAmountFilled = 0)
             : base(new DefaultShader(), x, y, w, h)
         {
-            _texture = HF.Graphics.LoadTexture(graphicPath);
+            _texture = OpenGL.LoadTexture(graphicPath);
             AmountFilled = initialAmountFilled;
 
             _UV1 = new Point(0, 0);
