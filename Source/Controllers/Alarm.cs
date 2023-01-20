@@ -3,18 +3,48 @@
 /// <summary>
 /// Simple alarm, used for timed events etc
 /// </summary>
-public class Alarm : Tween
+public class Alarm : UpdateableBase
 {
-    public Alarm(float alarmTime, Action? actionOnComplete = null, PersistType persistence = PersistType.OneShot)
-        : base(alarmTime, persistence, actionOnComplete, null)
-    {
-    }
+    private readonly bool _repeat;
+    public Action? _actionOnComplete;
 
-    public void Reset(float duration)
+    public Alarm(float duration, bool repeat, Action? actionOnComplete = null)
+        : base()
     {
         TotalDuration = duration;
-        Start();
+        _repeat = repeat;
+        _actionOnComplete = actionOnComplete;
     }
 
-    public float Remaining => TotalDuration - Elapsed;
+    public float TotalDuration { get; }
+
+    public float TimeElapsed { get; private set; } = 0;
+
+    public float TimeRemaining => TotalDuration - TimeElapsed;
+
+    public event EventHandler? Completed;
+
+    private void OnComplete()
+    {
+        _actionOnComplete?.Invoke();
+
+        Completed?.Invoke(this, EventArgs.Empty);
+
+        if (_repeat)
+        {
+            TimeElapsed -= TotalDuration;
+        }
+        else
+        {
+            Remove();
+        }
+    }
+
+    public override void Update(float elapsed)
+    {
+        TimeElapsed += elapsed;
+
+        if (TimeElapsed >= TotalDuration)
+            OnComplete();
+    }
 }

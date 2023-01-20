@@ -7,7 +7,7 @@ public class LinearMotion : MotionTween
     readonly float _rangeX;
     readonly float _rangeY;
 
-    public LinearMotion(float startX, float startY, float endX, float endY, float duration, PersistType persistence = PersistType.Persist, Action actionOnComplete = null, Func<float, float>? easer = null)
+    public LinearMotion(float startX, float startY, float endX, float endY, float duration, bool persistence = true, Action? actionOnComplete = null, Func<float, float>? easer = null)
         : base(duration, persistence, actionOnComplete, easer)
     {
         X = _startX = startX;

@@ -6,7 +6,7 @@ public class ColourTween : Tween
     private Colour _startColour;
     private Colour _colourRange;
 
-    public ColourTween(Colour fromColour, Colour toColour, float duration, PersistType persistence = PersistType.Persist, Action actionOnComplete = null, Func<float, float>? easer = null)
+    public ColourTween(Colour fromColour, Colour toColour, float duration, bool persistence = true, Action? actionOnComplete = null, Func<float, float>? easer = null)
         : base(duration, persistence, actionOnComplete, easer)
     {
         Colour = _startColour = fromColour;

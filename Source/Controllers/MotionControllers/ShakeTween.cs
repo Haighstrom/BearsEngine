@@ -10,7 +10,7 @@ public class ShakeTween : MotionTween
     private readonly float _periodCoefficientX;
     private readonly float _periodCoefficientY;
 
-    public ShakeTween(float centreX, float centreY, float radiusX, float radiusY, float periodX, float periodY, float duration, PersistType persistence = PersistType.Looping, Action actionOnComplete = null, Func<float, float>? easer = null)
+    public ShakeTween(float centreX, float centreY, float radiusX, float radiusY, float periodX, float periodY, float duration, bool persistence = true, Action actionOnComplete = null, Func<float, float>? easer = null)
         : base(duration, persistence, actionOnComplete, easer)
     {
         _centreX = centreX;

@@ -7,7 +7,7 @@ public class DegAngleTween : Tween
     private readonly float _startAngle;
     private readonly float _range;
 
-    public DegAngleTween(float startAngle, float endAngle, float duration, AngleTweenDirection angleTweenDirection = AngleTweenDirection.Nearest, PersistType persistence = PersistType.Persist, Action actionOnComplete = null, Func<float, float>? easer = null)
+    public DegAngleTween(float startAngle, float endAngle, float duration, AngleTweenDirection angleTweenDirection = AngleTweenDirection.Nearest, bool persistence = true, Action? actionOnComplete = null, Func<float, float>? easer = null)
         : base(duration, persistence, actionOnComplete, easer)
     {
         if (startAngle < 0 || startAngle > 360 || endAngle < 0 || endAngle > 360) throw new Exception("Angles should only be defined between 0 and 360");

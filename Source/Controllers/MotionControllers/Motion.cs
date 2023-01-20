@@ -2,7 +2,7 @@
 
 public class MotionTween : Tween
 {
-    public MotionTween(float duration, PersistType persistType = PersistType.Persist, Action actionOnCompleted = null, Func<float, float>? easer = null)
+    public MotionTween(float duration, bool persistType = true, Action? actionOnCompleted = null, Func<float, float>? easer = null)
         : base(duration, persistType, actionOnCompleted, easer)
     {
     }

@@ -2,7 +2,7 @@
 
 public class Tween : AddableBase, IUpdatable
 {
-    public Tween(float duration, PersistType persistType, Action? actionOnCompleted = null, Func<float, float>? easer = null)
+    public Tween(float duration, bool persistType, Action? actionOnCompleted = null, Func<float, float>? easer = null)
     {
         TotalDuration = duration;
         Persistence = persistType;
@@ -16,7 +16,7 @@ public class Tween : AddableBase, IUpdatable
     public Func<float, float>? TimeAdjustment { get; set; }
     public float Elapsed { get; private set; }
     public float PercentComplete => Progress * 100;
-    public PersistType Persistence { get; set; }
+    public bool Persistence { get; set; }
     public float Progress { get; private set; }
     public float TotalDuration { get; protected set; }
 
@@ -36,23 +36,16 @@ public class Tween : AddableBase, IUpdatable
 
     protected virtual void OnCompleted()
     {
-        switch (Persistence)
+        if (Persistence)
         {
-            case PersistType.OneShot:
-                Remove();
-                break;
-            case PersistType.Persist:
-                Elapsed = TotalDuration;
-                Active = false;
-                break;
-            case PersistType.Looping:
-                Elapsed %= TotalDuration;
-                Progress = Elapsed / TotalDuration;
-                if (TimeAdjustment != null && Progress > 0 && Progress < 1)
-                    Progress = TimeAdjustment(Progress);
-                break;
-            default:
-                throw new Exception($"Enum case {Persistence} not dealt with");
+            Elapsed %= TotalDuration;
+            Progress = Elapsed / TotalDuration;
+            if (TimeAdjustment != null && Progress > 0 && Progress < 1)
+                Progress = TimeAdjustment(Progress);
+        }
+        else
+        {
+            Remove();
         }
 
         ActionOnCompleted?.Invoke();

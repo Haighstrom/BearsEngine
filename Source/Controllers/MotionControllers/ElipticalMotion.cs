@@ -12,7 +12,7 @@ public class EllipticalMotion : MotionTween
     readonly float _angleStart;
     readonly float _angleRange;
 
-    public EllipticalMotion(float centreX, float centreY, float radiusX, float radiusY, float startAngle, float duration, PersistType persistence = PersistType.Persist, Action actionOnComplete = null, Func<float, float>? easer = null)
+    public EllipticalMotion(float centreX, float centreY, float radiusX, float radiusY, float startAngle, float duration, bool persistence = true, Action actionOnComplete = null, Func<float, float>? easer = null)
         : base(duration, persistence, actionOnComplete, easer)
     {
         _centreX = centreX;
@@ -34,7 +34,7 @@ public class EllipticalMotion : MotionTween
 }
 public class CircularMotion : EllipticalMotion
 {
-    public CircularMotion(float centreX, float centreY, float radius, float startAngle, float duration, PersistType persistence = PersistType.Persist, Action actionOnComplete = null, Func<float, float>? easer = null)
+    public CircularMotion(float centreX, float centreY, float radius, float startAngle, float duration, bool persistence = true, Action? actionOnComplete = null, Func<float, float>? easer = null)
         : base(centreX, centreY, radius, radius, startAngle, duration, persistence, actionOnComplete, easer)
     {
 
