@@ -79,16 +79,20 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
     {
         foreach (var e in _entitiesToBeRemoved)
         {
-            e.Parent = null;
-
             _entities.Remove(e);
 
-            if (e is IRenderableOnLayer re)
+            if (e.Parent == this) //avoid disposing this entity if its parent was swapped in one frame (i.e. remove then add called)
             {
-                re.LayerChanged -= OnIRenderableLayerChanged;
-            }
+                e.Parent = null;
 
-            e.OnRemoved();
+
+                if (e is IRenderableOnLayer re)
+                {
+                    re.LayerChanged -= OnIRenderableLayerChanged;
+                }
+
+                e.OnRemoved();
+            }
         }
 
         _entitiesToBeRemoved.Clear();
