@@ -27,7 +27,8 @@ public static class Mouse
     {
         get
         {
-            throw new NotImplementedException();
+            Log.Error("left double clicked code does not exist");
+            return false;
         }
     }
 
