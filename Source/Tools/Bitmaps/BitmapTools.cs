@@ -36,7 +36,7 @@ internal static class BitmapTools
             {
                 // Obtain the memory location where our pixel data resides and cast it
                 // into a struct to improve sanity.
-                var color = (RgbaColor*)(ptr + (y * bmlock.Stride) + (x * sizeof(RgbaColor)));
+                var color = (RgbaColor*)(ptr + y * bmlock.Stride + x * sizeof(RgbaColor));
 
                 var alphaFloat = (*color).Alpha / 255.0f;
 

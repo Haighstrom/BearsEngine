@@ -1,4 +1,4 @@
-﻿namespace BearsEngine;
+﻿namespace BearsEngine.Source.Tools.IO.FileDirectory;
 
 [Flags]
 public enum CopyOptions : uint

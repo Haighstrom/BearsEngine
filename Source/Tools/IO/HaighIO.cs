@@ -3,6 +3,8 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Xml.Serialization;
+using BearsEngine.Source.Tools.IO.FileDirectory;
+using BearsEngine.Source.Tools.IO.JSON;
 
 namespace BearsEngine;
 
@@ -138,49 +140,6 @@ public static class HaighIO
     /// Puts the contents of a .txt file into a string
     /// </summary>
     public static string LoadTXTAsString(string filename) => File.ReadAllText(filename);
-
-    /// <summary>
-    /// Saves a 2D array to a .csv file
-    /// </summary>
-    public static void SaveCSV<T>(string filename, T[,] data)
-        where T : IConvertible
-    {
-        var csv = new StringBuilder();
-
-        for (int j = 0; j < data.GetLength(1); j++)
-        {
-            string[] lineData = new string[data.GetLength(0)];
-
-            for (int i = 0; i < lineData.Length; i++)
-                lineData[i] = data[i, j].ToString();
-
-            csv.AppendLine(string.Join(",", lineData));
-        }
-
-        File.WriteAllText(filename, csv.ToString());
-    }
-
-    /// <summary>
-    /// Loads a .csv file into a 2D array
-    /// </summary>
-    public static T[,] LoadCSV<T>(string filename)
-        where T : IConvertible
-    {
-        List<string[]> data = new();
-
-        using var reader = new StreamReader(File.OpenRead(filename));
-
-        while (!reader.EndOfStream)
-            data.Add(reader.ReadLine().Split(','));
-
-        T[,] ret = new T[data[0].Length, data.Count];
-
-        for (int i = 0; i < ret.GetLength(0); i++)
-            for (int j = 0; j < ret.GetLength(1); j++)
-                ret[i, j] = (T)Convert.ChangeType(data[j][i], typeof(T));
-
-        return ret;
-    }
 
     public static System.Drawing.Bitmap LoadBMP(string filePath) => new(filePath);
 
