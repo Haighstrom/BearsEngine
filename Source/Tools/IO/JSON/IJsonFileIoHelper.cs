@@ -2,13 +2,11 @@
 
 internal interface IJsonFileIoHelper
 {
-    string SerialiseToJSON<M>(M @object, bool indent = true);
+    string SerialiseToJSON<T>(T @object);
 
-    void SaveJSON<M>(string filename, M @object, bool indent = true);
+    T? DeserialiseFromJSON<T>(string json);
 
-    M? DeserialiseFromJSON<M>(string json);
+    T? ReadJsonFile<T>(string filename);
 
-    M LoadJSON<M>(string filename);
-
-    List<M> LoadJSONFromMultilineTxt<M>(string filename);
+    void WriteJsonFile<T>(string filename, T data);
 }

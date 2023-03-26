@@ -6,6 +6,6 @@ using BearsEngine.Source.Tools.IO.XML;
 
 namespace BearsEngine.Source.Tools.IO;
 
-internal interface IIoHelper : ITextFileIoHelper, ICsvFileIoHelper, IJsonFileIoHelper, IXmlFileIoHelper, IFileDirectoryIoHelper
+internal interface IIoHelper : ITxtFileIoHelper, ICsvFileIoHelper, IJsonFileIoHelper, IXmlFileIoHelper, IFileDirectoryIoHelper
 {
 }

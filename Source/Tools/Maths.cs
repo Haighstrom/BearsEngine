@@ -54,7 +54,10 @@ public static class Maths
             return clampOption2;
     }
 
-    public static float LengthSquared(float x1, float y1, float x2, float y2) => (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
+    public static float LengthSquared(float x1, float y1, float x2, float y2)
+    {
+        return (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
+    }
 
     public static float Clamp(float value, float min, float max)
     {
@@ -72,7 +75,10 @@ public static class Maths
         return value < min ? min : value > max ? max : value;
     }
 
-    public static float Max(float first, float second) => first > second ? first : second;
+    public static float Max(float first, float second)
+    {
+        return first > second ? first : second;
+    }
 
     public static float Max(params float[] numbers)
     {

@@ -3,19 +3,16 @@ using BearsEngine.Source.Tools.IO.FileDirectory;
 using BearsEngine.Source.Tools.IO.JSON;
 using BearsEngine.Source.Tools.IO.TXT;
 using BearsEngine.Source.Tools.IO.XML;
-using System.IO;
 
 namespace BearsEngine.Source.Tools.IO;
 
 public class IOHelper : IIoHelper
 {
     private readonly IFileDirectoryIoHelper _directoryHelper = new FileDirectoryIoHelper();
-    private readonly ITextFileIoHelper _txtSerialiser = new TXTSerialisationHelper();
+    private readonly ITxtFileIoHelper _txtSerialiser = new TxtFileIoHelper();
     private readonly ICsvFileIoHelper _csvSerialiser = new CsvFileIoHelper();
-    private readonly IJsonFileIoHelper _jsonSerialiser = new JSONSerialisationHelper();
+    private readonly IJsonFileIoHelper _jsonSerialiser = new JsonFileIoHelper(null!);
     private readonly IXmlFileIoHelper _xmlSerialiser = new XMLSerialisationHelper();
-
-    public void AppendText(string filePath, string textToAppend) => _txtSerialiser.AppendText(filePath, textToAppend);
 
     public void CopyFile(string sourceFile, string destinationFile) => _directoryHelper.CopyFile(sourceFile, destinationFile);
 
@@ -41,25 +38,27 @@ public class IOHelper : IIoHelper
 
     public T[,] ReadCsvFile<T>(string filename) where T : IConvertible => _csvSerialiser.ReadCsvFile<T>(filename);
 
-    public M LoadJSON<M>(string filename) => _jsonSerialiser.LoadJSON<M>(filename);
-
-    public List<M> LoadJSONFromMultilineTxt<M>(string filename) => _jsonSerialiser.LoadJSONFromMultilineTxt<M>(filename);
-
-    public string[] LoadTXTAsArray(string filename) => _txtSerialiser.LoadTXTAsArray(filename);
-
-    public string LoadTXTAsString(string filename) => _txtSerialiser.LoadTXTAsString(filename);
+    public M? ReadJsonFile<M>(string filename) => _jsonSerialiser.ReadJsonFile<M>(filename);
 
     public M LoadXML<M>(string fileName) where M : struct => _xmlSerialiser.LoadXML<M>(fileName);
 
     public void WriteCsvFile<T>(string filename, T[,] data) where T : IConvertible => _csvSerialiser.WriteCsvFile(filename, data);
 
-    public void SaveJSON<M>(string filename, M @object, bool indent = true) => _jsonSerialiser.SaveJSON(filename, @object, indent);
-
-    public void SaveTXT(string filename, string contents) => _txtSerialiser.SaveTXT(filename, contents);
-
-    public void SaveTXT(string filename, IEnumerable<string> lines) => _txtSerialiser.SaveTXT(filename, lines);
+    public void WriteJsonFile<M>(string filename, M @object) => _jsonSerialiser.WriteJsonFile(filename, @object);
 
     public void SaveXML<M>(string fileName, M fileToSave) => _xmlSerialiser.SaveXML(fileName, fileToSave);
 
-    public string SerialiseToJSON<M>(M @object, bool indent = true) => _jsonSerialiser.SerialiseToJSON(@object, indent);
+    public string SerialiseToJSON<M>(M data) => _jsonSerialiser.SerialiseToJSON(data);
+
+    public string ReadTextFile(string path) => _txtSerialiser.ReadTextFile(path);
+
+    public string[] ReadTextFileAsLines(string path) => _txtSerialiser.ReadTextFileAsLines(path);
+
+    public void WriteTextFile(string path, string text) => _txtSerialiser.WriteTextFile(path, text);
+
+    public void WriteTextFile(string path, IEnumerable<string> lines) => _txtSerialiser.WriteTextFile(path, lines);
+
+    public void AppendTextFile(string path, string text) => _txtSerialiser.AppendTextFile(path, text);
+
+    public void AppendTextFile(string path, IEnumerable<string> lines) => _txtSerialiser.AppendTextFile(path, lines);
 }

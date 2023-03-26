@@ -16,12 +16,14 @@ public class Array2DConverter : JsonConverterFactory
             args: new object[] { options },
             culture: null)!;
 
-    class Array2DConverterInner<T> : JsonConverter<T[,]>
+    private class Array2DConverterInner<T> : JsonConverter<T[,]>
     {
         readonly JsonConverter<T>? _valueConverter;
 
-        public Array2DConverterInner(JsonSerializerOptions options) =>
+        public Array2DConverterInner(JsonSerializerOptions options)
+        {
             _valueConverter = typeof(T) == typeof(object) ? null : (JsonConverter<T>)options.GetConverter(typeof(T)); // Encountered a bug using the builtin ObjectConverter 
+        }
 
         public override void Write(Utf8JsonWriter writer, T[,] array, JsonSerializerOptions options)
         {
@@ -41,8 +43,10 @@ public class Array2DConverter : JsonConverterFactory
             writer.WriteEndArray();
         }
 
-        public override T[,] Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
-            JsonSerializer.Deserialize<List<List<T>>>(ref reader, options)?.To2D()!;
+        public override T[,] Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            return JsonSerializer.Deserialize<List<List<T>>>(ref reader, options)?.To2D()!;
+        }
     }
 }
 
