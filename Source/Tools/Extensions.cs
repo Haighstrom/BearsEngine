@@ -183,7 +183,7 @@ public static class EXTENSIONS
 
     public static List<Point> ToClosedVertices(this Rect r) => new() { r.TopLeft, r.TopRight, r.BottomRight, r.BottomLeft, r.TopLeft };
     
-    public static IEnumerable<Enum> GetUniqueFlags(this Enum flags) => HF.Types.GetUniqueFlags(flags);
+    public static IEnumerable<Enum> GetUniqueFlags(this Enum flags) => TypeHelper.GetUniqueFlags(flags);
     
     public static Direction Opposite(this Direction d) => (Direction)(((int)d + 2) % 4);
     public static Direction Rotate(this Direction d, int rotations) => (Direction)Maths.Mod((int)d + rotations, 4);

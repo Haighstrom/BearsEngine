@@ -738,7 +738,7 @@ public class HText : RectGraphicBase, IDisposable
                         if (w.IsStruckthrough)
                             _linesToDraw.Add(new Line(w.Colour, StrikethroughThickness, true, dest.CentreLeft.Shift(0, StrikethroughOffset), dest.CentreRight.Shift(0, StrikethroughOffset)));
 
-                        vertices.Add(HF.Geom.QuadToTris(
+                        vertices.Add(Geometry.QuadToTris(
                             new Vertex(dest.TopLeft.Shift(0, sizeDifference), w.Colour, source.TopLeft),
                             new Vertex(dest.TopRight.Shift(0, sizeDifference), w.Colour, source.TopRight),
                             new Vertex(dest.BottomLeft.Shift(0, sizeDifference), w.Colour, source.BottomLeft),
@@ -805,7 +805,7 @@ public class HText : RectGraphicBase, IDisposable
             Rect source = Font.BitmapPositionNormalised(c);
             dest.W = Font.BitmapPosition(c).W * ScaleX;
 
-            vertices.Add(HF.Geom.QuadToTris(
+            vertices.Add(Geometry.QuadToTris(
                 new Vertex(dest.TopLeft, Colour, source.TopLeft),
                 new Vertex(dest.TopRight, Colour, source.TopRight),
                 new Vertex(dest.BottomLeft, Colour, source.BottomLeft),

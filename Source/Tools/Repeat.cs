@@ -2,16 +2,16 @@
 
 namespace BearsEngine.Source.Tools;
 
-public static class Retry
+public static class Repeat
 {
-    public static void TryMethod(Action action, int maxTries, TimeSpan waitTime)
+    public static void TryMethod(Action method, int maxTries, TimeSpan waitTime)
     {
         int numTries = 0;
         while (numTries < maxTries)
         {
             try
             {
-                action();
+                method();
                 return;
             }
             catch
@@ -29,14 +29,14 @@ public static class Retry
         throw new Exception("Unreachable code");
     }
 
-    public static TResult TryMethod<TResult>(Func<TResult> func, int maxTries, TimeSpan waitTime)
+    public static TResult TryMethod<TResult>(Func<TResult> method, int maxTries, TimeSpan waitTime)
     {
         int numTries = 0;
         while (numTries < maxTries)
         {
             try
             {
-                TResult result = func();
+                TResult result = method();
                 return result;
             }
             catch
@@ -51,5 +51,13 @@ public static class Retry
         }
 
         throw new Exception("Unreachable code");
+    }
+
+    public static void CallMethod(Action method, int times)
+    {
+        Ensure.ArgumentNotNegative(times, nameof(times));
+
+        for (int i = 0; i < times; ++i)
+            method();
     }
 }

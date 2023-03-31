@@ -13,7 +13,7 @@ public class WeightedRandomiser<T>
 
     public T? GetRandomItem()
     {
-        double r = HF.Randomisation.RandD(_totalWeight);
+        double r = Randomisation.RandD(_totalWeight);
 
         foreach (var (item, accumWeight) in _items)
             if (accumWeight >= r)
