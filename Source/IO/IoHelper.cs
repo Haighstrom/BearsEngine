@@ -16,10 +16,11 @@ public class IOHelper : IIoHelper
 
     public IOHelper(IoSettings settings)
     {
+        //todo: cascade more settings
         _directoryHelper = new FileDirectoryIoHelper();
         _txtSerialiser = new TxtFileIoHelper();
         _csvSerialiser = new CsvFileIoHelper();
-        _jsonSerialiser = new JsonFileIoHelper(null!);
+        _jsonSerialiser = new JsonFileIoHelper(settings.JsonOptions);
         _xmlSerialiser = new XMLSerialisationHelper();
     }
 
