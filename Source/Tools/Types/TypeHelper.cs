@@ -6,7 +6,10 @@ namespace BearsEngine;
 
 public static class TypeHelper
 {
-    public static int GetSizeOf(Type t) => Marshal.SizeOf(t);
+    public static int GetSizeOf(Type t)
+    {
+        return Marshal.SizeOf(t);
+    }
 
     public static IEnumerable<Enum> GetUniqueFlags(Enum flags)
     {
@@ -67,19 +70,28 @@ public static class TypeHelper
     /// Returns the unmanaged size in bytes of an object.
     /// </summary>
     /// <param name="o">The object whose size is to be returned.</param>
-    public static int GetUnmanagedSize(object o) => Marshal.SizeOf(o);
+    public static int GetUnmanagedSize(object o)
+    {
+        return Marshal.SizeOf(o);
+    }
 
     /// <summary>
     /// Returns the unmanaged size, in bytes, of a type.
     /// </summary>
     /// <param name="t">The type whose size is to be returned.</param>
-    public static int GetUnmanagedSize(Type t) => Marshal.SizeOf(t);
+    public static int GetUnmanagedSize(Type t)
+    {
+        return Marshal.SizeOf(t);
+    }
 
     /// <summary>
     /// Returns the unmanaged size in bytes of a type.
     /// </summary>
     /// <typeparam name="T">The type whose size is to be returned.</typeparam>
-    public static int GetUnmanagedSize<T>() => Marshal.SizeOf<T>();
+    public static int GetUnmanagedSize<T>()
+    {
+        return Marshal.SizeOf<T>();
+    }
 
     /// <summary>
     /// Returns the unmanaged size, in bytes, of a type, cast to a specified type.

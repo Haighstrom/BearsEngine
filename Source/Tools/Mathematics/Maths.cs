@@ -5,6 +5,7 @@ public static class Maths
     public static readonly double Sqrt2 = Math.Sqrt(2);
     public static readonly double Sqrt2Reciprocal = 1 / Math.Sqrt(2);
 
+
     public static Direction GetNearestSide(Rect r, Point p)
     {
         float left = DistSquared(p, r.CentreLeft);
