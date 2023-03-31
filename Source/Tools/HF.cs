@@ -8,28 +8,7 @@ using HaighFramework.OpenGL;
 
 namespace BearsEngine;
 public static class HF
-{
-    public static class Arrays
-    {
-        public static T[] FillArray<T>(int size, T value)
-        {
-            var ret = new T[size];
-            Array.Fill(ret, value);
-            return ret;
-        }
-
-        public static T[,] FillArray<T>(int arrayWidth, int arrayHeight, T value)
-        {
-            var ret = new T[arrayWidth, arrayHeight];
-
-            for (int i = 0; i < arrayWidth; i++)
-                for (int j = 0; j < arrayHeight; j++)
-                    ret[i, j] = value;
-
-            return ret;
-        }
-    }
-    
+{    
     public static class Geom
     {
         public static List<Vertex> QuadToTris(Vertex topLeft, Vertex topRight, Vertex bottomLeft, Vertex bottomRight)

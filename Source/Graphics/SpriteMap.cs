@@ -17,7 +17,7 @@ namespace BearsEngine.Graphics
         
 
         public SpriteMap(int mapW, int mapH, int defaultIndex, float tileW, float tileH, string spritesheetPath, int spriteSheetColumns, int spriteSheetRows)
-            : this(HF.Arrays.FillArray(mapW, mapH, defaultIndex), defaultIndex, tileW, tileH, spritesheetPath, spriteSheetColumns, spriteSheetRows)
+            : this(ArrayHelper.CreateFilledArray(mapW, mapH, defaultIndex), defaultIndex, tileW, tileH, spritesheetPath, spriteSheetColumns, spriteSheetRows)
         {
         }
 
@@ -177,7 +177,7 @@ namespace BearsEngine.Graphics
         }
         
 
-        public void SetAllMapValue(int newValue) => MapValues = HF.Arrays.FillArray(MapW, MapH, newValue);
+        public void SetAllMapValue(int newValue) => MapValues = ArrayHelper.CreateFilledArray(MapW, MapH, newValue);
         
 
         public void Resize(int newW, int newH) => Resize(newW, newH, DefaultIndex);

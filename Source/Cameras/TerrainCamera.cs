@@ -5,7 +5,7 @@ public class TerrainCamera : Camera
     protected SpriteMap SpriteMap { get; private set; }
 
     public TerrainCamera(int mapW, int mapH, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, float layer, Rect position, float tileSizeW, float tileSizeH)
-        : this(HF.Arrays.FillArray(mapW, mapH, defaultIndex), defaultIndex, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, tileSizeW, tileSizeH)
+        : this(ArrayHelper.CreateFilledArray(mapW, mapH, defaultIndex), defaultIndex, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, tileSizeW, tileSizeH)
     {
     }
 
@@ -19,7 +19,7 @@ public class TerrainCamera : Camera
     }
 
     public TerrainCamera(int mapW, int mapH, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, float layer, Rect position, Rect viewport)
-        : this(HF.Arrays.FillArray(mapW, mapH, defaultIndex), defaultIndex, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, viewport)
+        : this(ArrayHelper.CreateFilledArray(mapW, mapH, defaultIndex), defaultIndex, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, viewport)
     {
     }
 
