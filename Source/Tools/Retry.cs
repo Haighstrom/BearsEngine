@@ -4,34 +4,52 @@ namespace BearsEngine.Source.Tools;
 
 public static class Retry
 {
-    public static void Do(Action action, TimeSpan retryInterval, int maxAttemptCount = 3)
+    public static void TryMethod(Action action, int maxTries, TimeSpan waitTime)
     {
-        Do<object?>(() =>
-        {
-            action();
-            return null;
-        }, retryInterval, maxAttemptCount);
-    }
-
-    public static T Do<T>(Func<T> action, TimeSpan retryInterval, int maxAttemptCount = 3)
-    {
-        var exceptions = new List<Exception>();
-
-        for (int attempted = 0; attempted < maxAttemptCount; attempted++)
+        int numTries = 0;
+        while (numTries < maxTries)
         {
             try
             {
-                if (attempted > 0)
-                {
-                    Thread.Sleep(retryInterval);
-                }
-                return action();
+                action();
+                return;
             }
-            catch (Exception ex)
+            catch
             {
-                exceptions.Add(ex);
+                numTries++;
+                if (numTries == maxTries)
+                {
+                    throw;
+                }
+                Thread.Sleep(waitTime);
             }
         }
-        throw new AggregateException(exceptions);
+
+        //todo: throw new System.Diagnostics.UnreachableException(); Needs .NET 7
+        throw new Exception("Unreachable code");
+    }
+
+    public static TResult TryMethod<TResult>(Func<TResult> func, int maxTries, TimeSpan waitTime)
+    {
+        int numTries = 0;
+        while (numTries < maxTries)
+        {
+            try
+            {
+                TResult result = func();
+                return result;
+            }
+            catch
+            {
+                numTries++;
+                if (numTries == maxTries)
+                {
+                    throw;
+                }
+                Thread.Sleep(waitTime);
+            }
+        }
+
+        throw new Exception("Unreachable code");
     }
 }

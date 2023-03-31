@@ -8,15 +8,24 @@ namespace BearsEngine.Source.Tools.IO;
 
 public class IOHelper : IIoHelper
 {
-    private readonly IFileDirectoryIoHelper _directoryHelper = new FileDirectoryIoHelper();
-    private readonly ITxtFileIoHelper _txtSerialiser = new TxtFileIoHelper();
-    private readonly ICsvFileIoHelper _csvSerialiser = new CsvFileIoHelper();
-    private readonly IJsonFileIoHelper _jsonSerialiser = new JsonFileIoHelper(null!);
-    private readonly IXmlFileIoHelper _xmlSerialiser = new XMLSerialisationHelper();
+    private readonly IFileDirectoryIoHelper _directoryHelper;
+    private readonly ITxtFileIoHelper _txtSerialiser;
+    private readonly ICsvFileIoHelper _csvSerialiser;
+    private readonly IJsonFileIoHelper _jsonSerialiser;
+    private readonly IXmlFileIoHelper _xmlSerialiser;
+
+    public IOHelper(IoSettings settings)
+    {
+        _directoryHelper = new FileDirectoryIoHelper();
+        _txtSerialiser = new TxtFileIoHelper();
+        _csvSerialiser = new CsvFileIoHelper();
+        _jsonSerialiser = new JsonFileIoHelper(null!);
+        _xmlSerialiser = new XMLSerialisationHelper();
+    }
 
     public void CopyFile(string sourceFile, string destinationFile) => _directoryHelper.CopyFile(sourceFile, destinationFile);
 
-    public void CopyFiles(string sourceDirectory, string destinationDirectory) => _directoryHelper.CopyFiles(sourceDirectory, destinationDirectory);
+    public void CopyFiles(string sourceDirectory, string destinationDirectory, CopyOptions options) => _directoryHelper.CopyFiles(sourceDirectory, destinationDirectory, options);
 
     public bool CreateDirectory(string directoryPath) => _directoryHelper.CreateDirectory(directoryPath);
 
@@ -61,4 +70,8 @@ public class IOHelper : IIoHelper
     public void AppendTextFile(string path, string text) => _txtSerialiser.AppendTextFile(path, text);
 
     public void AppendTextFile(string path, IEnumerable<string> lines) => _txtSerialiser.AppendTextFile(path, lines);
+
+    public T? TryDeserialiseFromJSON<T>(string json) => _jsonSerialiser.TryDeserialiseFromJSON<T>(json);
+
+    public T? TryReadJsonFile<T>(string filename) => _jsonSerialiser.TryReadJsonFile<T>(filename);
 }

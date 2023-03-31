@@ -16,6 +16,11 @@ internal static class BitmapTools
         public byte Alpha;
     }
 
+    public static Bitmap LoadBitmap(string path)
+    {
+        throw new NotImplementedException();
+    }
+
     public unsafe static Bitmap PremultiplyAlpha(Bitmap bitmap)
     {
         //todo: put some tries here as this fucks up sometimes

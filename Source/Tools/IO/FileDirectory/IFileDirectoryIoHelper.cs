@@ -4,7 +4,7 @@ internal interface IFileDirectoryIoHelper
 {
     void CopyFile(string sourceFile, string destinationFile);
 
-    void CopyFiles(string sourceDirectory, string destinationDirectory);
+    void CopyFiles(string sourceDirectory, string destinationDirectory, CopyOptions options);
 
     bool CreateDirectory(string path);
 

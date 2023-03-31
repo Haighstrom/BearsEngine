@@ -14,7 +14,7 @@ public static class Console
         get
         {
             if (_instance is null)
-                throw new InvalidOperationException($"You must call {nameof(GameEngine)}.{nameof(GameEngine.Run)} before accessing functions within {nameof(Console)}.");
+                throw new InvalidOperationException($"You must call {nameof(Engine)}.{nameof(Engine.Run)} before accessing functions within {nameof(Console)}.");
 
             return _instance;
         }

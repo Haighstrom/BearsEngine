@@ -73,12 +73,12 @@ public class HFont : IDisposable
         HFont hFont;
 
         //if it's been created and saved to disk load it
-        if (HaighIO.FileExists(DEFAULT_FONT_FOLDER + longName + ".details"))
+        if (Files.FileExists(DEFAULT_FONT_FOLDER + longName + ".details"))
         {
             try
             {
-                var details = HaighIO.LoadJSON<FontSave>(DEFAULT_FONT_FOLDER + longName + ".details");
-                var bmp = HaighIO.LoadBMP(DEFAULT_FONT_FOLDER + longName + ".png");
+                var details = Files.ReadJsonFile<FontSave>(DEFAULT_FONT_FOLDER + longName + ".details");
+                var bmp = BitmapTools.LoadBitmap(DEFAULT_FONT_FOLDER + longName + ".png");
                 hFont = new HFont(details, bmp);
                 if (hFont.LongName != longName)
                     throw new Exception($"Loaded font's details ({hFont.LongName}) don't match requested details ({longName})");
@@ -109,21 +109,20 @@ public class HFont : IDisposable
 
     private static Font LoadFontCustom(string fontPath, float size, FontStyle style)
     {
-        if (!HaighIO.FileExists(fontPath))
+        if (!Files.FileExists(fontPath))
             fontPath = DEFAULT_FONT_FOLDER + fontPath;
 
-        if (!HaighIO.FileExists(fontPath))
+        if (!Files.FileExists(fontPath))
             fontPath = fontPath + ".ttf";
 
-        if (!HaighIO.FileExists(fontPath))
+        if (!Files.FileExists(fontPath))
             return null;
 
-        using (var pfc = new PrivateFontCollection())
-        {
-            pfc.AddFontFile(fontPath);
+        using var pfc = new PrivateFontCollection();
 
-            return new Font(pfc.Families[0], size, (System.Drawing.FontStyle)style);
-        }
+        pfc.AddFontFile(fontPath);
+
+        return new Font(pfc.Families[0], size, (System.Drawing.FontStyle)style);
     }
 
     private readonly object _syncRoot = new();
@@ -303,7 +302,7 @@ public class HFont : IDisposable
             CharPositions = _charPositions,
             CharPositionsNormalised = _charPositionsNormalised,
         };
-        HaighIO.SaveJSON(DEFAULT_FONT_FOLDER + LongName + ".details", fs);
+        Files.WriteJsonFile(DEFAULT_FONT_FOLDER + LongName + ".details", fs);
     }
 
     /// <summary>

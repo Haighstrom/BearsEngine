@@ -3,7 +3,7 @@ using System.IO;
 
 namespace BearsEngine;
 
-internal interface IBMPHelper
+internal interface IBmpHelper
 {
     bool FileExists();
 

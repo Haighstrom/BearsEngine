@@ -9,33 +9,27 @@ internal class FileDirectoryIoHelper : IFileDirectoryIoHelper
         File.Copy(sourceFile, destinationFile);
     }
 
-    public void CopyFiles(string sourceDirectory, string destinationDirectory)
+    public void CopyFiles(string sourceDirectory, string destinationDirectory, CopyOptions options)
     {
-        if (!Directory.Exists(sourceDirectory))
-        {
-            throw new DirectoryNotFoundException($"Source directory not found: {sourceDirectory}");
-        }
+        if (!Directory.Exists(destinationDirectory))
+            Directory.CreateDirectory(destinationDirectory);
 
-        var sourceDirectoryInfo = new DirectoryInfo(sourceDirectory);
-        var files = sourceDirectoryInfo.GetFiles("*", SearchOption.AllDirectories);
+        if (sourceDirectory.Last() == '/')
+            sourceDirectory = sourceDirectory.Remove(sourceDirectory.Length - 1);
 
-        foreach (var file in files)
-        {
-            var relativePath = file.FullName[(sourceDirectory.Length + 1)..];
-            var destinationPath = Path.Combine(destinationDirectory, relativePath);
+        if (destinationDirectory.Last() != '/')
+            destinationDirectory += '/';
 
-            var destinationDirectoryPath = Path.GetDirectoryName(destinationPath);
+        var so = (options & CopyOptions.BringAll) > 0 ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
-            if (destinationDirectoryPath is null)
-                throw new NullReferenceException();
+        //copy subfolders first (if applicable)
+        if ((options & CopyOptions.BringFolders) > 0)
+            foreach (string dir in Directory.GetDirectories(sourceDirectory, "*", so))
+                Directory.CreateDirectory(Path.Combine(destinationDirectory, dir[(sourceDirectory.Length + 1)..]));
 
-            if (!Directory.Exists(destinationDirectoryPath))
-            {
-                Directory.CreateDirectory(destinationDirectoryPath);
-            }
-
-            File.Copy(file.FullName, destinationPath);
-        }
+        //copy files
+        foreach (string file in Directory.GetFiles(sourceDirectory, "*", so))
+            File.Copy(file, Path.Combine(destinationDirectory, file[(sourceDirectory.Length + 1)..]), (options & CopyOptions.Overwrite) > 0);
     }
 
     public bool CreateDirectory(string path)

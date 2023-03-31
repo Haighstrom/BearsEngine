@@ -1,6 +1,8 @@
 ﻿using HaighFramework.Window;
 using HaighFramework.Displays;
 using HaighFramework.Console;
+using BearsEngine.Source.Tools.IO;
+using BearsEngine.Source.Core;
 
 namespace BearsEngine;
 
@@ -55,57 +57,27 @@ public static class Engine
     /// <param name="engineSettings">Define the settings for the engine.</param>
     /// <param name="initialiser">A function to initialise the application and start a Scene.</param>
     /// <exception cref="InvalidOperationException">Throws if Engine has not been created.</exception>
-    public static void Run(ConsoleSettings consoleSettings, LogSettings logSettings, WindowSettings windowSettings, EngineSettings engineSettings, Func<IScene> initialiser)
+    public static void Run(ApplicationSettings appSettings, Func<IScene> initialiser)
     {
         if (_runCalled)
             throw new InvalidOperationException($"It is not permissible to call {nameof(Engine)}.{nameof(Run)} twice.");
 
         _runCalled = true;
 
-        Console.Instance = new ConsoleWindow(consoleSettings);
+        Console.Instance = new ConsoleWindow(appSettings.ConsoleSettings);
 
-        Log.Instance = new Logger(logSettings);
+        Log.Instance = new Logger(appSettings.LogSettings);
+
+        Files.Instance = new IOHelper(appSettings.IoSettings);
 
         Displays.Instance = new DisplayManager();
 
-        Window.Instance = new HaighWindow(windowSettings);
+        Window.Instance = new HaighWindow(appSettings.WindowSettings);
 
-        Instance = new GameEngine(engineSettings, initialiser);
+        Instance = new GameEngine(appSettings.EngineSettings, initialiser);
+
         Instance.Run();
+
         Instance.Dispose();
     }
-
-    /// <summary>
-    /// Starts the application with default Console Settings.
-    /// </summary>
-    /// <param name="logSettings">Define settings for logging.</param>
-    /// <param name="windowSettings">Define the settings for the Window.</param>
-    /// <param name="engineSettings">Define the settings for the engine.</param>
-    /// <param name="initialiser">A function to initialise the application and start a Scene.</param>
-    /// <exception cref="InvalidOperationException">Throws if Engine has not been created.</exception>
-    public static void Run(LogSettings logSettings, WindowSettings windowSettings, EngineSettings engineSettings, Func<IScene> initialiser) => Run(ConsoleSettings.Default, logSettings, windowSettings, engineSettings, initialiser);
-
-    /// <summary>
-    /// Starts the application with default console and logging settings.
-    /// </summary>
-    /// <param name="windowSettings">Define the settings for the Window.</param>
-    /// <param name="engineSettings">Define the settings for the engine.</param>
-    /// <param name="initialiser">A function to initialise the application and start a Scene.</param>
-    /// <exception cref="InvalidOperationException">Throws if Engine has not been created.</exception>
-    public static void Run(WindowSettings windowSettings, EngineSettings engineSettings, Func<IScene> initialiser) => Run(ConsoleSettings.Default, LogSettings.Default, windowSettings, engineSettings, initialiser);
-
-    /// <summary>
-    /// Starts the application with default console, logging and engine settings.
-    /// </summary>
-    /// <param name="windowSettings">Define the settings for the Window.</param>
-    /// <param name="initialiser">A function to initialise the application and start a Scene.</param>
-    /// <exception cref="InvalidOperationException">Throws if Engine has not been created.</exception>
-    public static void Run(WindowSettings windowSettings, Func<IScene> initialiser) => Run(ConsoleSettings.Default, LogSettings.Default, windowSettings, EngineSettings.Default, initialiser);
-
-    /// <summary>
-    /// Starts the application with default settings.
-    /// </summary>
-    /// <param name="initialiser">A function to initialise the application and start a Scene.</param>
-    /// <exception cref="InvalidOperationException">Throws if Engine has not been created.</exception>
-    public static void Run(Func<IScene> initialiser) => Run(ConsoleSettings.Default, LogSettings.Default, WindowSettings.Default, EngineSettings.Default, initialiser);
 }

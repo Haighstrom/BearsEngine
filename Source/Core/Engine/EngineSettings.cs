@@ -1,4 +1,6 @@
-﻿namespace BearsEngine;
+﻿using BearsEngine.Source.Tools.IO;
+
+namespace BearsEngine;
 
 public class EngineSettings
 {

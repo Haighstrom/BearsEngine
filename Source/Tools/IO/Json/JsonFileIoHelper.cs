@@ -16,34 +16,30 @@ internal class JsonFileIoHelper : IJsonFileIoHelper
         return JsonSerializer.Serialize(@object, _options);
     }
 
-    public T? DeserialiseFromJSON<T>(string json)
+    public T DeserialiseFromJSON<T>(string json)
     {
-        try
-        {
-            return JsonSerializer.Deserialize<T>(json);
-        }
-        catch (JsonException)
-        {
-            return default;
-        }
+        return JsonSerializer.Deserialize<T>(json);
     }
 
-    public T? ReadJsonFile<T>(string filename)
+    public T ReadJsonFile<T>(string filename)
     {
-        try
-        {
-            var json = System.IO.File.ReadAllText(filename);
-            return JsonSerializer.Deserialize<T>(json, _options);
-        }
-        catch (Exception)
-        {
-            return default;
-        }
+        var json = System.IO.File.ReadAllText(filename);
+        return JsonSerializer.Deserialize<T>(json, _options);
     }
 
     public void WriteJsonFile<T>(string filename, T data)
     {
         var json = JsonSerializer.Serialize(data, _options);
         System.IO.File.WriteAllText(filename, json);
+    }
+
+    public T? TryDeserialiseFromJSON<T>(string json)
+    {
+        throw new NotImplementedException();
+    }
+
+    public T? TryReadJsonFile<T>(string filename)
+    {
+        throw new NotImplementedException();
     }
 }
