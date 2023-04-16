@@ -15,4 +15,16 @@ public interface ICamera : IRectangular, IAddable, IUpdatable, IRenderableOnLaye
     void Resize(float newW, float newH);//todo: remove and replace with W/H overrides?
 
     event EventHandler? ViewChanged;
+
+    float MaxX { get; set; }
+
+    float MaxY { get; set; }
+
+    float MinX { get; set; }
+
+    float MinY { get; set; }
+
+    public float TileHeight { get; }
+
+    public float TileWidth { get; }
 }

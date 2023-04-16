@@ -70,6 +70,14 @@ namespace BearsEngine.Worlds.Cameras
         public IShader Shader { get; set; }
 
         public virtual Rect View { get; }
+        public float MaxX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float MaxY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float MinX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float MinY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public float TileHeight => throw new NotImplementedException();
+
+        public float TileWidth => throw new NotImplementedException();
 
         /// <summary>
         /// Initialise the textures that the Frame Buffet Object render target the camera draws to uses and the intermediate Multisample texture used in addition if MultiSample AntiAliasing is enabled.

@@ -1,6 +1,6 @@
 ﻿namespace BearsEngine.Worlds.Cameras;
 
-public class TerrainCamera : Camera
+public class TerrainCamera : Camera, ITerrainCamera
 {
     protected SpriteMap SpriteMap { get; private set; }
 
