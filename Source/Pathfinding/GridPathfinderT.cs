@@ -35,29 +35,26 @@ public class GridPathfinder<TNode> : Pathfinder<TNode> where TNode : IPathfindNo
 
     public TNode this[int x, int y] => _nodegrid[x, y];
 
-    public TNode FindClosestNode(IPosition p)
+    public bool IsValidGridPosition(float x, float y)
     {
-        int x = (int)Maths.Clamp(p.X, 0, Width - 1);
-        int y = (int)Maths.Clamp(p.Y, 0, Height - 1);
-        return this[x, y];
-    }
+        //check x,y are integers
+        if (x % 1 != 0 || y % 1 != 0)
+            return false;
 
-    public TNode FindClosestNode(float nodeX, float nodeY)
-    {
-        int x = (int)Maths.Clamp(nodeX, 0, Width - 1);
-        int y = (int)Maths.Clamp(nodeY, 0, Height - 1);
-        return this[x, y];
+        return x >= 0 && x < Width && y >= 0 && y < Height;
     }
 
     public int Height => _nodegrid.GetLength(1);
 
     public int Width => _nodegrid.GetLength(0);
 
-    public bool IsValidGridPosition(float x, float y)
+    public TNode GetClosestNode(float nodeX, float nodeY)
     {
-        if (((int)x) != x || ((int)y) != y)
-            return false;
+        int x = (int)Maths.Clamp(nodeX, 0, Width - 1);
+        int y = (int)Maths.Clamp(nodeY, 0, Height - 1);
 
-        return x >= 0 && x < Width && y >= 0 && y < Height;
+        return this[x, y];
     }
+
+    public TNode GetClosestNode(IPosition p) => GetClosestNode(p.X, p.Y);
 }
