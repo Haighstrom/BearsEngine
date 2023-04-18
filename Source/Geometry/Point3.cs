@@ -176,8 +176,8 @@ public struct Point3 : IEquatable<Point3>
     public static Point3 operator *(Point3 p, float f) { return new Point3(p.x * f, p.y * f, p.z * f); }
     public static Point3 operator /(Point3 p, float f) { return new Point3(p.x / f, p.y / f, p.z / f); }
 
-    public static bool operator ==(Point3 p1, Point3 p2) { return (p1.x == p2.x && p1.y == p2.y && p1.z == p2.z); }
-    public static bool operator !=(Point3 p1, Point3 p2) { return (p1.x != p2.x || p1.y != p2.y || p1.z != p2.z); }
+    public static bool operator ==(Point3 p1, Point3 p2) { return p1.x == p2.x && p1.y == p2.y && p1.z == p2.z; }
+    public static bool operator !=(Point3 p1, Point3 p2) { return p1.x != p2.x || p1.y != p2.y || p1.z != p2.z; }
 
     public override bool Equals(object o)
     {

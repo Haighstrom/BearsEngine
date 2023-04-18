@@ -221,7 +221,7 @@ public struct Matrix3
                 }
             }
 
-            ++(pivotIdx[icol]);
+            ++pivotIdx[icol];
 
             if (irow != icol)
             {
@@ -330,7 +330,7 @@ public struct Matrix3
                 }
             }
 
-            ++(pivotIdx[icol]);
+            ++pivotIdx[icol];
 
             if (irow != icol)
             {

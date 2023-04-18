@@ -257,7 +257,7 @@ public struct Matrix4
                 }
             }
 
-            ++(pivotIdx[icol]);
+            ++pivotIdx[icol];
 
             // Swap rows over so pivot is on diagonal
             if (irow != icol)
