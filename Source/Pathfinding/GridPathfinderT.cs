@@ -4,7 +4,7 @@ namespace BearsEngine.Pathfinding;
 /// 
 /// </summary>
 /// <typeparam name="TNode">The type of Node used in this grid</typeparam>
-public class GridPathfinder<TNode> : Pathfinder<TNode> where TNode : IPathfindNode<TNode>, IPosition
+public class GridPathfinder<TNode> : Pathfinder<TNode>, IGridPathfinder<TNode> where TNode : IPathfindNode<TNode>, IPosition
 {
     private readonly TNode[,] _nodegrid;
 
