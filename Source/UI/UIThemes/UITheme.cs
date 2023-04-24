@@ -2,25 +2,18 @@
 
 public class UITheme
 {
-    public static UITheme Default => new()
-    {
-        Text = TextTheme.Default,
-        Button = ButtonTheme.Default,
-        InputBox = InputBoxTheme.Default,
-        Label = LabelTheme.Default,
-        Panel = PanelTheme.Default,
-        TabbedPanel = TabbedPanelTheme.Default,
-        Scrollbar = ScrollbarTheme.Default,
-        ScrollingListPanel = ScrollingListPanelTheme.Default,
-    };
-    
+    public static UITheme Default => new();
 
-    public TextTheme Text;
-    public ButtonTheme Button;
-    public InputBoxTheme InputBox;
-    public LabelTheme Label;
-    public PanelTheme Panel;
-    public TabbedPanelTheme TabbedPanel;
-    public ScrollbarTheme Scrollbar;
-    public ScrollingListPanelTheme ScrollingListPanel;
+    public UITheme()
+    {
+    }
+
+    public TextTheme Text { get; set; } = TextTheme.Default;
+    public ButtonTheme Button { get; set; } = ButtonTheme.Default;
+    public InputBoxTheme InputBox { get; set; } = InputBoxTheme.Default;
+    public LabelTheme Label { get; set; } = LabelTheme.Default;
+    public PanelTheme Panel { get; set; } = PanelTheme.Default;
+    public TabbedPanelTheme TabbedPanel { get; set; } = TabbedPanelTheme.Default;
+    public ScrollbarTheme Scrollbar { get; set; } = ScrollbarTheme.Default;
+    public ScrollingListPanelTheme ScrollingListPanel { get; set; } = ScrollingListPanelTheme.Default;
 }
