@@ -6,9 +6,13 @@ public class ApplicationSettings
 {
     public static ApplicationSettings Default => new();
 
-    public ConsoleSettings ConsoleSettings { get; set; } = ConsoleSettings.Default;
-    public EngineSettings EngineSettings { get; set; } = EngineSettings.Default;
-    public LogSettings LogSettings { get; set; } = LogSettings.Default;
-    public IoSettings IoSettings { get; set; } = IoSettings.Default;
-    public WindowSettings WindowSettings { get; set; } = WindowSettings.Default;
+    public ConsoleSettings ConsoleSettings { get; init; } = ConsoleSettings.Default;
+
+    public EngineSettings EngineSettings { get; init; } = EngineSettings.Default;
+
+    public IoSettings IoSettings { get; init; } = IoSettings.Default;
+
+    public LogSettings LogSettings { get; init; } = LogSettings.Default;
+
+    public WindowSettings WindowSettings { get; init; } = WindowSettings.Default;
 }
