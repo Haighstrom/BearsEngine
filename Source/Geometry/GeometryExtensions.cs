@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,13 +24,14 @@ public static class GeometryExtensions
     }
 
 
-    public static Point Shift(this Point p, Direction d, float distance)
+    public static Point Shift(this Point p, Direction direction, float distance) => direction switch
     {
-        return new Point(
-            p.X + (d == Direction.Right ? distance : d == Direction.Left ? -distance : 0),
-            p.Y + (d == Direction.Down ? distance : d == Direction.Up ? -distance : 0));
-    }
-
+        Direction.Up => new(p.X, p.Y - distance),
+        Direction.Right => new(p.X + distance, p.Y),
+        Direction.Down => new(p.X, p.Y + distance),
+        Direction.Left => new(p.X - distance, p.Y),
+        _ => throw new NotImplementedException(),
+    };
 
     public static float ToAngleDegrees(this Point p)
     {
