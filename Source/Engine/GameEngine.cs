@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
+using BearsEngine.Source.Core;
 using HaighFramework.Input;
 
 namespace BearsEngine;
@@ -41,7 +42,7 @@ public class GameEngine : IGameEngine
 
     public static bool RunWhenUnfocussed { get; set; } = true;
 
-    public GameEngine(EngineSettings settings, Func<IScene> initialiser)
+    public GameEngine(EngineSettings settings, IAppInitialiser initialiser)
     {
         Log.Debug($"Initialising {nameof(GameEngine)}.");
 
@@ -52,7 +53,8 @@ public class GameEngine : IGameEngine
 
         Log.Debug($"Environment Information:\nMachine: {Environment.MachineName}\nOS: {RuntimeInformation.OSDescription}\nUser: {Environment.UserName}\nProcessors: {Environment.ProcessorCount}\nSystem Architecture: {(Environment.Is64BitOperatingSystem ? "64-bit" : "32-bit")}\nProcess Arcitecture: {(Environment.Is64BitProcess ? "64-bit" : "32-bit")}");
 
-        _sceneManager = new SceneManager(initialiser());
+        initialiser.Initialise();
+        _sceneManager = new SceneManager(initialiser.CreateFirstScene());
 
         //TODO: Window.MouseLeftDoubleClicked += (o, a) => HI.MouseLeftDoubleClicked = true;
 
