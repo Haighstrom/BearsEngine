@@ -2,6 +2,6 @@
 
 public interface IRenderableOnLayer : IRenderable
 {
-    float Layer { get; set; }
+    float Layer { get; }
     event EventHandler<LayerChangedEventArgs>? LayerChanged;
 }

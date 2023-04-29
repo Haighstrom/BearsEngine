@@ -8,7 +8,7 @@ public interface IUpdatable
     /// <summary>
     /// Whether this object should be updated
     /// </summary>
-    bool Active { get; set; }
+    bool Active { get; }
 
     /// <summary>
     /// Update this object
