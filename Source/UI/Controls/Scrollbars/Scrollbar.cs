@@ -12,7 +12,7 @@ public class Scrollbar : Entity
         
 
         public Bar(ScrollbarDirection direction, Rect position, int border, UITheme theme)
-            : this(direction, position, border, theme.Scrollbar.Bar.DefaultColour, theme.Scrollbar.Bar.HoverColour, theme.Scrollbar.Bar.PressedColour, theme.Scrollbar.Bar.UnclickableColour)
+            : this(direction, position, border, theme.Scrollbar.BarButton.DefaultColour, theme.Scrollbar.BarButton.HoverColour, theme.Scrollbar.BarButton.PressedColour, theme.Scrollbar.BarButton.UnclickableColour)
         {
         }
 
@@ -180,17 +180,17 @@ public class Scrollbar : Entity
               r,
               direction,
               theme.Scrollbar.BarBackgroundColour,
-              theme.Scrollbar.Bar.DefaultColour,
-              theme.Scrollbar.Bar.HoverColour,
-              theme.Scrollbar.Bar.PressedColour,
-              theme.Scrollbar.Bar.UnclickableColour,
+              theme.Scrollbar.BarButton.DefaultColour,
+              theme.Scrollbar.BarButton.HoverColour,
+              theme.Scrollbar.BarButton.PressedColour,
+              theme.Scrollbar.BarButton.UnclickableColour,
               theme.Scrollbar.EdgeToBarSpace,
               theme.Scrollbar.ButtonBackgroundColour,
-              OpenGL.GenTrianglePolygon(new Rect(r.SmallestSide, r.SmallestSide), theme.Scrollbar.EdgeToArrowSpace, direction == ScrollbarDirection.Horizontal ? Direction.Left : Direction.Up, theme.Scrollbar.Arrow.DefaultColour),
-              OpenGL.GenTrianglePolygon(new Rect(r.SmallestSide, r.SmallestSide), theme.Scrollbar.EdgeToArrowSpace, direction == ScrollbarDirection.Horizontal ? Direction.Right : Direction.Down, theme.Scrollbar.Arrow.DefaultColour),
-              theme.Scrollbar.Arrow.HoverColour,
-              theme.Scrollbar.Arrow.PressedColour,
-              theme.Scrollbar.Arrow.UnclickableColour)
+              OpenGL.GenTrianglePolygon(new Rect(r.SmallestSide, r.SmallestSide), theme.Scrollbar.EdgeToArrowSpace, direction == ScrollbarDirection.Horizontal ? Direction.Left : Direction.Up, theme.Scrollbar.ArrowButton.DefaultColour),
+              OpenGL.GenTrianglePolygon(new Rect(r.SmallestSide, r.SmallestSide), theme.Scrollbar.EdgeToArrowSpace, direction == ScrollbarDirection.Horizontal ? Direction.Right : Direction.Down, theme.Scrollbar.ArrowButton.DefaultColour),
+              theme.Scrollbar.ArrowButton.HoverColour,
+              theme.Scrollbar.ArrowButton.PressedColour,
+              theme.Scrollbar.ArrowButton.UnclickableColour)
     {
     }
     

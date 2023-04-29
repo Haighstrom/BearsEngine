@@ -1,15 +1,14 @@
-﻿namespace BearsEngine.UI
-{
-    public struct PanelTheme
-    {
-        public static PanelTheme Default => new()
-        {
-            BackgroundColour = Colour.LightBlue,
-            Border = BorderTheme.Default,
-        };
-        
+﻿namespace BearsEngine.UI;
 
-        public Colour BackgroundColour;
-        public BorderTheme Border;
+public class PanelTheme
+{
+    public static PanelTheme Default => new();
+
+    public PanelTheme()
+    {
     }
+
+    public Colour BackgroundColour { get; init; } = Colour.LightBlue;
+
+    public BorderTheme Border { get; init; } = BorderTheme.Default;
 }

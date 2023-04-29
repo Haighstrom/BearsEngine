@@ -1,13 +1,12 @@
-﻿namespace BearsEngine.UI
-{
-    public struct ScrollingListPanelTheme
-    {
-        public static ScrollingListPanelTheme Default => new()
-        {
-            PanelColour = Colour.White,
-        };
-        
+﻿namespace BearsEngine.UI;
 
-        public Colour PanelColour;
+public class ScrollingListPanelTheme
+{
+    public static ScrollingListPanelTheme Default => new();
+    
+    public ScrollingListPanelTheme()
+    {
     }
+
+    public Colour PanelColour { get; init; } = Colour.White;
 }

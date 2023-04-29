@@ -2,30 +2,21 @@
 
 namespace BearsEngine.UI;
 
-public struct TextTheme
+public class TextTheme
 {
-    public static TextTheme Default => new()
-    {
-        Font = HFont.Default,
-        FontColour = Colour.Black,
-        HAlignment = HAlignment.Left,
-        VAlignment = VAlignment.Top,
-        FontScale = 1,
-    };
+    public static TextTheme Default => new();
     
-
-    public TextTheme(TextTheme theme)
+    public TextTheme()
     {
-        Font = theme.Font;
-        FontColour = theme.FontColour;
-        HAlignment = theme.HAlignment;
-        VAlignment = theme.VAlignment;
-        FontScale = theme.FontScale;
     }
 
-    public HFont Font;
-    public Colour FontColour;
-    public float FontScale;
-    public HAlignment HAlignment;
-    public VAlignment VAlignment;
+    public HFont Font { get; init; } = HFont.Default;
+
+    public Colour FontColour { get; init; } = Colour.Black;
+
+    public HAlignment HAlignment { get; init; } = HAlignment.Centred;
+
+    public VAlignment VAlignment { get; init; } = VAlignment.Centred;
+
+    public float FontScale { get; init; } = 1;
 }

@@ -32,7 +32,7 @@ namespace BearsEngine.UI
         {
             Add(_activatedGraphic = new Image(theme.TabbedPanel.ActivatedTabColour, Size) { Visible = false });
             Add(_deactivatedGraphic = new Image(theme.TabbedPanel.DeactivatedTabColour, Size));
-            Add(_title = new HText(theme, new Rect(0, 0, size.X - 0 * 2, size.Y - 0 * 2), text) { HAlignment = theme.TabbedPanel.TabTextHAlignment, VAlignment = theme.TabbedPanel.TabTextVAlignment });
+            Add(_title = new HText(theme.TabbedPanel.Text, new Rect(0, 0, size.X - 0 * 2, size.Y - 0 * 2), text));
         }
 
         public Tab(Point size, string activatedGFX, string deactivatedGFX)

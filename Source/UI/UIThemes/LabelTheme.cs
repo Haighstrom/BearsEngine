@@ -1,17 +1,16 @@
-﻿namespace BearsEngine.UI
-{
-    public struct LabelTheme
-    {
-        public static LabelTheme Default => new()
-        {
-            Panel = PanelTheme.Default,
-            Text = TextTheme.Default,
-            EdgeToTextSpace = 5,
-        };
-        
+﻿namespace BearsEngine.UI;
 
-        public PanelTheme Panel;
-        public TextTheme Text;
-        public float EdgeToTextSpace;
+public class LabelTheme
+{
+    public static LabelTheme Default => new();
+   
+    public LabelTheme()
+    {
     }
+
+    public PanelTheme Panel { get; init; } = PanelTheme.Default;
+
+    public TextTheme Text { get; init; } = TextTheme.Default;
+
+    public float EdgeToTextSpace { get; init; } = 5;
 }

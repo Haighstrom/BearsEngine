@@ -1,22 +1,18 @@
-﻿using BearsEngine.Worlds.Graphics.Text;
+﻿namespace BearsEngine.UI;
 
-namespace BearsEngine.UI
+public class TabbedPanelTheme
 {
-    public struct TabbedPanelTheme
-    {
-        public static TabbedPanelTheme Default => new()
-        {
-            Panel = PanelTheme.Default,
-            ActivatedTabColour = Colour.PeachPuff,
-            DeactivatedTabColour = Colour.CadetBlue,
-            TabTextHAlignment = HAlignment.Centred,
-            TabTextVAlignment = VAlignment.Centred,
-        };
-        
+    public static TabbedPanelTheme Default => new();
 
-        public PanelTheme Panel;
-        public Colour ActivatedTabColour, DeactivatedTabColour;
-        public HAlignment TabTextHAlignment;
-        public VAlignment TabTextVAlignment;
+    public TabbedPanelTheme()
+    {
     }
+    
+    public PanelTheme Panel { get; init; } = PanelTheme.Default;
+
+    public Colour ActivatedTabColour { get; init; } = Colour.PeachPuff;
+
+    public Colour DeactivatedTabColour { get; init; } = Colour.CadetBlue;
+
+    public TextTheme Text { get; init; } = TextTheme.Default;
 }

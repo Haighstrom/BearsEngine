@@ -8,12 +8,19 @@ public class UITheme
     {
     }
 
-    public TextTheme Text { get; set; } = TextTheme.Default;
-    public ButtonTheme Button { get; set; } = ButtonTheme.Default;
-    public InputBoxTheme InputBox { get; set; } = InputBoxTheme.Default;
-    public LabelTheme Label { get; set; } = LabelTheme.Default;
-    public PanelTheme Panel { get; set; } = PanelTheme.Default;
-    public TabbedPanelTheme TabbedPanel { get; set; } = TabbedPanelTheme.Default;
-    public ScrollbarTheme Scrollbar { get; set; } = ScrollbarTheme.Default;
-    public ScrollingListPanelTheme ScrollingListPanel { get; set; } = ScrollingListPanelTheme.Default;
+    public ButtonTheme Button { get; init; } = ButtonTheme.Default;
+
+    public InputBoxTheme InputBox { get; init; } = InputBoxTheme.Default;
+
+    public LabelTheme Label { get; init; } = LabelTheme.Default;
+
+    public PanelTheme Panel { get; init; } = PanelTheme.Default;
+
+    public TextTheme Text { get; init; } = TextTheme.Default;
+
+    public ScrollbarTheme Scrollbar { get; init; } = ScrollbarTheme.Default;
+
+    public ScrollingListPanelTheme ScrollingListPanel { get; init; } = ScrollingListPanelTheme.Default;
+
+    public TabbedPanelTheme TabbedPanel { get; init; } = TabbedPanelTheme.Default;
 }

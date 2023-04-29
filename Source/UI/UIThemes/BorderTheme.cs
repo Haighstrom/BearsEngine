@@ -1,15 +1,14 @@
-﻿namespace BearsEngine.UI
-{
-    public struct BorderTheme
-    {
-        public static BorderTheme Default => new()
-        {
-            Colour = Colour.Black,
-            Thickness = 2,
-        };
-        
+﻿namespace BearsEngine.UI;
 
-        public Colour Colour;
-        public float Thickness;
+public class BorderTheme
+{
+    public static BorderTheme Default => new();
+
+    public BorderTheme()
+    {
     }
+
+    public Colour Colour { get; init; } = Colour.Black;
+
+    public float Thickness { get; init; } = 2;
 }
