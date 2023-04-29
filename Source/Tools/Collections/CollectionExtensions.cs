@@ -48,19 +48,21 @@ public static class CollectionExtensions
         return list == null || !list.Any();
     }
 
-    public static void Add(this List<string> list, string s, params object[] args)
+    public static void Add(this IList<string> list, string s, params object[] args)
     {
         list.Add(string.Format(s, args));
     }
 
-    public static void Add<T>(this List<T> list, params T[] items)
+    public static void Add<T>(this IList<T> list, params T[] items)
     {
-        list.AddRange(items);
+        foreach (var item in items)
+            list.Add(item);
     }
 
-    public static void Add<T>(this List<T> list, IEnumerable<T> list2)
+    public static void Add<T>(this IList<T> list, IEnumerable<T> items)
     {
-        list.AddRange(list2);
+        foreach (var item in items)
+            list.Add(item);
     }
 
     public static bool IsEmpty<T>(this T[] l)
