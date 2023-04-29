@@ -17,7 +17,7 @@ public class NumberInputBox<T> : Entity, IActivatable
     private const float DEFAULT_CURSOR_FLASH_TIME = 0.4f;
     
 
-    private readonly HText _textGraphic;
+    private readonly TextGraphic _textGraphic;
     private readonly Polygon _selection;
     private readonly Line _cursor;
     private Mode _mode = Mode.Unfocussed;
@@ -34,7 +34,7 @@ public class NumberInputBox<T> : Entity, IActivatable
         Window.CharEntered += OnCharPressed;
         Window.KeyDown += OnKeyDown;
 
-        Add(_textGraphic = new HText(theme, r.Zeroed, initialValue.ToString()) { Multiline = false, UseCommandTags = false });
+        Add(_textGraphic = new TextGraphic(theme, r.Zeroed, initialValue.ToString()) { Multiline = false, UseCommandTags = false });
 
         _text = initialValue.ToString();
         float textHeight = _textGraphic.Font.HighestChar;

@@ -8,14 +8,14 @@ namespace BearsEngine.UI
     {
         protected ValueGet Value;
         private readonly string _valueName;
-        private readonly HText _valueText;
+        private readonly TextGraphic _valueText;
 
         public ValueDisplay(float layer, Rect position, string graphic, UITheme theme, string valueName, ValueGet valueToTrack)
             : base(layer, position, graphic)
         {
             Value = valueToTrack;
             _valueName = valueName;
-            Add(_valueText = new HText(theme, position.Zeroed, ""));
+            Add(_valueText = new TextGraphic(theme, position.Zeroed, ""));
 
             UpdateValueText();
         }

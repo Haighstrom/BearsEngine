@@ -6,7 +6,7 @@ using Line = BearsEngine.Graphics.Line;
 
 namespace BearsEngine.Worlds.Graphics.Text;
 
-public class HText : RectGraphicBase, IDisposable
+public class TextGraphic : RectGraphicBase, IDisposable
 {
     private static readonly Dictionary<string, TextCommandType> _textCommandTagKeys = new()
     {
@@ -48,7 +48,6 @@ public class HText : RectGraphicBase, IDisposable
     }
 
     public static void RemoveTextCommandTag(string key) => _textCommandTags.Remove(key.ToLower());
-
     private List<Line> _linesToDraw = new();
     private List<SimpleGraphic> _vertGroups = new();
     private bool _verticesChanged = true;
@@ -72,37 +71,37 @@ public class HText : RectGraphicBase, IDisposable
     private float _strikethroughThickness = 0.5f;
     private int _strikethroughOffset = 0;
 
-    public HText(UITheme theme, Rect position, string text = "")
+    public TextGraphic(UITheme theme, Rect position, string text = "")
         : this(theme.Text, position, text)
     {
     }
 
-    public HText(UITheme theme, Point size, string text = "")
+    public TextGraphic(UITheme theme, Point size, string text = "")
         : this(theme.Text, size, text)
     {
     }
 
-    public HText(TextTheme theme, Rect position, string text = "")
+    public TextGraphic(TextTheme theme, Rect position, string text = "")
         : this(new DefaultShader(), theme.Font, theme.FontColour, position.X, position.Y, position.W, position.H, text, theme.FontScale, theme.FontScale, theme.HAlignment, theme.VAlignment)
     {
     }
 
-    public HText(TextTheme theme, Point size, string text = "")
+    public TextGraphic(TextTheme theme, Point size, string text = "")
         : this(new DefaultShader(), theme.Font, theme.FontColour, 0, 0, size.X, size.Y, text, theme.FontScale, theme.FontScale, theme.HAlignment, theme.VAlignment)
     {
     }
 
-    public HText(HFont font, Colour colour, Rect position, string text = "")
+    public TextGraphic(HFont font, Colour colour, Rect position, string text = "")
         : this(new DefaultShader(), font, colour, position.X, position.Y, position.W, position.H, text)
     {
     }
 
-    public HText(HFont font, Colour colour, Point size, string text = "")
+    public TextGraphic(HFont font, Colour colour, Point size, string text = "")
         : this(new DefaultShader(), font, colour, 0, 0, size.X, size.Y, text)
     {
     }
 
-    public HText(IShader shader, HFont font, Colour colour, float x, float y, float w, float h, string text, float scaleX = 1, float scaleY = 1, HAlignment hAlignment = HAlignment.Left, VAlignment vAlignment = VAlignment.Top)
+    public TextGraphic(IShader shader, HFont font, Colour colour, float x, float y, float w, float h, string text, float scaleX = 1, float scaleY = 1, HAlignment hAlignment = HAlignment.Left, VAlignment vAlignment = VAlignment.Top)
         : base(shader, x, y, w, h)
     {
         Ensure.ArgumentNotNull(shader, nameof(shader));

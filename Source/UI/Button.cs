@@ -4,7 +4,7 @@ namespace BearsEngine.UI;
 
 public class Button : Entity, IClickable
 {
-    private readonly HText _text;
+    private readonly TextGraphic _text;
 
     public Button(float layer, Rect position, string graphic, UITheme theme, string text, Action? actionOnClicked = null)
         : this(layer, position, new Image(graphic, position.Size), theme, text, actionOnClicked)
@@ -91,7 +91,7 @@ public class Button : Entity, IClickable
         if (graphic != null)
             Add(BackgroundGraphic = graphic);
 
-        Add(_text = new HText(font ?? UITheme.Default.Text.Font, fontColour ?? UITheme.Default.Text.FontColour, new Point(w, h), text)
+        Add(_text = new TextGraphic(font ?? UITheme.Default.Text.Font, fontColour ?? UITheme.Default.Text.FontColour, new Point(w, h), text)
         {
             HAlignment = HAlignment.Centred,
             VAlignment = VAlignment.Centred

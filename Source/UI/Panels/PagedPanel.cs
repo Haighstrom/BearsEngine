@@ -6,7 +6,7 @@ namespace BearsEngine.UI
     {
         private readonly List<Entity> _pages;
         private int _page;
-        private readonly HText _pageNumText;
+        private readonly TextGraphic _pageNumText;
 
         private readonly Button _minusArrow, _plusArrow;
         
@@ -17,7 +17,7 @@ namespace BearsEngine.UI
             if (pages.Count == 0)
                 throw new Exception("Tried to craete a PagedPanel with no pages");
 
-            Add(_pageNumText = new HText(uiTheme, textPosition, ""));
+            Add(_pageNumText = new TextGraphic(uiTheme, textPosition, ""));
 
             _page = 0;
             _pages = pages;

@@ -10,7 +10,7 @@ public class TextInputBox : Entity, IActivatable
 
     private const float DEFAULT_CURSOR_FLASH_TIME = 0.4f;
     
-    private readonly HText _textGraphic;
+    private readonly TextGraphic _textGraphic;
     private readonly Polygon _selection;
     private readonly Line _cursor;
     private Mode _mode = Mode.Unfocussed;
@@ -29,7 +29,7 @@ public class TextInputBox : Entity, IActivatable
         if (initialValue == null)
             initialValue = "";
 
-        Add(_textGraphic = new HText(theme, r.Zeroed, initialValue) { Multiline = false, UseCommandTags = false });
+        Add(_textGraphic = new TextGraphic(theme, r.Zeroed, initialValue) { Multiline = false, UseCommandTags = false });
 
         _text = initialValue;
 

@@ -7,7 +7,7 @@ public class DropdownList<T> : Entity
     private class DropdownOption : Button
     {
         private readonly DropdownList<T> _parent;
-        private readonly HText _text;
+        private readonly TextGraphic _text;
         private readonly int _listIndex;
 
         public DropdownOption(DropdownList<T> parent, Rect position, Colour bgColour, HFont font, Colour textColour, string name, int listIndex)
@@ -16,7 +16,7 @@ public class DropdownList<T> : Entity
             _parent = parent;
             _listIndex = listIndex;
 
-            Add(_text = new HText(font, textColour, position.Zeroed, name)
+            Add(_text = new TextGraphic(font, textColour, position.Zeroed, name)
             {
                 HAlignment = HAlignment.Left,
                 VAlignment = VAlignment.Centred,
@@ -34,7 +34,7 @@ public class DropdownList<T> : Entity
     private List<DropdownOption> _dropdownOptions = new();
     private readonly List<(string Name, T Value)> _listValues = new();
     private int _currentSelection = 0;
-    private readonly HText _currentSelectionText;
+    private readonly TextGraphic _currentSelectionText;
     private bool _isOpen = false;
     private float _optionHeight;
 
@@ -42,7 +42,7 @@ public class DropdownList<T> : Entity
         : base(layer, boxPosition, bgColour)
     {
         _optionHeight = optionHeight;
-        Add(_currentSelectionText = new HText(font, textColour, boxPosition.Zeroed, "")
+        Add(_currentSelectionText = new TextGraphic(font, textColour, boxPosition.Zeroed, "")
         {
             HAlignment = HAlignment.Left,
             VAlignment = VAlignment.Centred,

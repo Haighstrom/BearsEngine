@@ -5,7 +5,7 @@ namespace BearsEngine.UI;
 public class SimpleToolTip : Entity
 {
     private Image _bg;
-    private HText _text;
+    private TextGraphic _text;
     private readonly float _borderThickness, _textToEdgeGap;
     private readonly Colour _borderColour, _backgroundColour;
     private bool _waitingToAppear = false;
@@ -90,7 +90,7 @@ public class SimpleToolTip : Entity
         W = _bg.W;
         H = _bg.H;
 
-        _text = new HText(font, textColour, new Rect(_textToEdgeGap, _textToEdgeGap, textW, textH), text)
+        _text = new TextGraphic(font, textColour, new Rect(_textToEdgeGap, _textToEdgeGap, textW, textH), text)
         {
             HAlignment = HAlignment.Centred,
             VAlignment = VAlignment.Centred

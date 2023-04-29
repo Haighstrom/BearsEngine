@@ -4,13 +4,13 @@ namespace BearsEngine.UI;
 
 public class TextLabel : Entity
 {
-    private readonly HText _hText;
+    private readonly TextGraphic _hText;
     
 
     public TextLabel(float layer, Rect position, Colour labelColour, HFont font, string text, Colour textColour)
         : base(layer, position, labelColour)
     {
-        Add(_hText = new HText(font, textColour, position.Zeroed, text)
+        Add(_hText = new TextGraphic(font, textColour, position.Zeroed, text)
         {
             HAlignment = HAlignment.Centred,
             VAlignment = VAlignment.Centred,
@@ -19,7 +19,7 @@ public class TextLabel : Entity
     public TextLabel(float layer, Rect position, string labelGraphic, HFont font, string text, Colour textColour)
         : base(layer, position, labelGraphic)
     {
-        Add(_hText = new HText(font, textColour, position.Zeroed, text)
+        Add(_hText = new TextGraphic(font, textColour, position.Zeroed, text)
         {
             HAlignment = HAlignment.Centred,
             VAlignment = VAlignment.Centred,
