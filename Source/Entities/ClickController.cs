@@ -176,6 +176,10 @@ internal class ClickController : AddableBase, IUpdatable
 
     public void Update(float elapsed)
     {
+        //what about if an object becomes non-visible after mouse has been pressed?
+        if (!_target.Visible)
+            return;
+
         switch (_state)
         {
             case ClickState.None:
