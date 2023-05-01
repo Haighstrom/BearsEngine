@@ -100,6 +100,8 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
 
     public void Add(IAddable e)
     {
+        Ensure.ArgumentNotNull(e, nameof(e));
+
         if (e.Parent is not null)
             Log.Warning($"Added Entity {e} to Container {this} when it was already in Container {e.Parent}.");
 
@@ -117,6 +119,8 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
 
     public void Add(params IAddable[] entities)
     {
+        Ensure.ArgumentNotNull(entities, nameof(entities));
+
         foreach (var e in entities)
             Add(e);
     }
