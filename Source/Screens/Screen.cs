@@ -2,7 +2,7 @@
 
 namespace BearsEngine;
 
-public class Screen : IContainer, IScene
+public class Screen : IScreen
 {
     private static float GetEntityLayer(IAddable a)
     {
