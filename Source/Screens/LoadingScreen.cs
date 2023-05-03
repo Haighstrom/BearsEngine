@@ -7,7 +7,7 @@ namespace BearsEngine;
 /// <summary>
 /// Abstract base class to inherit from when making loading screen worlds that load assets on a seperate thread
 /// </summary>
-public abstract class LoadingScreenWorld : Screen
+public abstract class LoadingScreen : Screen
 {
     private static IntPtr CreateRenderContext(IntPtr deviceContext, (int major, int minor) openGLversion)
     {
@@ -28,7 +28,7 @@ public abstract class LoadingScreenWorld : Screen
     private IntPtr _loadingRenderContext;
 
 
-    public LoadingScreenWorld()
+    public LoadingScreen()
         : base()
     {
     }
