@@ -1,5 +1,6 @@
 ﻿using BearsEngine.Source.Tools.IO;
 using BearsEngine.Source.Tools.IO.FileDirectory;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Xml.Serialization;
 
@@ -31,13 +32,13 @@ public static class Files
 
     public static string? GetDirectoryFromFilePath(string filePath) => Instance.GetDirectoryFromFilePath(filePath);
 
-    public static T[,] ReadCsvFile<T>(string filename) where T : IConvertible => Instance.ReadCsvFile<T>(filename);
+    public static T[,] ReadCsvFile<T>(string filename, char separator = ',') where T : IConvertible => Instance.ReadCsvFile<T>(filename, separator);
 
     public static M ReadJsonFile<M>(string filename) => Instance.ReadJsonFile<M>(filename);
 
     public static M LoadXML<M>(string fileName) where M : struct => Instance.LoadXML<M>(fileName);
 
-    public static void WriteCsvFile<T>(string filename, T[,] data) where T : IConvertible => Instance.WriteCsvFile(filename, data);
+    public static void WriteCsvFile<T>(string filename, T[,] data, char separator = ',') where T : IConvertible => Instance.WriteCsvFile(filename, data, separator);
 
     public static void WriteJsonFile<M>(string filename, M @object) => Instance.WriteJsonFile(filename, @object);
 

@@ -2,7 +2,7 @@
 
 internal interface ICsvFileIoHelper
 {
-    T[,] ReadCsvFile<T>(string filename) where T : IConvertible;
+    T[,] ReadCsvFile<T>(string filename, char separator = ',') where T : IConvertible;
 
-    void WriteCsvFile<T>(string filename, T[,] data) where T : IConvertible;
+    void WriteCsvFile<T>(string filename, T[,] data, char separator = ',') where T : IConvertible;
 }

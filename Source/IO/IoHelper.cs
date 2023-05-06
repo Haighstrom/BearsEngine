@@ -46,13 +46,13 @@ public class IOHelper : IIoHelper
 
     public string? GetDirectoryFromFilePath(string filePath) => _directoryHelper.GetDirectoryFromFilePath(filePath);
 
-    public T[,] ReadCsvFile<T>(string filename) where T : IConvertible => _csvSerialiser.ReadCsvFile<T>(filename);
+    public T[,] ReadCsvFile<T>(string filename, char separator = ',') where T : IConvertible => _csvSerialiser.ReadCsvFile<T>(filename, separator);
 
     public M? ReadJsonFile<M>(string filename) => _jsonSerialiser.ReadJsonFile<M>(filename);
 
     public M LoadXML<M>(string fileName) where M : struct => _xmlSerialiser.LoadXML<M>(fileName);
 
-    public void WriteCsvFile<T>(string filename, T[,] data) where T : IConvertible => _csvSerialiser.WriteCsvFile(filename, data);
+    public void WriteCsvFile<T>(string filename, T[,] data, char separator = ',') where T : IConvertible => _csvSerialiser.WriteCsvFile(filename, data, separator);
 
     public void WriteJsonFile<M>(string filename, M @object) => _jsonSerialiser.WriteJsonFile(filename, @object);
 
