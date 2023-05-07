@@ -1,4 +1,6 @@
-﻿namespace BearsEngine.Worlds.Cameras;
+﻿using BearsEngine.Worlds.Cameras;
+
+namespace BearsEngine.Source.Controllers.CameraControllers;
 
 
 public class CameraMoveWhenMouseAtEdgeController : UpdateableBase
