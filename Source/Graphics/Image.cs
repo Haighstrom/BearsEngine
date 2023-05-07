@@ -20,13 +20,18 @@ public class Image : RectGraphicBase
     {
     }
 
-    public Image(string imgPath, Point size, Point pos)
+    public Image(string imgPath, Point position, float width, float height)
+        : this(imgPath, position.X, position.Y, width, height)
+    {
+    }
+
+    public Image(string imgPath, Point pos, Point size)
         : this(imgPath, pos.X, pos.Y, size.X, size.Y)
     {
     }
 
-    public Image(string imgPath, Point size, float x = 0, float y = 0)
-        : this(imgPath, x, y, size.X, size.Y)
+    public Image(string imgPath, Point size)
+        : this(imgPath, 0, 0, size.X, size.Y)
     {
     }
     public Image(float layer, string imgPath, float w, float h)
@@ -55,13 +60,13 @@ public class Image : RectGraphicBase
     {
     }
 
-    public Image(Colour colour, Point size, Point pos)
+    public Image(Colour colour, Point pos, Point size)
         : this(colour, pos.X, pos.Y, size.X, size.Y)
     {
     }
 
-    public Image(Colour colour, Point size, float x = 0, float y = 0)
-        : this(colour, x, y, size.X, size.Y)
+    public Image(Colour colour, Point size)
+        : this(colour, 0, 0, size.X, size.Y)
     {
     }
 

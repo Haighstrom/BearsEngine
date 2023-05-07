@@ -19,6 +19,11 @@ public class Sprite : RectGraphicBase
     {
     }
 
+    public Sprite(string imgPath, Point position, float width, float height, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
+        : this(0, imgPath, position.X, position.Y, width, height, spriteSheetColumns, spriteSheetRows, initialFrame)
+    {
+    }
+
     public Sprite(string imgPath, Point size, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
         : this(DefaultLayer, imgPath, 0, 0, size.X, size.Y, spriteSheetColumns, spriteSheetRows, initialFrame)
     {
