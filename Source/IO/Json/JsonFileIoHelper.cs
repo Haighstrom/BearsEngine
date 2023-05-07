@@ -23,6 +23,8 @@ internal class JsonFileIoHelper : IJsonFileIoHelper
 
     public T ReadJsonFile<T>(string filename)
     {
+        Ensure.FileExists(filename);
+
         var json = System.IO.File.ReadAllText(filename);
         return JsonSerializer.Deserialize<T>(json, _options);
     }
