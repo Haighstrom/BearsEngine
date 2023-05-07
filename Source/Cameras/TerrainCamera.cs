@@ -4,6 +4,15 @@ public class TerrainCamera : Camera, ITerrainCamera
 {
     protected SpriteMap SpriteMap { get; private set; }
 
+    public TerrainCamera(int[,] map, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, float layer, Rect position, Rect viewport)
+        : base(layer, position, viewport)
+    {
+        Add(SpriteMap = new SpriteMap(map, defaultIndex, 1, 1, terrainSpriteSheetPath, spriteSheetW, spriteSheetH));
+        ViewChanged += (o, s) => { SpriteMap.DrawArea = View; };
+        MaxX = map.GetLength(0);
+        MaxY = map.GetLength(1);
+    }
+
     public TerrainCamera(int mapW, int mapH, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, float layer, Rect position, float tileSizeW, float tileSizeH)
         : this(ArrayHelper.CreateFilledArray(mapW, mapH, defaultIndex), defaultIndex, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, tileSizeW, tileSizeH)
     {
@@ -21,15 +30,6 @@ public class TerrainCamera : Camera, ITerrainCamera
     public TerrainCamera(int mapW, int mapH, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, float layer, Rect position, Rect viewport)
         : this(ArrayHelper.CreateFilledArray(mapW, mapH, defaultIndex), defaultIndex, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, viewport)
     {
-    }
-
-    public TerrainCamera(int[,] map, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, float layer, Rect position, Rect viewport)
-        : base(layer, position, viewport)
-    {
-        Add(SpriteMap = new SpriteMap(map, defaultIndex, 1, 1, terrainSpriteSheetPath, spriteSheetW, spriteSheetH));
-        ViewChanged += (o, s) => { SpriteMap.DrawArea = View; };
-        MaxX = map.GetLength(0);
-        MaxY = map.GetLength(1);
     }
 
     public virtual int this[int x, int y]
