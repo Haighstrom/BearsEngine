@@ -322,6 +322,8 @@ public static class OpenGL
         if (TextureDictionary.ContainsKey(path))
             return TextureDictionary[path];
 
+        Ensure.FileExists(path);
+
         Texture t = GenTexture(path, minMagFilter);
         TextureDictionary.Add(path, t);
 
