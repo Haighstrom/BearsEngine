@@ -418,12 +418,12 @@ public static class OpenGL
 
     public static void WriteBitmapToFile(System.Drawing.Bitmap b, string targetPath)
     {
-        string directory = Path.GetDirectoryName(targetPath);
-        string fileName = Path.GetFileName(targetPath);
-        if (!Directory.Exists(directory))
-        {
-            Directory.CreateDirectory(directory);
-        }
+        //string directory = Path.GetDirectoryName(targetPath);
+        //string fileName = Path.GetFileName(targetPath);
+        //if (!Directory.Exists(directory))
+        //{
+        //    Directory.CreateDirectory(directory);
+        //}
         b.Save(targetPath);
     }
 

@@ -99,7 +99,7 @@ public class HFont : IDisposable
 
     private static Font LoadFontPreinstalled(string fontName, float size, FontStyle style)
     {
-        var Font = new Font(fontName, size, (System.Drawing.FontStyle)style);
+        var Font = new Font(fontName, size, (System.Drawing.FontStyle)style, GraphicsUnit.Pixel);
 
         if (Font.Name == fontName)
             return Font;
@@ -122,7 +122,7 @@ public class HFont : IDisposable
 
         pfc.AddFontFile(fontPath);
 
-        return new Font(pfc.Families[0], size, (System.Drawing.FontStyle)style);
+        return new Font(pfc.Families[0], size, (System.Drawing.FontStyle)style, GraphicsUnit.Pixel);
     }
 
     private readonly object _syncRoot = new();
@@ -196,7 +196,7 @@ public class HFont : IDisposable
 
     private Bitmap GenerateCharacterBitmap(char c, Font font, bool antiAliased)
     {
-        Bitmap image = new((int)font.Size * 2, (int)font.Size * 2, PixelFormat.Format32bppArgb);
+        Bitmap image = new((int)font.Size * 3, (int)font.Size * 3, PixelFormat.Format32bppArgb);
         var g = System.Drawing.Graphics.FromImage(image);
         g.TextRenderingHint = antiAliased ? TextRenderingHint.AntiAlias : TextRenderingHint.AntiAliasGridFit;
         g.SmoothingMode = antiAliased ? SmoothingMode.AntiAlias : SmoothingMode.Default;
