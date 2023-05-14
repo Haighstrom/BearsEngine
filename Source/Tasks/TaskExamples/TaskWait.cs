@@ -2,12 +2,12 @@
 
 public class TaskWait : Task
 {
-    private readonly float _waitTime;
+    private readonly float _initialWaitTime;
     private float _remainingTime;
 
     public TaskWait(float waitTime)
     {
-        _waitTime = waitTime;
+        _initialWaitTime = waitTime;
         CompletionConditions.Add(() => _remainingTime <= 0);
     }
 
@@ -15,13 +15,15 @@ public class TaskWait : Task
     {
         base.Start();
 
-        _remainingTime = _waitTime;
+        _remainingTime = _initialWaitTime;
     }
 
     public override void Update(float elapsed)
     {
         base.Update(elapsed);
 
-        _remainingTime -= (float)elapsed;
+        _remainingTime -= elapsed;
     }
+
+    public float PercentComplete => Maths.Clamp((int)(10 * (_initialWaitTime - _remainingTime) / _initialWaitTime) / 10f, 0, 1);
 }
