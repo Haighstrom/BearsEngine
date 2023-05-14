@@ -26,7 +26,7 @@ public class HFont : IDisposable
     }
 
     public const string DEFAULT_FONT = "Times New Roman";
-    public const float DEFAULT_SIZE = 12;
+    public const float DEFAULT_SIZE = 20;
     public const FontStyle DEFAULT_FONTSTYLE = FontStyle.Regular;
     public const bool DEFAULT_AA = false;
     private const string DEFAULT_CHARS_TO_LOAD = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 !£$%^&*()-=_+[]{};'#:@~,./<>?|`¬¦€""\";
