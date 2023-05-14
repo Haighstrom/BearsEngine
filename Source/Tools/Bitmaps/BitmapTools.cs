@@ -18,6 +18,8 @@ internal static class BitmapTools
 
     public static Bitmap LoadBitmap(string path)
     {
+        Ensure.FileExists(path);
+
         return new Bitmap(path);
     }
 
