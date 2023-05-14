@@ -86,6 +86,11 @@ public class TextGraphic : RectGraphicBase, IDisposable
     {
     }
 
+    public TextGraphic(TextTheme theme, float x, float y, float width, float height, string text = "")
+        : this(new DefaultShader(), theme.Font, theme.FontColour, x, y, width, height, text, theme.FontScale, theme.FontScale, theme.HAlignment, theme.VAlignment)
+    {
+    }
+
     public TextGraphic(TextTheme theme, Point size, string text = "")
         : this(new DefaultShader(), theme.Font, theme.FontColour, 0, 0, size.X, size.Y, text, theme.FontScale, theme.FontScale, theme.HAlignment, theme.VAlignment)
     {
