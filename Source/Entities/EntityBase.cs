@@ -1,6 +1,8 @@
-﻿namespace BearsEngine.Worlds;
+﻿using System.Collections.Generic;
 
-public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLayer, IContainer, IPosition, IDisposable
+namespace BearsEngine.Worlds;
+
+public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLayer, IEntityContainer, IPosition, IDisposable
 {
     private static float GetEntityLayer(IAddable a)
     {
@@ -29,7 +31,7 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
 
     public virtual bool Active { get; set; } = true;
 
-    public ICollection<IAddable> Entities => _entities.ToArray(); //recast to avoid collection modification
+    public IReadOnlyCollection<IAddable> Entities => _entities.AsReadOnly();
 
     public float Layer
     {
@@ -136,7 +138,7 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
 
             if (considerChildren)
             {
-                if (a is IContainer c)
+                if (a is IEntityContainer c)
                     list.AddRange(c.GetEntities<E>());
             }
         }
@@ -155,7 +157,7 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
 
             if (considerChildren)
             {
-                if (a is IContainer c)
+                if (a is IEntityContainer c)
                     list.AddRange(c.GetEntities<E>(p));
             }
         }
@@ -174,7 +176,7 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
 
             if (considerChildren)
             {
-                if (a is IContainer c)
+                if (a is IEntityContainer c)
                     list.AddRange(c.GetEntities<E>(r));
             }
         }
@@ -192,7 +194,7 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
 
             if (considerChildren)
             {
-                if (a is IContainer c)
+                if (a is IEntityContainer c)
                     list.AddRange(c.GetEntities<E>(other));
             }
         }

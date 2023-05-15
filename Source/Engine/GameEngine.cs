@@ -81,6 +81,8 @@ public class GameEngine : IGameEngine
         set => _sceneManager.ChangeScene(value);
     }
 
+    public IUpdateableContainer UpdateContainer { get; } = new UpdateableContainer(); //todo: this is dumb and we all know it
+
     public int UpdateFramesPerSecond { get; private set; }
 
     private void LogPeriodicInfo()
@@ -107,6 +109,8 @@ public class GameEngine : IGameEngine
     {
         Mouse.Update(InputManager.MouseState);
         Keyboard.Update(InputManager.KeyboardState);
+
+        UpdateContainer.Update(elapsedTime);
 
         if (RunWhenUnfocussed || Window.Focussed)
         {

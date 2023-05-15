@@ -27,6 +27,8 @@ public static class Engine
         set => _instance = value;
     }
 
+    public static IUpdateableContainer UpdateContainer => Instance.UpdateContainer;
+
     /// <summary>
     /// The current Scene. Set this value to change to a new Scene or Screen.
     /// </summary>

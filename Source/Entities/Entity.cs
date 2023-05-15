@@ -89,7 +89,7 @@ public class Entity : EntityBase, IClickable, ICollideable
 
     public float TimeToHover { get; set; } = DefaultHoverTime;
 
-    public virtual Rect WindowPosition => Parent.GetWindowPosition(R);
+    public virtual Rect WindowPosition => (Parent as IEntityContainer)!.GetWindowPosition(R);
 
     void IClickable.OnLeftClicked()
     {
@@ -162,7 +162,7 @@ public class Entity : EntityBase, IClickable, ICollideable
         base.Render(ref projection, ref mv);
     }
 
-    public override Point GetWindowPosition(Point localCoords) => Parent.GetWindowPosition(new Point(X, Y) + localCoords);
+    public override Point GetWindowPosition(Point localCoords) => (Parent as IEntityContainer)!.GetWindowPosition(new Point(X, Y) + localCoords);
 
     public override Rect GetWindowPosition(Rect localCoords)
     {
@@ -171,7 +171,7 @@ public class Entity : EntityBase, IClickable, ICollideable
         return new Rect(tl, br.X - tl.X, br.Y - tl.Y);
     }
 
-    public override Point GetLocalPosition(Point windowCoords) => Parent.GetLocalPosition(windowCoords - new Point(X, Y));
+    public override Point GetLocalPosition(Point windowCoords) => (Parent as IEntityContainer)!.GetLocalPosition(windowCoords - new Point(X, Y));
 
     public override Rect GetLocalPosition(Rect windowCoords)
     {

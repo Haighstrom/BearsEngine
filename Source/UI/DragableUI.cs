@@ -23,7 +23,7 @@ public class DragableUI : Entity
 
     protected virtual Rect DragGrabArea => R;
 
-    public override Rect WindowPosition => Parent!.GetWindowPosition(DragGrabArea);
+    public override Rect WindowPosition => (Parent as IEntityContainer)!.GetWindowPosition(DragGrabArea);
 
     public override void Update(float elapsed)
     {
