@@ -1,8 +1,9 @@
-﻿namespace BearsEngine.Graphics;
-
-public interface IGraphic : IAddable, IRenderableOnLayer
+﻿namespace BearsEngine.Graphics
 {
-    byte Alpha { get; set; }
+    public interface IGraphic : IAddable, IRenderableOnLayer
+    {
+        byte Alpha { get; set; }
 
-    Colour Colour { get; set; }
+        Colour Colour { get; set; }
+    }
 }

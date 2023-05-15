@@ -1,6 +1,6 @@
 ﻿namespace BearsEngine.Worlds.Cameras;
 
-public interface ICamera : IRectangular, IAddable, IUpdatable, IRenderableOnLayer, IEntityContainer
+public interface ICamera : IRectangular, IAddable, IUpdatable, IRenderableOnLayer, IContainer
 {
     Rect View { get; }
 

@@ -24,7 +24,7 @@ public class Screen : IScreen
 
     public Colour BackgroundColour { get; set; } = Colour.CornflowerBlue;
 
-    public IReadOnlyCollection<IAddable> Entities => _entities.AsReadOnly(); //recast to avoid collection modification
+    public ICollection<IAddable> Entities => _entities.ToArray(); //recast to avoid collection modification
 
     public Point LocalMousePosition => Mouse.ClientP;
 
@@ -108,7 +108,7 @@ public class Screen : IScreen
 
             if (considerChildren)
             {
-                if (a is IEntityContainer c)
+                if (a is IContainer c)
                     list.AddRange(c.GetEntities<E>());
             }
         }
@@ -127,7 +127,7 @@ public class Screen : IScreen
 
             if (considerChildren)
             {
-                if (a is IEntityContainer c)
+                if (a is IContainer c)
                     list.AddRange(c.GetEntities<E>(p));
             }
         }
@@ -146,7 +146,7 @@ public class Screen : IScreen
 
             if (considerChildren)
             {
-                if (a is IEntityContainer c)
+                if (a is IContainer c)
                     list.AddRange(c.GetEntities<E>(r));
             }
         }
@@ -164,7 +164,7 @@ public class Screen : IScreen
 
             if (considerChildren)
             {
-                if (a is IEntityContainer c)
+                if (a is IContainer c)
                     list.AddRange(c.GetEntities<E>(other));
             }
         }

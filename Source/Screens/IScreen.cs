@@ -2,6 +2,6 @@
 
 namespace BearsEngine;
 
-public interface IScreen : IEntityContainer, IScene
+public interface IScreen : IContainer, IScene
 {
 }

@@ -24,6 +24,6 @@ public class FollowMouseController : AddableBase, IUpdatable
         if (_target.Parent is null)
             throw new NullReferenceException($"The Target ({_target}) of Follow Mouse Controller ({this}) is not added to anything, so its mouse position cannot be resolved.");
 
-        _target.P = (_target.Parent as IEntityContainer)!.LocalMousePosition + Shift;
+        _target.P = _target.Parent.LocalMousePosition + Shift;
     }
 }

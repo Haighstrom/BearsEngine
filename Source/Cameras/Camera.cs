@@ -200,7 +200,7 @@ namespace BearsEngine.Worlds.Cameras
 
         public override Point GetLocalPosition(Point windowCoords)
         {
-            var p1 = (Parent as IEntityContainer)!.GetLocalPosition(windowCoords);
+            var p1 = Parent.GetLocalPosition(windowCoords);
             var p2 = new Point(
                 (p1.X - X) / (W / View.W) + View.X,
                 (p1.Y - Y) / (H / View.H) + View.Y
@@ -218,7 +218,7 @@ namespace BearsEngine.Worlds.Cameras
 
         public override Point GetWindowPosition(Point localCoords)
         {
-            return (Parent as IEntityContainer)!.GetWindowPosition(new Point(
+            return Parent.GetWindowPosition(new Point(
                 X + W / View.W * (localCoords.X - View.X),
                 Y + H / View.H * (localCoords.Y - View.Y)
                 ));
