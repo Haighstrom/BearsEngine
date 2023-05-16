@@ -3,7 +3,7 @@
 /// <summary>
 /// A controller for automatically updating Layer in an entity as its Y position updates
 /// </summary>
-public class YIndexedLayerController : AddableBase, IUpdatable
+public class YIndexedLayerController : AddableBase
 {
     private readonly float _baseY;
     private readonly Entity _target;
@@ -19,20 +19,8 @@ public class YIndexedLayerController : AddableBase, IUpdatable
         _baseY = baseY;
 
         _target.PositionChanged += OnTargetPositionChanged;
+        _target.Layer = _baseY - target.Y;
     }
 
-    /// <summary>
-    /// Whether this object should be updated
-    /// </summary>
-    public bool Active { get; set; } = true;
-
-    private void OnTargetPositionChanged(object? sender, PositionChangedEventArgs e) => _target.Layer = (int)(_baseY - e.NewR.Y);
-    
-    /// <summary>
-    /// Update this object
-    /// </summary>
-    /// <param name="elapsed">How much time should pass for the object</param>
-    public void Update(float elapsed)
-    {
-    }
+    private void OnTargetPositionChanged(object? sender, PositionChangedEventArgs e) => _target.Layer = _baseY - e.NewR.Y;
 }
