@@ -23,4 +23,10 @@ public class YIndexedLayerController : AddableBase
     }
 
     private void OnTargetPositionChanged(object? sender, PositionChangedEventArgs e) => _target.Layer = _baseY - e.NewR.Y;
+
+    public override void OnRemoved()
+    {
+        base.OnRemoved();
+        _target.PositionChanged -= OnTargetPositionChanged;
+    }
 }
