@@ -14,7 +14,6 @@ public class Screen : IScreen
 
     private bool _disposed = false;
     private readonly List<IAddable> _entities = new();
-    private readonly List<IAddable> _entitiesToBeRemoved = new();
 
     public Screen()
     {
@@ -51,25 +50,6 @@ public class Screen : IScreen
         }
 
         _entities.Add(entityToAdd);
-    }
-
-    private void FinaliseEntityRemoval()
-    {
-        foreach (var e in _entitiesToBeRemoved)
-        {
-            e.Parent = null;
-
-            _entities.Remove(e);
-
-            if (e is IRenderableOnLayer re)
-            {
-                re.LayerChanged -= OnIRenderableLayerChanged;
-            }
-
-            e.OnRemoved();
-        }
-
-        _entitiesToBeRemoved.Clear();
     }
 
     public void Add(IAddable e)
@@ -184,7 +164,16 @@ public class Screen : IScreen
         if (e.Parent != this)
             Log.Warning($"Requested Entity {e} to be removed from Container {this} when its Parent was {e.Parent}.");
 
-        _entitiesToBeRemoved.Add(e);
+        e.Parent = null;
+
+        _entities.Remove(e);
+
+        if (e is IRenderableOnLayer re)
+        {
+            re.LayerChanged -= OnIRenderableLayerChanged;
+        }
+
+        e.OnRemoved();
     }
 
     public void RemoveAll()
@@ -225,8 +214,6 @@ public class Screen : IScreen
         }
 
         ClickController.DetermineMouseEventOutcomes();
-
-        FinaliseEntityRemoval();
     }
 
     protected virtual void Dispose(bool disposing)

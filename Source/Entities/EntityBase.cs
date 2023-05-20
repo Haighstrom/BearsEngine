@@ -11,7 +11,6 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
     }
 
     private readonly List<IAddable> _entities = new();
-    private readonly List<IAddable> _entitiesToBeRemoved = new();
     private float _layer;
     private bool _disposed;
 
@@ -73,29 +72,6 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
         }
 
         _entities.Add(entityToAdd);
-    }
-
-    private void FinaliseEntityRemoval()
-    {
-        foreach (var e in _entitiesToBeRemoved)
-        {
-            _entities.Remove(e);
-
-            if (e.Parent == this) //avoid disposing this entity if its parent was swapped in one frame (i.e. remove then add called)
-            {
-                e.Parent = null;
-
-
-                if (e is IRenderableOnLayer re)
-                {
-                    re.LayerChanged -= OnIRenderableLayerChanged;
-                }
-
-                e.OnRemoved();
-            }
-        }
-
-        _entitiesToBeRemoved.Clear();
     }
 
     public void Add(IAddable e)
@@ -212,7 +188,16 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
         if (e.Parent != this)
             Log.Warning($"Requested Entity {e} to be removed from Container {this} when its Parent was {e.Parent}.");
 
-        _entitiesToBeRemoved.Add(e);
+        _entities.Remove(e);
+
+        e.Parent = null;
+
+        if (e is IRenderableOnLayer re)
+        {
+            re.LayerChanged -= OnIRenderableLayerChanged;
+        }
+
+        e.OnRemoved();
     }
 
     public void RemoveAll()
@@ -241,8 +226,6 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
                 u.Update(elapsed);
             }
         }
-
-        FinaliseEntityRemoval();
     }
 
     protected virtual void Dispose(bool disposedCorrectly)
