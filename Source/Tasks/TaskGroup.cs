@@ -46,7 +46,7 @@ public class TaskGroup : ITask
     public bool IsComplete => CurrentTask == null && CompletionConditions.All(c => c());
     public ITask? NextTask { get; set; } = null;
 
-    public void AddTasks(params ITask[] tasks) => AddTasks(tasks);
+    public void AddTasks(params ITask[] tasks) => AddTasks((IList<ITask>)tasks);
 
     public void AddTasks(IList<ITask> tasks)
     {
