@@ -40,7 +40,8 @@ public class GameEngine : IGameEngine
     private readonly int _targetUPS, _targetRPS;
     private readonly ISceneManager _sceneManager;
 
-    public static bool RunWhenUnfocussed { get; set; } = true;
+    public static bool KeyboardUpdatesWhenWindowUnfocussed { get; set; } = false; //todo: move to IEngine
+    public static bool RunWhenUnfocussed { get; set; } = true; //todo: move to IEngine
 
     public GameEngine(EngineSettings settings, IAppInitialiser initialiser)
     {
@@ -105,8 +106,12 @@ public class GameEngine : IGameEngine
 
     private void Update(float elapsedTime)
     {
-        Mouse.Update(InputManager.MouseState);
-        Keyboard.Update(InputManager.KeyboardState);
+        Mouse.Update(InputManager.MouseState); //caution about changing this to avoid keys getting stuck down etc
+
+        if (KeyboardUpdatesWhenWindowUnfocussed || Window.Focussed)
+        {
+            Keyboard.Update(InputManager.KeyboardState);
+        }
 
         if (RunWhenUnfocussed || Window.Focussed)
         {
