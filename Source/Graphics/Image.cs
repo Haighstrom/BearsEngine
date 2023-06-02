@@ -15,6 +15,11 @@ public class Image : RectGraphicBase
     {
     }
 
+    public Image(float layer, string imgPath, Point size)
+        : this(layer, imgPath, 0, 0, size.X, size.Y)
+    {
+    }
+
     public Image(string imgPath, Rect r)
         : this(imgPath, r.X, r.Y, r.W, r.H)
     {
