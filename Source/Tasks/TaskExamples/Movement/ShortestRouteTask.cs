@@ -2,12 +2,12 @@
 
 namespace BearsEngine.Tasks;
 
-public class TaskShortestRoute : Task
+public class ShortestRouteTask : Task
 {
     private readonly IWaypointable _entity;
     private readonly IPosition _destination;
 
-    public TaskShortestRoute(IWaypointable entity, IPosition destination)
+    public ShortestRouteTask(IWaypointable entity, IPosition destination)
     {
         _entity = entity;
         _destination = destination;

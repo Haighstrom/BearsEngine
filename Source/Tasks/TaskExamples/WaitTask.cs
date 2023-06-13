@@ -1,11 +1,11 @@
 ﻿namespace BearsEngine.Tasks;
 
-public class TaskWait : Task
+public class WaitTask : Task
 {
     private readonly float _initialWaitTime;
     private float _remainingTime;
 
-    public TaskWait(float waitTime)
+    public WaitTask(float waitTime)
     {
         _initialWaitTime = waitTime;
         CompletionConditions.Add(() => _remainingTime <= 0);

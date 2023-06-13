@@ -2,13 +2,13 @@
 
 namespace BearsEngine.Pathfinding;
 
-public class TaskAStarRoute<N> : Task where N : IPathfindNode<N>, IPosition
+public class FindPathAndMoveTask<N> : Task where N : IPathfindNode<N>, IPosition
 {
     private readonly IPathfinder<N> _pathfinder;
     private readonly IWaypointableAndPathable<N> _entity;
     private readonly N _destination;
 
-    public TaskAStarRoute(IPathfinder<N> pathfinder, IWaypointableAndPathable<N> entity, N destination)
+    public FindPathAndMoveTask(IPathfinder<N> pathfinder, IWaypointableAndPathable<N> entity, N destination)
     {
         _pathfinder = pathfinder;
         _entity = entity;

@@ -2,12 +2,12 @@
 
 namespace BearsEngine.Tasks;
 
-public class TaskFlyTo : Task
+public class FlyToTask : Task
 {
     private readonly IWaypointable _entity;
     private readonly IPosition _destination;
 
-    public TaskFlyTo(IWaypointable entity, IPosition destination)
+    public FlyToTask(IWaypointable entity, IPosition destination)
     {
         _entity = entity;
         _destination = destination;

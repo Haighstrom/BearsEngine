@@ -2,12 +2,12 @@
 
 namespace BearsEngine.Tasks;
 
-public class TaskFollowWaypoints : Task
+public class FollowWaypointsTask : Task
 {
     private readonly IWaypointable _entity;
     private readonly IEnumerable<IPosition> _waypoints;
 
-    public TaskFollowWaypoints(IWaypointable entity, IEnumerable<IPosition> waypoints)
+    public FollowWaypointsTask(IWaypointable entity, IEnumerable<IPosition> waypoints)
     {
         _entity = entity;
         _waypoints = waypoints;
@@ -15,7 +15,7 @@ public class TaskFollowWaypoints : Task
         CompletionConditions.Add(() => entity.WaypointController.ReachedDestination);
     }
 
-    public TaskFollowWaypoints(IWaypointable entity, params IPosition[] waypoints)
+    public FollowWaypointsTask(IWaypointable entity, params IPosition[] waypoints)
     {
         _entity = entity;
         _waypoints = waypoints;

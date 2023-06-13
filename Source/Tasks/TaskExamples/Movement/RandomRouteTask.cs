@@ -2,14 +2,14 @@
 
 namespace BearsEngine.Tasks;
 
-public class TaskRandomRoute<N> : Task where N : IPathfindNode<N>, IPosition
+public class RandomRouteTask<N> : Task where N : IPathfindNode<N>, IPosition
 {
     private readonly IPathfinder<N> _pathfinder;
     private readonly int _maxSteps;
     private readonly IWaypointableAndPathable<N> _entity;
     private readonly bool _canBacktrack;
 
-    public TaskRandomRoute(IPathfinder<N> pathfinder, IWaypointableAndPathable<N> entity, int maxSteps, bool canBacktrack)
+    public RandomRouteTask(IPathfinder<N> pathfinder, IWaypointableAndPathable<N> entity, int maxSteps, bool canBacktrack)
     {
         _pathfinder = pathfinder;
         _entity = entity;
