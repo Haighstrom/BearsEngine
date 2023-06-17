@@ -1,6 +1,6 @@
 ﻿namespace BearsEngine.Graphics
 {
-    public class HPBar : ProgressBar
+    public class HPBar : FillableBar
     {
         public HPBar(string graphicPath, Rect r, float initialPercentage = 1)
             : base(graphicPath, r, initialPercentage)
@@ -23,7 +23,7 @@
         }
 
         public HPBar(string graphicPath, Point size, Point offset, float initialPercentage = 1)
-            : base(graphicPath, size, offset, initialPercentage)
+            : base(graphicPath, offset, size, initialPercentage)
         {
         }
         
