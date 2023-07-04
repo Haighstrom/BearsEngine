@@ -6,7 +6,7 @@ public class WeightedRandomiser<T>
     private readonly List<(T item, double accumWeight)> _items = new();
     private double _totalWeight;
 
-    public WeightedRandomiser(bool removeWhenTakingItem) 
+    public WeightedRandomiser(bool removeWhenTakingItem = false) 
     { 
         _removeWhenTakingItem = removeWhenTakingItem;
     }
