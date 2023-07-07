@@ -173,4 +173,33 @@ public static class Randomisation
             (list[n], list[k]) = (list[k], list[n]);
         }
     }
+
+    public static void Rotate<T>(this IList<T> list, int amountShifted = 1)
+    {
+        Ensure.ArgumentPositive(amountShifted, nameof(amountShifted));
+
+        int listSize = list.Count;
+
+        if (listSize <= 1)
+            return;
+
+        int steps = amountShifted % listSize;
+
+        if (steps == 0)
+            return;
+
+        if (steps < 0)
+            steps += listSize;
+
+        var buffer = new T[steps];
+
+        for (int i = 0; i < steps; i++)
+            buffer[i] = list[i];
+
+        for (int i = steps; i < listSize; i++)
+            list[i - steps] = list[i];
+
+        for (int i = 0; i < steps; i++)
+            list[listSize - steps + i] = buffer[i];
+    }
 }
