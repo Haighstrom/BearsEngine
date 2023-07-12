@@ -11,6 +11,16 @@ public class ProgressBarTimer : ProgressBar
         _remaining = _timeToFill = timeToFill;
     }
 
+    public void Restart()
+    {
+        _remaining = _timeToFill;
+    }
+
+    public void Restart(float newTimeToFill)
+    {
+        _remaining = _timeToFill = newTimeToFill;
+    }
+
     public override void Update(float elapsed)
     {
         base.Update(elapsed);
