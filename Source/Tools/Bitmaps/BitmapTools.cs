@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using BearsEngine.Source.Tools;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
 namespace BearsEngine;
@@ -29,7 +31,7 @@ internal static class BitmapTools
 
         // Lock the entire bitmap for Read/Write access as we'll be reading the pixel
         // colour values and altering them in-place.
-        var bmlock = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, bitmap.PixelFormat);
+        var bmlock = Repeat.TryMethod(() => bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, bitmap.PixelFormat), 5, new TimeSpan(5));
 
         // This code only works with 32bit argb images - assume no alpha if not this format
         if (bmlock.PixelFormat != System.Drawing.Imaging.PixelFormat.Format32bppArgb)
