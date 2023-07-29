@@ -70,16 +70,24 @@ public static class Engine
 
         Log.Instance = new Logger(appSettings.LogSettings);
 
-        Files.Instance = new IOHelper(appSettings.IoSettings);
+        try
+        {
+            Files.Instance = new IOHelper(appSettings.IoSettings);
 
-        Displays.Instance = new DisplayManager();
+            Displays.Instance = new DisplayManager();
 
-        Window.Instance = new HaighWindow(appSettings.WindowSettings);
+            Window.Instance = new HaighWindow(appSettings.WindowSettings);
 
-        Instance = new GameEngine(appSettings.EngineSettings, appInitialiser);
+            Instance = new GameEngine(appSettings.EngineSettings, appInitialiser);
 
-        Instance.Run();
+            Instance.Run();
 
-        Instance.Dispose();
+            Instance.Dispose();
+        }
+
+        catch (Exception ex)
+        {
+            Log.Fatal(ex);
+        }
     }
 }
