@@ -71,7 +71,7 @@ namespace BearsEngine.Worlds.Cameras
             FixedTileSize = false;
 
             //TileWidth/TileHeight set automatically
-            View = viewport;
+            View = new Rect(viewport); //don't keep reference to original viewport
         }
 
         protected bool MSAAEnabled { get => MSAASamples != MSAA_SAMPLES.Disabled; }
