@@ -2,7 +2,7 @@
 
 namespace BearsEngine.Controllers;
 
-public class WaypointController : AddableBase, IUpdatable
+public class WaypointController : AddableBase, IWaypointController
 {
     private readonly IMoveable _target;
     private Direction? _lastDirection;
@@ -19,7 +19,6 @@ public class WaypointController : AddableBase, IUpdatable
         _target = target;
         Waypoints = new List<IPosition>();
     }
-
 
     public bool Active { get; set; } = true;
     public List<IPosition> Waypoints { get; private set; }
