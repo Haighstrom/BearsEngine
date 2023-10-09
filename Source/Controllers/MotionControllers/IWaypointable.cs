@@ -2,5 +2,5 @@
 
 public interface IWaypointable : IMoveable
 {
-    WaypointController WaypointController { get; }
+    IWaypointController WaypointController { get; }
 }
