@@ -92,7 +92,7 @@ public class WaypointMotion : UpdateableBase, IWaypointMotion
                     if (distanceToNextWaypoint > amountToMove)
                     {
                         p = p.Normal;
-                        CurrentPosition = new Point(p.X * amountToMove, p.Y * amountToMove);
+                        CurrentPosition = new Point(CurrentPosition.X + p.X * amountToMove, CurrentPosition.Y + p.Y * amountToMove);
                         amountToMove = 0;
                     }
                     else
