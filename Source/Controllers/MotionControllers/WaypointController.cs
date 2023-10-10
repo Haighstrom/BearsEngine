@@ -5,8 +5,8 @@ namespace BearsEngine.Controllers;
 public class WaypointController : AddableBase, IWaypointController
 {
     private readonly IMoveable _target;
-    private Direction? _lastDirection;
-    private Direction? _direction;
+    private Direction _lastDirection;
+    private Direction _direction;
 
     public WaypointController(IMoveable target, List<IPosition> waypoints)
         : this(target)
@@ -62,10 +62,6 @@ public class WaypointController : AddableBase, IWaypointController
                     }
                 }
             }
-        }
-        else
-        {
-            _direction = null;
         }
 
         if (_direction != _lastDirection)
