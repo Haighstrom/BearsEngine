@@ -2,11 +2,12 @@
 
 namespace BearsEngine.Controllers;
 
-public class WaypointController : AddableBase, IWaypointController
+public class WaypointController : UpdateableBase, IWaypointController
 {
     private readonly IMoveable _target;
     private Direction _lastDirection;
     private Direction _direction;
+    private bool _movingLastFrame;
 
     public WaypointController(IMoveable target, List<IPosition> waypoints)
         : this(target)
@@ -20,17 +21,73 @@ public class WaypointController : AddableBase, IWaypointController
         Waypoints = new List<IPosition>();
     }
 
-    public bool Active { get; set; } = true;
-    public List<IPosition> Waypoints { get; private set; }
-    public IPosition CurrentPosition => _target.P;
-    public IPosition NextWaypoint => !Waypoints.IsEmpty() ? Waypoints[0] : throw new Exception($"Requested WaypointController.NextWaypoint when Waypoints of {_target} is empty.");
-    public bool ReachedDestination => Waypoints.IsEmpty();
+    public IList<IPosition> Waypoints { get; private set; }
 
+    public IPosition CurrentPosition
+    {
+        get
+        {
+            return _target.P;
+        }
+    }
 
-    public virtual void Update(float elapsed)
+    public bool ReachedDestination
+    {
+        get
+        {
+            return Waypoints.IsEmpty();
+        }
+    }
+
+    public event EventHandler<EventArgs>? StartedMoving;
+    public event EventHandler<EventArgs>? ReachedWaypoint;
+    public event EventHandler<DirectionChangedEventArgs>? DirectionChanged;
+    public event EventHandler<EventArgs>? Arrived;
+
+    public IPosition GetNextWaypoint()
+    {
+        Ensure.CollectionNotNullOrEmpty(Waypoints);
+
+        return Waypoints[0];
+    }
+
+    public void ClearWaypoints()
+    {
+        Ensure.NotNull(Waypoints);
+
+        Waypoints.Clear();
+    }
+
+    public void SetWaypoints(params IPosition[] positions)
+    {
+        Waypoints = positions.ToList();
+    }
+
+    public void SetWaypoints(IEnumerable<IPosition> positions)
+    {
+        Waypoints = positions.ToList();
+    }
+
+    public void AddWaypoints(params IPosition[] positions)
+    {
+        Waypoints.Add(positions);
+    }
+
+    public void AddWaypoints(IEnumerable<IPosition> positions)
+    {
+        Waypoints.Add(positions);
+    }
+
+    public override void Update(float elapsed)
     {
         if (!ReachedDestination)
         {
+            if (!_movingLastFrame)
+            {
+                StartedMoving?.Invoke(this, EventArgs.Empty);
+                _movingLastFrame = true;
+            }
+
             float amountToMove = (float)elapsed * _target.Speed;
 
             while (amountToMove > 0 && !Waypoints.IsEmpty())
@@ -38,6 +95,7 @@ public class WaypointController : AddableBase, IWaypointController
                 if (Waypoints[0].X == _target.X && Waypoints[0].Y == _target.Y)
                 {
                     Waypoints.RemoveAt(0);
+                    ReachedWaypoint?.Invoke(this, EventArgs.Empty);
                     Arrived?.Invoke(this, new EventArgs());
                 }
                 else
@@ -62,32 +120,22 @@ public class WaypointController : AddableBase, IWaypointController
                     }
                 }
             }
+
+            if (_direction != _lastDirection)
+            {
+                DirectionChanged?.Invoke(this, new DirectionChangedEventArgs(_lastDirection, _direction));
+            }
+
+            _lastDirection = _direction;
+
+            if (ReachedDestination)
+            {
+                Arrived?.Invoke(this, new EventArgs());
+            }
         }
-
-        if (_direction != _lastDirection)
-            DirectionChanged?.Invoke(this, new DirectionChangedEventArgs(_lastDirection, _direction));
-
-        _lastDirection = _direction;
+        else
+        {
+            _movingLastFrame = false;
+        }
     }
-
-
-    public void ClearWaypoints()
-    {
-        if (Waypoints == null)
-            throw new Exception($"Tried to clear waypoints for WaypointController of {_target}, but its waypoints were not set.");
-
-        Waypoints.Clear();
-    }
-
-
-    public void SetWaypoints(params IPosition[] positions) => Waypoints = positions.ToList();
-    public void SetWaypoints(IEnumerable<IPosition> positions) => Waypoints = positions.ToList();
-
-
-    public void AddWaypoints(params IPosition[] positions) => AddWaypoints(positions);
-    public void AddWaypoints(IEnumerable<IPosition> positions) => Waypoints.AddRange(positions);
-
-
-    public event EventHandler<EventArgs>? Arrived;
-    public event EventHandler<DirectionChangedEventArgs>? DirectionChanged;
 }
