@@ -5,9 +5,8 @@ namespace BearsEngine.Controllers;
 public class WaypointController : UpdateableBase, IWaypointController
 {
     private readonly IMoveable _target;
-    private Direction _lastDirection;
-    private Direction _direction;
-    private bool _movingLastFrame;
+    private Direction? _lastDirection = null;
+    private Direction? _direction = null;
 
     public WaypointController(IMoveable target, List<IPosition> waypoints)
         : this(target)
@@ -39,7 +38,6 @@ public class WaypointController : UpdateableBase, IWaypointController
         }
     }
 
-    public event EventHandler<EventArgs>? StartedMoving;
     public event EventHandler<EventArgs>? ReachedWaypoint;
     public event EventHandler<DirectionChangedEventArgs>? DirectionChanged;
     public event EventHandler<EventArgs>? Arrived;
@@ -80,62 +78,58 @@ public class WaypointController : UpdateableBase, IWaypointController
 
     public override void Update(float elapsed)
     {
-        if (!ReachedDestination)
+        if (ReachedDestination)
         {
-            if (!_movingLastFrame)
+            return;
+        }
+
+        float amountToMove = elapsed * _target.Speed;
+
+        while (amountToMove > 0 && !Waypoints.IsEmpty())
+        {
+            if (Waypoints[0].X == _target.X && Waypoints[0].Y == _target.Y)
             {
-                StartedMoving?.Invoke(this, EventArgs.Empty);
-                _movingLastFrame = true;
+                Waypoints.RemoveAt(0);
+                ReachedWaypoint?.Invoke(this, EventArgs.Empty);
             }
-
-            float amountToMove = (float)elapsed * _target.Speed;
-
-            while (amountToMove > 0 && !Waypoints.IsEmpty())
+            else
             {
-                if (Waypoints[0].X == _target.X && Waypoints[0].Y == _target.Y)
+                Point p = new(Waypoints[0].X - _target.X, Waypoints[0].Y - _target.Y);
+
+                _direction = p.ToDirection();
+
+                float distanceToNextWaypoint = p.Length;
+
+                if (distanceToNextWaypoint > amountToMove)
                 {
-                    Waypoints.RemoveAt(0);
-                    ReachedWaypoint?.Invoke(this, EventArgs.Empty);
-                    Arrived?.Invoke(this, new EventArgs());
+                    p = p.Normal;
+                    _target.X += p.X * amountToMove;
+                    _target.Y += p.Y * amountToMove;
+                    amountToMove = 0;
                 }
                 else
                 {
-                    Point p = new(Waypoints[0].X - _target.X, Waypoints[0].Y - _target.Y);
-                    _direction = p.ToDirection();
-
-                    float distanceToNextWaypoint = p.Length;
-
-                    if (distanceToNextWaypoint > amountToMove)
-                    {
-                        p = p.Normal;
-                        _target.X += p.X * amountToMove;
-                        _target.Y += p.Y * amountToMove;
-                        amountToMove = 0;
-                    }
-                    else
-                    {
-                        _target.X = Waypoints[0].X;
-                        _target.Y = Waypoints[0].Y;
-                        amountToMove -= distanceToNextWaypoint;
-                    }
+                    _target.X = Waypoints[0].X;
+                    _target.Y = Waypoints[0].Y;
+                    amountToMove -= distanceToNextWaypoint;
                 }
             }
-
-            if (_direction != _lastDirection)
-            {
-                DirectionChanged?.Invoke(this, new DirectionChangedEventArgs(_lastDirection, _direction));
-            }
-
-            _lastDirection = _direction;
-
-            if (ReachedDestination)
-            {
-                Arrived?.Invoke(this, new EventArgs());
-            }
         }
-        else
+
+        if (_direction != _lastDirection)
         {
-            _movingLastFrame = false;
+            Ensure.NotNull(_direction);
+
+            DirectionChanged?.Invoke(this, new DirectionChangedEventArgs(_lastDirection, _direction.Value));
         }
+
+        if (ReachedDestination)
+        {
+            Arrived?.Invoke(this, new EventArgs());
+
+            _direction = null;
+        }
+
+        _lastDirection = _direction;
     }
 }

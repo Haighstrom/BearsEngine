@@ -8,10 +8,9 @@ public interface IWaypointController : IAddable, IUpdatable
     bool ReachedDestination { get; }
     IList<IPosition> Waypoints { get; }
 
-    event EventHandler<EventArgs>? Arrived;
     event EventHandler<DirectionChangedEventArgs>? DirectionChanged;
     event EventHandler<EventArgs>? ReachedWaypoint;
-    event EventHandler<EventArgs>? StartedMoving;
+    event EventHandler<EventArgs>? Arrived;
 
     void AddWaypoints(IEnumerable<IPosition> positions);
     void AddWaypoints(params IPosition[] positions);
