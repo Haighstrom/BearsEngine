@@ -212,7 +212,7 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
     {
         foreach (IAddable a in Entities)
         {
-            if (a is IRenderable r && r.Visible && a.Parent == this)
+            if (Parent is not null && a is IRenderable r && r.Visible && a.Parent == this)
                 r.Render(ref projection, ref modelView);
         }
     }
@@ -221,7 +221,8 @@ public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLay
     {
         foreach (IAddable a in Entities)
         {
-            if (a is IUpdatable u && u.Active && a.Parent == this)
+            //Todo: I don't think this solves for parent's parent being removed still... 
+            if (Parent is not null && a is IUpdatable u && u.Active && a.Parent == this)
             {
                 u.Update(elapsed);
             }
