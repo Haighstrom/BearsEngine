@@ -2,6 +2,8 @@
 
 public class Task : ITask
 {
+    public static ITask Empty => new Task();
+
     private bool _isStarted = false;
     protected readonly List<Action> ActionsOnStart = new();
     protected readonly List<Func<bool>> CompletionConditions = new();
