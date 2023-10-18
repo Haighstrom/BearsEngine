@@ -2,12 +2,12 @@
 
 public class MoveFadeRemoveController : UpdateableBase
 {
-    private readonly IRectGraphic _target;
+    private readonly IRectAddable _target;
     private readonly float _speed;
     private readonly Direction _direction;
     private float _duration;
 
-    public MoveFadeRemoveController(IRectGraphic target, float speed, Direction direction, float duration)
+    public MoveFadeRemoveController(IRectAddable target, float speed, Direction direction, float duration)
     {
         _target = target;
         _speed = speed;
