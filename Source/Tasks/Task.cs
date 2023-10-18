@@ -2,7 +2,7 @@
 
 public class Task : ITask
 {
-    public static ITask Empty => new Task();
+    public static ITask DoNothing => new Task();
 
     private bool _isStarted = false;
     protected readonly List<Action> ActionsOnStart = new();
