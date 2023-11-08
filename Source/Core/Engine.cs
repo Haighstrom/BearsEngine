@@ -57,14 +57,23 @@ public static class Engine
     /// <param name="engineSettings">Define the settings for the engine.</param>
     /// <param name="initialiser">A function to initialise the application and start a Scene.</param>
     /// <exception cref="InvalidOperationException">Throws if Engine has not been created.</exception>
-    public static void Run(IAppInitialiser appInitialiser)
+    public static void Run(IAppInitialiser appInitialiser) => Run(appInitialiser.GetApplicationSettings(), appInitialiser.CreateFirstScene, appInitialiser.Initialise);
+
+    /// <summary>
+    /// Starts the application.
+    /// </summary>
+    /// <param name="consoleSettings">Define settings for the Console.</param>
+    /// <param name="logSettings">Define settings for logging.</param>
+    /// <param name="windowSettings">Define the settings for the Window.</param>
+    /// <param name="engineSettings">Define the settings for the engine.</param>
+    /// <param name="initialiser">A function to initialise the application and start a Scene.</param>
+    /// <exception cref="InvalidOperationException">Throws if Engine has not been created.</exception>
+    public static void Run(ApplicationSettings appSettings, Func<IScene> getFirstScene, Action? initialise = null)
     {
         if (_runCalled)
             throw new InvalidOperationException($"It is not permissible to call {nameof(Engine)}.{nameof(Run)} twice.");
 
         _runCalled = true;
-
-        var appSettings = appInitialiser.GetApplicationSettings();
 
         Console.Instance = new ConsoleWindow(appSettings.ConsoleSettings);
 
@@ -76,7 +85,9 @@ public static class Engine
 
         Window.Instance = new HaighWindow(appSettings.WindowSettings);
 
-        Instance = new GameEngine(appSettings.EngineSettings, appInitialiser);
+        initialise?.Invoke();
+
+        Instance = new GameEngine(appSettings.EngineSettings, getFirstScene);
 
         Instance.Run();
 

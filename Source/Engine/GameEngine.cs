@@ -43,7 +43,7 @@ public class GameEngine : IGameEngine
     public static bool KeyboardUpdatesWhenWindowUnfocussed { get; set; } = false; //todo: move to IEngine
     public static bool RunWhenUnfocussed { get; set; } = true; //todo: move to IEngine
 
-    public GameEngine(EngineSettings settings, IAppInitialiser initialiser)
+    public GameEngine(EngineSettings settings, Func<IScene> createFirstScene)
     {
         Log.Debug($"Initialising {nameof(GameEngine)}.");
 
@@ -54,8 +54,7 @@ public class GameEngine : IGameEngine
 
         Log.Debug($"Environment Information:\nMachine: {Environment.MachineName}\nOS: {RuntimeInformation.OSDescription}\nUser: {Environment.UserName}\nProcessors: {Environment.ProcessorCount}\nSystem Architecture: {(Environment.Is64BitOperatingSystem ? "64-bit" : "32-bit")}\nProcess Arcitecture: {(Environment.Is64BitProcess ? "64-bit" : "32-bit")}");
 
-        initialiser.Initialise();
-        _sceneManager = new SceneManager(initialiser.CreateFirstScene());
+        _sceneManager = new SceneManager(createFirstScene());
 
         //TODO: Window.MouseLeftDoubleClicked += (o, a) => HI.MouseLeftDoubleClicked = true;
 
