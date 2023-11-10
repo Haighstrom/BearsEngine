@@ -1,22 +1,22 @@
-﻿using BearsEngine.Worlds.Graphics.Text;
+﻿using BearsEngine.Source.UI.Controls;
+using BearsEngine.Worlds.Graphics.Text;
 
 namespace BearsEngine.UI;
 
-public class DropdownList<T> : Entity
+public class DropdownList<T> : Entity, IDropdownList<T>
 {
     private class DropdownOption : Button
     {
-        private readonly DropdownList<T> _parent;
-        private readonly TextGraphic _text;
+        private readonly IDropdownList<T> _parent;
         private readonly int _listIndex;
 
-        public DropdownOption(DropdownList<T> parent, Rect position, Colour bgColour, HFont font, Colour textColour, string name, int listIndex)
+        public DropdownOption(IDropdownList<T> parent, Rect position, Colour bgColour, HFont font, Colour textColour, string name, int listIndex)
             : base(0, position, bgColour)
         {
             _parent = parent;
             _listIndex = listIndex;
 
-            Add(_text = new TextGraphic(font, textColour, position.Zeroed, name)
+            Add(new TextGraphic(font, textColour, position.Zeroed, name)
             {
                 HAlignment = HAlignment.Left,
                 VAlignment = VAlignment.Centred,
@@ -53,6 +53,8 @@ public class DropdownList<T> : Entity
 
     public T CurrentValue => _listValues[_currentSelection].Value;
 
+    public event EventHandler<DropdownSelectionChangedEventArgs<T>>? DropdownSelectionChanged;
+
     public void AddOption(string text, T value)
     {
         _listValues.Add((text, value));
@@ -60,10 +62,18 @@ public class DropdownList<T> : Entity
 
     public void SetValue(int value)
     {
-        _currentSelection = value;
-        _currentSelectionText.Text = _listValues[_currentSelection].Name;
+        if (_currentSelection != value)
+        {
+            _currentSelection = value;
+            _currentSelectionText.Text = _listValues[_currentSelection].Name;
+
+            DropdownSelectionChanged?.Invoke(this, new DropdownSelectionChangedEventArgs<T>(_listValues[_currentSelection].Value));
+        }
+
         if (_isOpen)
+        {
             CloseList();
+        }
     }
 
     public void OpenList()
@@ -88,7 +98,10 @@ public class DropdownList<T> : Entity
     protected override void OnLeftPressed()
     {
         base.OnLeftPressed();
+
         if (!_isOpen)
+        {
             OpenList();
+        }
     }
 }
