@@ -1,4 +1,4 @@
-﻿namespace BearsEngine.Source.UI.Controls;
+﻿namespace BearsEngine.UI;
 
 public class DropdownSelectionChangedEventArgs<T> : EventArgs
 {

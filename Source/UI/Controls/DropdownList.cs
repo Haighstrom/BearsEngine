@@ -1,5 +1,4 @@
-﻿using BearsEngine.Source.UI.Controls;
-using BearsEngine.Worlds.Graphics.Text;
+﻿using BearsEngine.Worlds.Graphics.Text;
 
 namespace BearsEngine.UI;
 
@@ -31,9 +30,9 @@ public class DropdownList<T> : Entity, IDropdownList<T>
         }
     }
 
-    private List<DropdownOption> _dropdownOptions = new();
+    private readonly List<DropdownOption> _dropdownOptions = new();
     private readonly List<(string Name, T Value)> _listValues = new();
-    private int _currentSelection = 0;
+    private int _currentSelection = -1;
     private readonly TextGraphic _currentSelectionText;
     private bool _isOpen = false;
     private float _optionHeight;
@@ -53,7 +52,7 @@ public class DropdownList<T> : Entity, IDropdownList<T>
 
     public T CurrentValue => _listValues[_currentSelection].Value;
 
-    public event EventHandler<DropdownSelectionChangedEventArgs<T>>? DropdownSelectionChanged;
+    public event EventHandler<DropdownSelectionChangedEventArgs<T>>? SelectionChanged;
 
     public void AddOption(string text, T value)
     {
@@ -67,7 +66,7 @@ public class DropdownList<T> : Entity, IDropdownList<T>
             _currentSelection = value;
             _currentSelectionText.Text = _listValues[_currentSelection].Name;
 
-            DropdownSelectionChanged?.Invoke(this, new DropdownSelectionChangedEventArgs<T>(_listValues[_currentSelection].Value));
+            SelectionChanged?.Invoke(this, new DropdownSelectionChangedEventArgs<T>(_listValues[_currentSelection].Value));
         }
 
         if (_isOpen)

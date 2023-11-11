@@ -1,17 +1,14 @@
-﻿using BearsEngine.Source.UI.Controls;
+﻿namespace BearsEngine.UI;
 
-namespace BearsEngine.UI
+public interface IDropdownList<T> : IAddable
 {
-    public interface IDropdownList<T>
-    {
-        T CurrentValue { get; }
-        int OptionsCount { get; }
+    T CurrentValue { get; }
+    int OptionsCount { get; }
 
-        event EventHandler<DropdownSelectionChangedEventArgs<T>>? DropdownSelectionChanged;
+    event EventHandler<DropdownSelectionChangedEventArgs<T>>? SelectionChanged;
 
-        void AddOption(string text, T value);
-        void CloseList();
-        void OpenList();
-        void SetValue(int value);
-    }
+    void AddOption(string text, T value);
+    void CloseList();
+    void OpenList();
+    void SetValue(int value);
 }
