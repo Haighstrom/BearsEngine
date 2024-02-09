@@ -123,11 +123,11 @@ public class Button : Entity, IClickable
 
     public Colour DefaultColour { get; set; } = Colour.White;
 
-    public Colour UnclickableColour { get; set; } = Colour.White;
+    public Colour UnclickableColour { get; set; } = Colour.DarkGray;
 
-    public Colour HoverColour { get; set; } = Colour.White;
+    public Colour HoverColour { get; set; } = new Colour(255, 255, 125, 255);
 
-    public Colour PressedColour { get; set; } = Colour.White;
+    public Colour PressedColour { get; set; } = Colour.Yellow;
 
     public string Text
     {
