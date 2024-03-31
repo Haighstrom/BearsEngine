@@ -23,6 +23,7 @@ public class Alarm : UpdateableBase
     public float TimeRemaining => TotalDuration - TimeElapsed;
 
     public event EventHandler? Completed;
+    public event EventHandler? SecondChanged;
 
     private void OnComplete()
     {
@@ -42,9 +43,17 @@ public class Alarm : UpdateableBase
 
     public override void Update(float elapsed)
     {
+        var prevTime = TimeElapsed;
         TimeElapsed += elapsed;
 
+        if ((int)prevTime != (int)TimeElapsed)
+        {
+            SecondChanged?.Invoke(this, EventArgs.Empty);
+        }
+
         if (TimeElapsed >= TotalDuration)
+        {
             OnComplete();
+        }
     }
 }
