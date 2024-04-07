@@ -19,6 +19,16 @@ public class Screen : IScreen
     {
     }
 
+    public Screen(IList<IAddable> entities)
+    {
+        Add(entities);
+    }
+
+    public Screen(params IAddable[] entities)
+    {
+        Add(entities);
+    }
+
     public bool Active { get; set; } = true;
 
     public Colour BackgroundColour { get; set; } = Colour.CornflowerBlue;
@@ -72,7 +82,17 @@ public class Screen : IScreen
     public void Add(params IAddable[] entities)
     {
         foreach (var e in entities)
+        {
             Add(e);
+        }
+    }
+
+    public void Add(IList<IAddable> entities)
+    {
+        foreach (var entity in entities)
+        {
+            Add(entity);
+        }
     }
 
     public virtual void End() { }
