@@ -1,5 +1,5 @@
 ﻿using BearsEngine.Graphics.Shaders;
-using HaighFramework.OpenGL;
+using BearsEngine.OpenGL;
 
 namespace BearsEngine.Graphics;
 
@@ -56,7 +56,7 @@ public class Image : RectGraphicBase
     public Image(float layer, string imgPath, float x, float y, float width, float height)
         : base(new DefaultShader(), layer, x, y, width, height)
     {
-        Texture = OpenGL.LoadTexture(imgPath);
+        Texture = OpenGLHelper.LoadTexture(imgPath);
     }
 
 
@@ -163,10 +163,10 @@ public class Image : RectGraphicBase
 
         mv = Matrix3.Translate(ref mv, X, Y);
 
-        if (OpenGL.LastBoundTexture != Texture.ID)
+        if (OpenGLHelper.LastBoundTexture != Texture.ID)
         {
             OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, Texture.ID);
-            OpenGL.LastBoundTexture = Texture.ID;
+            OpenGLHelper.LastBoundTexture = Texture.ID;
         }
 
         BindVertexBuffer();
@@ -189,7 +189,7 @@ public class Image : RectGraphicBase
             new Vertex(new Point(W, H), Colour, new Point(1, 1))
         };
 
-        OpenGL.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
+        OpenGLHelper.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
 
         _verticesChanged = false;
     }

@@ -1,6 +1,6 @@
-﻿//using HaighFramework;
-//using HaighFramework.PInvoke;
-//using HaighFramework.OpenGL;
+﻿//using BearsEngine;
+//using BearsEngine.PInvoke;
+//using BearsEngine.OpenGL;
 
 //namespace HaighEngineDemo.Source.BeginningOpenGL.Chapter6
 //{

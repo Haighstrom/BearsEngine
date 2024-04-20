@@ -20,11 +20,11 @@ public class BearSpinnerScreen : Screen
 
         BackgroundColour = Colour.Black;
 
-        Window.Resized += OnWindowResize;
+        AppWindow.Resized += OnWindowResize;
 
-        _camera = new Camera(1, new Rect(0, 0, Window.ClientSize.X, Window.ClientSize.Y), 1, 1);
+        _camera = new Camera(1, new Rect(0, 0, AppWindow.ClientSize.X, AppWindow.ClientSize.Y), 1, 1);
         Add(_camera);
-        Repeat.CallMethod(() => _camera.Add(new Bear(Randomisation.Rand((int)Window.ClientSize.X), Randomisation.Rand((int)Window.ClientSize.Y))), Window.WindowWidth * Window.WindowHeight / 3000);
+        Repeat.CallMethod(() => _camera.Add(new Bear(Randomisation.Rand((int)AppWindow.ClientSize.X), Randomisation.Rand((int)AppWindow.ClientSize.Y))), AppWindow.WindowWidth * AppWindow.WindowHeight / 3000);
 
         var b = new Button(1, new Rect(10, 10, 60, 40), Colour.LightGray, GV.Theme, () => Engine.Scene = new MenuScreen());
         b.Add(new TextGraphic(GV.MainFont, Colour.Black, new Rect(60, 40), "Return") { HAlignment = HAlignment.Centred, VAlignment = VAlignment.Centred });
@@ -42,9 +42,9 @@ public class BearSpinnerScreen : Screen
 
     private void OnWindowResize(object? sender, EventArgs e)
     {
-        _camera.Resize(Window.ClientSize);
+        _camera.Resize(AppWindow.ClientSize);
         _camera.RemoveAll();
-        Repeat.CallMethod(() => _camera.Add(new Bear(Randomisation.Rand((int)Window.ClientSize.X), Randomisation.Rand((int)Window.ClientSize.Y))), Window.WindowWidth * Window.WindowHeight / 3000);
+        Repeat.CallMethod(() => _camera.Add(new Bear(Randomisation.Rand((int)AppWindow.ClientSize.X), Randomisation.Rand((int)AppWindow.ClientSize.Y))), AppWindow.WindowWidth * AppWindow.WindowHeight / 3000);
         _bearCount.Text = $"Bear Count:{_camera.Entities.Count}";
     }
 

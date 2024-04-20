@@ -14,10 +14,10 @@ internal class CharActivityList : Entity
     {
         Add(_activityText = new TextGraphic(HFont.Load("Helvetica", 8), Colour.Black, Size));
 
-        Window.CharEntered += Window_CharEntered;
+        AppWindow.CharEntered += Window_CharEntered;
     }
 
-    private void Window_CharEntered(object? sender, HaighFramework.Window.KeyboardCharEventArgs e)
+    private void Window_CharEntered(object? sender, Window.KeyboardCharEventArgs e)
     {
         AddNewChar(e.Char);
     }

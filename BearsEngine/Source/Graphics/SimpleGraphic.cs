@@ -1,5 +1,5 @@
 ﻿using BearsEngine.Graphics.Shaders;
-using HaighFramework.OpenGL;
+using BearsEngine.OpenGL;
 
 namespace BearsEngine.Graphics
 {
@@ -22,35 +22,35 @@ namespace BearsEngine.Graphics
                 throw new ArgumentException("Cannot make a SimpleGraphic with fewer than 3 vertices", nameof(vertices));
 
             Shader = shader;
-            VertexBuffer = OpenGL.GenBuffer();
+            VertexBuffer = OpenGLHelper.GenBuffer();
             Texture = texture;
             Vertices = vertices;
 
             OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, VertexBuffer);
-            OpenGL.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, Vertices.Length * Vertex.STRIDE, Vertices, USAGE_PATTERN.GL_STREAM_DRAW);
+            OpenGLHelper.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, Vertices.Length * Vertex.STRIDE, Vertices, USAGE_PATTERN.GL_STREAM_DRAW);
             OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, 0);
-            OpenGL.LastBoundVertexBuffer = 0;
+            OpenGLHelper.LastBoundVertexBuffer = 0;
         }
         
 
         public void Render(ref Matrix3 projection, ref Matrix3 modelView)
         {
-            if (OpenGL.LastBoundVertexBuffer != VertexBuffer)
+            if (OpenGLHelper.LastBoundVertexBuffer != VertexBuffer)
             {
                 OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, VertexBuffer);
-                OpenGL.LastBoundVertexBuffer = VertexBuffer;
+                OpenGLHelper.LastBoundVertexBuffer = VertexBuffer;
             }
 
-            if (OpenGL.LastBoundTexture != Texture.ID)
+            if (OpenGLHelper.LastBoundTexture != Texture.ID)
             {
                 OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, Texture.ID);
-                OpenGL.LastBoundTexture = Texture.ID;
+                OpenGLHelper.LastBoundTexture = Texture.ID;
             }
 
             Shader.Render(ref projection, ref modelView, Vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLES);
 
             OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, 0);
-            OpenGL.LastBoundVertexBuffer = 0;
+            OpenGLHelper.LastBoundVertexBuffer = 0;
         }
         
 
@@ -70,7 +70,7 @@ namespace BearsEngine.Graphics
                 {
                     lock (_syncRoot)
                     {
-                        OpenGL.DeleteBuffer(VertexBuffer);
+                        OpenGLHelper.DeleteBuffer(VertexBuffer);
                     }
                 }
                 else

@@ -1,4 +1,4 @@
-﻿using HaighFramework.OpenGL;
+﻿using BearsEngine.OpenGL;
 
 namespace BearsEngine.Graphics.Shaders;
 
@@ -51,8 +51,8 @@ public class LightingShader : IShader
 
     private static void Initialise()
     {
-        _ID = OpenGL.CreateShader(Resources.Shaders.vs_default, Resources.Shaders.fs_lighting);
-        OpenGL.BindShader(_ID);
+        _ID = OpenGLHelper.CreateShader(Resources.Shaders.vs_default, Resources.Shaders.fs_lighting);
+        OpenGLHelper.BindShader(_ID);
         _locationMVMatrix = OpenGL32.glGetUniformLocation(_ID, "MVMatrix");
         _locationPMatrix = OpenGL32.glGetUniformLocation(_ID, "PMatrix");
         _locationPosition = OpenGL32.glGetAttribLocation(_ID, "Position");
@@ -111,10 +111,10 @@ public class LightingShader : IShader
 
     public void Render(ref Matrix3 projection, ref Matrix3 modelView, int verticesLength, PRIMITIVE_TYPE drawType)
     {
-        OpenGL.BindShader(_ID);
+        OpenGLHelper.BindShader(_ID);
 
-        OpenGL.UniformMatrix3(_locationMVMatrix, modelView);
-        OpenGL.UniformMatrix3(_locationPMatrix, projection);
+        OpenGLHelper.UniformMatrix3(_locationMVMatrix, modelView);
+        OpenGLHelper.UniformMatrix3(_locationPMatrix, projection);
 
         OpenGL32.glEnableVertexAttribArray(_locationPosition);
         OpenGL32.glVertexAttribPointer(_locationPosition, 2, VERTEX_DATA_TYPE.GL_FLOAT, false, Vertex.STRIDE, 0);
@@ -128,7 +128,7 @@ public class LightingShader : IShader
         OpenGL32.glUniform1f(_locationGammaUniform, Gamma);
 
         OpenGL32.glUniform4f(_locationAmbientLightColourUniform, AmbientLightColour.R / 255f, AmbientLightColour.G / 255f, AmbientLightColour.B / 255f, AmbientLightColour.A / 255f);
-        OpenGL.UniformMatrix3(_locationSourceInvMVMatrixUniform, mdlMatrix.Inverse());
+        OpenGLHelper.UniformMatrix3(_locationSourceInvMVMatrixUniform, mdlMatrix.Inverse());
 
         BindLightsArrayData();
 

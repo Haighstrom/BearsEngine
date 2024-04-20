@@ -1,6 +1,6 @@
 ﻿using BearsEngine.UI;
 using BearsEngine.Worlds.Graphics.Text;
-using HaighFramework.Input;
+using BearsEngine.Input;
 
 namespace BearsEngine.Worlds.UI.Controls;
 
@@ -31,8 +31,8 @@ public class NumberInputBox<T> : Entity, IActivatable
     public NumberInputBox(UITheme theme, Colour bg, float layer, Rect r, T initialValue = default)
         : base(layer, r, bg)
     {
-        Window.CharEntered += OnCharPressed;
-        Window.KeyDown += OnKeyDown;
+        AppWindow.CharEntered += OnCharPressed;
+        AppWindow.KeyDown += OnKeyDown;
 
         Add(_textGraphic = new TextGraphic(theme, r.Zeroed, initialValue.ToString()) { Multiline = false, UseCommandTags = false });
 
@@ -266,7 +266,7 @@ public class NumberInputBox<T> : Entity, IActivatable
         }
     }
     
-    private void OnCharPressed(object? sender, HaighFramework.Window.KeyboardCharEventArgs e)
+    private void OnCharPressed(object? sender, BearsEngine.Window.KeyboardCharEventArgs e)
     {
         if (_mode != Mode.Editing)
             return;
@@ -288,7 +288,7 @@ public class NumberInputBox<T> : Entity, IActivatable
         SetTextPositions();
     }
     
-    private void OnKeyDown(object? sender, HaighFramework.Window.KeyboardKeyEventArgs e)
+    private void OnKeyDown(object? sender, BearsEngine.Window.KeyboardKeyEventArgs e)
     {
         if (_mode != Mode.Editing)
             return;

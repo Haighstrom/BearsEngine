@@ -1,8 +1,8 @@
 ﻿//using System;
 //using System.Collections.Generic;
 //using System.Linq;
-//using HaighFramework;
-//using HaighFramework.Worlds;
+//using BearsEngine;
+//using BearsEngine.Worlds;
 
 //namespace HaighEngineDemo.Source.Animations
 //{

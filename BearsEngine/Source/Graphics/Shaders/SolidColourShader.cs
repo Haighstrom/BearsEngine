@@ -1,4 +1,4 @@
-﻿using HaighFramework.OpenGL;
+﻿using BearsEngine.OpenGL;
 
 namespace BearsEngine.Graphics.Shaders;
 
@@ -13,8 +13,8 @@ public class SolidColourShader : IShader
 
     private static void Initialise()
     {
-        _ID = OpenGL.CreateShader(Resources.Shaders.vs_solidcolour, Resources.Shaders.fs_solidcolour);
-        OpenGL.BindShader(_ID);
+        _ID = OpenGLHelper.CreateShader(Resources.Shaders.vs_solidcolour, Resources.Shaders.fs_solidcolour);
+        OpenGLHelper.BindShader(_ID);
         _locationMVMatrix = OpenGL32.glGetUniformLocation(_ID, "MVMatrix");
         _locationPMatrix = OpenGL32.glGetUniformLocation(_ID, "PMatrix");
         _locationPosition = OpenGL32.glGetAttribLocation(_ID, "Position");
@@ -31,11 +31,11 @@ public class SolidColourShader : IShader
     
     public void Render(ref Matrix3 projection, ref Matrix3 modelView, int verticesLength, PRIMITIVE_TYPE drawType)
     {
-        if (_ID != OpenGL.LastBoundShader)
-            OpenGL.BindShader(_ID);
+        if (_ID != OpenGLHelper.LastBoundShader)
+            OpenGLHelper.BindShader(_ID);
 
-        OpenGL.UniformMatrix3(_locationMVMatrix, modelView);
-        OpenGL.UniformMatrix3(_locationPMatrix, projection);
+        OpenGLHelper.UniformMatrix3(_locationMVMatrix, modelView);
+        OpenGLHelper.UniformMatrix3(_locationPMatrix, projection);
 
         OpenGL32.glEnableVertexAttribArray(_locationPosition);
         OpenGL32.glVertexAttribPointer(_locationPosition, 2, VERTEX_DATA_TYPE.GL_FLOAT, false, Vertex.STRIDE, 0);

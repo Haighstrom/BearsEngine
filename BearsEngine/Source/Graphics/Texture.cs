@@ -1,4 +1,4 @@
-﻿using HaighFramework.OpenGL;
+﻿using BearsEngine.OpenGL;
 
 namespace BearsEngine.Graphics;
 
@@ -15,10 +15,10 @@ public struct Texture
 
     public void Bind()
     {
-        if (OpenGL.LastBoundTexture != ID)
+        if (OpenGLHelper.LastBoundTexture != ID)
         {
             OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, ID);
-            OpenGL.LastBoundTexture = ID;
+            OpenGLHelper.LastBoundTexture = ID;
         }
     }
 }

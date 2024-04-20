@@ -14,6 +14,6 @@ internal class ButtonConsoleMaximise : Button
     {
         base.OnLeftPressed();
 
-        Console.MoveConsoleTo(0, 0, Console.MaxWidth, Console.MaxHeight);
+        AppConsole.MoveConsoleTo(0, 0, AppConsole.MaxWidth, AppConsole.MaxHeight);
     }
 }

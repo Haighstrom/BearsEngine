@@ -1,4 +1,4 @@
-﻿using HaighFramework.OpenGL;
+﻿using BearsEngine.OpenGL;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
@@ -61,7 +61,7 @@ public abstract class LoadingScreen : Screen
             throw new NullReferenceException();
 
         //Make the loading context current on the loading thread
-        OpenGL32.wglMakeCurrent(Window.Instance.DeviceContextHandle, _loadingRenderContext);
+        OpenGL32.wglMakeCurrent(AppWindow.Instance.DeviceContextHandle, _loadingRenderContext);
 
         //Load the assets
         LoadAssets(worker);
@@ -96,7 +96,7 @@ public abstract class LoadingScreen : Screen
     /// </summary>
     protected void StartLoadingAssets()
     {
-        OpenGL.CheckOpenGLError("LoadingScreenWorld StartLoadingAssets  Start");
+        OpenGLHelper.CheckOpenGLError("LoadingScreenWorld StartLoadingAssets  Start");
 
         if (!Multithreaded)
         {
@@ -106,16 +106,16 @@ public abstract class LoadingScreen : Screen
         }
 
         //Create a new OpenGL context to do the loading on
-        _loadingRenderContext = CreateRenderContext(Window.Instance.DeviceContextHandle, (4, 5)); //todo: how to make this align to window?
-        OpenGL.CheckOpenGLError("LoadingScreenWorld StartLoadingAssets CreateRenderContext Completed");
+        _loadingRenderContext = CreateRenderContext(AppWindow.Instance.DeviceContextHandle, (4, 5)); //todo: how to make this align to window?
+        OpenGLHelper.CheckOpenGLError("LoadingScreenWorld StartLoadingAssets CreateRenderContext Completed");
 
         //Share assets between the two contexts
-        OpenGL32.wglShareLists(Window.Instance.RenderContextHandle, _loadingRenderContext);
-        OpenGL.CheckOpenGLError("LoadingScreenWorld StartLoadingAssets WGLShareLists Completed");
+        OpenGL32.wglShareLists(AppWindow.Instance.RenderContextHandle, _loadingRenderContext);
+        OpenGLHelper.CheckOpenGLError("LoadingScreenWorld StartLoadingAssets WGLShareLists Completed");
 
         //Make sure the default render context remains current on this main thread
-        OpenGL32.wglMakeCurrent(Window.Instance.DeviceContextHandle, Window.Instance.RenderContextHandle);
-        OpenGL.CheckOpenGLError("LoadingScreenWorld StartLoadingAssets WGLMakeCurrent Completed");
+        OpenGL32.wglMakeCurrent(AppWindow.Instance.DeviceContextHandle, AppWindow.Instance.RenderContextHandle);
+        OpenGLHelper.CheckOpenGLError("LoadingScreenWorld StartLoadingAssets WGLMakeCurrent Completed");
 
         //Create a background worker thread to laod the assets and report progress
         BackgroundWorker loadingThread = new()
@@ -128,7 +128,7 @@ public abstract class LoadingScreen : Screen
         loadingThread.ProgressChanged += ProgressChanged;
         loadingThread.RunWorkerCompleted += RunWorkerCompleted;
 
-        OpenGL.CheckOpenGLError("LoadingScreenWorld StartLoadingAssets  End");
+        OpenGLHelper.CheckOpenGLError("LoadingScreenWorld StartLoadingAssets  End");
 
         //Start the thread
         loadingThread.RunWorkerAsync();

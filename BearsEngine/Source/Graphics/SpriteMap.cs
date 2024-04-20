@@ -1,5 +1,5 @@
 ﻿using BearsEngine.Graphics.Shaders;
-using HaighFramework.OpenGL;
+using BearsEngine.OpenGL;
 
 namespace BearsEngine.Graphics
 {
@@ -35,8 +35,8 @@ namespace BearsEngine.Graphics
 
             DrawArea = new Rect(0, 0, MapW, MapH);
 
-            _ID = OpenGL.GenBuffer();
-            _texture = OpenGL.LoadTexture(spritesheetPath);
+            _ID = OpenGLHelper.GenBuffer();
+            _texture = OpenGLHelper.LoadTexture(spritesheetPath);
             _shader = new SpritesheetShader(_ssTileW, _ssTileH);
 
             UpdateVertices();
@@ -61,13 +61,13 @@ namespace BearsEngine.Graphics
         {
             var mv = Matrix3.Translate(ref modelView, X, Y);
 
-            if (OpenGL.LastBoundTexture != _texture.ID)
+            if (OpenGLHelper.LastBoundTexture != _texture.ID)
             {
                 OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, _texture.ID);
-                OpenGL.LastBoundTexture = _texture.ID;
+                OpenGLHelper.LastBoundTexture = _texture.ID;
             }
 
-            if (OpenGL.LastBoundVertexBuffer != _ID)
+            if (OpenGLHelper.LastBoundVertexBuffer != _ID)
                 Bind();
 
             Matrix3 tileMatrix = Matrix3.Identity;
@@ -151,14 +151,14 @@ namespace BearsEngine.Graphics
         public void Bind()
         {
             OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, _ID);
-            OpenGL.LastBoundVertexBuffer = _ID;
+            OpenGLHelper.LastBoundVertexBuffer = _ID;
         }
         
 
         public void Unbind()
         {
             OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, 0);
-            OpenGL.LastBoundVertexBuffer = 0;
+            OpenGLHelper.LastBoundVertexBuffer = 0;
         }
         
 
@@ -172,7 +172,7 @@ namespace BearsEngine.Graphics
                 new Vertex(new Point(0, H), Colour, new Point(0, _ssTileH)),
                 new Vertex(new Point(W, H), Colour, new Point(_ssTileW, _ssTileH))
             };
-            OpenGL.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
+            OpenGLHelper.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
             Unbind();
         }
         

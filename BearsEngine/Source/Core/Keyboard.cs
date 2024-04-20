@@ -1,4 +1,4 @@
-﻿using HaighFramework.Input;
+﻿using BearsEngine.Input;
 
 namespace BearsEngine;
 

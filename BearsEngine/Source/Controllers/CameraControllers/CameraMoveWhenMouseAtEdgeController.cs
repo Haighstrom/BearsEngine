@@ -20,9 +20,9 @@ public class CameraMoveWhenMouseAtEdgeController : UpdateableBase
     {
         if (Mouse.ClientY < _windowEdgeDistance)
             _parent.View.Y = Maths.Max(_parent.MinY, _parent.View.Y - _cameraMoveSpeed * (float)elapsed);
-        if (Mouse.ClientX > Window.ClientWidth - _windowEdgeDistance)
+        if (Mouse.ClientX > AppWindow.ClientWidth - _windowEdgeDistance)
             _parent.View.X = Maths.Min(_parent.MaxX - _parent.View.W, _parent.View.X + _cameraMoveSpeed * (float)elapsed);
-        if (Mouse.ClientY > Window.ClientHeight - _windowEdgeDistance)
+        if (Mouse.ClientY > AppWindow.ClientHeight - _windowEdgeDistance)
             _parent.View.Y = Maths.Min(_parent.MaxY - _parent.View.H, _parent.View.Y + _cameraMoveSpeed * (float)elapsed);
         if (Mouse.ClientX < _windowEdgeDistance)
             _parent.View.X = Maths.Max(_parent.MinX, _parent.View.X - _cameraMoveSpeed * (float)elapsed);

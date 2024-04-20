@@ -1,12 +1,12 @@
-﻿using HaighFramework.Displays;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
+using BearsEngine.Displays;
 
 namespace BearsEngine;
 
 /// <summary>
 /// Provides a static entrypoint to access to Monitor information and features
 /// </summary>
-public static class Displays
+public static class AppDisplays
 {
     private static IDisplayManager? _instance;
 

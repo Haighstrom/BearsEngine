@@ -1,5 +1,5 @@
 ﻿using BearsEngine.Graphics.Shaders;
-using HaighFramework.OpenGL;
+using BearsEngine.OpenGL;
 
 namespace BearsEngine.Graphics
 {
@@ -34,7 +34,7 @@ namespace BearsEngine.Graphics
         public Panel(string imgPath, float x, float y, float w, float h)
             : base(new DefaultShader(), x, y, w, h)
         {
-            Texture = OpenGL.LoadTexture(imgPath);
+            Texture = OpenGLHelper.LoadTexture(imgPath);
         }
         
         public override float W
@@ -85,10 +85,10 @@ namespace BearsEngine.Graphics
 
             var mv = Matrix3.Translate(ref modelView, X, Y);
 
-            if (OpenGL.LastBoundTexture != Texture.ID)
+            if (OpenGLHelper.LastBoundTexture != Texture.ID)
             {
                 OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, Texture.ID);
-                OpenGL.LastBoundTexture = Texture.ID;
+                OpenGLHelper.LastBoundTexture = Texture.ID;
             }
 
             BindVertexBuffer();
@@ -143,7 +143,7 @@ namespace BearsEngine.Graphics
                     new Vertex(new Point(W, H), Colour, BR.BottomRight)
                 };
 
-                OpenGL.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
+                OpenGLHelper.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
 
                 _verticesChanged = false;
             }

@@ -1,5 +1,5 @@
 ﻿using BearsEngine.Graphics.Shaders;
-using HaighFramework.OpenGL;
+using BearsEngine.OpenGL;
 
 namespace BearsEngine.Graphics;
 
@@ -57,7 +57,7 @@ public class Sprite : RectGraphicBase
     public Sprite(float layer, string imgPath, float x, float y, float w, float h, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
         : base(new DefaultShader(), layer, x, y, w, h)
     {
-        Texture = OpenGL.LoadSpriteTexture(imgPath, spriteSheetRows, spriteSheetColumns, TEXPARAMETER_VALUE.GL_NEAREST);
+        Texture = OpenGLHelper.LoadSpriteTexture(imgPath, spriteSheetRows, spriteSheetColumns, TEXPARAMETER_VALUE.GL_NEAREST);
 
         FramesAcross = spriteSheetColumns;
         FramesDown = spriteSheetRows;
@@ -151,8 +151,8 @@ public class Sprite : RectGraphicBase
 
     public int LastFrame => TotalFrames - 1;
 
-    protected float PaddingWidth => (float)OpenGL.TEXTURE_SPRITE_PADDING / Texture.Width;
-    protected float PaddingHeight => (float)OpenGL.TEXTURE_SPRITE_PADDING / Texture.Height;
+    protected float PaddingWidth => (float)OpenGLHelper.TEXTURE_SPRITE_PADDING / Texture.Width;
+    protected float PaddingHeight => (float)OpenGLHelper.TEXTURE_SPRITE_PADDING / Texture.Height;
 
     public override void Render(ref Matrix3 projection, ref Matrix3 modelView)
     {
@@ -161,10 +161,10 @@ public class Sprite : RectGraphicBase
 
         var mv = Matrix3.Translate(ref modelView, X, Y);
 
-        if (OpenGL.LastBoundTexture != Texture.ID)
+        if (OpenGLHelper.LastBoundTexture != Texture.ID)
         {
             OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, Texture.ID);
-            OpenGL.LastBoundTexture = Texture.ID;
+            OpenGLHelper.LastBoundTexture = Texture.ID;
         }
 
         BindVertexBuffer();
@@ -179,7 +179,7 @@ public class Sprite : RectGraphicBase
                 new Vertex(new Point(W, H), Colour, _UV4)
             };
 
-            OpenGL.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
+            OpenGLHelper.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
 
             _verticesChanged = false;
         }

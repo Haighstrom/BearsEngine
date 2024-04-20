@@ -1,5 +1,5 @@
 ﻿using BearsEngine.Worlds.Graphics.Text;
-using HaighFramework.Input;
+using BearsEngine.Input;
 
 namespace BearsEngine.SystemTests.Source.InputDemo;
 

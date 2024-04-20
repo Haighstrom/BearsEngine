@@ -1,5 +1,5 @@
-using BearsEngine.Source.Core;
-using HaighFramework.Window;
+﻿using BearsEngine.Source.Core;
+using BearsEngine.Window;
 
 namespace BearsEngine.SystemTests.Source.Setup;
 
@@ -26,7 +26,7 @@ internal class Initialiser : IAppInitialiser
                 Height = 600,
                 Centre = true,
                 Title = "BearsEngine Tester",
-                Border = BorderStyle.NonResizable,
+                Border = BearsEngine.Window.BorderStyle.NonResizable,
             },
         };
     }

@@ -1,4 +1,4 @@
-﻿using HaighFramework.OpenGL;
+﻿using BearsEngine.OpenGL;
 
 namespace BearsEngine.Graphics.Shaders;
 
@@ -15,8 +15,8 @@ public class SmoothLinesShader : IShader
 
     private static void Initialise()
     {
-        _ID = OpenGL.CreateShader(Resources.Shaders.vs_nomatrixsolidcolour, Resources.Shaders.gs_smoothlines, Resources.Shaders.fs_solidcolour);
-        OpenGL.BindShader(_ID);
+        _ID = OpenGLHelper.CreateShader(Resources.Shaders.vs_nomatrixsolidcolour, Resources.Shaders.gs_smoothlines, Resources.Shaders.fs_solidcolour);
+        OpenGLHelper.BindShader(_ID);
         _locationMVMatrix = OpenGL32.glGetUniformLocation(_ID, "MVMatrix");
         _locationPMatrix = OpenGL32.glGetUniformLocation(_ID, "PMatrix");
         _locationPosition = OpenGL32.glGetAttribLocation(_ID, "Position");
@@ -41,11 +41,11 @@ public class SmoothLinesShader : IShader
         if (drawType != PRIMITIVE_TYPE.GL_LINE_STRIP_ADJACENCY)
             Log.Warning("Smooth lines shader is being used with PrimitiveType " + drawType + "instead of LineStripAdjacency.");
 
-        if (_ID != OpenGL.LastBoundShader)
-            OpenGL.BindShader(_ID);
+        if (_ID != OpenGLHelper.LastBoundShader)
+            OpenGLHelper.BindShader(_ID);
 
-        OpenGL.UniformMatrix3(_locationMVMatrix, modelView);
-        OpenGL.UniformMatrix3(_locationPMatrix, projection);
+        OpenGLHelper.UniformMatrix3(_locationMVMatrix, modelView);
+        OpenGLHelper.UniformMatrix3(_locationPMatrix, projection);
 
         OpenGL32.glUniform1f(_locationThicknessUniform, Thickness);
         OpenGL32.glUniform1i(_locationThicknessInPixelsUniform, ThicknessInPixels.ParseTo<int>());

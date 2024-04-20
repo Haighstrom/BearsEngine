@@ -1,5 +1,5 @@
 ﻿using BearsEngine.Graphics.Shaders;
-using HaighFramework.OpenGL;
+using BearsEngine.OpenGL;
 using System.Diagnostics.CodeAnalysis;
 
 namespace BearsEngine.Graphics;
@@ -16,7 +16,7 @@ public class NonSquareSprite : RectGraphicBase
         : base(new DefaultShader(), layer, x, y, frames[initialFrame].OutputSize.X, frames[initialFrame].OutputSize.Y)
     {
         _frames = frames;
-        _texture = OpenGL.LoadTexture(imgPath);
+        _texture = OpenGLHelper.LoadTexture(imgPath);
 
         Frame = initialFrame;
 
@@ -67,7 +67,7 @@ public class NonSquareSprite : RectGraphicBase
             new Vertex(new Point(W, H), Colour, texSource.BottomRight)
         };
 
-        OpenGL.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
+        OpenGLHelper.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
 
         _verticesChanged = false;
     }
@@ -79,10 +79,10 @@ public class NonSquareSprite : RectGraphicBase
 
         var mv = Matrix3.Translate(ref modelView, X, Y);
 
-        if (OpenGL.LastBoundTexture != _texture.ID)
+        if (OpenGLHelper.LastBoundTexture != _texture.ID)
         {
             OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, _texture.ID);
-            OpenGL.LastBoundTexture = _texture.ID;
+            OpenGLHelper.LastBoundTexture = _texture.ID;
         }
 
         BindVertexBuffer();

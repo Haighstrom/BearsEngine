@@ -1,5 +1,5 @@
 ﻿using BearsEngine.Worlds.Cameras;
-using HaighFramework.Input;
+using BearsEngine.Input;
 
 namespace BearsEngine.Source.Controllers.CameraControllers;
 
@@ -31,7 +31,7 @@ public class CameraMoveWhenMouseAtEdgeOrKeyPressedController : UpdateableBase
         }
         else
         {
-            if (Mouse.ClientX > Window.ClientWidth - _windowEdgeDistance || Keyboard.AnyKeyDown(_rightKeys))
+            if (Mouse.ClientX > AppWindow.ClientWidth - _windowEdgeDistance || Keyboard.AnyKeyDown(_rightKeys))
             {
                 _camera.View.X = Maths.Min(_camera.MaxX - _camera.View.W, _camera.View.X + _cameraMoveSpeed * (float)elapsed);
             }
@@ -50,7 +50,7 @@ public class CameraMoveWhenMouseAtEdgeOrKeyPressedController : UpdateableBase
         {
             if (Mouse.ClientY < _windowEdgeDistance || Keyboard.AnyKeyDown(_upKeys))
                 _camera.View.Y = Maths.Max(_camera.MinY, _camera.View.Y - _cameraMoveSpeed * (float)elapsed);
-            if (Mouse.ClientY > Window.ClientHeight - _windowEdgeDistance || Keyboard.AnyKeyDown(_downKeys))
+            if (Mouse.ClientY > AppWindow.ClientHeight - _windowEdgeDistance || Keyboard.AnyKeyDown(_downKeys))
                 _camera.View.Y = Maths.Min(_camera.MaxY - _camera.View.H, _camera.View.Y + _cameraMoveSpeed * (float)elapsed);
         }
     }

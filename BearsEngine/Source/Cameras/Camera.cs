@@ -1,5 +1,5 @@
 ﻿using BearsEngine.Graphics.Shaders;
-using HaighFramework.OpenGL;
+using BearsEngine.OpenGL;
 
 namespace BearsEngine.Worlds.Cameras
 {
@@ -21,7 +21,7 @@ namespace BearsEngine.Worlds.Cameras
 
             _mSAAShader = new CameraMSAAShader() { Samples = MSAASamples };
 
-            VertexBuffer = OpenGL.GenBuffer();
+            VertexBuffer = OpenGLHelper.GenBuffer();
 
             var _colour = Colour.White;
             Vertices = new Vertex[4]
@@ -161,7 +161,7 @@ namespace BearsEngine.Worlds.Cameras
             if (MSAAEnabled)
             {
                 //Generate FBO and texture to use with the MSAA antialising pass
-                _frameBufferMSAATexture = new Texture(OpenGL.GenTexture(), width, height);
+                _frameBufferMSAATexture = new Texture(OpenGLHelper.GenTexture(), width, height);
 
                 OpenGL32.glBindTexture(TEXTURE_TARGET.GL_PROXY_TEXTURE_2D_MULTISAMPLE, _frameBufferMSAATexture.ID);
                 OpenGL32.glTexImage2DMultisample(TEXTURE_TARGET.GL_TEXTURE_2D_MULTISAMPLE, (int)MSAASamples, TEXTURE_INTERNALFORMAT.GL_RGB8, width, height, false);
@@ -173,11 +173,11 @@ namespace BearsEngine.Worlds.Cameras
 
                 OpenGL32.glBindTexture(TEXTURE_TARGET.GL_PROXY_TEXTURE_2D_MULTISAMPLE, 0);
 
-                _frameBufferMSAAID = OpenGL.GenFramebuffer();
+                _frameBufferMSAAID = OpenGLHelper.GenFramebuffer();
             }
 
             //Generate FBO and texture to use for the final pass, where the camera's shader will be applied to the result of the MSAA pass
-            _frameBufferShaderPassTexture = new Texture(OpenGL.GenTexture(), width, height);
+            _frameBufferShaderPassTexture = new Texture(OpenGLHelper.GenTexture(), width, height);
 
             OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, _frameBufferShaderPassTexture.ID);
             OpenGL32.glTexStorage2D(TEXTURE_TARGET.GL_TEXTURE_2D, 1, TEXTURE_INTERNALFORMAT.GL_RGBA8, width, height);
@@ -188,9 +188,9 @@ namespace BearsEngine.Worlds.Cameras
             OpenGL32.glTexParameteri(TEXTURE_TARGET.GL_TEXTURE_2D, TEXPARAMETER_NAME.GL_TEXTURE_WRAP_T, TEXPARAMETER_VALUE.GL_CLAMP_TO_EDGE);
 
             OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, 0);
-            OpenGL.LastBoundTexture = 0;
+            OpenGLHelper.LastBoundTexture = 0;
 
-            _frameBufferShaderPassID = OpenGL.GenFramebuffer();
+            _frameBufferShaderPassID = OpenGLHelper.GenFramebuffer();
 
             //Check for OpenGL errors
             var err = OpenGL32.glGetError();
@@ -271,12 +271,12 @@ namespace BearsEngine.Worlds.Cameras
             OpenGL32.glBlendFunc(BLEND_SCALE_FACTOR.GL_ONE, BLEND_SCALE_FACTOR.GL_ONE_MINUS_SRC_ALPHA);
 
             //Save the previous viewport and set the viewport to match the size of the texture we are now drawing to - the FBO
-            Rect prevVP = OpenGL.GetViewport();
+            Rect prevVP = OpenGLHelper.GetViewport();
             OpenGL32.glViewport(0, 0, (int)base.W, (int)base.H);
 
             //Locally save the current render target, we will then set this camera as the current render target for child cameras, then put it back
-            int tempFBID = OpenGL.LastBoundFrameBuffer;
-            OpenGL.LastBoundFrameBuffer = MSAAEnabled ? _frameBufferMSAAID : _frameBufferShaderPassID;
+            int tempFBID = OpenGLHelper.LastBoundFrameBuffer;
+            OpenGLHelper.LastBoundFrameBuffer = MSAAEnabled ? _frameBufferMSAAID : _frameBufferShaderPassID;
 
             Matrix3 identity = Matrix3.Identity;
             Matrix3 MV = Matrix3.ScaleAroundOrigin(ref identity, TileWidth, TileHeight);
@@ -286,12 +286,12 @@ namespace BearsEngine.Worlds.Cameras
             base.Render(ref _ortho, ref MV);
 
             //Revert the render target 
-            OpenGL.LastBoundFrameBuffer = tempFBID;
+            OpenGLHelper.LastBoundFrameBuffer = tempFBID;
 
             //Bind vertex buffer - optimise this later            
             OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, VertexBuffer);
-            OpenGL.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, Vertices.Length * Vertex.STRIDE, Vertices, USAGE_PATTERN.GL_DYNAMIC_DRAW);
-            OpenGL.LastBoundVertexBuffer = VertexBuffer;
+            OpenGLHelper.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, Vertices.Length * Vertex.STRIDE, Vertices, USAGE_PATTERN.GL_DYNAMIC_DRAW);
+            OpenGLHelper.LastBoundVertexBuffer = VertexBuffer;
 
             if (MSAAEnabled)
             {
@@ -313,7 +313,7 @@ namespace BearsEngine.Worlds.Cameras
             }
 
             //Bind the render target back to either the screen, or a camera higher up the heirachy, depending on what called this
-            OpenGL32.glBindFramebuffer(FRAMEBUFFER_TARGET.GL_FRAMEBUFFER, OpenGL.LastBoundFrameBuffer);
+            OpenGL32.glBindFramebuffer(FRAMEBUFFER_TARGET.GL_FRAMEBUFFER, OpenGLHelper.LastBoundFrameBuffer);
 
             //Bind the FBO to be drawn
             _frameBufferShaderPassTexture.Bind();
@@ -322,7 +322,7 @@ namespace BearsEngine.Worlds.Cameras
             OpenGL32.glBlendFunc(BLEND_SCALE_FACTOR.GL_ONE, BLEND_SCALE_FACTOR.GL_ONE_MINUS_SRC_ALPHA);
 
             //reset viewport
-            OpenGL.Viewport(prevVP);
+            OpenGLHelper.Viewport(prevVP);
 
             Matrix3 mv = modelView;
             if (Angle != 0)
@@ -334,7 +334,7 @@ namespace BearsEngine.Worlds.Cameras
 
             //Unbind textures            
             OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, 0);
-            OpenGL.LastBoundTexture = 0;
+            OpenGLHelper.LastBoundTexture = 0;
         }
 
         public void Resize(Point newSize) => Resize(newSize.X, newSize.Y);

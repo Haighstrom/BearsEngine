@@ -1,11 +1,11 @@
-﻿using HaighFramework.Console;
+﻿using BearsEngine.Console;
 
 namespace BearsEngine;
 
 /// <summary>
 /// Provides a static entrypoint to Console information and features
 /// </summary>
-public static class Console
+public static class AppConsole
 {
     private static IConsoleWindow? _instance;
 

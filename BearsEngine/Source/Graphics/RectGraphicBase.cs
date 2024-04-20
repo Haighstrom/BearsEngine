@@ -1,5 +1,5 @@
 ﻿using BearsEngine.Graphics.Shaders;
-using HaighFramework.OpenGL;
+using BearsEngine.OpenGL;
 
 namespace BearsEngine.Graphics
 {
@@ -19,7 +19,7 @@ namespace BearsEngine.Graphics
         {
             _layer = layer;
             Shader = shader;
-            VertexBuffer = OpenGL.GenBuffer();
+            VertexBuffer = OpenGLHelper.GenBuffer();
         }
 
         public virtual byte Alpha
@@ -57,10 +57,10 @@ namespace BearsEngine.Graphics
 
         public void BindVertexBuffer()
         {
-            if (OpenGL.LastBoundVertexBuffer != VertexBuffer)
+            if (OpenGLHelper.LastBoundVertexBuffer != VertexBuffer)
             {
                 OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, VertexBuffer);
-                OpenGL.LastBoundVertexBuffer = VertexBuffer;
+                OpenGLHelper.LastBoundVertexBuffer = VertexBuffer;
             }
         }
 
@@ -69,7 +69,7 @@ namespace BearsEngine.Graphics
         public void UnbindVertexBuffer()
         {
             OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, 0);
-            OpenGL.LastBoundVertexBuffer = 0;
+            OpenGLHelper.LastBoundVertexBuffer = 0;
         }  
     }
 }

@@ -3,7 +3,6 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
-using Point = HaighFramework.Point;
 
 namespace BearsEngine.Worlds.Graphics.Text;
 
@@ -205,7 +204,7 @@ public class HFont : IDisposable
 
         g.DrawString(c.ToString(), font, new SolidBrush(Color.White), 0, 0, stringFormat);
 
-        Rect r = OpenGL.NonZeroAlphaRegion(image);
+        Rect r = OpenGLHelper.NonZeroAlphaRegion(image);
 
         if (r.W == 0 || r.H == 0)
         {
@@ -214,7 +213,7 @@ public class HFont : IDisposable
 
             g.DrawString("t", font, new SolidBrush(Color.White), 0, 0, stringFormat);
 
-            r = OpenGL.NonZeroAlphaRegion(image);
+            r = OpenGLHelper.NonZeroAlphaRegion(image);
 
             if (r.W == 0 || r.H == 0)
                 throw new InvalidOperationException($"HFont.cs/GenerateCharacterBitmap: Font {FontName}, Size {FontSize}, character 't' is giving size (W:{r.W},H:{r.H})");
@@ -288,7 +287,7 @@ public class HFont : IDisposable
         if (!Directory.Exists(DEFAULT_FONT_FOLDER))
             Directory.CreateDirectory(DEFAULT_FONT_FOLDER);
 
-        OpenGL.SaveBitmapToPNGFile(CharSpriteSheet, DEFAULT_FONT_FOLDER + LongName + ".png");
+        OpenGLHelper.SaveBitmapToPNGFile(CharSpriteSheet, DEFAULT_FONT_FOLDER + LongName + ".png");
 
         var fs = new FontSave
         {

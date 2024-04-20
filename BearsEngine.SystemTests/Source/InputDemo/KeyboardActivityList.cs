@@ -1,5 +1,5 @@
 ﻿using BearsEngine.Worlds.Graphics.Text;
-using HaighFramework.Input;
+using BearsEngine.Input;
 
 namespace BearsEngine.SystemTests.Source.InputDemo;
 
@@ -19,16 +19,16 @@ internal class KeyboardActivityList : Entity
         for (var i = 0; i < _activityMessages.Length; i++)
             _activityMessages[i] = "";
 
-        Window.KeyDown += Window_KeyDown;
-        Window.KeyUp += Window_KeyUp;
+        AppWindow.KeyDown += Window_KeyDown;
+        AppWindow.KeyUp += Window_KeyUp;
     }
 
-    private void Window_KeyUp(object? sender, HaighFramework.Window.KeyboardKeyEventArgs e)
+    private void Window_KeyUp(object? sender, BearsEngine.Window.KeyboardKeyEventArgs e)
     {
         AddNewMessage(e.Key.AsString() + " Released.");
     }
 
-    private void Window_KeyDown(object? sender, HaighFramework.Window.KeyboardKeyEventArgs e)
+    private void Window_KeyDown(object? sender, BearsEngine.Window.KeyboardKeyEventArgs e)
     {
         AddNewMessage(e.Key.AsString() + " Pressed.");
     }

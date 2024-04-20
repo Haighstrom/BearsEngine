@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
-using HaighFramework.Input;
+using BearsEngine.Input;
 
 namespace BearsEngine;
 
@@ -62,10 +62,10 @@ public class GameEngine : IGameEngine
         _targetUPS = settings.TargetUPS;
         _targetRPS = settings.TargetFramesPerSecond;
 
-        OpenGL.Viewport(Window.Instance.Viewport);
-        OpenGL.OrthoMatrix = Matrix3.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
+        OpenGLHelper.Viewport(AppWindow.Instance.Viewport);
+        OpenGLHelper.OrthoMatrix = Matrix3.CreateOrtho(AppWindow.ClientSize.X, AppWindow.ClientSize.Y);
 
-        Window.Resized += OnWindowResize;
+        AppWindow.Resized += OnWindowResize;
 
         Log.Debug($"{nameof(GameEngine)} initialised.");
     }
@@ -89,29 +89,29 @@ public class GameEngine : IGameEngine
 
     private void OnWindowResize(object? sender, EventArgs e)
     {
-        OpenGL.Viewport(Window.Instance.Viewport);
-        OpenGL.OrthoMatrix = Matrix3.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
+        OpenGLHelper.Viewport(AppWindow.Instance.Viewport);
+        OpenGLHelper.OrthoMatrix = Matrix3.CreateOrtho(AppWindow.ClientSize.X, AppWindow.ClientSize.Y);
     }
 
     private void Render()
     {
-        Matrix3 projection = new(OpenGL.OrthoMatrix.Values);
+        Matrix3 projection = new(OpenGLHelper.OrthoMatrix.Values);
         Matrix3 identity = Matrix3.Identity;
         Scene.Render(ref projection, ref identity);
 
-        Window.Instance.SwapBuffers();
+        AppWindow.Instance.SwapBuffers();
     }
 
     private void Update(float elapsedTime)
     {
         Mouse.Update(InputManager.MouseState); //caution about changing this to avoid keys getting stuck down etc
 
-        if (KeyboardUpdatesWhenWindowUnfocussed || Window.Focussed)
+        if (KeyboardUpdatesWhenWindowUnfocussed || AppWindow.Focussed)
         {
             Keyboard.Update(InputManager.KeyboardState);
         }
 
-        if (RunWhenUnfocussed || Window.Focussed)
+        if (RunWhenUnfocussed || AppWindow.Focussed)
         {
             _sceneManager.UpdateScene(elapsedTime);
         }
@@ -119,7 +119,7 @@ public class GameEngine : IGameEngine
 
     public void Run()
     {
-        Window.Instance.ProcessEvents(); //get any initial crap out the way before we start timing
+        AppWindow.Instance.ProcessEvents(); //get any initial crap out the way before we start timing
 
         double targetUpdateTime = 1.0 / _targetUPS;
         double targetRenderTime = 1.0 / _targetRPS;
@@ -137,9 +137,9 @@ public class GameEngine : IGameEngine
 
         double periodicLoggingTimer = 0; //for logging things once per second
 
-        while (Window.Instance.IsOpen)
+        while (AppWindow.Instance.IsOpen)
         {
-            Window.Instance.ProcessEvents();
+            AppWindow.Instance.ProcessEvents();
 
             double currentTime = timer.Elapsed.TotalSeconds;
             double elapsed = currentTime - previousTime;
@@ -169,7 +169,7 @@ public class GameEngine : IGameEngine
 
                 //var updateTimer = new Stopwatch();
                 //updateTimer.Start();
-                if (Window.Instance.IsOpen)
+                if (AppWindow.Instance.IsOpen)
                     Update((float)timeOfFrame);
                 //Log.Debug($"Update: {updateTimer.ElapsedMilliseconds}");
 
@@ -182,7 +182,7 @@ public class GameEngine : IGameEngine
             {
                 //var renderTimer = new Stopwatch();
                 //renderTimer.Start();
-                if (Window.Instance.IsOpen)
+                if (AppWindow.Instance.IsOpen)
                     Render();
                 //Log.Debug($"Render: {renderTimer.ElapsedMilliseconds}");
 
@@ -221,9 +221,9 @@ public class GameEngine : IGameEngine
             {
                 // TODO: dispose managed state (managed objects)
                 Scene.Dispose(); //last scene will never have been disposed by SceneManager, since that only disposes when changing scene
-                Displays.Instance.Dispose();
+                AppDisplays.Instance.Dispose();
                 InputManager.Dispose();
-                Window.Instance.Dispose();
+                AppWindow.Instance.Dispose();
             }
 
             // TODO: free unmanaged resources (unmanaged objects) and override finalizer

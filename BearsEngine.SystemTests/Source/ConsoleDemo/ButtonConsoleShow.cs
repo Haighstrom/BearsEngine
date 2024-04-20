@@ -14,6 +14,6 @@ internal class ButtonConsoleShow : Button
     {
         base.OnLeftPressed();
 
-        Console.ShowConsole();
+        AppConsole.ShowConsole();
     }
 }

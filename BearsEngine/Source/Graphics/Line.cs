@@ -1,5 +1,5 @@
 ﻿using BearsEngine.Graphics.Shaders;
-using HaighFramework.OpenGL;
+using BearsEngine.OpenGL;
 
 namespace BearsEngine.Graphics;
 
@@ -19,7 +19,7 @@ public class Line : AddableBase, IGraphic
     {
         _shader = new SmoothLinesShader(thickness, thicknessInPixels);
 
-        _ID = OpenGL.GenBuffer();
+        _ID = OpenGLHelper.GenBuffer();
 
         Colour = colour;
         Points = points.Select(p => new Point(p.X, p.Y)).ToList();
@@ -53,7 +53,7 @@ public class Line : AddableBase, IGraphic
             _vertices[n + 1] = new Vertex(2 * Points[n - 1] - Points[n - 2], Colour, Point.Zero); //append forwards from p(n-1)
         }
 
-        OpenGL.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
+        OpenGLHelper.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
 
         _shader.Render(ref projection, ref mv, _vertices.Length, PRIMITIVE_TYPE.GL_LINE_STRIP_ADJACENCY);
 
@@ -104,11 +104,11 @@ public class Line : AddableBase, IGraphic
     public void Bind()
     {
         OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, _ID);
-        OpenGL.LastBoundVertexBuffer = _ID;
+        OpenGLHelper.LastBoundVertexBuffer = _ID;
     }
     public void Unbind()
     {
         OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, 0);
-        OpenGL.LastBoundVertexBuffer = 0;
+        OpenGLHelper.LastBoundVertexBuffer = 0;
     }
 }

@@ -1,9 +1,9 @@
 ﻿//using System;
 //using System.Collections.Generic;
-//using HaighFramework;
-//using HaighFramework.PInvoke;
-//using HaighFramework.Worlds;
-//using HaighFramework.OpenGL;
+//using BearsEngine;
+//using BearsEngine.PInvoke;
+//using BearsEngine.Worlds;
+//using BearsEngine.OpenGL;
 
 //namespace HaighEngineDemo.Source.BeginningOpenGL.Chapter3
 //{

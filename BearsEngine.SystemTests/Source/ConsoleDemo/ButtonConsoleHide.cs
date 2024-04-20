@@ -14,6 +14,6 @@ internal class ButtonConsoleHide : Button
     {
         base.OnLeftPressed();
 
-        Console.HideConsole();
+        AppConsole.HideConsole();
     }
 }

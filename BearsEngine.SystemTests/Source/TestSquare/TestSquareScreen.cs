@@ -15,7 +15,7 @@ namespace BearsEngine.SystemTests.Source.TestSquare
 
             BackgroundColour = Colour.CornflowerBlue;
 
-            Window.Resized += OnWindowResized;
+            AppWindow.Resized += OnWindowResized;
 
             _button = new Button(1, new Rect(5, 5, 60, 40), Colour.White, GV.Theme, () => Engine.Scene = new MenuScreen());
             _button.Add(new TextGraphic(GV.MainFont, Colour.Black, new Rect(60, 40), "Return") { HAlignment = HAlignment.Centred, VAlignment = VAlignment.Centred });
@@ -27,9 +27,9 @@ namespace BearsEngine.SystemTests.Source.TestSquare
 
         private void OnWindowResized(object? sender, EventArgs e)
         {
-            _camera.Resize(Window.ClientSize);
-            _image.W = Window.ClientSize.X;
-            _image.H = Window.ClientSize.Y;
+            _camera.Resize(AppWindow.ClientSize);
+            _image.W = AppWindow.ClientSize.X;
+            _image.H = AppWindow.ClientSize.Y;
         }
     }
 }

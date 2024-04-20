@@ -14,6 +14,6 @@ internal class ButtonConsoleRightSide : Button
     {
         base.OnLeftPressed();
 
-        Console.MoveConsoleTo(Console.MaxWidth - Console.DefaultWidth, 0, Console.DefaultWidth, Console.MaxHeight);
+        AppConsole.MoveConsoleTo(AppConsole.MaxWidth - AppConsole.DefaultWidth, 0, AppConsole.DefaultWidth, AppConsole.MaxHeight);
     }
 }

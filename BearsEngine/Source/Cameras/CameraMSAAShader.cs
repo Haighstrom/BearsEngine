@@ -1,5 +1,5 @@
 ﻿using BearsEngine.Graphics.Shaders;
-using HaighFramework.OpenGL;
+using BearsEngine.OpenGL;
 
 namespace BearsEngine.Worlds.Cameras
 {
@@ -18,8 +18,8 @@ namespace BearsEngine.Worlds.Cameras
 
         private static void Initialise()
         {
-            _ID = OpenGL.CreateShader(Resources.Shaders.vs_camera_msaa, Resources.Shaders.fs_cameraMSAA);
-            OpenGL.BindShader(_ID);
+            _ID = OpenGLHelper.CreateShader(Resources.Shaders.vs_camera_msaa, Resources.Shaders.fs_cameraMSAA);
+            OpenGLHelper.BindShader(_ID);
             _locationMVMatrix = OpenGL32.glGetUniformLocation(_ID, "MVMatrix");
             _locationPMatrix = OpenGL32.glGetUniformLocation(_ID, "PMatrix");
             _locationPosition = OpenGL32.glGetAttribLocation(_ID, "Position");
@@ -40,10 +40,10 @@ namespace BearsEngine.Worlds.Cameras
 
         public void Render(ref Matrix3 projection, ref Matrix3 modelView, int verticesLength, PRIMITIVE_TYPE drawType)
         {
-            OpenGL.BindShader(_ID);
+            OpenGLHelper.BindShader(_ID);
 
-            OpenGL.UniformMatrix3(_locationMVMatrix, modelView);
-            OpenGL.UniformMatrix3(_locationPMatrix, projection);
+            OpenGLHelper.UniformMatrix3(_locationMVMatrix, modelView);
+            OpenGLHelper.UniformMatrix3(_locationPMatrix, projection);
 
             //Bind MSAA sample numbers uniform
             OpenGL32.glUniform1i(_locationSamplesUniform, (int)Samples);

@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using HaighFramework.OpenGL;
+using BearsEngine.OpenGL;
 
 namespace BearsEngine.Graphics;
 
@@ -17,7 +17,7 @@ public enum MSAA_SAMPLES
     X16 = 16
 }
 
-public static class OpenGL
+public static class OpenGLHelper
 {
     internal const int TEXTURE_SPRITE_PADDING = 2;
 
@@ -181,8 +181,8 @@ public static class OpenGL
 
     public static void CreateFramebuffer(int width, int height, out int framebufferID, out Texture framebufferTexture)
     {
-        framebufferID = OpenGL.GenFramebuffer();
-        framebufferTexture = new Texture(OpenGL.GenTexture(), width, height);
+        framebufferID = OpenGLHelper.GenFramebuffer();
+        framebufferTexture = new Texture(OpenGLHelper.GenTexture(), width, height);
 
         OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, framebufferTexture.ID);
         OpenGL32.glTexStorage2D(TEXTURE_TARGET.GL_TEXTURE_2D, 1, TEXTURE_INTERNALFORMAT.GL_RGBA8, width, height);
@@ -196,7 +196,7 @@ public static class OpenGL
     public static void ResizeFramebuffer(ref Texture framebufferTexture, int newW, int newH)
     {
         OpenGL32.glDeleteTextures(1, new int[1] { framebufferTexture.ID });
-        framebufferTexture = new Texture(OpenGL.GenTexture(), newW, newH);
+        framebufferTexture = new Texture(OpenGLHelper.GenTexture(), newW, newH);
 
         OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, framebufferTexture.ID);
         OpenGL32.glTexStorage2D(TEXTURE_TARGET.GL_TEXTURE_2D, 1, TEXTURE_INTERNALFORMAT.GL_RGBA8, newW, newH);
@@ -210,7 +210,7 @@ public static class OpenGL
     public static void CreateMSAAFramebuffer(int width, int height, MSAA_SAMPLES samples, out int framebufferID, out Texture framebufferTexture)
     {
         //Generate FBO and texture to use with the MSAA antialising pass
-        framebufferTexture = new Texture(OpenGL.GenTexture(), width, height);
+        framebufferTexture = new Texture(OpenGLHelper.GenTexture(), width, height);
 
         OpenGL32.glBindTexture(TEXTURE_TARGET.GL_PROXY_TEXTURE_2D_MULTISAMPLE, framebufferTexture.ID);
         OpenGL32.glTexImage2DMultisample(TEXTURE_TARGET.GL_TEXTURE_2D_MULTISAMPLE, (int)samples, TEXTURE_INTERNALFORMAT.GL_RGB8, width, height, false);
@@ -220,7 +220,7 @@ public static class OpenGL
         OpenGL32.glTexParameteri(TEXTURE_TARGET.GL_TEXTURE_2D, TEXPARAMETER_NAME.GL_TEXTURE_WRAP_S, TEXPARAMETER_VALUE.GL_CLAMP_TO_EDGE);
         OpenGL32.glTexParameteri(TEXTURE_TARGET.GL_TEXTURE_2D, TEXPARAMETER_NAME.GL_TEXTURE_WRAP_T, TEXPARAMETER_VALUE.GL_CLAMP_TO_EDGE);
 
-        framebufferID = OpenGL.GenFramebuffer();
+        framebufferID = OpenGLHelper.GenFramebuffer();
     }
 
     public static void ResizeMSAAFramebuffer(ref Texture framebufferTexture, int newW, int newH, MSAA_SAMPLES newSamples)
@@ -335,11 +335,11 @@ public static class OpenGL
     /// </summary>
     internal static Texture LoadTexture(System.Drawing.Bitmap bufferedImage, string textureName, TEXPARAMETER_VALUE minMagFilter = TEXPARAMETER_VALUE.GL_NEAREST)
     {
-        if (OpenGL.TextureDictionary.ContainsKey(textureName))
-            return OpenGL.TextureDictionary[textureName];
+        if (OpenGLHelper.TextureDictionary.ContainsKey(textureName))
+            return OpenGLHelper.TextureDictionary[textureName];
 
         Texture t = GenTexture(bufferedImage, minMagFilter);
-        OpenGL.TextureDictionary.Add(textureName, t);
+        OpenGLHelper.TextureDictionary.Add(textureName, t);
 
         return t;
     }

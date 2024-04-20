@@ -1,6 +1,6 @@
 ﻿using BearsEngine.Controllers;
 using BearsEngine.SystemTests.Source.Globals;
-using HaighFramework.Input;
+using BearsEngine.Input;
 
 namespace BearsEngine.SystemTests.Source.InputDemo;
 

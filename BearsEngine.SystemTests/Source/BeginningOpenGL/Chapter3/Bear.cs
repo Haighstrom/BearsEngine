@@ -1,7 +1,7 @@
 ﻿//using System;
 //using System.Collections.Generic;
-//using HaighFramework;
-//using HaighFramework.Worlds;
+//using BearsEngine;
+//using BearsEngine.Worlds;
 
 //namespace HaighEngineDemo.Source.BeginningOpenGL.Chapter3
 //{

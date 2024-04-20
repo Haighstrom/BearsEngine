@@ -1,8 +1,8 @@
-﻿using HaighFramework.Window;
-using HaighFramework.Displays;
-using HaighFramework.Console;
-using BearsEngine.Source.Tools.IO;
+﻿using BearsEngine.Source.Tools.IO;
 using BearsEngine.Source.Core;
+using BearsEngine.Displays;
+using BearsEngine.Window;
+using BearsEngine.Console;
 
 namespace BearsEngine;
 
@@ -45,7 +45,7 @@ public static class Engine
         if (Instance is null)
             throw new InvalidOperationException($"You must call {nameof(Run)} before using other members of {nameof(Engine)}");
 
-        Window.Exit();
+        AppWindow.Exit();
     }
 
     /// <summary>
@@ -75,15 +75,15 @@ public static class Engine
 
         _runCalled = true;
 
-        Console.Instance = new ConsoleWindow(appSettings.ConsoleSettings);
+        AppConsole.Instance = new ConsoleWindow(appSettings.ConsoleSettings);
 
         Log.Instance = new Logger(appSettings.LogSettings);
 
         Files.Instance = new IOHelper(appSettings.IoSettings);
 
-        Displays.Instance = new DisplayManager();
+        AppDisplays.Instance = new DisplayManager();
 
-        Window.Instance = new HaighWindow(appSettings.WindowSettings);
+        AppWindow.Instance = new HaighWindow(appSettings.WindowSettings);
 
         initialise?.Invoke();
 

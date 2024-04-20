@@ -1,5 +1,5 @@
 ﻿using BearsEngine.Graphics.Shaders;
-using HaighFramework.OpenGL;
+using BearsEngine.OpenGL;
 
 namespace BearsEngine.Graphics;
 
@@ -35,7 +35,7 @@ public class FillableBar : RectGraphicBase
     public FillableBar(string graphicPath, float x, float y, float w, float h, float initialAmountFilled = 0)
         : base(new DefaultShader(), x, y, w, h)
     {
-        _texture = OpenGL.LoadTexture(graphicPath);
+        _texture = OpenGLHelper.LoadTexture(graphicPath);
         AmountFilled = initialAmountFilled;
 
         _UV1 = new Point(0, 0);
@@ -99,10 +99,10 @@ public class FillableBar : RectGraphicBase
 
         var mv = Matrix3.Translate(ref modelView, X, Y);
 
-        if (OpenGL.LastBoundTexture != _texture.ID)
+        if (OpenGLHelper.LastBoundTexture != _texture.ID)
         {
             OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, _texture.ID);
-            OpenGL.LastBoundTexture = _texture.ID;
+            OpenGLHelper.LastBoundTexture = _texture.ID;
         }
 
         BindVertexBuffer();
@@ -133,7 +133,7 @@ public class FillableBar : RectGraphicBase
                 new Vertex(new Point(W * AmountFilled, H), Colour, _UV8)
             };
 
-            OpenGL.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
+            OpenGLHelper.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
 
             _verticesChanged = false;
         }

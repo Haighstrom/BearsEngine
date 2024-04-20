@@ -1,11 +1,11 @@
-﻿using HaighFramework.Window;
+﻿using BearsEngine.Window;
 
 namespace BearsEngine;
 
 /// <summary>
 /// Provides access to Window information and features
 /// </summary>
-public static class Window
+public static class AppWindow
 {
     private static IWindow? _instance;
 
