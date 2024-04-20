@@ -1,8 +1,7 @@
-﻿namespace BearsEngine.Worlds.UI.Controls
+﻿namespace BearsEngine.Worlds.UI.Controls;
+
+public interface IActivatable
 {
-    public interface IActivatable
-    {
-        void Activate();
-        void Deactivate();
-    }
+    void Activate();
+    void Deactivate();
 }

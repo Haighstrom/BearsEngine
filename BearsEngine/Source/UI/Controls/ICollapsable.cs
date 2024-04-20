@@ -1,8 +1,7 @@
-﻿namespace BearsEngine.Worlds.UI.Controls
+﻿namespace BearsEngine.Worlds.UI.Controls;
+
+public interface ICollapsable
 {
-    public interface ICollapsable
-    {
-        void Collapse();
-        void Expand();
-    }
+    void Collapse();
+    void Expand();
 }

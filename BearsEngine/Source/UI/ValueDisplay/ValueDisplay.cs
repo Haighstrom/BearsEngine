@@ -1,28 +1,27 @@
 ﻿using BearsEngine.Worlds.Graphics.Text;
 
-namespace BearsEngine.UI
+namespace BearsEngine.UI;
+
+public delegate int ValueGet();
+
+public class ValueDisplay : Entity
 {
-    public delegate int ValueGet();
+    protected ValueGet Value;
+    private readonly string _valueName;
+    private readonly TextGraphic _valueText;
 
-    public class ValueDisplay : Entity
+    public ValueDisplay(float layer, Rect position, string graphic, UITheme theme, string valueName, ValueGet valueToTrack)
+        : base(layer, position, graphic)
     {
-        protected ValueGet Value;
-        private readonly string _valueName;
-        private readonly TextGraphic _valueText;
+        Value = valueToTrack;
+        _valueName = valueName;
+        Add(_valueText = new TextGraphic(theme, position.Zeroed, ""));
 
-        public ValueDisplay(float layer, Rect position, string graphic, UITheme theme, string valueName, ValueGet valueToTrack)
-            : base(layer, position, graphic)
-        {
-            Value = valueToTrack;
-            _valueName = valueName;
-            Add(_valueText = new TextGraphic(theme, position.Zeroed, ""));
+        UpdateValueText();
+    }
 
-            UpdateValueText();
-        }
-
-        public void UpdateValueText()
-        {
-            _valueText.Text = _valueName + "\n" + Value().ToString(); //todo: interpolated strings is life
-        }
+    public void UpdateValueText()
+    {
+        _valueText.Text = _valueName + "\n" + Value().ToString(); //todo: interpolated strings is life
     }
 }
