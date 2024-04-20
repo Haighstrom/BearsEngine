@@ -1,0 +1,10 @@
+{
+  "ConsoleLogLevel": 1,
+  "FileLogging": [
+    {
+      "FilePath": "Log.txt",
+      "LogLevel": 5,
+      "OverwritePreviousFiles": true
+    }
+  ]
+}

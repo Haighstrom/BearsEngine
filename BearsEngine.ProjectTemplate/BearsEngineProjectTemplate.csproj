@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+	<EnablePreviewFeatures>True</EnablePreviewFeatures>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="LogSettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="LogSettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\Data\" />
+    <Folder Include="Assets\Fonts\" />
+    <Folder Include="Assets\GFX\" />
+    <Folder Include="Assets\Maps\" />
+    <Folder Include="Assets\SFX\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BearsEngine\BearsEngine.csproj" />
+  </ItemGroup>
+
+</Project>
