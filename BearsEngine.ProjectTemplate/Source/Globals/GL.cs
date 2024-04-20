@@ -1,4 +1,4 @@
-﻿namespace BearsEngineProjectTemplate.Source;
+﻿namespace BearsEngine.ProjectTemplate.Source.Globals;
 
 /// <summary>
 /// Single place to hold graphical layers. Higher is deeper, i.e. below. Separate between UI and 'entities' within cameras as layer sorting happens within a container/parent and cascades

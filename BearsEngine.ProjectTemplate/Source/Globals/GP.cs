@@ -1,4 +1,4 @@
-﻿namespace BearsEngineProjectTemplate.Source;
+﻿namespace BearsEngine.ProjectTemplate.Source.Globals;
 
 /// <summary>
 /// Global Positions - single place to store all positional data, to help size and place UI and other objects

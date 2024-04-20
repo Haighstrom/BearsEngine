@@ -1,4 +1,4 @@
-﻿namespace BearsEngineProjectTemplate.Source;
+﻿namespace BearsEngine.ProjectTemplate.Source.Globals;
 
 /// <summary>
 /// Global Variables - used to reference any objects that should exist at the project level, needed to be referenced by multiple classes but not naturally sitting within any one of them.

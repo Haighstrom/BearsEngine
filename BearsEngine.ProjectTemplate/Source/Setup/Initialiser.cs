@@ -1,6 +1,7 @@
-﻿using BearsEngine.Source.Core;
+﻿using BearsEngine.ProjectTemplate.Source.Globals;
+using BearsEngine.Source.Core;
 
-namespace BearsEngineProjectTemplate.Source.Setup;
+namespace BearsEngine.ProjectTemplate.Source.Setup;
 
 /// <summary>
 /// Used for all setup code, e.g. instantiating complex data (or data that requires a render context to exist before it can be created), saving map editor settings, etc, and finally assigning the first Screen to be used

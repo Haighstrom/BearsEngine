@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HaighFramework", "..\HaighF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BearsEngine", "BearsEngine\BearsEngine.csproj", "{0379AE9D-250D-4470-8475-488CF59A9846}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BearsEngineProjectTemplate", "BearsEngine.ProjectTemplate\BearsEngineProjectTemplate.csproj", "{FD4573EA-B17A-410A-B8BD-A772FDE127F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BearsEngine.ProjectTemplate", "BearsEngine.ProjectTemplate\BearsEngine.ProjectTemplate.csproj", "{FD4573EA-B17A-410A-B8BD-A772FDE127F7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BearsEngine.SystemTests", "BearsEngine.SystemTests\BearsEngine.SystemTests.csproj", "{A2E0BEEF-B058-4CEC-9098-A989CEEEAE02}"
 EndProject

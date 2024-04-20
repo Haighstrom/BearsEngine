@@ -1,4 +1,4 @@
-﻿namespace BearsEngineProjectTemplate.Source;
+﻿namespace BearsEngine.ProjectTemplate.Source.Globals;
 
 /// <summary>
 /// Easy-access references to file paths to all external content
@@ -12,7 +12,7 @@ internal class GA
     {
 
     }
-    
+
     /// <summary>
     /// Used to reference all graphical assets
     /// </summary>
