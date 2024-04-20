@@ -2,10 +2,8 @@
 
 namespace BearsEngine.Graphics;
 
-public struct Texture
+public readonly struct Texture
 {
-    public int ID;
-    public int Width, Height;
     public Texture(int id, int width, int height)
     {
         ID = id;
@@ -13,12 +11,9 @@ public struct Texture
         Height = height;
     }
 
-    public void Bind()
-    {
-        if (OpenGLHelper.LastBoundTexture != ID)
-        {
-            OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, ID);
-            OpenGLHelper.LastBoundTexture = ID;
-        }
-    }
+    public int ID { get; init; }
+
+    public int Width { get; init; }
+
+    public int Height { get; init; }
 }

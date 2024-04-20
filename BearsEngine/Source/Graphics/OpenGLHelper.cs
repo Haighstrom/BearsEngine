@@ -56,11 +56,13 @@ public static class OpenGLHelper
         if (!File.Exists(path))
             throw new FileNotFoundException(path);
 
-        var t = new Texture()
+        var textureID = GenTexture();
+
+        if (LastBoundTexture != textureID)
         {
-            ID = GenTexture()
-        };
-        t.Bind();
+            OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, textureID);
+            LastBoundTexture = textureID;
+        }
 
         var BMP = new System.Drawing.Bitmap(path);
 
@@ -83,8 +85,6 @@ public static class OpenGLHelper
                 }
         }
 
-        t.Width = newW;
-        t.Height = newH;
         paddedBMP = BitmapTools.PremultiplyAlpha(paddedBMP);
 
         var bmpData = paddedBMP.LockBits(new System.Drawing.Rectangle(0, 0, paddedBMP.Width, paddedBMP.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
@@ -104,7 +104,7 @@ public static class OpenGLHelper
         BMP.Dispose();
         paddedBMP.Dispose();
 
-        return t;
+        return new Texture(newW, newH, textureID);
     }
 
     private static Texture GenTexture(string path, TEXPARAMETER_VALUE minMagFilter = TEXPARAMETER_VALUE.GL_NEAREST) => GenTexture(new System.Drawing.Bitmap(path), minMagFilter);
@@ -245,7 +245,6 @@ public static class OpenGLHelper
         {
             Width = bmp.Width,
             Height = bmp.Height,
-
             ID = GenTexture()
         };
 
@@ -269,7 +268,11 @@ public static class OpenGLHelper
 
         OpenGL32.glPixelStorei(PIXEL_STORE_MODE.GL_UNPACK_ALIGNMENT, 1);
 
-        t.Bind();
+        if (LastBoundTexture != t.ID)
+        {
+            OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, t.ID);
+            LastBoundTexture = t.ID;
+        }
 
         GCHandle pinned = GCHandle.Alloc(pixels, GCHandleType.Pinned);
         IntPtr pointer = pinned.AddrOfPinnedObject();

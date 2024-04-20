@@ -238,7 +238,11 @@ namespace BearsEngine.Worlds.Cameras
             OpenGL32.glBindFramebuffer(FRAMEBUFFER_TARGET.GL_FRAMEBUFFER, OpenGLHelper.LastBoundFrameBuffer);
 
             //Bind the FBO to be drawn
-            _frameBufferShaderPassTexture.Bind();
+            if (OpenGLHelper.LastBoundTexture != _frameBufferShaderPassTexture.ID)
+            {
+                OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, _frameBufferShaderPassTexture.ID);
+                OpenGLHelper.LastBoundTexture = _frameBufferShaderPassTexture.ID;
+            }
 
             //Set some other blend fucntion when render the FBO texture which apparantly lets the layer alpha blend with the one beneath?
             OpenGL32.glBlendFunc(BLEND_SCALE_FACTOR.GL_ONE, BLEND_SCALE_FACTOR.GL_ONE_MINUS_SRC_ALPHA);
