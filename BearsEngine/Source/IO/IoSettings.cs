@@ -17,8 +17,15 @@ public class IoSettings
             WriteIndented = true,
             IncludeFields = true,
         };
+
         options.Converters.Add(new TwoDimensionalArrayConverter());
+
         return options;
+    }
+
+    public IoSettings()
+    {
+        
     }
 
     public int RetriesForIoOperations { get; set; } = 5;

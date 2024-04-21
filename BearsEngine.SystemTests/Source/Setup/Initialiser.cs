@@ -3,11 +3,9 @@ using BearsEngine.Window;
 
 namespace BearsEngine.SystemTests.Source.Setup;
 
-internal class Initialiser : IAppInitialiser
+internal static class Initialiser
 {
-    private const string LogSettingsFilePath = "LogSettings.json";
-
-    public ApplicationSettings GetApplicationSettings()
+    public static ApplicationSettings GetApplicationSettings()
     {
         return new()
         {
@@ -26,16 +24,12 @@ internal class Initialiser : IAppInitialiser
                 Height = 600,
                 Centre = true,
                 Title = "BearsEngine Tester",
-                Border = BearsEngine.Window.BorderStyle.NonResizable,
+                Border = BorderStyle.NonResizable,
             },
         };
     }
 
-    public void Initialise()
-    {
-    }
-
-    public IScene CreateFirstScene()
+    public static IScene CreateFirstScene()
     {
         return new MenuScreen();
     }

@@ -6,16 +6,11 @@ namespace BearsEngine.ProjectTemplate.Source.Setup;
 /// <summary>
 /// Used for all setup code, e.g. instantiating complex data (or data that requires a render context to exist before it can be created), saving map editor settings, etc, and finally assigning the first Screen to be used
 /// </summary>
-internal class Initialiser : IAppInitialiser
+internal class Initialiser
 {
     private const string LogSettingsFilePath = "LogSettings.json";
 
-    private static void InitialiseThemes()
-    {
-        GV.MainUITheme = UITheme.Default;
-    }
-
-    public ApplicationSettings GetApplicationSettings()
+    public static ApplicationSettings GetApplicationSettings()
     {
         return new()
         {
@@ -31,12 +26,7 @@ internal class Initialiser : IAppInitialiser
         };
     }
 
-    public void Initialise()
-    {
-        InitialiseThemes();
-    }
-
-    public IScene CreateFirstScene()
+    public static IScene CreateFirstScene()
     {
         return new Screen();
     }

@@ -1,3 +1,3 @@
 ﻿using BearsEngine.ProjectTemplate.Source.Setup;
 
-Engine.Run(new Initialiser());
+Engine.Run(Initialiser.GetApplicationSettings(), Initialiser.CreateFirstScene);

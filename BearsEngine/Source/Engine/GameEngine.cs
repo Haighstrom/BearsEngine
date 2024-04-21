@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 using BearsEngine.Input;
+using BearsEngine.Window;
 
 namespace BearsEngine;
 
@@ -117,9 +118,9 @@ public class GameEngine : IGameEngine
         }
     }
 
-    public void Run()
+    public void Run(IWindow window)
     {
-        AppWindow.Instance.ProcessEvents(); //get any initial crap out the way before we start timing
+        window.ProcessEvents(); //get any initial crap out the way before we start timing
 
         double targetUpdateTime = 1.0 / _targetUPS;
         double targetRenderTime = 1.0 / _targetRPS;
@@ -137,9 +138,9 @@ public class GameEngine : IGameEngine
 
         double periodicLoggingTimer = 0; //for logging things once per second
 
-        while (AppWindow.Instance.IsOpen)
+        while (window.IsOpen)
         {
-            AppWindow.Instance.ProcessEvents();
+            window.ProcessEvents();
 
             double currentTime = timer.Elapsed.TotalSeconds;
             double elapsed = currentTime - previousTime;
@@ -169,7 +170,7 @@ public class GameEngine : IGameEngine
 
                 //var updateTimer = new Stopwatch();
                 //updateTimer.Start();
-                if (AppWindow.Instance.IsOpen)
+                if (window.IsOpen)
                     Update((float)timeOfFrame);
                 //Log.Debug($"Update: {updateTimer.ElapsedMilliseconds}");
 
@@ -182,7 +183,7 @@ public class GameEngine : IGameEngine
             {
                 //var renderTimer = new Stopwatch();
                 //renderTimer.Start();
-                if (AppWindow.Instance.IsOpen)
+                if (window.IsOpen)
                     Render();
                 //Log.Debug($"Render: {renderTimer.ElapsedMilliseconds}");
 
