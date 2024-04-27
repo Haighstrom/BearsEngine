@@ -157,7 +157,7 @@ internal enum DWMWINDOWATTRIBUTE : uint
 /// <summary>
 /// Desktop Window Manager https://docs.microsoft.com/en-us/windows/win32/api/dwmapi/
 /// </summary>
-internal static class DWMAPI
+internal static partial class DWMAPI
 {
     private const string Library = "Dwmapi.dll";
 
@@ -180,8 +180,8 @@ internal static class DWMAPI
     /// <param name="pvAttribute">A pointer to a value which, when this function returns successfully, receives the current value of the attribute. The type of the retrieved value depends on the value of the dwAttribute parameter. The DWMWINDOWATTRIBUTE enumeration topic indicates, in the row for each flag, what type of value you should pass a pointer to in the pvAttribute parameter.</param>
     /// <param name="cbAttribute">The size, in bytes, of the attribute value being received via the pvAttribute parameter. The type of the retrieved value, and therefore its size in bytes, depends on the value of the dwAttribute parameter.</param>
     /// <returns>If the function succeeds, it returns S_OK (0). Otherwise, it returns an HRESULT error code.</returns>
-    [DllImport(Library)]
-    public static extern int DwmGetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, out RECT pvAttribute, int cbAttribute);
+    [LibraryImport(Library)]
+    public static partial int DwmGetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, out RECT pvAttribute, int cbAttribute);
 
     /// <summary>
     /// Sets the value of Desktop Window Manager (DWM) non-client rendering attributes for a window.
@@ -191,8 +191,8 @@ internal static class DWMAPI
     /// <param name="pvAttribute">A pointer to an object containing the attribute value to set. The type of the value set depends on the value of the dwAttribute parameter. The DWMWINDOWATTRIBUTE enumeration topic indicates, in the row for each flag, what type of value you should pass a pointer to in the pvAttribute parameter.</param>
     /// <param name="cbAttribute">The size, in bytes, of the attribute value being set via the pvAttribute parameter. The type of the value set, and therefore its size in bytes, depends on the value of the dwAttribute parameter.</param>
     /// <returns>If the function succeeds, it returns S_OK (0). Otherwise, it returns an HRESULT error code.</returns>
-    [DllImport(Library)]
-    public static extern int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, RECT pvAttribute, int cbAttribute);
+    [LibraryImport(Library)]
+    public static partial int DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, RECT pvAttribute, int cbAttribute);
 
     /// <summary>
     /// Sets the value of Desktop Window Manager (DWM) non-client rendering attributes for a window.

@@ -461,7 +461,7 @@ internal class PIXELFORMATDESCRIPTOR
 /// Graphics Device Interface (GDI) functions for device output, such as those for drawing and font management. https://docs.microsoft.com/en-us/windows/win32/gdi/windows-gdi
 /// </summary>
 [SuppressUnmanagedCodeSecurity]
-internal static class GDI32
+internal static partial class GDI32
 {
     private const string Library = "Gdi32.dll";
 
@@ -472,8 +472,8 @@ internal static class GDI32
     /// <param name="ppfd">Pointer to a PIXELFORMATDESCRIPTOR structure that specifies the requested pixel format.</param>
     /// <returns>If the function succeeds, the return value is a pixel format index (one-based) that is the closest match to the given pixel format descriptor.
     /// If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
-    [DllImport(Library, SetLastError = true)]
-    public static extern int ChoosePixelFormat(IntPtr hdc, IntPtr ppfd);
+    [LibraryImport(Library, SetLastError = true)]
+    public static partial int ChoosePixelFormat(IntPtr hdc, IntPtr ppfd);
 
     /// <summary>
     /// The ChoosePixelFormat function attempts to match an appropriate pixel format supported by a device context to a given pixel format specification.
@@ -503,8 +503,8 @@ internal static class GDI32
     /// <param name="crColor">The color of the brush. To create a COLORREF color value, use the RGB macro. https://docs.microsoft.com/en-us/windows/win32/gdi/colorref</param>
     /// <returns>If the function succeeds, the return value identifies a logical brush.
     /// If the function fails, the return value is NULL.</returns>
-    [DllImport(Library)]
-    public static extern IntPtr CreateSolidBrush(uint crColor);
+    [LibraryImport(Library)]
+    public static partial IntPtr CreateSolidBrush(uint crColor);
     
     /// <summary>
     /// The DeleteObject function deletes a logical pen, brush, font, bitmap, region, or palette, freeing all system resources associated with the object. After the object is deleted, the specified handle is no longer valid.
@@ -533,8 +533,8 @@ internal static class GDI32
     /// <param name="hDC">A handle to the DC.</param>
     /// <param name="nIndex">The item to be returned.</param>
     /// <returns>The return value specifies the value of the desired item.</returns>
-    [DllImport(Library)]
-    public static extern int GetDeviceCaps(IntPtr hDC, GETDEVICECAPS_INDEX nIndex);
+    [LibraryImport(Library)]
+    public static partial int GetDeviceCaps(IntPtr hDC, GETDEVICECAPS_INDEX nIndex);
 
     /// <summary>
     /// The SetPixelFormat function sets the pixel format of the specified device context to the format specified by the iPixelFormat index.
@@ -552,8 +552,8 @@ internal static class GDI32
     /// <param name="hdc">A handle to the device context.</param>
     /// <param name="color">The color of the text.</param>
     /// <returns>If the function succeeds, the return value is a color reference for the previous text color as a COLORREF value. If the function fails, the return value is CLR_INVALID.</returns>
-    [DllImport(Library)]
-    public static extern uint SetTextColor(IntPtr hdc, uint color);
+    [LibraryImport(Library)]
+    public static partial uint SetTextColor(IntPtr hdc, uint color);
 
     /// <summary>
     /// The SwapBuffers function exchanges the front and back buffers if the current pixel format for the window referenced by the specified device context includes a back buffer.

@@ -53,7 +53,7 @@ internal enum PROCESS_DPI_AWARENESS
 #endregion
 
 [SuppressUnmanagedCodeSecurity]
-internal static class SHCore
+internal static partial class SHCore
 {
     private const string Library = "Shcore.dll";
 
@@ -73,6 +73,6 @@ internal static class SHCore
     /// <param name="dpiX">The value of the DPI along the X axis. This value always refers to the horizontal edge, even when the screen is rotated.</param>
     /// <param name="dpiY">The value of the DPI along the Y axis. This value always refers to the vertical edge, even when the screen is rotated.</param>
     /// <returns>This function returns one of the following values. S_OK: The function successfully returns the X and Y DPI values for the specified monitor. E_INVALIDARG: The handle, DPI type, or pointers passed in are not valid.</returns>
-    [DllImport(Library)]
-    public static extern uint GetDpiForMonitor(IntPtr hmonitor, MONITOR_DPI_TYPE dpiType, out uint dpiX, out uint dpiY);
+    [LibraryImport(Library)]
+    public static partial uint GetDpiForMonitor(IntPtr hmonitor, MONITOR_DPI_TYPE dpiType, out uint dpiX, out uint dpiY);
 }
