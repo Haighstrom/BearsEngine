@@ -6,7 +6,7 @@ namespace BearsEngine.Audio.OpenAL;
 /// <summary>
 /// PInvokes to provide access to the OpenAL 1.1 flat API.
 /// </summary>
-internal static partial class AL
+internal static class AL
 {
     internal const string Lib = "OpenAl32.dll";
     private const CallingConvention Style = CallingConvention.Cdecl;
@@ -18,9 +18,8 @@ internal static partial class AL
     /// <param name="buffer">Pointer to a pinned audio buffer.</param>
     /// <param name="size">The size of the audio buffer in bytes.</param>
     /// <param name="freq">The frequency of the audio buffer.</param>
-    [LibraryImport(Lib, EntryPoint = "alBufferData"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void BufferData(uint bid, ALFormat format, IntPtr buffer, int size, int freq);
+    [DllImport(Lib, EntryPoint = "alBufferData", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void BufferData(uint bid, ALFormat format, IntPtr buffer, int size, int freq);
 
     /// <summary>This function fills a buffer with audio buffer. All the pre-defined formats are PCM buffer, but this function may be used by extensions to load other buffer types as well.</summary>
     /// <param name="bid">buffer Handle/Name to be filled with buffer.</param>
@@ -123,16 +122,14 @@ internal static partial class AL
     /// <summary>This function deletes one or more sources.</summary>
     /// <param name="n">The number of sources to be deleted.</param>
     /// <param name="sources">Reference to a single source, or an array of source names identifying the sources to be deleted.</param>
-    [LibraryImport(Lib, EntryPoint = "alDeleteSources"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void DeleteSources(int n, ref uint sources);
+    [DllImport(Lib, EntryPoint = "alDeleteSources", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void DeleteSources(int n, ref uint sources);
 
     /// <summary>This function deletes one or more sources.</summary>
     /// <param name="n">The number of sources to be deleted.</param>
     /// <param name="sources">Reference to a single source, or an array of source names identifying the sources to be deleted.</param>
-    [LibraryImport(Lib, EntryPoint = "alDeleteSources"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void DeleteSources(int n, ref int sources);
+    [DllImport(Lib, EntryPoint = "alDeleteSources", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void DeleteSources(int n, ref int sources);
 
     /// <summary>This function deletes one or more sources.</summary>
     /// <param name="sources">An array of source names identifying the sources to be deleted.</param>
@@ -170,9 +167,8 @@ internal static partial class AL
     #region Disable
     /// <summary>This function disables a feature of the OpenAL driver.</summary>
     /// <param name="capability">The name of a capability to disable.</param>
-    [LibraryImport(Lib, EntryPoint = "alDisable"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void Disable(ALCapability capability);
+    [DllImport(Lib, EntryPoint = "alDisable", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void Disable(ALCapability capability);
     #endregion
 
     #region DistanceModel
@@ -207,33 +203,29 @@ internal static partial class AL
     /// gain = 1f;
     /// </remarks>
     /// <param name="distancemodel"></param>
-    [LibraryImport(Lib, EntryPoint = "alDistanceModel"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void DistanceModel(ALDistanceModel distancemodel);
+    [DllImport(Lib, EntryPoint = "alDistanceModel", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void DistanceModel(ALDistanceModel distancemodel);
     #endregion 
 
     #region DopplerFactor
     /// <summary>AL.DopplerFactor is a simple scaling of source and listener velocities to exaggerate or deemphasize the Doppler (pitch) shift resulting from the calculation.</summary>
     /// <param name="value">A negative value will result in an error, the command is then ignored. The default value is 1f. The current setting can be queried using AL.Get with parameter ALGetFloat.SpeedOfSound.</param>
-    [LibraryImport(Lib, EntryPoint = "alDopplerFactor"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void DopplerFactor(float value);
+    [DllImport(Lib, EntryPoint = "alDopplerFactor", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void DopplerFactor(float value);
     #endregion
 
     #region DopplerVelocity
     /// <summary>This function is deprecated and should not be used.</summary>
     /// <param name="value">The default is 1.0f.</param>
-    [LibraryImport(Lib, EntryPoint = "alDopplerVelocity"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void DopplerVelocity(float value);
+    [DllImport(Lib, EntryPoint = "alDopplerVelocity", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void DopplerVelocity(float value);
     #endregion
 
     #region Enable
     /// <summary>This function enables a feature of the OpenAL driver. There are no capabilities defined in OpenAL 1.1 to be used with this function, but it may be used by an extension.</summary>
     /// <param name="capability">The name of a capability to enable.</param>
-    [LibraryImport(Lib, EntryPoint = "alEnable"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void Enable(ALCapability capability);
+    [DllImport(Lib, EntryPoint = "alEnable", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void Enable(ALCapability capability);
     #endregion
 
     #region GenBuffer
@@ -381,16 +373,14 @@ internal static partial class AL
     /// <summary>This function returns an integer OpenAL state.</summary>
     /// <param name="param">the state to be queried: DistanceModel.</param>
     /// <returns>The integer state described by param will be returned.</returns>
-    [LibraryImport(Lib, EntryPoint = "alGetInteger"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial int Get(ALGetInteger param);
+    [DllImport(Lib, EntryPoint = "alGetInteger", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern int Get(ALGetInteger param);
 
     /// <summary>This function returns a floating-point OpenAL state.</summary>
     /// <param name="param">the state to be queried: DopplerFactor, SpeedOfSound.</param>
     /// <returns>The floating-point state described by param will be returned.</returns>
-    [LibraryImport(Lib, EntryPoint = "alGetFloat"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial float Get(ALGetFloat param);
+    [DllImport(Lib, EntryPoint = "alGetFloat", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern float Get(ALGetFloat param);
     #endregion
 
     #region GetBuffer
@@ -422,9 +412,8 @@ internal static partial class AL
     #region GetError
     /// <summary>Error support. Obtain the most recent error generated in the AL state machine. When an error is detected by AL, a flag is set and the error code is recorded. Further errors, if they occur, do not affect this recorded code. When alGetError is called, the code is returned and the flag is cleared, so that a further error will again record its code.</summary>
     /// <returns>The first error that occured. can be used with AL.GetString. Returns an Alenum representing the error state. When an OpenAL error occurs, the error state is set and will not be changed until the error state is retrieved using alGetError. Whenever alGetError is called, the error state is cleared and the last state (the current state when the call was made) is returned. To isolate error detection to a specific portion of code, alGetError should be called before the isolated section to clear the current error state.</returns>
-    [LibraryImport(Lib, EntryPoint = "alGetError"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial ALError GetError();
+    [DllImport(Lib, EntryPoint = "alGetError", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern ALError GetError();
     #endregion
 
     #region GetListener
@@ -445,9 +434,8 @@ internal static partial class AL
     /// <summary>This function retrieves a floating-point vector property of the listener. You must pin it manually.</summary>
     /// <param name="param">the name of the attribute to be retrieved: ALListener3f.Position, ALListener3f.Velocity, ALListenerfv.Orientation</param>
     /// <param name="values">A pointer to the floating-point vector value being retrieved.</param>
-    [LibraryImport(Lib, EntryPoint = "alGetListenerfv"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static     unsafe partial void GetListener(ALListenerfv param, float* values);
+    [DllImport(Lib, EntryPoint = "alGetListenerfv", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    unsafe internal static extern void GetListener(ALListenerfv param, float* values);
     #endregion
 
     #region GetProcAddress
@@ -509,9 +497,8 @@ internal static partial class AL
     #endregion
 
     #region GetString
-    [LibraryImport(Lib, EntryPoint = "alGetString"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    private static partial IntPtr GetStringPrivate(ALGetString param); // accepts the enums AlError, AlContextString
+    [DllImport(Lib, EntryPoint = "alGetString", ExactSpelling = true, CallingConvention = Style, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity()]
+    private static extern IntPtr GetStringPrivate(ALGetString param); // accepts the enums AlError, AlContextString
 
     /// <summary>This function retrieves an OpenAL string property.</summary>
     /// <param name="param">The property to be returned: Vendor, Version, Renderer and Extensions</param>
@@ -583,22 +570,19 @@ internal static partial class AL
     /// <summary>This function sets a floating-point property for the listener.</summary>
     /// <param name="param">The name of the attribute to be set: ALListenerf.Gain</param>
     /// <param name="value">The float value to set the attribute to.</param>
-    [LibraryImport(Lib, EntryPoint = "alListenerf"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void Listener(ALListenerf param, float value);
+    [DllImport(Lib, EntryPoint = "alListenerf", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void Listener(ALListenerf param, float value);
 
     /// <summary>This function sets a floating-point property for the listener.</summary>
     /// <param name="param">The name of the attribute to set: ALListener3f.Position, ALListener3f.Velocity</param>
     /// <param name="value1">The value to set the attribute to.</param>
     /// <param name="value2">The value to set the attribute to.</param>
     /// <param name="value3">The value to set the attribute to.</param>
-    [LibraryImport(Lib, EntryPoint = "alListener3f"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void Listener(ALListener3f param, float value1, float value2, float value3);
+    [DllImport(Lib, EntryPoint = "alListener3f", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void Listener(ALListener3f param, float value1, float value2, float value3);
 
-    [LibraryImport(Lib, EntryPoint = "alListenerfv"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    private static     unsafe partial void ListenerPrivate(ALListenerfv param, float* values);
+    [DllImport(Lib, EntryPoint = "alListenerfv", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    unsafe private static extern void ListenerPrivate(ALListenerfv param, float* values);
 
     /// <summary>This function sets a floating-point vector property of the listener.</summary>
     /// <param name="param">The name of the attribute to be set: ALListener3f.Position, ALListener3f.Velocity, ALListenerfv.Orientation</param>
@@ -620,9 +604,8 @@ internal static partial class AL
     /// <param name="sid">Source name whose attribute is being set</param>
     /// <param name="param">The name of the attribute to set: ALSourcef.Pitch, Gain, MinGain, MaxGain, MaxDistance, RolloffFactor, ConeOuterGain, ConeInnerAngle, ConeOuterAngle, ReferenceDistance, EfxAirAbsorptionFactor, EfxRoomRolloffFactor, EfxConeOuterGainHighFrequency.</param>
     /// <param name="value">The value to set the attribute to.</param>
-    [LibraryImport(Lib, EntryPoint = "alSourcef"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void Source(uint sid, ALSourcef param, float value);
+    [DllImport(Lib, EntryPoint = "alSourcef", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void Source(uint sid, ALSourcef param, float value);
 
 
     /// <summary>This function sets a source property requiring three floating-point values.</summary>
@@ -631,17 +614,15 @@ internal static partial class AL
     /// <param name="value1">The three ALfloat values which the attribute will be set to.</param>
     /// <param name="value2">The three ALfloat values which the attribute will be set to.</param>
     /// <param name="value3">The three ALfloat values which the attribute will be set to.</param>
-    [LibraryImport(Lib, EntryPoint = "alSource3f"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void Source(uint sid, ALSource3f param, float value1, float value2, float value3);
+    [DllImport(Lib, EntryPoint = "alSource3f", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void Source(uint sid, ALSource3f param, float value1, float value2, float value3);
 
     /// <summary>This function sets an integer property of a source.</summary>
     /// <param name="sid">Source name whose attribute is being set.</param>
     /// <param name="param">The name of the attribute to set: ALSourcei.SourceRelative, ConeInnerAngle, ConeOuterAngle, Looping, Buffer, SourceState.</param>
     /// <param name="value">The value to set the attribute to.</param>
-    [LibraryImport(Lib, EntryPoint = "alSourcei"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void Source(uint sid, ALSourcei param, int value);
+    [DllImport(Lib, EntryPoint = "alSourcei", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void Source(uint sid, ALSourcei param, int value);
 
     /// <summary>This function sets an bool property of a source.</summary>
     /// <param name="sid">Source name whose attribute is being set.</param>
@@ -658,17 +639,15 @@ internal static partial class AL
     /// <param name="value1">The value to set the attribute to. (EFX Extension) The destination Auxiliary Effect Slot ID</param>
     /// <param name="value2">The value to set the attribute to. (EFX Extension) The Auxiliary Send number.</param>
     ///<param name="value3">The value to set the attribute to. (EFX Extension) optional Filter ID.</param>
-    [LibraryImport(Lib, EntryPoint = "alSource3i"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void Source(uint sid, ALSource3i param, int value1, int value2, int value3);
+    [DllImport(Lib, EntryPoint = "alSource3i", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void Source(uint sid, ALSource3i param, int value1, int value2, int value3);
     #endregion
 
     #region SourcePause
     /// <summary>This function pauses a source. The paused source will have its state changed to ALSourceState.Paused.</summary>
     /// <param name="sid">The name of the source to be paused.</param>
-    [LibraryImport(Lib, EntryPoint = "alSourcePause"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void SourcePause(uint sid);
+    [DllImport(Lib, EntryPoint = "alSourcePause", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void SourcePause(uint sid);
 
     /// <summary>This function pauses a set of sources. The paused sources will have their state changed to ALSourceState.Paused.</summary>
     /// <param name="ns">The number of sources to be paused.</param>
@@ -767,9 +746,8 @@ internal static partial class AL
 
     /// <summary>This function plays, replays or resumes a source. The playing source will have it's state changed to ALSourceState.Playing. When called on a source which is already playing, the source will restart at the beginning. When the attached buffer(s) are done playing, the source will progress to the ALSourceState.Stopped state.</summary>
     /// <param name="sid">The name of the source to be played.</param>
-    [LibraryImport(Lib, EntryPoint = "alSourcePlay"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void SourcePlay(uint sid);
+    [DllImport(Lib, EntryPoint = "alSourcePlay", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void SourcePlay(uint sid);
     #endregion
 
     #region SourceQueueBuffer
@@ -838,9 +816,8 @@ internal static partial class AL
     #region SourceRewind
     /// <summary>This function stops the source and sets its state to ALSourceState.Initial.</summary>
     /// <param name="sid">The name of the source to be rewound.</param>
-    [LibraryImport(Lib, EntryPoint = "alSourceRewind"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void SourceRewind(uint sid);
+    [DllImport(Lib, EntryPoint = "alSourceRewind", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void SourceRewind(uint sid);
 
     /// <summary>This function stops a set of sources and sets all their states to ALSourceState.Initial.</summary>
     /// <param name="ns">The number of sources to be rewound.</param>
@@ -899,9 +876,8 @@ internal static partial class AL
 
     /// <summary>This function stops a source. The stopped source will have it's state changed to ALSourceState.Stopped.</summary>
     /// <param name="sid">The name of the source to be stopped.</param>
-    [LibraryImport(Lib, EntryPoint = "alSourceStop"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void SourceStop(uint sid);
+    [DllImport(Lib, EntryPoint = "alSourceStop", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void SourceStop(uint sid);
 
     /// <summary>This function stops a set of sources. The stopped sources will have their state changed to ALSourceState.Stopped.</summary>
     /// <param name="ns">The number of sources to stop.</param>
@@ -968,17 +944,15 @@ internal static partial class AL
     /// <param name="sid">The name of the source to unqueue buffers from.</param>
     /// <param name="numEntries">The number of buffers to be unqueued.</param>
     /// <param name="bids">A pointer to an array of buffer names that were removed.</param>
-    [LibraryImport(Lib, EntryPoint = "alSourceUnqueueBuffers"), SuppressUnmanagedCodeSecurity]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void SourceUnqueueBuffers(uint sid, int numEntries, ref uint bids);
+    [DllImport(Lib, EntryPoint = "alSourceUnqueueBuffers", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+    internal static extern void SourceUnqueueBuffers(uint sid, int numEntries, ref uint bids);
 
     /// <summary>This function unqueues a set of buffers attached to a source. The number of processed buffers can be detected using AL.GetSource with parameter ALGetSourcei.BuffersProcessed, which is the maximum number of buffers that can be unqueued using this call. The unqueue operation will only take place if all n buffers can be removed from the queue.</summary>
     /// <param name="sid">The name of the source to unqueue buffers from.</param>
     /// <param name="numEntries">The number of buffers to be unqueued.</param>
     /// <param name="bids">A pointer to an array of buffer names that were removed.</param>
-    [LibraryImport(Lib, EntryPoint = "alSourceUnqueueBuffers"), SuppressUnmanagedCodeSecurity]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void SourceUnqueueBuffers(int sid, int numEntries, ref int bids);
+    [DllImport(Lib, EntryPoint = "alSourceUnqueueBuffers", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+    internal static extern void SourceUnqueueBuffers(int sid, int numEntries, ref int bids);
 
     /// <summary>This function unqueues a set of buffers attached to a source. The number of processed buffers can be detected using AL.GetSource with parameter ALGetSourcei.BuffersProcessed, which is the maximum number of buffers that can be unqueued using this call. The unqueue operation will only take place if all n buffers can be removed from the queue.</summary>
     /// <param name="sid">The name of the source to unqueue buffers from.</param>
@@ -995,8 +969,7 @@ internal static partial class AL
     #region SpeedOfSound
     /// <summary>AL.SpeedOfSound allows the application to change the reference (propagation) speed used in the Doppler calculation. The source and listener velocities should be expressed in the same units as the speed of sound.</summary>
     /// <param name="value">A negative or zero value will result in an error, and the command is ignored. Default: 343.3f (appropriate for velocity units of meters and air as the propagation medium). The current setting can be queried using AL.Get with parameter ALGetFloat.SpeedOfSound.</param>
-    [LibraryImport(Lib, EntryPoint = "alSpeedOfSound"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void SpeedOfSound(float value);
+    [DllImport(Lib, EntryPoint = "alSpeedOfSound", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void SpeedOfSound(float value);
     #endregion                        
 }

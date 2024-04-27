@@ -494,7 +494,7 @@ internal struct JOYINFOEX
 #endregion
 
 [SuppressUnmanagedCodeSecurity]
-internal static partial class WinMM
+internal static class WinMM
 {
     private const string Library = "Winmm.dll";
 
@@ -514,8 +514,8 @@ internal static partial class WinMM
     /// <param name="uJoyID">Identifier of the joystick to be queried. Valid values for uJoyID range from zero (JOYSTICKID1) to 15.</param>
     /// <param name="pji">Pointer to a JOYINFO structure that contains the position and button status of the joystick.</param>
     /// <returns>Returns JOYERR_NOERROR if successful, or an error value if not.</returns>
-    [LibraryImport(Library)]
-    public static partial MMResult joyGetPos(int uJoyID, ref JOYINFO pji);
+    [DllImport(Library)]
+    public static extern MMResult joyGetPos(int uJoyID, ref JOYINFO pji);
 
     /// <summary>
     /// The joyGetPosEx function queries a joystick for its position and button status.
@@ -523,21 +523,21 @@ internal static partial class WinMM
     /// <param name="uJoyID">Identifier of the joystick to be queried. Valid values for uJoyID range from zero (JOYSTICKID1) to 15, except for Windows NT 4.0. For Windows NT 4.0, valid values are limited to JOYSTICKID1 and JOYSTICKID2.</param>
     /// <param name="pji">Pointer to a JOYINFOEX structure that contains extended position information and button status of the joystick. You must set the dwSize and dwFlags members or joyGetPosEx will fail. The information returned from joyGetPosEx depends on the flags you specify in dwFlags.</param>
     /// <returns>Returns JOYERR_NOERROR if successful, or an error value if not.</returns>
-    [LibraryImport(Library)]
-    public static partial MMResult joyGetPosEx(int uJoyID, ref JOYINFOEX pji);
+    [DllImport(Library)]
+    public static extern MMResult joyGetPosEx(int uJoyID, ref JOYINFOEX pji);
 
     /// <summary>
     /// The joyGetNumDevs function queries the joystick driver for the number of joysticks it supports.
     /// </summary>
     /// <returns>The joyGetNumDevs function returns the number of joysticks supported by the current driver or zero if no driver is installed.</returns>
-    [LibraryImport(Library)]
-    public static partial int joyGetNumDevs();
+    [DllImport(Library)]
+    public static extern int joyGetNumDevs();
 
     /// <summary>
     /// The joyConfigChanged function informs the joystick driver that the configuration has changed and should be reloaded from the registry.
     /// </summary>
     /// <param name="flags">Reserved for future use. Must equal zero.</param>
     /// <returns>Returns JOYERR_NOERROR if successful. Returns JOYERR_PARMS if the parameter is non-zero.</returns>
-    [LibraryImport(Library)]
-    public static partial MMResult joyConfigChanged(int flags);
+    [DllImport(Library)]
+    public static extern MMResult joyConfigChanged(int flags);
 }

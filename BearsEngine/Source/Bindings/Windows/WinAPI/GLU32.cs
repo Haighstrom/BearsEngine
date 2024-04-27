@@ -7,7 +7,7 @@ namespace BearsEngine.WinAPI;
 /// Graphics Library Utilities https://registry.khronos.org/OpenGL-Refpages/gl2.1/
 /// </summary>
 [SuppressUnmanagedCodeSecurity]
-internal static partial class GLU32
+internal static class GLU32
 {
     private const string Library = "Glu32.dll";
 
@@ -22,8 +22,8 @@ internal static partial class GLU32
     /// <param name="type">Specifies the data type for data. Must be one of GLU_UNSIGNED_BYTE, GLU_BYTE, GLU_BITMAP, GLU_UNSIGNED_SHORT, GLU_SHORT, GLU_UNSIGNED_INT, GLU_INT, GLU_FLOAT, GLU_UNSIGNED_BYTE_3_3_2, GLU_UNSIGNED_BYTE_2_3_3_REV, GLU_UNSIGNED_SHORT_5_6_5, GLU_UNSIGNED_SHORT_5_6_5_REV, GLU_UNSIGNED_SHORT_4_4_4_4, GLU_UNSIGNED_SHORT_4_4_4_4_REV, GLU_UNSIGNED_SHORT_5_5_5_1, GLU_UNSIGNED_SHORT_1_5_5_5_REV, GLU_UNSIGNED_INT_8_8_8_8, GLU_UNSIGNED_INT_8_8_8_8_REV, GLU_UNSIGNED_INT_10_10_10_2, or GLU_UNSIGNED_INT_2_10_10_10_REV.</param>
     /// <param name="data">Specifies a pointer to the image data in memory.</param>
     /// <returns>A return value of zero indicates success, otherwise a GLU error code is returned.</returns>
-    [LibraryImport(Library)]
-    public static partial int gluBuild2DMipmaps(int target, int internalFormat, int width, int height, int format, int type, IntPtr data);
+    [DllImport(Library)]
+    public static extern int gluBuild2DMipmaps(int target, int internalFormat, int width, int height, int format, int type, IntPtr data);
 
     /// <summary>
     /// Define a viewing transformation
@@ -37,8 +37,8 @@ internal static partial class GLU32
     /// <param name="upX">Specifies the direction of the up vector.</param>
     /// <param name="upY">Specifies the direction of the up vector.</param>
     /// <param name="upZ">Specifies the direction of the up vector.</param>
-    [LibraryImport(Library)]
-    public static partial void gluLookAt(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ);
+    [DllImport(Library)]
+    public static extern void gluLookAt(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ);
 
     /// <summary>
     /// Set up a perspective projection matrix
@@ -47,6 +47,6 @@ internal static partial class GLU32
     /// <param name="aspect">Specifies the aspect ratio that determines the field of view in the x direction. The aspect ratio is the ratio of x (width) to y (height).</param>
     /// <param name="zNear">Specifies the distance from the viewer to the near clipping plane (always positive).</param>
     /// <param name="zFar">Specifies the distance from the viewer to the far clipping plane (always positive).</param>
-    [LibraryImport(Library)]
-    public static partial void gluPerspective(double fovy, double aspect, double zNear, double zFar);
+    [DllImport(Library)]
+    public static extern void gluPerspective(double fovy, double aspect, double zNear, double zFar);
 }

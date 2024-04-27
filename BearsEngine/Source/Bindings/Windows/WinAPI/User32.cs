@@ -3310,7 +3310,7 @@ internal struct WNDCLASSEX
 /// Windows management functions for message handling, timers, menus, and communications.
 /// </summary>
 [SuppressUnmanagedCodeSecurity]
-internal static partial class User32
+internal static class User32
 {
     private const string Library = "User32.dll";
 
@@ -3357,8 +3357,8 @@ internal static partial class User32
     /// <param name="wParam">Additional message-specific information. The contents of this parameter depend on the value of the Msg parameter.</param>
     /// <param name="lParam">Additional message-specific information. The contents of this parameter depend on the value of the Msg parameter.</param>
     /// <returns>The return value specifies the result of the message processing and depends on the message sent.</returns>
-    [LibraryImport(Library, SetLastError = true)]
-    public static partial IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, WINDOWMESSAGE Msg, IntPtr wParam, IntPtr lParam);
+    [DllImport(Library, SetLastError = true)]
+    public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, WINDOWMESSAGE Msg, IntPtr wParam, IntPtr lParam);
 
     /// <summary>
     /// The ChangeDisplaySettings function changes the settings of the default display device to the specified graphics mode.
@@ -3377,8 +3377,8 @@ internal static partial class User32
     /// <param name="dwFlags">Indicates how the graphics mode should be changed.</param>
     /// <returns>Returns a <see cref="DISPCHANGERESULT"/> to indicate the result.</returns>
     /// <remarks>To change the settings of a specified display device, use the ChangeDisplaySettingsEx function. To ensure that the DEVMODE structure passed to ChangeDisplaySettings is valid and contains only values supported by the display driver, use the DEVMODE returned by the EnumDisplaySettings function. When the display mode is changed dynamically, the WM_DISPLAYCHANGE message is sent to all running applications. </remarks>
-    [LibraryImport(Library, SetLastError = true)]
-    public static partial DISPCHANGERESULT ChangeDisplaySettings(IntPtr lpDevMode, CHANGEDISPLAYSETTINGSFLAGS dwFlags);
+    [DllImport(Library, SetLastError = true)]
+    public static extern DISPCHANGERESULT ChangeDisplaySettings(IntPtr lpDevMode, CHANGEDISPLAYSETTINGSFLAGS dwFlags);
 
     /// <summary>
     /// The ChangeDisplaySettingsEx function changes the settings of the specified display device to the specified graphics mode.
@@ -3446,8 +3446,8 @@ internal static partial class User32
     /// If an application calls CreateWindow to create a MDI client window, lpParam should point to a CLIENTCREATESTRUCT structure.If an MDI client window calls CreateWindow to create an MDI child window, lpParam should point to a MDICREATESTRUCT structure.lpParam may be NULL if no additional data is needed.</param>
     /// <returns>If the function succeeds, the return value is a handle to the new window.
     /// If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
-    [LibraryImport(Library, SetLastError = true)]
-    public static partial IntPtr CreateWindowEx(WINDOWSTYLEEX dwExStyle, IntPtr lpClassName, IntPtr lpWindowName, WINDOWSTYLE dwStyle, int X, int Y, int nWidth, int nHeight, IntPtr hWndParent, IntPtr hMenu, IntPtr hInstance, IntPtr lpParam);
+    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
+    public static extern IntPtr CreateWindowEx(WINDOWSTYLEEX dwExStyle, IntPtr lpClassName, IntPtr lpWindowName, WINDOWSTYLE dwStyle, int X, int Y, int nWidth, int nHeight, IntPtr hWndParent, IntPtr hMenu, IntPtr hInstance, IntPtr lpParam);
 
     /// <summary>
     /// Calls the default window procedure to provide default processing for any window messages that an application does not process. This function ensures that every message is processed. DefWindowProc is called with the same parameters received by the window procedure.
@@ -3457,8 +3457,8 @@ internal static partial class User32
     /// <param name="wParam">Additional message information. The content of this parameter depends on the value of the Msg parameter.</param>
     /// <param name="lParam">Additional message information. The content of this parameter depends on the value of the Msg parameter.</param>
     /// <returns>The return value is the result of the message processing and depends on the message.</returns>
-    [LibraryImport(Library)]
-    public static partial IntPtr DefWindowProc(IntPtr hWnd, WINDOWMESSAGE msg, IntPtr wParam, IntPtr lParam);
+    [DllImport(Library, CharSet = CharSet.Auto)]
+    public static extern IntPtr DefWindowProc(IntPtr hWnd, WINDOWMESSAGE msg, IntPtr wParam, IntPtr lParam);
 
     /// <summary>
     /// Destroys a cursor and frees any memory the cursor occupied. Do not use this function to destroy a shared cursor.
@@ -3493,8 +3493,8 @@ internal static partial class User32
     /// </summary>
     /// <param name="lpMsg">A pointer to a structure that contains the message.</param>
     /// <returns>The return value specifies the value returned by the window procedure. Although its meaning depends on the message being dispatched, the return value generally is ignored.</returns>
-    [LibraryImport(Library)]
-    public static partial IntPtr DispatchMessage(ref MSG lpMsg);
+    [DllImport(Library)]
+    public static extern IntPtr DispatchMessage(ref MSG lpMsg);
 
     /// <summary>
     /// The EnumDisplayDevices function lets you obtain information about the display devices in the current session.
@@ -3544,8 +3544,8 @@ internal static partial class User32
     /// Retrieves a handle to the window (if any) that has captured the mouse. Only one window at a time can capture the mouse; this window receives mouse input whether or not the cursor is within its borders.
     /// </summary>
     /// <returns>The return value is a handle to the capture window associated with the current thread. If no window in the thread has captured the mouse, the return value is NULL.</returns>
-    [LibraryImport(Library)]
-    public static partial IntPtr GetCapture();
+    [DllImport(Library)]
+    public static extern IntPtr GetCapture();
 
     /// <summary>
     /// The GetClientRect function retrieves the coordinates of a window's client area. The client coordinates specify the upper-left and lower-right corners of the client area. Because client coordinates are relative to the upper-left corner of a window's client area, the coordinates of the upper-left corner are (0,0).
@@ -3562,8 +3562,8 @@ internal static partial class User32
     /// <returns>
     /// The return value is the handle to the current cursor. If there is no cursor, the return value is null.
     /// </returns>
-    [LibraryImport(Library)]
-    public static partial IntPtr GetCursor();
+    [DllImport(Library)]
+    public static extern IntPtr GetCursor();
 
     /// <summary>
     /// Retrieves information about the global cursor.
@@ -3586,23 +3586,23 @@ internal static partial class User32
     /// </summary>
     /// <param name="hwnd">A handle to the window whose DC is to be retrieved. If this value is NULL, GetDC retrieves the DC for the entire screen.</param>
     /// <returns>If the function succeeds, the return value is a handle to the DC for the specified window's client area. If the function fails, the return value is NULL.</returns>
-    [LibraryImport(Library)]
-    public static partial IntPtr GetDC(IntPtr hwnd);
+    [DllImport(Library)]
+    public static extern IntPtr GetDC(IntPtr hwnd);
 
     /// <summary>
     /// Retrieves the current double-click time for the mouse. A double-click is a series of two clicks of the mouse button, the second occurring within a specified time after the first. The double-click time is the maximum number of milliseconds that may occur between the first and second click of a double-click. The maximum double-click time is 5000 milliseconds.
     /// </summary>
     /// <returns>The return value specifies the current double-click time, in milliseconds. The maximum return value is 5000 milliseconds.</returns>
-    [LibraryImport(Library)]
-    public static partial int GetDoubleClickTime();
+    [DllImport(Library)]
+    public static extern int GetDoubleClickTime();
 
     /// <summary>
     /// Returns the dots per inch (dpi) value for the specified window.
     /// </summary>
     /// <param name="hWnd">The window that you want to get information about.</param>
     /// <returns>The DPI for the window, which depends on the DPI_AWARENESS of the window. See the Remarks section for more information. An invalid hwnd value will result in a return value of 0.</returns>
-    [LibraryImport(Library)]
-    public static partial int GetDpiForWindow(IntPtr hWnd);
+    [DllImport(Library)]
+    public static extern int GetDpiForWindow(IntPtr hWnd);
 
     /// <summary>
     /// Retrieves information about the specified icon or cursor.
@@ -3674,8 +3674,8 @@ internal static partial class User32
     /// Use WM_INPUT here and in wMsgFilterMin to specify only the WM_INPUT messages.
     /// If wMsgFilterMin and wMsgFilterMax are both zero, GetMessage returns all available messages(that is, no range filtering is performed).</param>
     /// <returns>If the function retrieves a message other than WM_QUIT, the return value is nonzero. If the function retrieves the WM_QUIT message, the return value is zero. If there is an error, the return value is -1. For example, the function fails if hWnd is an invalid window handle or lpMsg is an invalid pointer.To get extended error information, call GetLastError.</returns>
-    [LibraryImport(Library, SetLastError = true)]
-    public static partial int GetMessage(ref MSG lpMsg, IntPtr hWnd, int wMsgFilterMin, int wMsgFilterMax);
+    [DllImport(Library, SetLastError = true)]
+    public static extern int GetMessage(ref MSG lpMsg, IntPtr hWnd, int wMsgFilterMin, int wMsgFilterMax);
 
     /// <summary>
     /// The GetMonitorInfo function retrieves information about a display monitor.
@@ -3695,8 +3695,8 @@ internal static partial class User32
     /// <param name="nBufPoints">The number of points to be retrieved.</param>
     /// <param name="resolution">The resolution desired.</param>
     /// <returns>If the function succeeds, the return value is the number of points in the buffer. Otherwise, the function returns –1. For extended error information, your application can call GetLastError.</returns>
-    [LibraryImport(Library, SetLastError = true)]
-public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVEPOINT* lppt, MOUSEMOVEPOINT* lpptBuf, int nBufPoints, GMMP_RESOLUTION resolution);
+    [DllImport(Library, CharSet = CharSet.Auto, SetLastError = true)]
+    unsafe public static extern int GetMouseMovePointsEx(uint cbSize, MOUSEMOVEPOINT* lppt, MOUSEMOVEPOINT* lpptBuf, int nBufPoints, GMMP_RESOLUTION resolution);
 
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getqueuestatus
@@ -3704,8 +3704,8 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// </summary>
     /// <param name="flags">The types of messages for which to check.</param>
     /// <returns>The high-order word of the return value indicates the types of messages currently in the queue. The low-order word indicates the types of messages that have been added to the queue and that are still in the queue since the last call to the GetQueueStatus, GetMessage, or PeekMessage function.</returns>
-    [LibraryImport(Library)]
-    public static partial uint GetQueueStatus(QUEUESTATUSFLAGS flags);
+    [DllImport(Library)]
+    public static extern uint GetQueueStatus(QUEUESTATUSFLAGS flags);
 
     /// <summary>
     /// Retrieves the raw input from the specified device.
@@ -3769,16 +3769,16 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// <param name="nIndex">The display element whose color is to be retrieved.</param>
     /// <returns>The function returns the red, green, blue (RGB) color value of the given element.
     /// If the nIndex parameter is out of range, the return value is zero.Because zero is also a valid RGB value, you cannot use GetSysColor to determine whether a system color is supported by the current platform.Instead, use the GetSysColorBrush function, which returns NULL if the color is not supported.</returns>
-    [LibraryImport(Library)]
-    public static partial uint GetSysColor(SYSCOLORINDEX nIndex);
+    [DllImport(Library)]
+    public static extern uint GetSysColor(SYSCOLORINDEX nIndex);
 
     /// <summary>
     /// The GetSysColorBrush function retrieves a handle identifying a logical brush that corresponds to the specified color index. https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsyscolorbrush
     /// </summary>
     /// <param name="nIndex">A color index. This value corresponds to the color used to paint one of the window elements. See GetSysColor for system color index values.</param>
     /// <returns>The return value identifies a logical brush if the nIndex parameter is supported by the current platform. Otherwise, it returns NULL.</returns>
-    [LibraryImport(Library)]
-    public static partial uint GetSysColorBrush(uint nIndex);
+    [DllImport(Library)]
+    public static extern uint GetSysColorBrush(uint nIndex);
 
     /// <summary>
     /// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra window memory. 
@@ -3787,8 +3787,8 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// <param name="hWnd">A handle to the window and, indirectly, the class to which the window belongs.</param>
     /// <param name="nIndex">The zero-based offset to the value to be retrieved.</param>
     /// <returns>If the function succeeds, the return value is the requested value. If the function fails, the return value is zero.To get extended error information, call GetLastError. If SetWindowLong or SetWindowLongPtr has not been called previously, GetWindowLongPtr returns zero for values in the extra window or class memory.</returns>
-    [LibraryImport(Library, SetLastError = true)]
-    public static partial UIntPtr GetWindowLongPtr(IntPtr hWnd, GWL nIndex);
+    [DllImport(Library, SetLastError = true)]
+    public static extern UIntPtr GetWindowLongPtr(IntPtr hWnd, GWL nIndex);
 
     /// <summary>
     /// Retrieves the dimensions of the bounding rectangle of the specified window. The dimensions are given in screen coordinates that are relative to the upper-left corner of the screen.
@@ -3814,8 +3814,8 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// </summary>
     /// <param name="hWnd">A handle to the window or control.</param>
     /// <returns>If the function succeeds, the return value is the length, in characters, of the text. Under certain conditions, this value might be greater than the length of the text (see Remarks). If the window has no text, the return value is zero. Function failure is indicated by a return value of zero and a GetLastError result that is nonzero.</returns>
-    [LibraryImport(Library, SetLastError = true)]
-    public static partial int GetWindowTextLength(IntPtr hWnd);
+    [DllImport(Library, CharSet = CharSet.Auto, SetLastError = true)]
+    public static extern int GetWindowTextLength(IntPtr hWnd);
 
     /// <summary>
     /// Determines the visibility state of the specified window.
@@ -3854,8 +3854,8 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// <param name="cy">The height, in pixels, of the icon or cursor. If this parameter is zero and the fuLoad parameter is LR_DEFAULTSIZE, the function uses the SM_CYICON or SM_CYCURSOR system metric value to set the height. If this parameter is zero and LR_DEFAULTSIZE is not used, the function uses the actual resource height.</param>
     /// <param name="fuLoad"></param>
     /// <returns>If the function succeeds, the return value is the handle of the newly loaded image. If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
-    [LibraryImport(Library, SetLastError = true)]
-    public static partial IntPtr LoadImage(IntPtr hInst, ushort name, IMAGE_TYPE type, int cx, int cy, IMAGE_FLAG fuLoad);
+    [DllImport(Library, SetLastError = true)]
+    public static extern IntPtr LoadImage(IntPtr hInst, ushort name, IMAGE_TYPE type, int cx, int cy, IMAGE_FLAG fuLoad);
 
     /// <summary>
     /// Loads a standard windows icon.
@@ -3879,8 +3879,8 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// Starting with Windows Vista, the high byte of the uCode value can contain either 0xe0 or 0xe1 to specify the extended scan code.</param>
     /// <param name="uMapType">The translation to be performed.</param>
     /// <returns>The return value is either a scan code, a virtual-key code, or a character value, depending on the value of uCode and uMapType. If there is no translation, the return value is zero.</returns>
-    [LibraryImport(Library)]
-    public static partial uint MapVirtualKey(VIRTUALKEYCODE uCode, VIRTUALKEYMAPTYPE uMapType);
+    [DllImport(Library)]
+    public static extern uint MapVirtualKey(VIRTUALKEYCODE uCode, VIRTUALKEYMAPTYPE uMapType);
 
     /// <summary>
     /// The MonitorFromWindow function retrieves a handle to the display monitor that has the largest area of intersection with the bounding rectangle of a specified window.
@@ -3888,8 +3888,8 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// <param name="hwnd">A handle to the window of interest.</param>
     /// <param name="dwFlags">Determines the function's return value if the window does not intersect any display monitor.</param>
     /// <returns>If the window intersects one or more display monitor rectangles, the return value is an HMONITOR handle to the display monitor that has the largest area of intersection with the window. If the window does not intersect a display monitor, the return value depends on the value of dwFlags.</returns>
-    [LibraryImport(Library)]
-    public static partial IntPtr MonitorFromWindow(IntPtr hwnd, MONITORFROMWINDOWFLAGS dwFlags);
+    [DllImport(Library)]
+    public static extern IntPtr MonitorFromWindow(IntPtr hwnd, MONITORFROMWINDOWFLAGS dwFlags);
 
     /// <summary>
     /// Changes the position and dimensions of the specified window. For a top-level window, the position and dimensions are relative to the upper-left corner of the screen. For a child window, they are relative to the upper-left corner of the parent window's client area.
@@ -3917,9 +3917,9 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// If wMsgFilterMin and wMsgFilterMax are both zero, PeekMessage returns all available messages(that is, no range filtering is performed).</param>
     /// <param name="wRemoveMsg">Specifies how messages are to be handled.</param>
     /// <returns>If a message is available, the return value is nonzero. If no messages are available, the return value is zero.</returns>
-    [LibraryImport(Library)]
+    [DllImport(Library)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static partial bool PeekMessage(ref MSG lpMsg, IntPtr hWnd, WINDOWMESSAGE wMsgFilterMin, WINDOWMESSAGE wMsgFilterMax, PEEKMESSAGEFLAGS wRemoveMsg);
+    public static extern bool PeekMessage(ref MSG lpMsg, IntPtr hWnd, WINDOWMESSAGE wMsgFilterMin, WINDOWMESSAGE wMsgFilterMax, PEEKMESSAGEFLAGS wRemoveMsg);
 
     /// <summary>
     /// Places (posts) a message in the message queue associated with the thread that created the specified window and returns without waiting for the thread to process the message.
@@ -3931,16 +3931,16 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// <param name="wParam">Additional message-specific information.</param>
     /// <param name="lParam">Additional message-specific information.</param>
     /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.GetLastError returns ERROR_NOT_ENOUGH_QUOTA when the limit is hit.</returns>
-    [LibraryImport(Library, SetLastError = true)]
+    [DllImport(Library, CharSet = CharSet.Auto, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static partial bool PostMessage(IntPtr hWnd, WINDOWMESSAGE Msg, IntPtr wParam, IntPtr lParam);
+    public static extern bool PostMessage(IntPtr hWnd, WINDOWMESSAGE Msg, IntPtr wParam, IntPtr lParam);
 
     /// <summary>
     /// Indicates to the system that a thread has made a request to terminate (quit). It is typically used in response to a WM_DESTROY message.
     /// </summary>
     /// <param name="nExitCode">The application exit code. This value is used as the wParam parameter of the WM_QUIT message.</param>
-    [LibraryImport(Library)]
-    public static partial void PostQuitMessage(int nExitCode);
+    [DllImport(Library)]
+    public static extern void PostQuitMessage(int nExitCode);
 
     /// <summary>
     /// Registers a window class for subsequent use in calls to the CreateWindow or CreateWindowEx function.
@@ -3963,8 +3963,8 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// DEVICE_NOTIFY_ALL_INTERFACE_CLASSES: Notifies the recipient of device interface events for all device interface classes. (The dbcc_classguid member is ignored.) This value can be used only if the dbch_devicetype member is DBT_DEVTYP_DEVICEINTERFACE.
     /// </param>
     /// <returns>If the function succeeds, the return value is a device notification handle. If the function fails, the return value is NULL. To get extended error information, call GetLastError.</remarks>
-    [LibraryImport(Library)]
-    public static partial IntPtr RegisterDeviceNotification(IntPtr hRecipient, IntPtr NotificationFilter, DEVICENOTIFYFLAGS Flags);
+    [DllImport(Library)]
+    public static extern IntPtr RegisterDeviceNotification(IntPtr hRecipient, IntPtr NotificationFilter, DEVICENOTIFYFLAGS Flags);
 
     /// <summary>
     /// Registers the devices that supply the raw input data.
@@ -3977,9 +3977,9 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// To receive WM_INPUT_DEVICE_CHANGE messages, an application must specify the RIDEV_DEVNOTIFY flag for each device class that is specified by the usUsagePage and usUsage fields of the RAWINPUTDEVICE structure.By default, an application does not receive WM_INPUT_DEVICE_CHANGE notifications for raw input device arrival and removal.
     /// If a RAWINPUTDEVICE structure has the RIDEV_REMOVE flag set and the hwndTarget parameter is not set to NULL, then parameter validation will fail.
     /// Only one window per raw input device class may be registered to receive raw input within a process(the window passed in the last call to RegisterRawInputDevices). Because of this, RegisterRawInputDevices should not be used from a library, as it may interfere with any raw input processing logic already present in applications that load it</remarks>
-    [LibraryImport(Library, SetLastError = true)]
+    [DllImport(Library, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static partial bool RegisterRawInputDevices(RAWINPUTDEVICE[] pRawInputDevices, int uiNumDevices, int cbSize);
+    public static extern bool RegisterRawInputDevices(RAWINPUTDEVICE[] pRawInputDevices, int uiNumDevices, int cbSize);
 
     /// <summary>
     /// Releases the mouse capture from a window in the current thread and restores normal mouse input processing. A window that has captured the mouse receives all mouse input, regardless of the position of the cursor, except when a mouse button is clicked while the cursor hot spot is in the window of another thread.
@@ -3994,9 +3994,9 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// <param name="hWnd">A handle to the window whose DC is to be released.</param>
     /// <param name="hDC">A handle to the DC to be released.</param>
     /// <returns>The return value indicates whether the DC was released. If the DC was released, the return value is 1. If the DC was not released, the return value is zero.</returns>
-    [LibraryImport(Library)]
+    [DllImport(Library)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static partial bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
+    public static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
     /// <summary>
     /// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message. To send a message and return immediately, use the SendMessageCallback or SendNotifyMessage function.To post a message to a thread's message queue and return immediately, use the PostMessage or PostThreadMessage function.
@@ -4006,8 +4006,8 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// <param name="wParam">Additional message-specific information.</param>
     /// <param name="lParam">Additional message-specific information.</param>
     /// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-    [LibraryImport(Library)]
-    public static partial IntPtr SendMessage(IntPtr hWnd, WINDOWMESSAGE Msg, IntPtr wParam, IntPtr lParam);
+    [DllImport(Library, CharSet = CharSet.Auto)]
+    public static extern IntPtr SendMessage(IntPtr hWnd, WINDOWMESSAGE Msg, IntPtr wParam, IntPtr lParam);
 
     /// <summary>
     /// Sets the mouse capture to the specified window belonging to the current thread. SetCapture captures mouse input either when the mouse is over the capturing window, or when the mouse button was pressed while the mouse was over the capturing window and the button is still down. Only one window at a time can capture the mouse.
@@ -4015,8 +4015,8 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// </summary>
     /// <param name="hWnd">A handle to the window in the current thread that is to capture the mouse.</param>
     /// <returns>The return value is a handle to the window that had previously captured the mouse. If there is no such window, the return value is NULL.</returns>
-    [LibraryImport(Library)]
-    public static partial IntPtr SetCapture(IntPtr hWnd);
+    [DllImport(Library)]
+    public static extern IntPtr SetCapture(IntPtr hWnd);
 
     /// <summary>
     /// Sets the cursor shape.
@@ -4048,8 +4048,8 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// uses the ShowCursor function to hide the cursor more times than to 
     /// show the cursor.
     /// </remarks>
-    [LibraryImport(Library)]
-    public static partial IntPtr SetCursor(IntPtr hCursor);
+    [DllImport(Library)]
+    public static extern IntPtr SetCursor(IntPtr hCursor);
 
     /// <summary>
     /// Moves the cursor to the specified screen coordinates. If the new coordinates are not within the screen rectangle set by the most recent ClipCursor function call, the system automatically adjusts the coordinates so that the cursor stays within the rectangle.
@@ -4065,8 +4065,8 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// </summary>
     /// <param name="hWnd">A handle to the window that will receive the keyboard input. If this parameter is NULL, keystrokes are ignored.</param>
     /// <returns>If the function succeeds, the return value is the handle to the window that previously had the keyboard focus. If the hWnd parameter is invalid or the window is not attached to the calling thread's message queue, the return value is NULL. To get extended error information, call GetLastError function. Extended error ERROR_INVALID_PARAMETER(0x57) means that window is in disabled state.</returns>
-    [LibraryImport(Library, SetLastError = true)]
-    public static partial IntPtr SetFocus(IntPtr hWnd);
+    [DllImport(Library, SetLastError = true)]
+    public static extern IntPtr SetFocus(IntPtr hWnd);
 
     /// <summary>
     /// Brings the thread that created the specified window into the foreground and activates the window. Keyboard input is directed to the window, and various visual cues are changed for the user. The system assigns a slightly higher priority to the thread that created the foreground window than it does to other threads.
@@ -4122,8 +4122,8 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// </summary>
     /// <param name="dpiContext">The new DPI_AWARENESS_CONTEXT for the current thread. This context includes the DPI_AWARENESS value.</param>
     /// <returns>The old DPI_AWARENESS_CONTEXT for the thread. If the dpiContext is invalid, the thread will not be updated and the return value will be NULL. You can use this value to restore the old DPI_AWARENESS_CONTEXT after overriding it with a predefined value.</returns>
-    [LibraryImport(Library)]
-    public static partial IntPtr SetThreadDpiAwarenessContext(IntPtr dpiContext);
+    [DllImport(Library)]
+    public static extern IntPtr SetThreadDpiAwarenessContext(IntPtr dpiContext);
 
     /// <summary>
     /// Set the DPI awareness for the current thread to the provided value.
@@ -4140,8 +4140,8 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// <param name="uElapse">The time-out value, in milliseconds. If uElapse is less than USER_TIMER_MINIMUM(0x0000000A), the timeout is set to USER_TIMER_MINIMUM.If uElapse is greater than USER_TIMER_MAXIMUM(0x7FFFFFFF), the timeout is set to USER_TIMER_MAXIMUM.</param>
     /// <param name="lpTimerFunc">A pointer to the function to be notified when the time-out value elapses. For more information about the function, see TimerProc. If lpTimerFunc is NULL, the system posts a WM_TIMER message to the application queue. The hwnd member of the message's MSG structure contains the value of the hWnd parameter.</param>
     /// <returns>If the function succeeds and the hWnd parameter is NULL, the return value is an integer identifying the new timer. An application can pass this value to the KillTimer function to destroy the timer. If the function succeeds and the hWnd parameter is not NULL, then the return value is a nonzero integer.An application can pass the value of the nIDEvent parameter to the KillTimer function to destroy the timer. If the function fails to create a timer, the return value is zero.To get extended error information, call GetLastError.</returns>
-    [LibraryImport(Library, SetLastError = true)]
-    public static partial UIntPtr SetTimer(IntPtr hWnd, UIntPtr nIDEvent, uint uElapse, TIMERPROC lpTimerFunc);
+    [DllImport(Library, SetLastError = true)]
+    public static extern UIntPtr SetTimer(IntPtr hWnd, UIntPtr nIDEvent, uint uElapse, TIMERPROC lpTimerFunc);
 
     /// <summary>
     /// Changes the size, position, and Z order of a child, pop-up, or top-level window. These windows are ordered according to their appearance on the screen. The topmost window receives the highest rank and is the first window in the Z order.
@@ -4177,8 +4177,8 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// <param name="nIndex">The zero-based offset to the value to be set.</param>
     /// <param name="dwNewLong">The replacement value.</param>
     /// <returns>If the function succeeds, the return value is the previous value of the specified offset. If the function fails, the return value is zero.To get extended error information, call GetLastError. If the previous value is zero and the function succeeds, the return value is zero, but the function does not clear the last error information. To determine success or failure, clear the last error information by calling SetLastError with 0, then call SetWindowLongPtr.Function failure will be indicated by a return value of zero and a GetLastError result that is nonzero.</returns>
-    [LibraryImport(Library, SetLastError = true)]
-    public static partial IntPtr SetWindowLongPtr(IntPtr hWnd, GWL nIndex, IntPtr dwNewLong);
+    [DllImport(Library, SetLastError = true)]
+    public static extern IntPtr SetWindowLongPtr(IntPtr hWnd, GWL nIndex, IntPtr dwNewLong);
 
     /// <summary>
     /// Displays or hides the cursor.
@@ -4205,9 +4205,9 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// <returns>If the message is translated (that is, a character message is posted to the thread's message queue), the return value is nonzero.
     /// If the message is WM_KEYDOWN, WM_KEYUP, WM_SYSKEYDOWN, or WM_SYSKEYUP, the return value is nonzero, regardless of the translation.
     /// If the message is not translated (that is, a character message is not posted to the thread's message queue), the return value is zero.</returns>
-    [LibraryImport(Library)]
+    [DllImport(Library)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static partial bool TranslateMessage(ref MSG lpMsg);
+    public static extern bool TranslateMessage(ref MSG lpMsg);
 
     /// <summary>
     /// Posts messages when the mouse pointer leaves a window or hovers over a window for a specified amount of time.
@@ -4223,8 +4223,8 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// <param name="className">A null-terminated string or a class atom. If lpClassName is a string, it specifies the window class name. This class name must have been registered by a previous call to the RegisterClass or RegisterClassEx function. System classes, such as dialog box controls, cannot be unregistered. If this parameter is an atom, it must be a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The atom must be in the low-order word of lpClassName; the high-order word must be zero.</param>
     /// <param name="instance">A handle to the instance of the module that created the class.</param>
     /// <returns>If the function succeeds, the return value is nonzero. If the class could not be found or if a window still exists that was created with the class, the return value is zero.To get extended error information, call GetLastError.</returns>
-    [LibraryImport(Library, SetLastError = true)]
-    public static partial short UnregisterClass(IntPtr className, IntPtr instance);
+    [DllImport(Library, SetLastError = true, CharSet = CharSet.Auto)]
+    public static extern short UnregisterClass(IntPtr className, IntPtr instance);
 
     /// <summary>
     /// Closes the specified device notification handle.
@@ -4239,7 +4239,7 @@ public static     unsafe partial int GetMouseMovePointsEx(uint cbSize, MOUSEMOVE
     /// </summary>
     /// <param name="hWnd">Handle to the window to be updated.</param>
     /// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.</returns>
-    [LibraryImport(Library)]
+    [DllImport(Library)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static partial bool UpdateWindow(IntPtr hWnd);
+    public static extern bool UpdateWindow(IntPtr hWnd);
 }

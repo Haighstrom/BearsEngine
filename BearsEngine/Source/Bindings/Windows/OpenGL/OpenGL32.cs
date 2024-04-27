@@ -2188,38 +2188,38 @@ public static partial class OpenGL32
     /// </summary>
     /// <param name="func">Specifies the alpha comparison function. Symbolic constants GL_NEVER, GL_LESS, GL_EQUAL, GL_LEQUAL, GL_GREATER, GL_NOTEQUAL, GL_GEQUAL, and GL_ALWAYS are accepted. The initial value is GL_ALWAYS.</param>
     /// <param name="ref">Specifies the reference value that incoming alpha values are compared to. This value is clamped to the range 0 1 , where 0 represents the lowest possible alpha value and 1 the highest possible value. The initial reference value is 0.</param>
-    [LibraryImport(Library)]
-    public static partial void glAlphaFunc(ALPHA_COMPARISON_FUNCTION func, float @ref);
+    [DllImport(Library)]
+    public static extern void glAlphaFunc(ALPHA_COMPARISON_FUNCTION func, float @ref);
 
     /// <summary>
     /// Delimit the vertices of a primitive or a group of like primitives
     /// </summary>
     /// <param name="mode">Specifies the primitive or primitives that will be created from vertices presented between glBegin and the subsequent glEnd. Ten symbolic constants are accepted: GL_POINTS, GL_LINES, GL_LINE_STRIP, GL_LINE_LOOP, GL_TRIANGLES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_QUADS, GL_QUAD_STRIP, and GL_POLYGON.</param>
-    [LibraryImport(Library)]
-    public static partial void glBegin(int mode);
+    [DllImport(Library)]
+    public static extern void glBegin(int mode);
 
     /// <summary>
     /// Bind a named texture to a texturing target
     /// </summary>
     /// <param name="target">Specifies the target to which the texture is bound. Must be one of GL_TEXTURE_1D, GL_TEXTURE_2D, GL_TEXTURE_3D, GL_TEXTURE_1D_ARRAY, GL_TEXTURE_2D_ARRAY, GL_TEXTURE_RECTANGLE, GL_TEXTURE_CUBE_MAP, GL_TEXTURE_CUBE_MAP_ARRAY, GL_TEXTURE_BUFFER, GL_TEXTURE_2D_MULTISAMPLE or GL_TEXTURE_2D_MULTISAMPLE_ARRAY.</param>
     /// <param name="texture">Specifies the name of a texture.</param>
-    [LibraryImport(Library)]
-    public static partial void glBindTexture(TEXTURE_TARGET target, int texture);
+    [DllImport(Library)]
+    public static extern void glBindTexture(TEXTURE_TARGET target, int texture);
 
     /// <summary>
     /// Specify pixel arithmetic
     /// </summary>
     /// <param name="sfactor">Specifies how the red, green, blue, and alpha source blending factors are computed. The initial value is GL_ONE.</param>
     /// <param name="dfactor">Specifies how the red, green, blue, and alpha destination blending factors are computed. The following symbolic constants are accepted: GL_ZERO, GL_ONE, GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR, GL_DST_COLOR, GL_ONE_MINUS_DST_COLOR, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA. GL_CONSTANT_COLOR, GL_ONE_MINUS_CONSTANT_COLOR, GL_CONSTANT_ALPHA, and GL_ONE_MINUS_CONSTANT_ALPHA. The initial value is GL_ZERO.</param>
-    [LibraryImport(Library)]
-    public static partial void glBlendFunc(BLEND_SCALE_FACTOR sfactor, BLEND_SCALE_FACTOR dfactor);
+    [DllImport(Library)]
+    public static extern void glBlendFunc(BLEND_SCALE_FACTOR sfactor, BLEND_SCALE_FACTOR dfactor);
 
     /// <summary>
     /// Clear buffers to preset values
     /// </summary>
     /// <param name="mask">Bitwise OR of masks that indicate the buffers to be cleared. The three masks are GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT, and GL_STENCIL_BUFFER_BIT.</param>
-    [LibraryImport(Library)]
-    public static partial void glClear(BUFFER_MASK mask);
+    [DllImport(Library)]
+    public static extern void glClear(BUFFER_MASK mask);
 
     /// <summary>
     /// Specify clear values for the color buffers. Specify the red, green, blue, and alpha values used when the color buffers are cleared. The initial values are all 0.
@@ -2228,8 +2228,8 @@ public static partial class OpenGL32
     /// <param name="green">Specify the green value [0-1].</param>
     /// <param name="blue">Specify the blue value [0-1].</param>
     /// <param name="alpha">Specify the alpha value [0-1].</param>
-    [LibraryImport(Library)]
-    public static partial void glClearColor(float red, float green, float blue, float alpha);
+    [DllImport(Library)]
+    public static extern void glClearColor(float red, float green, float blue, float alpha);
 
     /// <summary>
     /// Sets the current color.
@@ -2238,8 +2238,8 @@ public static partial class OpenGL32
     /// <param name="green">The new green value for the current color. [0,1]</param>
     /// <param name="blue">The new blue value for the current color. [0,1]</param>
     /// <remarks>The current alpha value is set to 1.0 (full intensity) implicitly.</remarks>
-    [LibraryImport(Library)]
-    public static partial void glColor3f(float red, float green, float blue);
+    [DllImport(Library)]
+    public static extern void glColor3f(float red, float green, float blue);
 
     /// <summary>
     /// Sets the current color.
@@ -2248,16 +2248,16 @@ public static partial class OpenGL32
     /// <param name="green">The new green value for the current color. [0,1]</param>
     /// <param name="blue">The new blue value for the current color. [0,1]</param>
     /// <param name="alpha">The new alpha value for the current color. [0,1]</param>
-    [LibraryImport(Library)]
-    public static partial void glColor4f(float red, float green, float blue, float alpha);
+    [DllImport(Library)]
+    public static extern void glColor4f(float red, float green, float blue, float alpha);
 
     /// <summary>
     /// Delete named textures.
     /// </summary>
     /// <param name="n">Specifies the number of textures to be deleted.</param>
     /// <param name="textures">Specifies an array of textures to be deleted.</param>
-    [LibraryImport(Library)]
-    public static partial void glDeleteTextures(int n, int[] textures);
+    [DllImport(Library)]
+    public static extern void glDeleteTextures(int n, int[] textures);
 
     /// <summary>
     /// Enable or disable writing into the depth buffer. If flag is GL_FALSE, depth buffer writing is disabled. Otherwise, it is enabled. Initially, depth buffer writing is enabled.
@@ -2270,15 +2270,15 @@ public static partial class OpenGL32
     /// The glEnable and glDisable functions enable or disable OpenGL capabilities.
     /// </summary>
     /// <param name="cap">A symbolic constant indicating an OpenGL capability. For discussion of the values cap can take, see the following Remarks section.</param>
-    [LibraryImport(Library)]
-    public static partial void glDisable(GLCAP cap);
+    [DllImport(Library)]
+    public static extern void glDisable(GLCAP cap);
 
     /// <summary>
     /// The glEnableClientState and glDisableClientState functions enable and disable arrays respectively.
     /// </summary>
     /// <param name="array">A symbolic constant for the array you want to enable or disable. </param>
-    [LibraryImport(Library)]
-    public static partial void glDisableClientState(STATE_CAP array);
+    [DllImport(Library)]
+    public static extern void glDisableClientState(STATE_CAP array);
 
     /// <summary>
     /// Render primitives from array data.
@@ -2286,28 +2286,28 @@ public static partial class OpenGL32
     /// <param name="mode">Specifies what kind of primitives to render.</param>
     /// <param name="first">Specifies the starting index in the enabled arrays.</param>
     /// <param name="count">Specifies the number of indices to be rendered.</param>
-    [LibraryImport(Library)]
-    public static partial void glDrawArrays(PRIMITIVE_TYPE mode, int first, int count);
+    [DllImport(Library)]
+    public static extern void glDrawArrays(PRIMITIVE_TYPE mode, int first, int count);
 
     /// <summary>
     /// glEnable and glDisable enable and disable various capabilities. Use glIsEnabled or glGet to determine the current setting of any capability. The initial value for each capability with the exception of GL_DITHER and GL_MULTISAMPLE is GL_FALSE. The initial value for GL_DITHER and GL_MULTISAMPLE is GL_TRUE.
     /// </summary>
     /// <param name="cap">Specifies a symbolic constant indicating a GL capability.</param>
-    [LibraryImport(Library)]
-    public static partial void glEnable(GLCAP cap);
+    [DllImport(Library)]
+    public static extern void glEnable(GLCAP cap);
 
     /// <summary>
     /// glEnableClientState and glDisableClientState enable or disable individual client-side capabilities. By default, all client-side capabilities are disabled. Both glEnableClientState and glDisableClientState take a single argument, cap, which can assume one of the following values:
     /// </summary>
     /// <param name="array">Specifies the capability to disable.</param>
-    [LibraryImport(Library)]
-    public static partial void glEnableClientState(STATE_CAP array);
+    [DllImport(Library)]
+    public static extern void glEnableClientState(STATE_CAP array);
 
     /// <summary>
     /// The glBegin and glEnd functions delimit the vertices of a primitive or a group of like primitives.
     /// </summary>
-    [LibraryImport(Library)]
-    public static partial void glEnd();
+    [DllImport(Library)]
+    public static extern void glEnd();
 
     /// <summary>
     /// glFlush — force execution of GL commands. Different GL implementations buffer commands in several different locations, including network buffers and the graphics accelerator itself. glFlush empties all of these buffers, causing all issued commands to be executed as quickly as they are accepted by the actual rendering engine. Though this execution may not be completed in any particular time period, it does complete in finite time.
@@ -2319,8 +2319,8 @@ public static partial class OpenGL32
     /// define front- and back-facing polygons
     /// </summary>
     /// <param name="mode">Specifies the orientation of front-facing polygons. GL_CW and GL_CCW are accepted. The initial value is GL_CCW.</param>
-    [LibraryImport(Library)]
-    public static partial void glFrontFace(FRONTFACE_MODE mode);
+    [DllImport(Library)]
+    public static extern void glFrontFace(FRONTFACE_MODE mode);
 
     /// <summary>
     /// The glGetBooleanv function returns the value or values of a selected parameter.
@@ -2334,32 +2334,32 @@ public static partial class OpenGL32
     /// Return error information. Each detectable error is assigned a numeric code and symbolic name. When an error occurs, the error flag is set to the appropriate error code value. No other errors are recorded until glGetError is called, the error code is returned, and the flag is reset to GL_NO_ERROR. If a call to glGetError returns GL_NO_ERROR, there has been no detectable error since the last call to glGetError, or since the GL was initialized.
     /// </summary>
     /// <returns>Returns the value of the error flag. </returns>
-    [LibraryImport(Library)]
-    public static partial GL_ERROR glGetError();
+    [DllImport(Library)]
+    public static extern GL_ERROR glGetError();
 
     /// <summary>
     /// return the value or values of a selected parameter
     /// </summary>
     /// <param name="pname">Specifies the parameter value to be returned for non-indexed versions of glGet.</param>
     /// <param name="result">Returns the value or values of the specified parameter.</param>
-    [LibraryImport(Library)]
-    public static partial void glGetIntegerv(GLCAP pname, out int result);
+    [DllImport(Library)]
+    public static extern void glGetIntegerv(GLCAP pname, out int result);
 
     /// <summary>
     /// Return the value or values of a selected parameter
     /// </summary>
     /// <param name="pname">Specifies the parameter value to be returned for non-indexed versions of glGet</param>
     /// <param name="result">Returns the values of the specified parameter.</param>
-    [LibraryImport(Library)]
-    public static partial void glGetIntegerv(GLCAP pname, int[] result);
+    [DllImport(Library)]
+    public static extern void glGetIntegerv(GLCAP pname, int[] result);
 
     /// <summary>
     /// Returns a pointer to a static string describing some aspect of the current GL connection.
     /// </summary>
     /// <param name="name">Specifies a symbolic constant</param>
     /// <returns>Returns a pointer to a static string describing some aspect of the current GL connection</returns>
-    [LibraryImport(Library)]
-    public static unsafe partial sbyte* glGetString(GETSTRING_NAME name);
+    [DllImport(Library, CharSet = CharSet.Unicode)]
+    public unsafe static extern sbyte* glGetString(GETSTRING_NAME name);
 
     /// <summary>
     /// return a texture image
@@ -2369,16 +2369,16 @@ public static partial class OpenGL32
     /// <param name="format">Specifies a pixel format for the returned data.</param>
     /// <param name="type">Specifies a pixel type for the returned data.</param>
     /// <param name="pixels">Returns the texture image. Should be a pointer to an array of the type specified by type.</param>
-    [LibraryImport(Library)]
-    public static partial void glGetTexImage(TEXTURE_TARGET target, int level, PIXEL_FORMAT format, PIXEL_TYPE type, IntPtr pixels);
+    [DllImport(Library)]
+    public static extern void glGetTexImage(TEXTURE_TARGET target, int level, PIXEL_FORMAT format, PIXEL_TYPE type, IntPtr pixels);
 
     /// <summary>
     /// returns n texture names in textures. There is no guarantee that the names form a contiguous set of integers; however, it is guaranteed that none of the returned names was in use immediately before the call to glGenTextures. The generated textures have no dimensionality; they assume the dimensionality of the texture target to which they are first bound(see glBindTexture). Texture names returned by a call to glGenTextures are not returned by subsequent calls, unless they are first deleted with glDeleteTextures.
     /// </summary>
     /// <param name="n">Specifies the number of texture names to be generated.</param>
     /// <param name="textures">Specifies an array in which the generated texture names are stored.</param>
-    [LibraryImport(Library)]
-    public static partial void glGenTextures(int n, int[] textures);
+    [DllImport(Library)]
+    public static extern void glGenTextures(int n, int[] textures);
 
     /// <summary>
     /// returns GL_TRUE if cap is an enabled capability and returns GL_FALSE otherwise. Boolean states that are indexed may be tested with glIsEnabledi. For glIsEnabledi, index specifies the index of the capability to test. index must be between zero and the count of indexed capabilities for cap. Initially all capabilities except GL_DITHER are disabled; GL_DITHER is initially enabled.
@@ -2395,21 +2395,21 @@ public static partial class OpenGL32
     /// <param name="pname">A light source parameter for light.</param>
     /// <param name="params">Specifies the value that parameter pname of light source light will be set to.</param>
     /// <remarks>The glLightfv function sets the value or values of individual light source parameters. The light parameter names the light and is a symbolic name of the form GL_LIGHTi, where 0 = i less than GL_MAX_LIGHTS. The pname parameter specifies one of the light source parameters, again by symbolic name.The params parameter is either a single value or a pointer to an array that contains the new values. Lighting calculation is enabled and disabled using glEnable and glDisable with argument GL_LIGHTING.When lighting is enabled, light sources that are enabled contribute to the lighting calculation.Light source i is enabled and disabled using glEnable and glDisable with argument GL_LIGHTi. It is always the case that GL_LIGHTi = GL_LIGHT0 + i.</remarks>
-    [LibraryImport(Library)]
-    public static partial void glLightfv(LIGHT light, LIGHTSOURCE_NAME pname, float[] @params);
+    [DllImport(Library)]
+    public static extern void glLightfv(LIGHT light, LIGHTSOURCE_NAME pname, float[] @params);
 
     /// <summary>
     /// specify the width of rasterized lines
     /// </summary>
     /// <param name="width">Specifies the width of rasterized lines. The initial value is 1.</param>
-    [LibraryImport(Library)]
-    public static partial void glLineWidth(float width);
+    [DllImport(Library)]
+    public static extern void glLineWidth(float width);
 
     /// <summary>
     /// replace the current matrix with the identity matrix
     /// </summary>
-    [LibraryImport(Library)]
-    public static partial void glLoadIdentity();
+    [DllImport(Library)]
+    public static extern void glLoadIdentity();
 
     /// <summary>
     /// The glMaterialfv function specifies material parameters for the lighting model. 
@@ -2417,15 +2417,15 @@ public static partial class OpenGL32
     /// <param name="face">The face or faces that are being updated. Must be one of the following: GL_FRONT, GL_BACK, or GL_FRONT and GL_BACK.</param>
     /// <param name="pname">The material parameter of the face or faces being updated.</param>
     /// <param name="params">The value to which parameter GL_SHININESS will be set.</param>
-    [LibraryImport(Library)]
-    public static partial void glMaterialfv(POLYGON_FACE face, MATERIAL_NAME pname, float[] @params);
+    [DllImport(Library)]
+    public static extern void glMaterialfv(POLYGON_FACE face, MATERIAL_NAME pname, float[] @params);
 
     /// <summary>
     /// Specifies which matrix stack is the target for subsequent matrix operations. The initial value is GL_MODELVIEW.
     /// </summary>
     /// <param name="mode">Specifies which matrix stack is the target for subsequent matrix operations.</param>
-    [LibraryImport(Library)]
-    public static partial void glMatrixMode(MATRIX_MODE mode);
+    [DllImport(Library)]
+    public static extern void glMatrixMode(MATRIX_MODE mode);
 
     /// <summary>
     /// Sets the current normal vector.
@@ -2433,8 +2433,8 @@ public static partial class OpenGL32
     /// <param name="nx">Specifies the x-coordinate for the new current normal vector.</param>
     /// <param name="ny">Specifies the y-coordinate for the new current normal vector.</param>
     /// <param name="nz">Specifies the z-coordinate for the new current normal vector.</param>
-    [LibraryImport(Library)]
-    public static partial void glNormal3f(float nx, float ny, float nz);
+    [DllImport(Library)]
+    public static extern void glNormal3f(float nx, float ny, float nz);
 
     /// <summary>
     /// glOrtho describes a transformation that produces a parallel projection. The current matrix (see glMatrixMode) is multiplied by the orthographic matrix and the result replaces the current matrix.
@@ -2445,8 +2445,8 @@ public static partial class OpenGL32
     /// <param name="top">Specify the coordinates for the bottom and top horizontal clipping planes.</param>
     /// <param name="zNear">Specify the distances to the nearer and farther depth clipping planes. These values are negative if the plane is to be behind the viewer.</param>
     /// <param name="zFar">Specify the distances to the nearer and farther depth clipping planes. These values are negative if the plane is to be behind the viewer.</param>
-    [LibraryImport(Library)]
-    public static partial void glOrtho(double left, double right, double bottom, double top, double zNear, double zFar);
+    [DllImport(Library)]
+    public static extern void glOrtho(double left, double right, double bottom, double top, double zNear, double zFar);
 
     /// <summary>
     /// glReadPixels and glReadnPixels return pixel data from the frame buffer, starting with the pixel whose lower left corner is at location (x, y), into client memory starting at location data.
@@ -2466,36 +2466,36 @@ public static partial class OpenGL32
     /// </summary>
     /// <param name="pname">a symbolic constant indicating the parameter to be set</param>
     /// <param name="param">the new value</param>
-    [LibraryImport(Library)]
-    public static partial void glPixelStorei(PIXEL_STORE_MODE pname, int param);
+    [DllImport(Library)]
+    public static extern void glPixelStorei(PIXEL_STORE_MODE pname, int param);
 
     /// <summary>
     /// glPointSize specifies the rasterized diameter of points
     /// </summary>
     /// <param name="size">The size in pixels</param>
     /// <remarks>If point size mode is disabled (see glEnable with parameter GL_PROGRAM_POINT_SIZE), this value will be used to rasterize points. Otherwise, the value written to the shading language built-in variable gl_PointSize will be used.</remarks>
-    [LibraryImport(Library)]
-    public static partial void glPointSize(float size);
+    [DllImport(Library)]
+    public static extern void glPointSize(float size);
 
     /// <summary>
     /// glPolygonMode controls the interpretation of polygons for rasterization.
     /// </summary>
     /// <param name="face">Specifies the polygons that mode applies to.</param>
     /// <param name="mode">Specifies how polygons will be rasterized.</param>
-    [LibraryImport(Library)]
-    public static partial void glPolygonMode(POLYGON_FACE face, POLYGON_MODE mode);
+    [DllImport(Library)]
+    public static extern void glPolygonMode(POLYGON_FACE face, POLYGON_MODE mode);
 
     /// <summary>
     /// glPopMatrix pops the current matrix stack, replacing the current matrix with the one below it on the stack.
     /// </summary>
-    [LibraryImport(Library)]
-    public static partial void glPopMatrix();
+    [DllImport(Library)]
+    public static extern void glPopMatrix();
 
     /// <summary>
     /// glPushMatrix pushes the current matrix stack down by one, duplicating the current matrix. That is, after a glPushMatrix call, the matrix on top of the stack is identical to the one below it.
     /// </summary>
-    [LibraryImport(Library)]
-    public static partial void glPushMatrix();
+    [DllImport(Library)]
+    public static extern void glPushMatrix();
 
     /// <summary>
     /// multiply the current matrix by a rotation matrix
@@ -2504,8 +2504,8 @@ public static partial class OpenGL32
     /// <param name="x">Specify the x, y, and z coordinates of a vector, respectively.</param>
     /// <param name="y">Specify the x, y, and z coordinates of a vector, respectively.</param>
     /// <param name="z">Specify the x, y, and z coordinates of a vector, respectively.</param>
-    [LibraryImport(Library)]
-    public static partial void glRotatef(float angle, float x, float y, float z);
+    [DllImport(Library)]
+    public static extern void glRotatef(float angle, float x, float y, float z);
 
     /// <summary>
     /// The glScaled and glScalef functions multiply the current matrix by a general scaling matrix.
@@ -2513,23 +2513,23 @@ public static partial class OpenGL32
     /// <param name="x">Scale factors along the x axis.</param>
     /// <param name="y">Scale factors along the y axis.</param>
     /// <param name="z">Scale factors along the z axis.</param>
-    [LibraryImport(Library)]
-    public static partial void glScalef(float x, float y, float z);
+    [DllImport(Library)]
+    public static extern void glScalef(float x, float y, float z);
 
     /// <summary>
     /// Select flat or smooth shading
     /// </summary>
     /// <param name="mode">Specifies a symbolic value representing a shading technique.</param>
-    [LibraryImport(Library)]
-    public static partial void glShadeModel(SHADE_TECHNIQUE mode);
+    [DllImport(Library)]
+    public static extern void glShadeModel(SHADE_TECHNIQUE mode);
 
     /// <summary>
     /// set the current texture coordinates
     /// </summary>
     /// <param name="s">Specify s texture coordinate.</param>
     /// <param name="t">Specify t texture coordinate.</param>
-    [LibraryImport(Library)]
-    public static partial void glTexCoord2f(float s, float t);
+    [DllImport(Library)]
+    public static extern void glTexCoord2f(float s, float t);
 
     /// <summary>
     /// specify a one-dimensional texture image
@@ -2542,8 +2542,8 @@ public static partial class OpenGL32
     /// <param name="format">Specifies the format of the pixel data.</param>
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="data">Specifies a pointer to the image data in memory.</param>
-    [LibraryImport(Library)]
-    public static partial void glTexImage1D(TEXTURE_TARGET target, int level, TEXTURE_INTERNALFORMAT internalFormat, int width, int border, PIXEL_FORMAT format, PIXEL_TYPE type, IntPtr data);
+    [DllImport(Library)]
+    public static extern void glTexImage1D(TEXTURE_TARGET target, int level, TEXTURE_INTERNALFORMAT internalFormat, int width, int border, PIXEL_FORMAT format, PIXEL_TYPE type, IntPtr data);
 
     /// <summary>
     /// specify a two-dimensional texture image
@@ -2557,8 +2557,8 @@ public static partial class OpenGL32
     /// <param name="format">Specifies the format of the pixel data.</param>
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="data">Specifies a pointer to the image data in memory.</param>
-    [LibraryImport(Library)]
-    public static partial void glTexImage2D(TEXTURE_TARGET target, int level, TEXTURE_INTERNALFORMAT internalFormat, int width, int height, int border, PIXEL_FORMAT format, PIXEL_TYPE type, IntPtr data);
+    [DllImport(Library)]
+    public static extern void glTexImage2D(TEXTURE_TARGET target, int level, TEXTURE_INTERNALFORMAT internalFormat, int width, int height, int border, PIXEL_FORMAT format, PIXEL_TYPE type, IntPtr data);
 
     /// <summary>
     /// specify a two-dimensional texture subimage
@@ -2572,8 +2572,8 @@ public static partial class OpenGL32
     /// <param name="format">Specifies the format of the pixel data.</param>
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-    [LibraryImport(Library)]
-    public static partial void glTexSubImage2D(TEXTURE_TARGET target, int level, int xOffset, int yOffset, int width, int height, PIXEL_FORMAT format, PIXEL_TYPE type, IntPtr pixels);
+    [DllImport(Library)]
+    public static extern void glTexSubImage2D(TEXTURE_TARGET target, int level, int xOffset, int yOffset, int width, int height, PIXEL_FORMAT format, PIXEL_TYPE type, IntPtr pixels);
 
     /// <summary>
     /// set texture parameters
@@ -2581,8 +2581,8 @@ public static partial class OpenGL32
     /// <param name="target">Specifies the target to which the texture is bound for glTexParameter functions.</param>
     /// <param name="pname">Specifies the symbolic name of a single-valued texture parameter.</param>
     /// <param name="param">Specifies the value of pname.</param>
-    [LibraryImport(Library)]
-    public static partial void glTexParameteri(TEXTURE_TARGET target, TEXPARAMETER_NAME pname, TEXPARAMETER_VALUE param);
+    [DllImport(Library)]
+    public static extern void glTexParameteri(TEXTURE_TARGET target, TEXPARAMETER_NAME pname, TEXPARAMETER_VALUE param);
 
     /// <summary>
     /// multiply the current matrix by a translation matrix
@@ -2590,16 +2590,16 @@ public static partial class OpenGL32
     /// <param name="x">Specify the x, y, and z coordinates of a translation vector.</param>
     /// <param name="y">Specify the x, y, and z coordinates of a translation vector.</param>
     /// <param name="z">Specify the x, y, and z coordinates of a translation vector.</param>
-    [LibraryImport(Library)]
-    public static partial void glTranslatef(float x, float y, float z);
+    [DllImport(Library)]
+    public static extern void glTranslatef(float x, float y, float z);
 
     /// <summary>
     /// The glVertex function commands are used within glBegin/glEnd pairs to specify point, line, and polygon vertices. The current color, normal, and texture coordinates are associated with the vertex when glVertex is called. When only x and y are specified, z defaults to 0.0 and w defaults to 1.0. When x, y, and z are specified, w defaults to 1.0. Invoking glVertex outside of a glBegin/glEnd pair results in undefined behavior.
     /// </summary>
     /// <param name="x">Specifies the x-coordinate of a vertex.</param>
     /// <param name="y">Specifies the y-coordinate of a vertex.</param>
-    [LibraryImport(Library)]
-    public static partial void glVertex2f(float x, float y);
+    [DllImport(Library)]
+    public static extern void glVertex2f(float x, float y);
 
     /// <summary>
     /// The glVertex function commands are used within glBegin/glEnd pairs to specify point, line, and polygon vertices. The current color, normal, and texture coordinates are associated with the vertex when glVertex is called. When only x and y are specified, z defaults to 0.0 and w defaults to 1.0. When x, y, and z are specified, w defaults to 1.0. Invoking glVertex outside of a glBegin/glEnd pair results in undefined behavior.
@@ -2607,8 +2607,8 @@ public static partial class OpenGL32
     /// <param name="x">Specifies the x-coordinate of a vertex.</param>
     /// <param name="y">Specifies the y-coordinate of a vertex.</param>
     /// <param name="z">Specifies the z-coordinate of a vertex.</param>
-    [LibraryImport(Library)]
-    public static partial void glVertex3f(float x, float y, float z);
+    [DllImport(Library)]
+    public static extern void glVertex3f(float x, float y, float z);
 
     /// <summary>
     /// glVertexPointer specifies the location and data format of an array of vertex coordinates to use when rendering
@@ -2617,8 +2617,8 @@ public static partial class OpenGL32
     /// <param name="type">Specifies the data type of each coordinate in the array. Symbolic constants GL_SHORT, GL_INT, GL_FLOAT, or GL_DOUBLE are accepted. The initial value is GL_FLOAT.</param>
     /// <param name="stride">Specifies the byte offset between consecutive vertices. If stride is 0, the vertices are understood to be tightly packed in the array. The initial value is 0.</param>
     /// <param name="pointer">Specifies a pointer to the first coordinate of the first vertex in the array. The initial value is 0.</param>
-    [LibraryImport(Library)]
-    public static partial void glVertexPointer(int size, VERTEX_DATA_TYPE type, int stride, float[] pointer);
+    [DllImport(Library)]
+    public static extern void glVertexPointer(int size, VERTEX_DATA_TYPE type, int stride, float[] pointer);
 
     /// <summary>
     /// Specifies the affine transformation of x and y from normalized device coordinates to window coordinates.
@@ -2627,16 +2627,16 @@ public static partial class OpenGL32
     /// <param name="y">Specify the lower left corner of the viewport rectangle, in pixels. The initial value is (0,0).</param>
     /// <param name="width">Specify the width and height of the viewport. When a GL context is first attached to a window, width and height are set to the dimensions of that window.</param>
     /// <param name="height">Specify the width and height of the viewport. When a GL context is first attached to a window, width and height are set to the dimensions of that window.</param>
-    [LibraryImport(Library)]
-    public static partial void glViewport(int x, int y, int width, int height);
+    [DllImport(Library)]
+    public static extern void glViewport(int x, int y, int width, int height);
 
     /// <summary>
     /// The wglCreateContext function creates a new OpenGL rendering context, which is suitable for drawing on the device referenced by hdc. The rendering context has the same pixel format as the device context.
     /// </summary>
     /// <param name="unnamedParam1">Handle to a device context for which the function creates a suitable OpenGL rendering context.</param>
     /// <returns>If the function succeeds, the return value is a valid handle to an OpenGL rendering context. If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
-    [LibraryImport(Library, SetLastError = true)]
-    public static partial IntPtr wglCreateContext(IntPtr unnamedParam1);
+    [DllImport(Library, SetLastError = true)]
+    public static extern IntPtr wglCreateContext(IntPtr unnamedParam1);
 
     /// <summary>
     /// The wglDeleteContext function deletes a specified OpenGL rendering context.
@@ -2650,8 +2650,8 @@ public static partial class OpenGL32
     /// The wglGetCurrentContext function obtains a handle to the current OpenGL rendering context of the calling thread.
     /// </summary>
     /// <returns>If the calling thread has a current OpenGL rendering context, wglGetCurrentContext returns a handle to that rendering context. Otherwise, the return value is NULL.</returns>
-    [LibraryImport(Library)]
-    public static partial IntPtr wglGetCurrentContext();
+    [DllImport(Library)]
+    public static extern IntPtr wglGetCurrentContext();
 
     /// <summary>
     /// The wglGetProcAddress function returns the address of an OpenGL extension function for use with the current OpenGL rendering context.

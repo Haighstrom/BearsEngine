@@ -4,7 +4,7 @@ using System.Security;
 namespace BearsEngine.Audio.OpenAL;
 
 /// <summary>Alc = Audio Library Context PInvokes</summary>
-internal static partial class Alc
+internal static class Alc
 {
 
     // * * * CLEANED UP ABOVE THIS LINE * * *
@@ -27,9 +27,8 @@ internal static partial class Alc
     /// <param name="format">the requested capture buffer format.</param>
     /// <param name="buffersize">the size of the capture buffer in samples, not bytes.</param>
     /// <returns>Returns the capture device pointer, or NULL on failure.</returns>
-    [LibraryImport(Lib, EntryPoint = "alcCaptureOpenDevice", StringMarshalling = StringMarshalling.Custom, StringMarshallingCustomType = typeof(System.Runtime.InteropServices.Marshalling.AnsiStringMarshaller)), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial IntPtr CaptureOpenDevice(string devicename, uint frequency, ALFormat format, int buffersize);
+    [DllImport(Lib, EntryPoint = "alcCaptureOpenDevice", ExactSpelling = true, CallingConvention = Style, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity()]
+    internal static extern IntPtr CaptureOpenDevice(string devicename, uint frequency, ALFormat format, int buffersize);
     #endregion
 
     #region CaptureSamples
@@ -37,9 +36,8 @@ internal static partial class Alc
     /// <param name="device">a pointer to a capture device.</param>
     /// <param name="buffer">a pointer to a buffer, which must be large enough to accommodate the number of samples.</param>
     /// <param name="samples">the number of samples to be retrieved.</param>
-    [LibraryImport(Lib, EntryPoint = "alcCaptureSamples"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void CaptureSamples(IntPtr device, IntPtr buffer, int samples);
+    [DllImport(Lib, EntryPoint = "alcCaptureSamples", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void CaptureSamples(IntPtr device, IntPtr buffer, int samples);
 
     /// <summary>This function completes a capture operation, and does not block.</summary>
     /// <param name="device">a pointer to a capture device.</param>
@@ -139,9 +137,8 @@ internal static partial class Alc
     /// This function destroys a context.
     /// </summary>
     /// <param name="context">A pointer to the new context.</param>
-    [LibraryImport(Lib, EntryPoint = "alcDestroyContext"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void DestroyContext(IntPtr context);
+    [DllImport(Lib, EntryPoint = "alcDestroyContext", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void DestroyContext(IntPtr context);
     #endregion
 
     #region GetContextsDevice
@@ -150,9 +147,8 @@ internal static partial class Alc
     /// </summary>
     /// <param name="context">>A pointer to a context.</param>
     /// <returns>Returns a pointer to the specified context's device.</returns>
-    [LibraryImport(Lib, EntryPoint = "alcGetContextsDevice"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    static partial IntPtr GetContextsDevice(IntPtr context);
+    [DllImport(Lib, EntryPoint = "alcGetContextsDevice", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    static extern IntPtr GetContextsDevice(IntPtr context);
     #endregion
 
     #region GetCurrentContext
@@ -160,9 +156,8 @@ internal static partial class Alc
     /// This function retrieves the current context.
     /// </summary>
     /// <returns>Returns a pointer to the current context.</returns>
-    [LibraryImport(Lib, EntryPoint = "alcGetCurrentContext"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial IntPtr GetCurrentContext();
+    [DllImport(Lib, EntryPoint = "alcGetCurrentContext", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern IntPtr GetCurrentContext();
     #endregion
 
     #region GetEnumValue
@@ -192,9 +187,8 @@ internal static partial class Alc
     #endregion
 
     #region GetInteger
-    [LibraryImport(Lib, EntryPoint = "alcGetIntegerv"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    private static unsafe partial void GetInteger(IntPtr device, AlcGetInteger param, int size, int* data);
+    [DllImport(Lib, EntryPoint = "alcGetIntegerv", ExactSpelling = true, CallingConvention = Style, CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity()]
+    private unsafe static extern void GetInteger(IntPtr device, AlcGetInteger param, int size, int* data);
 
     /// <summary>This function returns integers related to the context.</summary>
     /// <param name="device">a pointer to the device to be queried.</param>
@@ -349,9 +343,8 @@ internal static partial class Alc
     /// This function tells a context to begin processing. When a context is suspended, changes in OpenAL state will be accepted but will not be processed. alcSuspendContext can be used to suspend a context, and then all the OpenAL state changes can be applied at once, followed by a call to alcProcessContext to apply all the state changes immediately. In some cases, this procedure may be more efficient than application of properties in a non-suspended state. In some implementations, process and suspend calls are each a NOP.
     /// </summary>
     /// <param name="context">A pointer to the new context handle.</param>
-    [LibraryImport(Lib, EntryPoint = "alcProcessContext"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void ProcessContext(IntPtr context);
+    [DllImport(Lib, EntryPoint = "alcProcessContext", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void ProcessContext(IntPtr context);
     #endregion
 
     #region SuspendContext
@@ -359,8 +352,7 @@ internal static partial class Alc
     /// This function suspends processing on a specified context. When a context is suspended, changes in OpenAL state will be accepted but will not be processed. A typical use of alcSuspendContext would be to suspend a context, apply all the OpenAL state changes at once, and then call alcProcessContext to apply all the state changes at once. In some cases, this procedure may be more efficient than application of properties in a non-suspended state. In some implementations, process and suspend calls are each a NOP. 
     /// </summary>
     /// <param name="context">A pointer to the context to be suspended.</param>
-    [LibraryImport(Lib, EntryPoint = "alcSuspendContext"), SuppressUnmanagedCodeSecurity()]
-    [UnmanagedCallConv(CallConvs = new Type[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
-    internal static partial void SuspendContext(IntPtr context);
+    [DllImport(Lib, EntryPoint = "alcSuspendContext", ExactSpelling = true, CallingConvention = Style), SuppressUnmanagedCodeSecurity()]
+    internal static extern void SuspendContext(IntPtr context);
     #endregion
 }

@@ -59,7 +59,7 @@ internal struct SMALL_RECT
 /// Low-level operating system functions for memory management and resource handling.
 /// </summary>
 [SuppressUnmanagedCodeSecurity]
-internal static partial class Kernal32
+internal static class Kernal32
 {
     private const string Library = "Kernel32.dll";
 
@@ -98,8 +98,8 @@ internal static partial class Kernal32
     /// Retrieves the window handle used by the console associated with the calling process.
     /// </summary>
     /// <returns>The return value is a handle to the window used by the console associated with the calling process or NULL if there is no such associated console.</returns>
-    [LibraryImport(Library)]
-    public static partial IntPtr GetConsoleWindow();
+    [DllImport(Library)]
+    public static extern IntPtr GetConsoleWindow();
 
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getmodulehandlew
@@ -111,8 +111,8 @@ internal static partial class Kernal32
     /// The GetModuleHandle function does not retrieve handles for modules that were loaded using the LOAD_LIBRARY_AS_DATAFILE flag.For more information, see LoadLibraryEx.</param>
     /// <returns>If the function succeeds, the return value is a handle to the specified module.
     /// If the function fails, the return value is NULL.To get extended error information, call GetLastError.</returns>
-    [LibraryImport(Library, SetLastError = true, StringMarshalling = StringMarshalling.Utf16)]
-    public static partial IntPtr GetModuleHandle(string lpModuleName);
+    [DllImport(Library, CharSet = CharSet.Auto, SetLastError = true)]
+    public static extern IntPtr GetModuleHandle(string lpModuleName);
 
     /// <summary>
     /// Retrieves the address of an exported function (also known as a procedure) or variable from the specified dynamic-link library (DLL).
@@ -129,16 +129,16 @@ internal static partial class Kernal32
     /// <param name="hModule">A handle to the DLL module that contains the function or variable. The LoadLibrary, LoadLibraryEx, LoadPackagedLibrary, or GetModuleHandle function returns this handle. The GetProcAddress function does not retrieve addresses from modules that were loaded using the LOAD_LIBRARY_AS_DATAFILE flag. For more information, see LoadLibraryEx.</param>
     /// <param name="lpProcName">The function or variable name, or the function's ordinal value. If this parameter is an ordinal value, it must be in the low-order word; the high-order word must be zero.</param>
     /// <returns>If the function succeeds, the return value is the address of the exported function or variable. If the function fails, the return value is NULL. To get extended error information, call GetLastError.</returns>
-    [LibraryImport(Library, SetLastError = true)]
-    public static partial IntPtr GetProcAddress(IntPtr hModule, IntPtr lpProcName);
+    [DllImport(Library, SetLastError = true)]
+    public static extern IntPtr GetProcAddress(IntPtr hModule, IntPtr lpProcName);
 
     /// <summary>
     /// Retrieves a handle to the specified standard device (standard input, standard output, or standard error).
     /// </summary>
     /// <param name="nStdHandle">The standard device.</param>
     /// <returns>If the function succeeds, the return value is a handle to the specified device, or a redirected handle set by a previous call to SetStdHandle. The handle has GENERIC_READ and GENERIC_WRITE access rights, unless the application has used SetStdHandle to set a standard handle with lesser access. If the function fails, the return value is INVALID_HANDLE_VALUE.To get extended error information, call GetLastError. If an application does not have associated standard handles, such as a service running on an interactive desktop, and has not redirected them, the return value is NULL.</returns>
-    [LibraryImport(Library, SetLastError = true)]
-    public static partial IntPtr GetStdHandle(STDHANDLE nStdHandle);
+    [DllImport(Library, SetLastError = true)]
+    public static extern IntPtr GetStdHandle(STDHANDLE nStdHandle);
 
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibraryw
@@ -168,8 +168,8 @@ internal static partial class Kernal32
     /// Sets the last-error code for the calling thread.
     /// </summary>
     /// <param name="dwErrCode">The last-error code for the thread.</param>
-    [LibraryImport(Library)]
-    public static partial void SetLastError(int dwErrCode);
+    [DllImport(Library)]
+    public static extern void SetLastError(int dwErrCode);
 
     /// <summary>
     /// Sets the handle for the specified standard device (standard input, standard output, or standard error).
