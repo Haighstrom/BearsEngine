@@ -1,7 +1,7 @@
 ﻿using BearsEngine.Source.Tools.IO.JSON;
 using System.Text.Json;
 
-namespace BearsEngine.Source.Tools.IO;
+namespace BearsEngine.IO;
 
 /// <summary>
 /// A group of settings for instantiating an IoHelper

@@ -9,26 +9,29 @@ internal class MouseActivityList : Entity
 
     private readonly string[] _activityMessages;
     private readonly TextGraphic _activityText;
+    private readonly IMouse _mouse;
 
-    public MouseActivityList()
-        : base(10, 90, 300, 220, 160, Colour.White)
+    public MouseActivityList(IMouse mouse)
+        : base(mouse, 10, 90, 300, 220, 160, Colour.White)
     {
+        _mouse = mouse;
+
         Add(_activityText = new TextGraphic(HFont.Load("Helvetica", 8), Colour.Black, Size));
 
         _activityMessages = new string[MessageListSize];
-        for (var i = 0; i < _activityMessages.Length; i++)
+        for (int i = 0; i < _activityMessages.Length; i++)
             _activityMessages[i] = "";
     }
 
     private void AddNewMessage(string message)
     {
-        for (var i = _activityMessages.Length - 1; i > 0; i--)
+        for (int i = _activityMessages.Length - 1; i > 0; i--)
             _activityMessages[i] = _activityMessages[i - 1];
 
         _activityMessages[0] = message;
 
-        var newText = "";
-        for (var i = 0; i < _activityMessages.Length; i++)
+        string newText = "";
+        for (int i = 0; i < _activityMessages.Length; i++)
             newText += _activityMessages[i] + "\n";
 
         _activityText.Text = newText;
@@ -38,29 +41,29 @@ internal class MouseActivityList : Entity
     {
         base.Update(elapsed);
 
-        if (Mouse.LeftPressed)
+        if (_mouse.LeftPressed)
             AddNewMessage("Left Pressed.");
-        if (Mouse.RightPressed)
+        if (_mouse.RightPressed)
             AddNewMessage("Right Pressed.");
-        if (Mouse.Pressed(MouseButton.Middle))
+        if (_mouse.Pressed(MouseButton.Middle))
             AddNewMessage("Wheel Pressed.");
-        if (Mouse.Pressed(MouseButton.Mouse4))
+        if (_mouse.Pressed(MouseButton.Mouse4))
             AddNewMessage("Mouse 4 Pressed.");
-        if (Mouse.Pressed(MouseButton.Mouse5))
+        if (_mouse.Pressed(MouseButton.Mouse5))
             AddNewMessage("Mouse 5 Pressed.");
 
-        if (Mouse.LeftReleased)
+        if (_mouse.LeftReleased)
             AddNewMessage("Left Released.");
-        if (Mouse.RightReleased)
+        if (_mouse.RightReleased)
             AddNewMessage("Right Released.");
-        if (Mouse.Released(MouseButton.Middle))
+        if (_mouse.Released(MouseButton.Middle))
             AddNewMessage("Wheel Released.");
-        if (Mouse.Released(MouseButton.Mouse4))
+        if (_mouse.Released(MouseButton.Mouse4))
             AddNewMessage("Mouse 4 Released.");
-        if (Mouse.Released(MouseButton.Mouse5))
+        if (_mouse.Released(MouseButton.Mouse5))
             AddNewMessage("Mouse 5 Released.");
 
-        if (Mouse.WheelDelta != 0)
+        if (_mouse.WheelDelta != 0)
             AddNewMessage("Mouse Wheel Scrolled");
     }
 }

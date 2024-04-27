@@ -2,9 +2,9 @@
 
 namespace BearsEngine;
 
-internal interface IGameEngine : IDisposable
+public interface IGameEngine : IDisposable
 {
     IScene Scene { get; set; }
 
-    void Run(IWindow window);
+    void Run(IScene firstScene);
 }

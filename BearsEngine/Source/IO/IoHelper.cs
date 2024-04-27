@@ -4,7 +4,7 @@ using BearsEngine.Source.Tools.IO.JSON;
 using BearsEngine.Source.Tools.IO.TXT;
 using BearsEngine.Source.Tools.IO.XML;
 
-namespace BearsEngine.Source.Tools.IO;
+namespace BearsEngine.IO;
 
 public class IOHelper : IIoHelper
 {

@@ -101,11 +101,6 @@ public class WindowSettings
     public int Width { get; set; } = 400;
 
     /// <summary>
-    /// Whether the window is created initially visible. True by default.
-    /// </summary>
-    public bool Visible { get; set; } = true;
-
-    /// <summary>
     /// The desired X (left) position of the window
     /// </summary>
     public int X { get; set; } = 100;

@@ -1,4 +1,5 @@
-﻿using BearsEngine.Worlds.Cameras;
+﻿using BearsEngine.Input;
+using BearsEngine.Worlds.Cameras;
 
 namespace BearsEngine.UI;
 
@@ -8,11 +9,11 @@ public class ScrollingListPanel : Entity
     private readonly Camera _camera;
     private readonly Scrollbar _sb;
 
-    public ScrollingListPanel(float layer, Rect listPosition, int listToScrollbarGap, int scrollbarWidth, UITheme theme, int minIncrement = 0)
-        : base(layer, new Rect(listPosition.X, listPosition.Y, listPosition.W + listToScrollbarGap + scrollbarWidth, listPosition.H))
+    public ScrollingListPanel(IMouse mouse, float layer, Rect listPosition, int listToScrollbarGap, int scrollbarWidth, UITheme theme, int minIncrement = 0)
+        : base(mouse, layer, new Rect(listPosition.X, listPosition.Y, listPosition.W + listToScrollbarGap + scrollbarWidth, listPosition.H))
     {
-        Add(_camera = new Camera(1, listPosition.Zeroed, listPosition.Zeroed) { BackgroundColour = theme.ScrollingListPanel.PanelColour });
-        Add(_sb = new Scrollbar(1, new Rect(listPosition.W + listToScrollbarGap, 0, scrollbarWidth, H), ScrollbarDirection.Vertical, theme));
+        Add(_camera = new Camera(mouse, 1, listPosition.Zeroed, listPosition.Zeroed) { BackgroundColour = theme.ScrollingListPanel.PanelColour });
+        Add(_sb = new Scrollbar(mouse, 1, new Rect(listPosition.W + listToScrollbarGap, 0, scrollbarWidth, H), ScrollbarDirection.Vertical, theme));
         _sb.MinIncrement = minIncrement;
         _sb.BarPositionChanged += (s, a) => _camera.View.Y = a.MinAmount * _itemsOnPage.Last().R.Bottom;
     }

@@ -184,14 +184,14 @@ public class WinAPIWindow : IWindow
         if (_childWindowHandle == IntPtr.Zero)
             throw new Exception(string.Format("Failed to create window. Error: {0}", Marshal.GetLastWin32Error()));
 
-        if (settings.Visible)
-            User32.ShowWindow(_windowHandle, SHOWWINDOWCOMMAND.SW_SHOW);
-        User32.UpdateWindow(_windowHandle);
+        //if (settings.Visible)
+        //    User32.ShowWindow(_windowHandle, SHOWWINDOWCOMMAND.SW_SHOW);
+        //User32.UpdateWindow(_windowHandle);
 
         //https://stackoverflow.com/questions/34139450/getwindowrect-returns-a-size-including-invisible-borders
         //hack for invisible windows - consider making window visible off screen temporarily?
         //Win11 ??
-        if (!settings.Visible && Environment.OSVersion.Version.Major == 10)
+        if (/*!settings.Visible && */Environment.OSVersion.Version.Major == 10)
             _leftInvisBorder = _rightInvisBorder = _bottomInvisBorder = (int)(7 * DPI);
 
         rect.left -= _leftInvisBorder;

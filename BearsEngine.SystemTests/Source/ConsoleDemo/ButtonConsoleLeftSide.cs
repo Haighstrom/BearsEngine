@@ -1,19 +1,24 @@
-﻿using BearsEngine.SystemTests.Source.Globals;
+﻿using BearsEngine.Console;
+using BearsEngine.Input;
+using BearsEngine.SystemTests.Source.Globals;
 using BearsEngine.Worlds.Graphics.Text;
 
 namespace BearsEngine.SystemTests.Source.ConsoleDemo;
 
 internal class ButtonConsoleLeftSide : Button
 {
-    public ButtonConsoleLeftSide()
-        : base(GL.UI.Button, GP.ConsoleDemo.ButtonConsoleLeftSide, Colour.Black, HFont.Default, Colour.White, "Move Left")
+    private readonly IConsoleWindow _console;
+
+    public ButtonConsoleLeftSide(IMouse mouse, IConsoleWindow console)
+        : base(mouse, GL.UI.Button, GP.ConsoleDemo.ButtonConsoleLeftSide, Colour.Black, HFont.Default, Colour.White, "Move Left")
     {
+        _console = console;
     }
 
     protected override void OnLeftPressed()
     {
         base.OnLeftPressed();
 
-        AppConsole.MoveConsoleTo(0, 0, ConsoleSettings.DefaultWidth, AppConsole.MaxHeight);
+        _console.MoveConsoleTo(0, 0, ConsoleSettings.DefaultWidth, _console.MaxHeight);
     }
 }

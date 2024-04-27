@@ -8,6 +8,21 @@ namespace BearsEngine.Console;
 /// </summary>
 public class ConsoleWindow : IConsoleWindow
 {
+    private static ConsoleWindow? s_instance;
+
+    internal static ConsoleWindow Instance 
+    {
+        get
+        {
+            if (s_instance is null)
+            {
+                throw new InvalidOperationException($"Tried to access {nameof(ConsoleWindow)}.{nameof(Instance)} before a {nameof(ConsoleWindow)} was created.");
+            }
+
+            return s_instance;
+        }
+    }
+
     private readonly IConsoleWindow _api;
 
     /// <summary>
@@ -16,9 +31,15 @@ public class ConsoleWindow : IConsoleWindow
     public ConsoleWindow()
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
             _api = new WinAPIConsoleWindow();
+        }
         else
+        {
             throw new NotImplementedException();
+        }
+
+        s_instance = this;
     }
 
     /// <summary>

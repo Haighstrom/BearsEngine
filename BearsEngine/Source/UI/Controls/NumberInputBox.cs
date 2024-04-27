@@ -1,6 +1,8 @@
 ﻿using BearsEngine.UI;
 using BearsEngine.Worlds.Graphics.Text;
 using BearsEngine.Input;
+using BearsEngine.Source.Core;
+using BearsEngine.Window;
 
 namespace BearsEngine.Worlds.UI.Controls;
 
@@ -20,6 +22,8 @@ public class NumberInputBox<T> : Entity, IActivatable
     private readonly TextGraphic _textGraphic;
     private readonly Polygon _selection;
     private readonly Line _cursor;
+    private readonly IMouse _mouse;
+    private readonly IKeyboard _keyboard;
     private Mode _mode = Mode.Unfocussed;
     private string _text = "";
     private T _resetValue;
@@ -28,11 +32,13 @@ public class NumberInputBox<T> : Entity, IActivatable
     private float _cursorFlashTimer;
     
 
-    public NumberInputBox(UITheme theme, Colour bg, float layer, Rect r, T initialValue = default)
-        : base(layer, r, bg)
+    public NumberInputBox(IWindow window, IMouse mouse, IKeyboard keyboard, UITheme theme, Colour bg, float layer, Rect r, T initialValue = default)
+        : base(mouse, layer, r, bg)
     {
-        AppWindow.CharEntered += OnCharPressed;
-        AppWindow.KeyDown += OnKeyDown;
+        _mouse = mouse;
+        _keyboard = keyboard;
+        window.CharEntered += OnCharPressed;
+        window.KeyDown += OnKeyDown;
 
         Add(_textGraphic = new TextGraphic(theme, r.Zeroed, initialValue.ToString()) { Multiline = false, UseCommandTags = false });
 
@@ -208,7 +214,7 @@ public class NumberInputBox<T> : Entity, IActivatable
         switch (_mode)
         {
             case Mode.Unfocussed:
-                if (Mouse.LeftPressed && MouseIntersecting)
+                if (_mouse.LeftPressed && MouseIntersecting)
                 {
                     _resetValue = _text.ParseTo<T>();
                     _selection.Visible = true;
@@ -221,7 +227,7 @@ public class NumberInputBox<T> : Entity, IActivatable
             case Mode.Selecting:
                 _cursorPosition = MouseXAsTextIndex;
                 SetSelectionGraphic();
-                if (Mouse.LeftReleased)
+                if (_mouse.LeftReleased)
                 {
                     ShowCursor();
                     _cursor.OffsetX = _textGraphic.MeasureString(_firstCharDisplayed, MouseXAsTextIndex - _firstCharDisplayed).X;
@@ -238,7 +244,7 @@ public class NumberInputBox<T> : Entity, IActivatable
                     _cursorFlashTimer += CursorFlashTime;
                 }
 
-                if (Mouse.LeftDoubleClicked)
+                if (_mouse.LeftDoubleClicked)
                 {
                     _selectionStart = 0;
                     _cursorPosition = _text.Length;
@@ -246,7 +252,7 @@ public class NumberInputBox<T> : Entity, IActivatable
                     SetSelectionGraphic();
                     _selection.Visible = true;
                 }
-                else if (Mouse.LeftPressed && MouseIntersecting)
+                else if (_mouse.LeftPressed && MouseIntersecting)
                 {
                     _cursor.Visible = false;
 
@@ -256,7 +262,7 @@ public class NumberInputBox<T> : Entity, IActivatable
                     _selection.Visible = true;
                     return;
                 }
-                else if (Mouse.LeftPressed && !MouseIntersecting)
+                else if (_mouse.LeftPressed && !MouseIntersecting)
                     ConfirmEdit();
                 break;
             
@@ -341,7 +347,7 @@ public class NumberInputBox<T> : Entity, IActivatable
                 break;
             
             case Key.Left:
-                if (Keyboard.KeyDown(Key.LeftShift) || Keyboard.KeyDown(Key.RightShift))
+                if (_keyboard.KeyDown(Key.LeftShift) || _keyboard.KeyDown(Key.RightShift))
                 {
                     if (!_selection.Visible && _cursorPosition > 0)
                     {
@@ -374,7 +380,7 @@ public class NumberInputBox<T> : Entity, IActivatable
                 break;
             
             case Key.Right:
-                if (Keyboard.KeyDown(Key.LeftShift) || Keyboard.KeyDown(Key.RightShift))
+                if (_keyboard.KeyDown(Key.LeftShift) || _keyboard.KeyDown(Key.RightShift))
                 {
                     if (!_selection.Visible && _cursorPosition < _text.Length)
                     {

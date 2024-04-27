@@ -1,14 +1,18 @@
-﻿using BearsEngine.Worlds.Graphics.Text;
+﻿using BearsEngine.Input;
+using BearsEngine.Worlds.Graphics.Text;
 
 namespace BearsEngine.SystemTests.Source.InputDemo;
 
 internal class MouseStateDisplay : Entity
 {
-    private TextGraphic _stateText;
+    private readonly IMouse _mouse;
+    private readonly TextGraphic _stateText;
 
-    public MouseStateDisplay()
-        : base(10, 90, 230, 220, 65, Colour.White)
+    public MouseStateDisplay(IMouse mouse)
+        : base(mouse, 10, 90, 230, 220, 65, Colour.White)
     {
+        _mouse = mouse;
+
         Add(_stateText = new TextGraphic(HFont.Load("Helvetica", 8), Colour.Black, Size));
     }
 
@@ -16,6 +20,6 @@ internal class MouseStateDisplay : Entity
     {
         base.Update(elapsed);
 
-        _stateText.Text = Mouse.CurrentState.ToString();
+        _stateText.Text = _mouse.ToString()!;
     }
 }

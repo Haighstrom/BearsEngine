@@ -1,4 +1,6 @@
-﻿namespace BearsEngine.UI;
+﻿using BearsEngine.Input;
+
+namespace BearsEngine.UI;
 
 public class Checkbox : Button
 {
@@ -7,14 +9,14 @@ public class Checkbox : Button
     private readonly IGraphic _disabledGraphic;
     private readonly IGraphic _tickGraphic;
 
-    public Checkbox(float layer, Rect r, string boxGraphic, string disabledGraphic, string tickGraphic, UITheme theme, bool startTicked)
-        : this(layer, r, new Image(boxGraphic, r.Size), new Image(disabledGraphic, r.Size), new Image(tickGraphic, r.Size), theme, startTicked)
+    public Checkbox(IMouse mouse, float layer, Rect r, string boxGraphic, string disabledGraphic, string tickGraphic, UITheme theme, bool startTicked)
+        : this(mouse, layer, r, new Image(boxGraphic, r.Size), new Image(disabledGraphic, r.Size), new Image(tickGraphic, r.Size), theme, startTicked)
     {
         DefaultColour = Colour.White; //ignore theme colour if we have an Image as graphic.
     }
 
-    public Checkbox(float layer, Rect r, IRectGraphic boxGraphic, IGraphic disabledGraphic, IGraphic tickGraphic, UITheme theme, bool startTicked, bool startDisabled = false)
-        : this(layer, r, boxGraphic, disabledGraphic, tickGraphic, startTicked, startDisabled)
+    public Checkbox(IMouse mouse, float layer, Rect r, IRectGraphic boxGraphic, IGraphic disabledGraphic, IGraphic tickGraphic, UITheme theme, bool startTicked, bool startDisabled = false)
+        : this(mouse, layer, r, boxGraphic, disabledGraphic, tickGraphic, startTicked, startDisabled)
     {
         DefaultColour = theme.Button.DefaultColour;
         UnclickableColour = theme.Button.UnclickableColour;
@@ -23,19 +25,19 @@ public class Checkbox : Button
     }
     
 
-    public Checkbox(float layer, Rect r, string boxGraphic, string disabledGraphic, string tickGraphic, bool startTicked, bool startDisabled = false)
-        : this(layer, r, new Image(1, boxGraphic, r.Size), new Image(1, disabledGraphic, r.Size), new Image(0, tickGraphic, r.Size), startTicked, startDisabled)
+    public Checkbox(IMouse mouse, float layer, Rect r, string boxGraphic, string disabledGraphic, string tickGraphic, bool startTicked, bool startDisabled = false)
+        : this(mouse, layer, r, new Image(1, boxGraphic, r.Size), new Image(1, disabledGraphic, r.Size), new Image(0, tickGraphic, r.Size), startTicked, startDisabled)
     {
     }
 
-    public Checkbox(float layer, Rect r, Colour boxGraphic, Colour disabledGraphic, string tickGraphic, bool startTicked, bool startDisabled = false)
-        : this(layer, r, new Image(boxGraphic, r.Size), new Image(disabledGraphic, r.Size), new Image(tickGraphic, r.Size), startTicked, startDisabled)
+    public Checkbox(IMouse mouse, float layer, Rect r, Colour boxGraphic, Colour disabledGraphic, string tickGraphic, bool startTicked, bool startDisabled = false)
+        : this(mouse, layer, r, new Image(boxGraphic, r.Size), new Image(disabledGraphic, r.Size), new Image(tickGraphic, r.Size), startTicked, startDisabled)
     {
         DefaultColour = boxGraphic; //ignore theme colour if colour is set
     }
 
-    public Checkbox(float layer, Rect r, IRectGraphic boxGraphic, IGraphic disabledGraphic, IGraphic tickGraphic, bool startTicked, bool startDisabled = false)
-        : base(layer, r.X, r.Y, r.W, r.H)
+    public Checkbox(IMouse mouse, float layer, Rect r, IRectGraphic boxGraphic, IGraphic disabledGraphic, IGraphic tickGraphic, bool startTicked, bool startDisabled = false)
+        : base(mouse, layer, r.X, r.Y, r.W, r.H)
     {
         _boxGraphic = boxGraphic;
         _disabledGraphic = disabledGraphic;

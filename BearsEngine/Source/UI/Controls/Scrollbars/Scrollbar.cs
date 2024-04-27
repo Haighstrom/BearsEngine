@@ -1,9 +1,13 @@
-﻿namespace BearsEngine.UI;
+﻿using BearsEngine.Input;
+using BearsEngine.Source.Core;
+
+namespace BearsEngine.UI;
 
 public class Scrollbar : Entity
 {
     private class Bar : Button
     {
+        private readonly IMouse _mouse;
         private readonly ScrollbarDirection _direction;
         private Rect _fullPosition;
         private float _amountFilled;
@@ -11,14 +15,16 @@ public class Scrollbar : Entity
         private float _dragStart;
         
 
-        public Bar(ScrollbarDirection direction, Rect position, int border, UITheme theme)
-            : this(direction, position, border, theme.Scrollbar.BarButton.DefaultColour, theme.Scrollbar.BarButton.HoverColour, theme.Scrollbar.BarButton.PressedColour, theme.Scrollbar.BarButton.UnclickableColour)
+        public Bar(IMouse mouse, ScrollbarDirection direction, Rect position, int border, UITheme theme)
+            : this(mouse, direction, position, border, theme.Scrollbar.BarButton.DefaultColour, theme.Scrollbar.BarButton.HoverColour, theme.Scrollbar.BarButton.PressedColour, theme.Scrollbar.BarButton.UnclickableColour)
         {
         }
 
-        public Bar(ScrollbarDirection direction, Rect position, int border, Colour barColour, Colour hoverColour, Colour pressedColour, Colour unclickableColour)
-            : base(1, position)
+        public Bar(IMouse mouse, ScrollbarDirection direction, Rect position, int border, Colour barColour, Colour hoverColour, Colour pressedColour, Colour unclickableColour)
+            : base(mouse, 1, position)
         {
+            _mouse = mouse;
+
             HoverColour = hoverColour;
             PressedColour = pressedColour;
             UnclickableColour = unclickableColour;
@@ -78,16 +84,16 @@ public class Scrollbar : Entity
             _dragging = true;
 
             if (_direction == ScrollbarDirection.Horizontal)
-                _dragStart = Mouse.ClientX - X;
+                _dragStart = _mouse.ClientX - X;
             else
-                _dragStart = Mouse.ClientY - Y;
+                _dragStart = _mouse.ClientY - Y;
         }
 
         public override void Update(float elapsed)
         {
             base.Update(elapsed);
 
-            if (_dragging && Mouse.LeftUp)
+            if (_dragging && _mouse.LeftUp)
                 _dragging = false;
 
             if (_dragging)
@@ -95,7 +101,7 @@ public class Scrollbar : Entity
                 {
                     var oldX = X;
 
-                    X = Maths.Clamp(Mouse.ClientX - _dragStart, _fullPosition.X, _fullPosition.Right - W);
+                    X = Maths.Clamp(_mouse.ClientX - _dragStart, _fullPosition.X, _fullPosition.Right - W);
 
                     if (MinIncrement > 0 && R.Right != _fullPosition.Right)
                         X -= Maths.Mod(X - _fullPosition.Left, MinIncrement);
@@ -107,7 +113,7 @@ public class Scrollbar : Entity
                 {
                     var oldY = Y;
 
-                    Y = Maths.Clamp(Mouse.ClientY - _dragStart, _fullPosition.Y, _fullPosition.Bottom - H);
+                    Y = Maths.Clamp(_mouse.ClientY - _dragStart, _fullPosition.Y, _fullPosition.Bottom - H);
 
                     if (MinIncrement > 0 && R.Bottom != _fullPosition.Bottom)
                         Y -= Maths.Mod(Y - _fullPosition.Top, MinIncrement);
@@ -175,8 +181,9 @@ public class Scrollbar : Entity
     private readonly Action<int> _actionOnMove;
     
 
-    public Scrollbar(float layer, Rect r, ScrollbarDirection direction, UITheme theme)
-        : this(layer,
+    public Scrollbar(IMouse mouse, float layer, Rect r, ScrollbarDirection direction, UITheme theme)
+        : this(mouse, 
+              layer,
               r,
               direction,
               theme.Scrollbar.BarBackgroundColour,
@@ -195,8 +202,8 @@ public class Scrollbar : Entity
     }
     
 
-    public Scrollbar(float layer, Rect fullPosition, ScrollbarDirection direction, Colour barBackgroundColour, Colour barDefaultColour, Colour barHoverColour, Colour barPressedColour, Colour barUnclickableButton, int edgeToBarSpace, Colour arrowBG, IGraphic minusArrow, IGraphic plusArrow, Colour arrowHoverColour, Colour arrowPressedColour, Colour arrowUnclickableColour)
-        : base(layer, fullPosition)
+    public Scrollbar(IMouse mouse, float layer, Rect fullPosition, ScrollbarDirection direction, Colour barBackgroundColour, Colour barDefaultColour, Colour barHoverColour, Colour barPressedColour, Colour barUnclickableButton, int edgeToBarSpace, Colour arrowBG, IGraphic minusArrow, IGraphic plusArrow, Colour arrowHoverColour, Colour arrowPressedColour, Colour arrowUnclickableColour)
+        : base(mouse, layer, fullPosition)
     {
         _direction = direction;
 
@@ -217,24 +224,24 @@ public class Scrollbar : Entity
 
         Add(_barBG = new Image(barBackgroundColour, sbBG));
 
-        Add(_bar = new Bar(direction, sbBG, edgeToBarSpace, barDefaultColour, barHoverColour, barPressedColour, barUnclickableButton));
+        Add(_bar = new Bar(mouse, direction, sbBG, edgeToBarSpace, barDefaultColour, barHoverColour, barPressedColour, barUnclickableButton));
         _bar.BarPositionChanged += (sender, args) => BarPositionChanged(sender, args);
 
-        Add(_minus = new Button(1, b1, minusArrow)
+        Add(_minus = new Button(mouse, 1, b1, minusArrow)
         {
             HoverColour = arrowHoverColour,
             PressedColour = arrowPressedColour,
             UnclickableColour = arrowUnclickableColour,
         });
-        _minus.Add(new Entity(2, b1.Zeroed, arrowBG));
+        _minus.Add(new Entity(mouse, 2, b1.Zeroed, arrowBG));
 
-        Add(_plus = new Button(1, b2, plusArrow)
+        Add(_plus = new Button(mouse, 1, b2, plusArrow)
         {
             HoverColour = arrowHoverColour,
             PressedColour = arrowPressedColour,
             UnclickableColour = arrowUnclickableColour,
         });
-        _plus.Add(new Entity(2, b2.Zeroed, arrowBG));
+        _plus.Add(new Entity(mouse, 2, b2.Zeroed, arrowBG));
     }
     
     

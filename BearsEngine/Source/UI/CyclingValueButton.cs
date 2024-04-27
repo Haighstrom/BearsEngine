@@ -1,4 +1,6 @@
-﻿namespace BearsEngine.UI;
+﻿using BearsEngine.Input;
+
+namespace BearsEngine.UI;
 
 public class CyclingValueButton<T> : Button
     where T : IConvertible, IEquatable<T>
@@ -6,8 +8,8 @@ public class CyclingValueButton<T> : Button
     private int _index;
     private readonly List<T> _cycleValues;
 
-    public CyclingValueButton(float layer, Rect position, UITheme theme, List<T> cycleValues)
-        : base(layer, position, theme.Button.DefaultColour, theme, "")
+    public CyclingValueButton(IMouse mouse, float layer, Rect position, UITheme theme, List<T> cycleValues)
+        : base(mouse, layer, position, theme.Button.DefaultColour, theme, "")
     {
         if (cycleValues.Count == 0)
             throw new ArgumentException("CyclingValueButton.ctr: cycleValues contained no values");

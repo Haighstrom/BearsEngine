@@ -1,17 +1,18 @@
 ﻿namespace BearsEngine.SystemTests.Source.InputDemo;
 
-public class InputDemoScreen : Screen
+internal class InputDemoScreen : Screen
 {
-    public InputDemoScreen()
+    public InputDemoScreen(IApp app, IScreenFactory screenFactory)
+        : base(app.Mouse)
     {
         BackgroundColour = Colour.CornflowerBlue;
 
-        Add(new ReturnButton());
+        Add(new ReturnButton(app, screenFactory));
 
-        Add(new MouseDisplay());
-        Add(new MouseStateDisplay());
-        Add(new MouseActivityList());
-        Add(new KeyboardActivityList());
-        Add(new CharActivityList());
+        Add(new MouseDisplay(app.Mouse));
+        Add(new MouseStateDisplay(app.Mouse));
+        Add(new MouseActivityList(app.Mouse));
+        Add(new KeyboardActivityList(app.Window, app.Mouse));
+        Add(new CharActivityList(app.Window, app.Mouse));
     }
 }

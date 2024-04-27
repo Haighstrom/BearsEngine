@@ -1,4 +1,6 @@
-﻿using BearsEngine.OpenGL;
+﻿using BearsEngine.Input;
+using BearsEngine.OpenGL;
+using BearsEngine.Source.Core;
 
 namespace BearsEngine;
 
@@ -14,17 +16,21 @@ public class Screen : IScreen
 
     private bool _disposed = false;
     private readonly List<IAddable> _entities = new();
+    private readonly IMouse _mouse;
 
-    public Screen()
+    public Screen(IMouse mouse)
     {
+        _mouse = mouse;
     }
 
-    public Screen(IList<IAddable> entities)
+    public Screen(IMouse mouse, IList<IAddable> entities)
+        : this(mouse)
     {
         Add(entities);
     }
 
-    public Screen(params IAddable[] entities)
+    public Screen(IMouse mouse, params IAddable[] entities)
+        : this(mouse)
     {
         Add(entities);
     }
@@ -35,7 +41,7 @@ public class Screen : IScreen
 
     public ICollection<IAddable> Entities => _entities.ToArray(); //recast to avoid collection modification
 
-    public Point LocalMousePosition => Mouse.ClientP;
+    public Point LocalMousePosition => _mouse.ClientPosition;
 
     public bool Visible { get; set; } = true;
 

@@ -1,4 +1,5 @@
-﻿using BearsEngine.Worlds.Graphics.Text;
+﻿using BearsEngine.Input;
+using BearsEngine.Worlds.Graphics.Text;
 
 namespace BearsEngine.UI;
 
@@ -11,8 +12,8 @@ public class PagedPanel : Entity
     private readonly Button _minusArrow, _plusArrow;
     
 
-    public PagedPanel(float layer, UITheme uiTheme, Rect textPosition, Rect arrow1Pos, Rect arrow2Pos, string arrow1GFX, string arrow2GFX, List<Entity> pages)
-        : base(layer)
+    public PagedPanel(IMouse mouse, float layer, UITheme uiTheme, Rect textPosition, Rect arrow1Pos, Rect arrow2Pos, string arrow1GFX, string arrow2GFX, List<Entity> pages)
+        : base(mouse, layer)
     {
         if (pages.Count == 0)
             throw new Exception("Tried to craete a PagedPanel with no pages");
@@ -34,9 +35,9 @@ public class PagedPanel : Entity
             }
         }
 
-        Add(_minusArrow = new Button(layer, arrow1Pos, arrow1GFX, () => ChangePage(-1)));
+        Add(_minusArrow = new Button(mouse, layer, arrow1Pos, arrow1GFX, () => ChangePage(-1)));
         _minusArrow.SetDefaultAutoShadingColours();
-        Add(_plusArrow = new Button(layer, arrow2Pos, arrow2GFX, () => ChangePage(1)));
+        Add(_plusArrow = new Button(mouse, layer, arrow2Pos, arrow2GFX, () => ChangePage(1)));
         _plusArrow.SetDefaultAutoShadingColours();
     }
     

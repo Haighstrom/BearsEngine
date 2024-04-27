@@ -1,4 +1,5 @@
-﻿using BearsEngine.Worlds.Graphics.Text;
+﻿using BearsEngine.Input;
+using BearsEngine.Worlds.Graphics.Text;
 
 namespace BearsEngine.UI;
 
@@ -9,8 +10,8 @@ public class DropdownList<T> : Entity, IDropdownList<T>
         private readonly IDropdownList<T> _parent;
         private readonly int _listIndex;
 
-        public DropdownOption(IDropdownList<T> parent, Rect position, Colour bgColour, HFont font, Colour textColour, string name, int listIndex)
-            : base(0, position, bgColour)
+        public DropdownOption(IMouse mouse, IDropdownList<T> parent, Rect position, Colour bgColour, HFont font, Colour textColour, string name, int listIndex)
+            : base(mouse, 0, position, bgColour)
         {
             _parent = parent;
             _listIndex = listIndex;
@@ -35,12 +36,15 @@ public class DropdownList<T> : Entity, IDropdownList<T>
     private int _currentSelection = -1;
     private readonly TextGraphic _currentSelectionText;
     private bool _isOpen = false;
+    private readonly IMouse _mouse;
     private float _optionHeight;
 
-    public DropdownList(float layer, Rect boxPosition, float optionHeight, Colour bgColour, HFont font, Colour textColour)
-        : base(layer, boxPosition, bgColour)
+    public DropdownList(IMouse mouse, float layer, Rect boxPosition, float optionHeight, Colour bgColour, HFont font, Colour textColour)
+        : base(mouse, layer, boxPosition, bgColour)
     {
+        _mouse = mouse;
         _optionHeight = optionHeight;
+
         Add(_currentSelectionText = new TextGraphic(font, textColour, boxPosition.Zeroed, "")
         {
             HAlignment = HAlignment.Left,
@@ -79,7 +83,7 @@ public class DropdownList<T> : Entity, IDropdownList<T>
     {
         for (int i = 0; i < _listValues.Count; i++)
         {
-            var d = new DropdownOption(this, new Rect(0, H + i * _optionHeight, W, _optionHeight), Colour.AntiqueWhite, _currentSelectionText.Font, _currentSelectionText.Colour, _listValues[i].Name, i);
+            var d = new DropdownOption(_mouse, this, new Rect(0, H + i * _optionHeight, W, _optionHeight), Colour.AntiqueWhite, _currentSelectionText.Font, _currentSelectionText.Colour, _listValues[i].Name, i);
             Add(d);
             _dropdownOptions.Add(d);
         }

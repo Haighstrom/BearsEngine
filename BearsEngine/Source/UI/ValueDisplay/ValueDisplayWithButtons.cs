@@ -1,14 +1,16 @@
-﻿namespace BearsEngine.UI;
+﻿using BearsEngine.Input;
+
+namespace BearsEngine.UI;
 
 public delegate void ValueChange(int change);
 
 public class ValueDisplayWithButtons : ValueDisplay
 {
-    public ValueDisplayWithButtons(float layer, Rect position, string graphic, UITheme theme, string valueName, ValueGet valueToTrack, Rect plusButtonPos, string plusButtonGfx, Rect minusButtonPos, string minusButtonGfx, ValueChange changeFunction)
-        : base(layer, position, graphic, theme, valueName, valueToTrack)
+    public ValueDisplayWithButtons(IMouse mouse, float layer, Rect position, string graphic, UITheme theme, string valueName, ValueGet valueToTrack, Rect plusButtonPos, string plusButtonGfx, Rect minusButtonPos, string minusButtonGfx, ValueChange changeFunction)
+        : base(mouse, layer, position, graphic, theme, valueName, valueToTrack)
     {
-        Entity plusButton = new Button(layer, plusButtonPos, plusButtonGfx, () => { changeFunction(1); UpdateValueText(); });
-        Entity minusButton = new Button(layer, minusButtonPos, minusButtonGfx, () => { changeFunction(-1); UpdateValueText(); });
+        Entity plusButton = new Button(mouse, layer, plusButtonPos, plusButtonGfx, () => { changeFunction(1); UpdateValueText(); });
+        Entity minusButton = new Button(mouse, layer, minusButtonPos, minusButtonGfx, () => { changeFunction(-1); UpdateValueText(); });
 
         //todo: what the fuck is this? HV.Screen.Add(plusButton, minusButton);
         //me, several years later... I think the objection was about adding them directly to the screen?... soo

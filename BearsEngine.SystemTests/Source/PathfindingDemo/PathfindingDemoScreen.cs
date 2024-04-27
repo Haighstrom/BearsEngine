@@ -1,4 +1,5 @@
-﻿using BearsEngine.Pathfinding;
+﻿using BearsEngine.Input;
+using BearsEngine.Pathfinding;
 using BearsEngine.SystemTests.Source.Globals;
 using System.Linq;
 
@@ -27,23 +28,25 @@ internal class PathfindingDemoScreen : Screen
     private readonly Line _line;
     private readonly DropdownList<Func<Node, Node, float>> _dropDownList;
 
-    public PathfindingDemoScreen()
+    public PathfindingDemoScreen(IApp app, IScreenFactory screenFactory)
+        : base(app.Mouse)
     {
         BackgroundColour = Colour.LightGray;
 
-        Add(new ReturnButton());
-        Add(new SolveButton(this));
+        Add(new ReturnButton(app, screenFactory));
+        Add(new SolveButton(app.Mouse, this));
 
         Add(_line = new Line(Colour.Blue, GP.Pathfinding.SolveLineThickness, true) { Layer = GL.Camera.Debug });
 
-        Grid = new GridPathfinder<Node>(GridW, GridH, (x, y) => new Node(PositionXFromIndexX(x), PositionYFromIndexY(y)));
+        Grid = new GridPathfinder<Node>(GridW, GridH, (x, y) => new Node(app.Mouse, PositionXFromIndexX(x), PositionYFromIndexY(y)));
+
         for (var i = 0; i < GridW; i++)
             for (var j = 0; j < GridH; j++)
                 Add(Grid[i, j]);
 
         Add(new Image(Colour.DarkerGray, new Rect(GP.Pathfinding.GridTopLeft, GridW * GP.Pathfinding.SquareSize.X, GridH * GP.Pathfinding.SquareSize.Y)));
 
-        Add(_dropDownList = new(GL.UI.Button, GP.Pathfinding.DropDownList, GP.Pathfinding.DropDownOptionSpacing, Colour.AntiqueWhite, GV.MainFont, Colour.Black));
+        Add(_dropDownList = new(app.Mouse, GL.UI.Button, GP.Pathfinding.DropDownList, GP.Pathfinding.DropDownOptionSpacing, Colour.AntiqueWhite, GV.MainFont, Colour.Black));
         _dropDownList.AddOption("PythagSqrd", PythagorusSquaredHeuristic);
         _dropDownList.AddOption("Manhattan", ManhattanHeuristic);
         _dropDownList.AddOption("Clownbus", FloodFillHeuristic);
@@ -55,8 +58,8 @@ internal class PathfindingDemoScreen : Screen
         Grid[6, 4].Passable = false;
         Grid[7, 4].Passable = false;
 
-        Add(StartSquare = new Square(this, PositionXFromIndexX(0), PositionYFromIndexY(0), GA.GFX.Pathfinding.StartSquare));
-        Add(EndSquare = new Square(this, PositionXFromIndexX(19), PositionYFromIndexY(14), GA.GFX.Pathfinding.EndSquare));
+        Add(StartSquare = new Square(app.Mouse, this, PositionXFromIndexX(0), PositionYFromIndexY(0), GA.GFX.Pathfinding.StartSquare));
+        Add(EndSquare = new Square(app.Mouse, this, PositionXFromIndexX(19), PositionYFromIndexY(14), GA.GFX.Pathfinding.EndSquare));
     }
 
     public Square EndSquare { get; }

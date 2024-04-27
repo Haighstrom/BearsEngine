@@ -1,3 +1,9 @@
 ﻿using BearsEngine.ProjectTemplate.Source.Setup;
 
-Engine.Run(Initialiser.GetApplicationSettings(), Initialiser.CreateFirstScene);
+var appSettings = Initialiser.GetApplicationSettings();
+
+App app = new(appSettings);
+
+var sceneFactory = Initialiser.CreateFirstScene(app.Mouse);
+
+app.Run(sceneFactory);

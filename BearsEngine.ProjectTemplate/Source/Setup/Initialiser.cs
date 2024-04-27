@@ -1,4 +1,5 @@
-﻿using BearsEngine.ProjectTemplate.Source.Globals;
+﻿using BearsEngine.Input;
+using BearsEngine.ProjectTemplate.Source.Globals;
 using BearsEngine.Source.Core;
 
 namespace BearsEngine.ProjectTemplate.Source.Setup;
@@ -26,8 +27,8 @@ internal class Initialiser
         };
     }
 
-    public static IScene CreateFirstScene()
+    public static IScene CreateFirstScene(IMouse mouse)
     {
-        return new Screen();
+        return new Screen(mouse);
     }
 }

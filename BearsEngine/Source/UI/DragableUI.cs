@@ -1,20 +1,27 @@
-﻿namespace BearsEngine.UI;
+﻿using BearsEngine.Input;
+using BearsEngine.Source.Core;
+
+namespace BearsEngine.UI;
 
 public class DragableUI : Entity
 {
     private int _dragStartX, _dragStartY;
+    private readonly IMouse _mouse;
 
-    public DragableUI(float layer, Rect pos, Colour colour)
-        : base(layer, pos, colour)
+    public DragableUI(IMouse mouse, float layer, Rect pos, Colour colour)
+        : base(mouse, layer, pos, colour)
     {
+        _mouse = mouse;
     }
-    public DragableUI(float layer, Rect pos, string gfx)
-        : base(layer, pos, gfx)
+    public DragableUI(IMouse mouse, float layer, Rect pos, string gfx)
+        : base(mouse, layer, pos, gfx)
     {
+        _mouse = mouse;
     }
-    public DragableUI(float layer, Rect pos, IGraphic gfx)
-        : base(layer, pos, gfx)
+    public DragableUI(IMouse mouse, float layer, Rect pos, IGraphic gfx)
+        : base(mouse, layer, pos, gfx)
     {
+        _mouse = mouse;
     }
 
     public bool Dragable { get; set; } = true;
@@ -32,15 +39,15 @@ public class DragableUI : Entity
         if (!Visible)
             return;
 
-        if (Dragable && Mouse.LeftPressed && MouseIntersecting)
+        if (Dragable && _mouse.LeftPressed && MouseIntersecting)
         {
             Dragging = true;
             OnStartedDragging();
-            _dragStartX = (int)(Mouse.ClientX - X);
-            _dragStartY = (int)(Mouse.ClientY - Y);
+            _dragStartX = (int)(_mouse.ClientX - X);
+            _dragStartY = (int)(_mouse.ClientY - Y);
         }
 
-        if (Dragging && (Mouse.LeftUp || !Dragable))
+        if (Dragging && (_mouse.LeftUp || !Dragable))
         {
             Dragging = false;
             OnStoppedDragging();
@@ -48,8 +55,8 @@ public class DragableUI : Entity
 
         if (Dragging)
         {
-            X = Mouse.ClientX - _dragStartX;
-            Y = Mouse.ClientY - _dragStartY;
+            X = _mouse.ClientX - _dragStartX;
+            Y = _mouse.ClientY - _dragStartY;
         }
     }
     

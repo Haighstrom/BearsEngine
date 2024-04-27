@@ -1,4 +1,5 @@
-﻿using BearsEngine.Worlds.Graphics.Text;
+﻿using BearsEngine.Input;
+using BearsEngine.Worlds.Graphics.Text;
 
 namespace BearsEngine.UI;
 
@@ -7,8 +8,8 @@ public class TextLabel : Entity
     private readonly TextGraphic _hText;
     
 
-    public TextLabel(float layer, Rect position, Colour labelColour, HFont font, string text, Colour textColour)
-        : base(layer, position, labelColour)
+    public TextLabel(IMouse mouse, float layer, Rect position, Colour labelColour, HFont font, string text, Colour textColour)
+        : base(mouse, layer, position, labelColour)
     {
         Add(_hText = new TextGraphic(font, textColour, position.Zeroed, text)
         {
@@ -16,8 +17,8 @@ public class TextLabel : Entity
             VAlignment = VAlignment.Centred,
         });
     }
-    public TextLabel(float layer, Rect position, string labelGraphic, HFont font, string text, Colour textColour)
-        : base(layer, position, labelGraphic)
+    public TextLabel(IMouse mouse, float layer, Rect position, string labelGraphic, HFont font, string text, Colour textColour)
+        : base(mouse, layer, position, labelGraphic)
     {
         Add(_hText = new TextGraphic(font, textColour, position.Zeroed, text)
         {

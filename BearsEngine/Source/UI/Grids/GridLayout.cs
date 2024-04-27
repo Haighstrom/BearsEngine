@@ -1,4 +1,6 @@
-﻿namespace BearsEngine.UI;
+﻿using BearsEngine.Input;
+
+namespace BearsEngine.UI;
 
 /// <summary>
 /// Container Entity to add others too, where they will be neatly arranged in a grid. Add to a panel to use its scrollbars.
@@ -84,8 +86,8 @@ public class GridLayout : Entity
     private List<CellFormat> _columnFormat = new();
     
 
-    public GridLayout(float layer, Rect position, List<CellFormat> rowFormat, List<CellFormat> columnFormat)
-        : base(layer, position)
+    public GridLayout(IMouse mouse, float layer, Rect position, List<CellFormat> rowFormat, List<CellFormat> columnFormat)
+        : base(mouse, layer, position)
     {
         Rows = rowFormat.Count;
         Columns = columnFormat.Count;
@@ -96,8 +98,8 @@ public class GridLayout : Entity
         Children = new IRectangular[Rows, Columns];
         GridAlignments = new GridAlignment[Rows, Columns];
     }
-    public GridLayout(float layer, Rect position, int rows, int columns)
-        : base(layer, position)
+    public GridLayout(IMouse mouse, float layer, Rect position, int rows, int columns)
+        : base(mouse, layer, position)
     {
 
         Rows = rows;

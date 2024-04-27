@@ -5,7 +5,7 @@
 /// </summary>
 public class MouseState
 {
-    internal readonly Dictionary<MouseButton, bool> ButtonsDown = new()
+    internal readonly Dictionary<MouseButton, bool> ButtonStates = new()
     {
         { MouseButton.Left, false },
         { MouseButton.Middle, false },
@@ -33,7 +33,7 @@ public class MouseState
 
     internal void SetButton(MouseButton button, bool isDown)
     {
-        ButtonsDown[button] = isDown;
+        ButtonStates[button] = isDown;
     }
 
     /// <summary>
@@ -43,7 +43,7 @@ public class MouseState
     /// <returns>Returns true if the mouse button is currently pressed down, false if it is up.</returns>
     public bool IsDown(MouseButton button)
     {
-        return ButtonsDown[button];
+        return ButtonStates[button];
     }
 
     public override string ToString()
@@ -51,7 +51,7 @@ public class MouseState
         return 
             $"Mouse State:\n" +
             $"  Position: Screen:({ScreenX},{ScreenY})\n" +
-            $"  Buttons: L:{(ButtonsDown[MouseButton.Left] ? "Y" : "N")}, M:{(ButtonsDown[MouseButton.Middle] ? "Y" : "N")}, R:{(ButtonsDown[MouseButton.Right] ? "Y" : "N")}, M4:{(ButtonsDown[MouseButton.Mouse4] ? "Y" : "N")}, M5:{(ButtonsDown[MouseButton.Mouse5] ? "Y" : "N")}\n" +
+            $"  Buttons: L:{(ButtonStates[MouseButton.Left] ? "Y" : "N")}, M:{(ButtonStates[MouseButton.Middle] ? "Y" : "N")}, R:{(ButtonStates[MouseButton.Right] ? "Y" : "N")}, M4:{(ButtonStates[MouseButton.Mouse4] ? "Y" : "N")}, M5:{(ButtonStates[MouseButton.Mouse5] ? "Y" : "N")}\n" +
             $"  Wheel Position: {WheelY}";
     }
 }

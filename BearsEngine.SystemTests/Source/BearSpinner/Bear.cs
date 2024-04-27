@@ -1,4 +1,5 @@
-﻿using BearsEngine.SystemTests.Source.Globals;
+﻿using BearsEngine.Input;
+using BearsEngine.SystemTests.Source.Globals;
 
 namespace BearsEngine.SystemTests.Source.BearSpinner;
 
@@ -9,8 +10,8 @@ public class Bear : Entity
     private double totalElapsed;
     private readonly Image _image;
 
-    public Bear(int x, int y)
-        : base(100, new Rect(x, y, 60, 80))
+    public Bear(IMouse mouse, int x, int y)
+        : base(mouse, 100, new Rect(x, y, 60, 80))
     {
         Add(_image = new(GA.GFX.WhiteBear, 60, 80)
         {

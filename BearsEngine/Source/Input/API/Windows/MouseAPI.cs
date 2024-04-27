@@ -281,11 +281,11 @@ internal class MouseAPI : IMouseAPI
             POINT p = new();
             User32.GetCursorPos(ref p);
 
-            answer.ButtonsDown[MouseButton.Left] = _mice.Any(s => s.ButtonsDown[MouseButton.Left]);
-            answer.ButtonsDown[MouseButton.Right] = _mice.Any(s => s.ButtonsDown[MouseButton.Right]);
-            answer.ButtonsDown[MouseButton.Middle] = _mice.Any(s => s.ButtonsDown[MouseButton.Middle]);
-            answer.ButtonsDown[MouseButton.Mouse4] = _mice.Any(s => s.ButtonsDown[MouseButton.Mouse4]);
-            answer.ButtonsDown[MouseButton.Mouse5] = _mice.Any(s => s.ButtonsDown[MouseButton.Mouse5]);
+            answer.ButtonStates[MouseButton.Left] = _mice.Any(s => s.ButtonStates[MouseButton.Left]);
+            answer.ButtonStates[MouseButton.Right] = _mice.Any(s => s.ButtonStates[MouseButton.Right]);
+            answer.ButtonStates[MouseButton.Middle] = _mice.Any(s => s.ButtonStates[MouseButton.Middle]);
+            answer.ButtonStates[MouseButton.Mouse4] = _mice.Any(s => s.ButtonStates[MouseButton.Mouse4]);
+            answer.ButtonStates[MouseButton.Mouse5] = _mice.Any(s => s.ButtonStates[MouseButton.Mouse5]);
             //answer.AbsX = states.Sum(s => s.AbsX);
             //answer.AbsY = states.Sum(s => s.AbsY);
             answer.ScreenX = p.X;

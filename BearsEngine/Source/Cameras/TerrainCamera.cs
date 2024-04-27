@@ -1,11 +1,13 @@
-﻿namespace BearsEngine.Worlds.Cameras;
+﻿using BearsEngine.Input;
+
+namespace BearsEngine.Worlds.Cameras;
 
 public class TerrainCamera : Camera, ITerrainCamera
 {
     protected SpriteMap SpriteMap { get; private set; }
 
-    public TerrainCamera(int[,] map, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, float layer, Rect position, Rect viewport)
-        : base(layer, position, viewport)
+    public TerrainCamera(IMouse mouse, int[,] map, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, float layer, Rect position, Rect viewport)
+        : base(mouse, layer, position, viewport)
     {
         Add(SpriteMap = new SpriteMap(map, defaultIndex, 1, 1, terrainSpriteSheetPath, spriteSheetW, spriteSheetH));
         ViewChanged += (o, s) => { SpriteMap.DrawArea = View; };
@@ -13,13 +15,13 @@ public class TerrainCamera : Camera, ITerrainCamera
         MaxY = map.GetLength(1);
     }
 
-    public TerrainCamera(int mapW, int mapH, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, float layer, Rect position, float tileSizeW, float tileSizeH)
-        : this(ArrayHelper.CreateFilledArray(mapW, mapH, defaultIndex), defaultIndex, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, tileSizeW, tileSizeH)
+    public TerrainCamera(IMouse mouse, int mapW, int mapH, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, float layer, Rect position, float tileSizeW, float tileSizeH)
+        : this(mouse, ArrayHelper.CreateFilledArray(mapW, mapH, defaultIndex), defaultIndex, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, tileSizeW, tileSizeH)
     {
     }
 
-    public TerrainCamera(int[,] map, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, float layer, Rect position, float tileSizeW, float tileSizeH)
-        : base(layer, position, tileSizeW, tileSizeH)
+    public TerrainCamera(IMouse mouse, int[,] map, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, float layer, Rect position, float tileSizeW, float tileSizeH)
+        : base(mouse, layer, position, tileSizeW, tileSizeH)
     {
         Add(SpriteMap = new SpriteMap(map, defaultIndex, 1, 1, terrainSpriteSheetPath, spriteSheetW, spriteSheetH));
         ViewChanged += (o, s) => { SpriteMap.DrawArea = View; };
@@ -27,8 +29,8 @@ public class TerrainCamera : Camera, ITerrainCamera
         MaxY = map.GetLength(1);
     }
 
-    public TerrainCamera(int mapW, int mapH, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, float layer, Rect position, Rect viewport)
-        : this(ArrayHelper.CreateFilledArray(mapW, mapH, defaultIndex), defaultIndex, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, viewport)
+    public TerrainCamera(IMouse mouse, int mapW, int mapH, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, float layer, Rect position, Rect viewport)
+        : this(mouse, ArrayHelper.CreateFilledArray(mapW, mapH, defaultIndex), defaultIndex, terrainSpriteSheetPath, spriteSheetW, spriteSheetH, layer, position, viewport)
     {
     }
 

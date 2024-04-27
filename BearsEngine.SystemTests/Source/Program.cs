@@ -1,3 +1,12 @@
-﻿using BearsEngine.SystemTests.Source.Setup;
+﻿using BearsEngine.SystemTests.Source;
 
-Engine.Run(Initialiser.GetApplicationSettings(), Initialiser.CreateFirstScene);
+var appSettings = AppSettings.Get();
+
+using (var app = new App(appSettings)) //creates window
+{
+    var screenFactory = new ScreenFactory(app);
+
+    var firstScene = screenFactory.CreateMainMenuScreen();
+
+    app.Run(firstScene); //runs game loop inc. 
+}

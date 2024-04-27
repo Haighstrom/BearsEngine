@@ -1,6 +1,6 @@
-﻿using BearsEngine.Source.Tools.IO;
+﻿using BearsEngine.IO;
 
-namespace BearsEngine.Source.Core;
+namespace BearsEngine;
 
 public class ApplicationSettings
 {

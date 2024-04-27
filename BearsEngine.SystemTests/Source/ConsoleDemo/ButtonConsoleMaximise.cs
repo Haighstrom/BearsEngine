@@ -1,19 +1,24 @@
-﻿using BearsEngine.SystemTests.Source.Globals;
+﻿using BearsEngine.Console;
+using BearsEngine.Input;
+using BearsEngine.SystemTests.Source.Globals;
 using BearsEngine.Worlds.Graphics.Text;
 
 namespace BearsEngine.SystemTests.Source.ConsoleDemo;
 
 internal class ButtonConsoleMaximise : Button
 {
-    public ButtonConsoleMaximise()
-        : base(GL.UI.Button, GP.ConsoleDemo.ButtonConsoleMaximise, Colour.Black, HFont.Default, Colour.White, "Maximise")
+    private readonly IConsoleWindow _console;
+
+    public ButtonConsoleMaximise(IMouse mouse, IConsoleWindow console)
+        : base(mouse, GL.UI.Button, GP.ConsoleDemo.ButtonConsoleMaximise, Colour.Black, HFont.Default, Colour.White, "Maximise")
     {
+        _console = console;
     }
 
     protected override void OnLeftPressed()
     {
         base.OnLeftPressed();
 
-        AppConsole.MoveConsoleTo(0, 0, AppConsole.MaxWidth, AppConsole.MaxHeight);
+        _console.MoveConsoleTo(0, 0, _console.MaxWidth, _console.MaxHeight);
     }
 }

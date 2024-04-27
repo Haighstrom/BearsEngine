@@ -1,12 +1,14 @@
-﻿namespace BearsEngine.Source.UI;
+﻿using BearsEngine.Input;
+
+namespace BearsEngine.Source.UI;
 
 public class ProgressBarTimer : ProgressBar
 {
     private float _timeToFill;
     private float _remaining;
 
-    public ProgressBarTimer(float layer, string graphicsPath, Rect position, float timeToFill)
-        : base(layer, graphicsPath, position)
+    public ProgressBarTimer(IMouse mouse, float layer, string graphicsPath, Rect position, float timeToFill)
+        : base(mouse, layer, graphicsPath, position)
     {
         _remaining = _timeToFill = timeToFill;
     }

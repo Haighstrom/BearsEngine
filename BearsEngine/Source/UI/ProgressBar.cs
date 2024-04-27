@@ -1,11 +1,13 @@
-﻿namespace BearsEngine.Source.UI;
+﻿using BearsEngine.Input;
+
+namespace BearsEngine.Source.UI;
 
 public class ProgressBar : Entity
 {
     private readonly FillableBar _fillableBar;
 
-    public ProgressBar(float layer, string graphicsPath, Rect position)
-        : base(layer, position)
+    public ProgressBar(IMouse mouse, float layer, string graphicsPath, Rect position)
+        : base(mouse, layer, position)
     {
         _fillableBar = new FillableBar(graphicsPath, position.Size, 0);
         Add(_fillableBar);

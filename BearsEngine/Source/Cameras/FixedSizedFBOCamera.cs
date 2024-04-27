@@ -1,5 +1,7 @@
 ﻿using BearsEngine.Graphics.Shaders;
+using BearsEngine.Input;
 using BearsEngine.OpenGL;
+using BearsEngine.Source.Core;
 
 namespace BearsEngine.Worlds.Cameras;
 
@@ -10,11 +12,14 @@ public class FixedSizedFBOCamera : EntityBase, ICamera //todo: disposable - remo
     private int _frameBufferMSAAID;
     private Matrix3 _ortho;
     private readonly CameraMSAAShader _mSAAShader;
+    private readonly IMouse _mouse;
     private int _frameBufferShaderPassID;
 
-    public FixedSizedFBOCamera(float layer, Rect position, Point FBOSize)
+    public FixedSizedFBOCamera(IMouse mouse, float layer, Rect position, Point FBOSize)
         : base(layer, position)
     {
+        _mouse = mouse;
+
         View = FBOSize.ToRect();
         Shader = new DefaultShader();
 
@@ -61,7 +66,7 @@ public class FixedSizedFBOCamera : EntityBase, ICamera //todo: disposable - remo
 
     public Colour BackgroundColour { get; set; } = Colour.White;
 
-    public override Point LocalMousePosition => GetLocalPosition(Mouse.ClientP);
+    public override Point LocalMousePosition => GetLocalPosition(_mouse.ClientPosition);
 
     public MSAA_SAMPLES MSAASamples { get; set; } = MSAA_SAMPLES.Disabled; //todo: trigger resize if this changes?
 

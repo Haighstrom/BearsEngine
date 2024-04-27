@@ -1,16 +1,20 @@
 ﻿using BearsEngine.Controllers;
 using BearsEngine.SystemTests.Source.Globals;
 using BearsEngine.Input;
+using BearsEngine.Source.Core;
 
 namespace BearsEngine.SystemTests.Source.InputDemo;
 
 internal class MouseDisplay : Entity
 {
+    private readonly IMouse _mouse;
     private Image _leftPressed, _rightPressed, _mouseMoved, _wheelPressed, _wheelScrolled;
 
-    public MouseDisplay()
-        : base(10, 100, 20, 200, 200, GA.GFX.InputDemo.MouseDisplay)
+    public MouseDisplay(IMouse mouse)
+        : base(mouse, 10, 100, 20, 200, 200, GA.GFX.InputDemo.MouseDisplay)
     {
+        _mouse = mouse;
+
         Add(_leftPressed = new Image(GA.GFX.InputDemo.MouseDisplay_LeftPressed, 200, 200) { Visible = false });
         Add(_rightPressed = new Image(GA.GFX.InputDemo.MouseDisplay_RightPressed, 200, 200) { Visible = false });
         Add(_mouseMoved = new Image(GA.GFX.InputDemo.MouseDisplay_MouseMoved, 200, 200) { Visible = false });
@@ -21,23 +25,22 @@ internal class MouseDisplay : Entity
 
     private void WriteScreenCursorInfo()
     {
-        Log.Debug("MouseScreenP: " + Mouse.ScreenP.ToString());
-        Log.Debug("MouseWindowP: " + Mouse.ClientP.ToString());
+        Log.Debug("MouseScreenP: " + _mouse.ScreenPosition.ToString());
+        Log.Debug("MouseWindowP: " + _mouse.ClientPosition.ToString());
     }
 
     public override void Update(float elapsed)
     {
         base.Update(elapsed);
 
-        _leftPressed.Visible = Mouse.LeftDown;
+        _leftPressed.Visible = _mouse.LeftDown;
 
-        _rightPressed.Visible = Mouse.RightDown;
+        _rightPressed.Visible = _mouse.RightDown;
 
-        _mouseMoved.Visible = Mouse.XDelta != 0 || Mouse.YDelta != 0;
+        _mouseMoved.Visible = _mouse.XDelta != 0 || _mouse.YDelta != 0;
 
-        _wheelPressed.Visible = Mouse.Down(MouseButton.Middle);
+        _wheelPressed.Visible = _mouse.Down(MouseButton.Middle);
 
-        _wheelScrolled.Visible = Mouse.WheelDelta != 0;
-
+        _wheelScrolled.Visible = _mouse.WheelDelta != 0;
     }
 }

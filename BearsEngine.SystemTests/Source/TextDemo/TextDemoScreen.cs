@@ -1,12 +1,20 @@
-﻿using BearsEngine.SystemTests.Source.Globals;
+﻿using BearsEngine.Input;
+using BearsEngine.SystemTests.Source.Globals;
 using BearsEngine.Worlds.Graphics.Text;
 
 namespace BearsEngine.SystemTests.Source.TextDemo;
 
-public class TextDemoScreen : Screen
+internal class TextDemoScreen : Screen
 {
-    public TextDemoScreen()
+    private readonly IApp _app;
+    private readonly IScreenFactory _screenFactory;
+
+    public TextDemoScreen(IApp app, IScreenFactory screenFactory)
+        : base(app.Mouse)
     {
+        _app = app;
+        _screenFactory = screenFactory;
+
         TextTheme theme = new()
         {
             Font = HFont.Load("Arial", 8),
@@ -16,7 +24,7 @@ public class TextDemoScreen : Screen
             VAlignment = VAlignment.Centred,
         };
 
-        var entity = new Entity(1, 20, 20, 40, 40, Colour.Black);
+        var entity = new Entity(app.Mouse, 1, 20, 20, 40, 40, Colour.Black);
         Add(entity);
         entity.Add(new TextGraphic(theme, entity.Size, "Hello"));
     }
@@ -115,7 +123,7 @@ public class TextDemoScreen : Screen
         //};
         //Add(camera);
 
-        var b = new Button(1, new Rect(730, 550, 60, 40), Colour.White, GV.Theme, () => Engine.Scene = new MenuScreen());
+        var b = new Button(_app.Mouse, 1, new Rect(730, 550, 60, 40), Colour.White, GV.Theme, () => _app.ChangeScene(_screenFactory.CreateMainMenuScreen()));
         b.Add(new TextGraphic(GV.MainFont, Colour.Black, new Rect(60, 40), "Return") { HAlignment = HAlignment.Centred, VAlignment = VAlignment.Centred });
         Add(b);
     }

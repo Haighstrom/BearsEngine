@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using BearsEngine.Input;
 using BearsEngine.Worlds.Graphics.Text;
 
 namespace BearsEngine.UI;
@@ -10,33 +11,33 @@ public class Tab : Entity
     protected TextGraphic _title;
     
 
-    public Tab(Point size, string activatedGFX, string deactivatedGFX, UITheme theme, string tabText, int tabBorder = 0, HAlignment ha = HAlignment.Centred, VAlignment va = VAlignment.Centred)
-        : this(size, activatedGFX, deactivatedGFX)
+    public Tab(IMouse mouse, Point size, string activatedGFX, string deactivatedGFX, UITheme theme, string tabText, int tabBorder = 0, HAlignment ha = HAlignment.Centred, VAlignment va = VAlignment.Centred)
+        : this(mouse, size, activatedGFX, deactivatedGFX)
     {
         Add(_title = new TextGraphic(theme, new Rect(tabBorder, tabBorder, size.X - tabBorder * 2, size.Y - tabBorder * 2), tabText) { HAlignment = ha, VAlignment = va });
     }
 
-    public Tab(Point size, string tabGFX, UITheme theme, string tabText, int tabBorder = 0, HAlignment ha = HAlignment.Centred, VAlignment va = VAlignment.Centred)
-        : this(size, tabGFX)
+    public Tab(IMouse mouse, Point size, string tabGFX, UITheme theme, string tabText, int tabBorder = 0, HAlignment ha = HAlignment.Centred, VAlignment va = VAlignment.Centred)
+        : this(mouse, size, tabGFX)
     {
         Add(_title = new TextGraphic(theme, new Rect(tabBorder, tabBorder, size.X - tabBorder * 2, size.Y - tabBorder * 2), tabText));
     }
 
-    public Tab(Point size, string tabGFX)
-        : this(size, tabGFX, tabGFX)
+    public Tab(IMouse mouse, Point size, string tabGFX)
+        : this(mouse, size, tabGFX, tabGFX)
     {
     }
 
-    public Tab(Point size, UITheme theme, string text)
-        : base(2, size)
+    public Tab(IMouse mouse, Point size, UITheme theme, string text)
+        : base(mouse, 2, size)
     {
         Add(_activatedGraphic = new Image(theme.TabbedPanel.ActivatedTabColour, Size) { Visible = false });
         Add(_deactivatedGraphic = new Image(theme.TabbedPanel.DeactivatedTabColour, Size));
         Add(_title = new TextGraphic(theme.TabbedPanel.Text, new Rect(0, 0, size.X - 0 * 2, size.Y - 0 * 2), text));
     }
 
-    public Tab(Point size, string activatedGFX, string deactivatedGFX)
-        : base(2, size)
+    public Tab(IMouse mouse, Point size, string activatedGFX, string deactivatedGFX)
+        : base(mouse, 2, size)
     {
         Add(_activatedGraphic = new Image(activatedGFX, Size) { Visible = false });
         Add(_deactivatedGraphic = new Image(deactivatedGFX, Size));

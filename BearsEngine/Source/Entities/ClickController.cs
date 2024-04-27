@@ -1,3 +1,6 @@
+﻿using BearsEngine.Input;
+using BearsEngine.Source.Core;
+
 namespace BearsEngine;
 
 internal class ClickController : AddableBase, IUpdatable
@@ -89,12 +92,14 @@ internal class ClickController : AddableBase, IUpdatable
         }
     }
 
+    private readonly IMouse _mouse;
     private readonly IClickable _target;
     private ClickState _state = ClickState.None;
     private float _timeToTriggerOnHovered = 0;
 
-    public ClickController(IClickable target)
+    public ClickController(IMouse mouse, IClickable target)
     {
+        _mouse = mouse;
         _target = target;
     }
 
@@ -108,11 +113,11 @@ internal class ClickController : AddableBase, IUpdatable
             _target.OnMouseExited();
             _target.OnNoMouseEvent();
         }
-        else if (Mouse.LeftReleased)
+        else if (_mouse.LeftReleased)
         {
             RequestOnLeftReleased(_target);
         }
-        else if (Mouse.LeftPressed)
+        else if (_mouse.LeftPressed)
         {
             _state = ClickState.PushedAndHovered;
             RequestOnLeftPressed(_target);
@@ -140,7 +145,7 @@ internal class ClickController : AddableBase, IUpdatable
 
     private void HandleClickStatePushedAndHovered(float elapsed)
     {
-        if (Mouse.LeftReleased)
+        if (_mouse.LeftReleased)
         {
             _state = ClickState.None;
             RequestOnLeftReleased(_target);
@@ -162,7 +167,7 @@ internal class ClickController : AddableBase, IUpdatable
 
     private void HandleClickStatePushedNotHovered()
     {
-        if (Mouse.LeftReleased)
+        if (_mouse.LeftReleased)
         {
             _state = ClickState.None;
             _target.OnNoMouseEvent();

@@ -1,5 +1,7 @@
 ﻿using BearsEngine.Graphics.Shaders;
+using BearsEngine.Input;
 using BearsEngine.OpenGL;
+using BearsEngine.Source.Core;
 
 namespace BearsEngine.Worlds.Cameras;
 
@@ -10,11 +12,12 @@ public class Camera : EntityBase, ICamera //todo: disposable - remove resize eve
     private int _frameBufferShaderPassID;
     private Texture _frameBufferShaderPassTexture;
     private readonly CameraMSAAShader _mSAAShader;
+    private readonly IMouse _mouse;
     private Matrix3 _ortho;
     private float _tileWidth, _tileHeight;
     private Rect _view = new();
 
-    private Camera(float layer, Rect position)
+    private Camera(IMouse mouse, float layer, Rect position)
         : base(layer, position)
     {
         Shader = new DefaultShader();
@@ -45,17 +48,18 @@ public class Camera : EntityBase, ICamera //todo: disposable - remove resize eve
         //HF.Graphics.CreateFramebuffer(W, H, out _frameBufferShaderPassID, out _frameBufferShaderPassTexture);
         //_graphic = new Image(_frameBufferShaderPassTexture);
         _ortho = Matrix3.CreateFBOOrtho(W, H);
+        _mouse = mouse;
 
         //_frameBufferShaderPassID = OpenGL.GenFramebuffer();
     }
 
-    public Camera(float layer, Rect position, Point tileSize)
-        : this(layer, position, tileSize.X, tileSize.Y)
+    public Camera(IMouse mouse, float layer, Rect position, Point tileSize)
+        : this(mouse, layer, position, tileSize.X, tileSize.Y)
     {
     }
 
-    public Camera(float layer, Rect position, float tileW, float tileH)
-        : this(layer, position)
+    public Camera(IMouse mouse, float layer, Rect position, float tileW, float tileH)
+        : this(mouse, layer, position)
     {
         FixedTileSize = true;
 
@@ -65,8 +69,8 @@ public class Camera : EntityBase, ICamera //todo: disposable - remove resize eve
 
     }
 
-    public Camera(float layer, Rect position, Rect viewport)
-        : this(layer, position)
+    public Camera(IMouse mouse, float layer, Rect position, Rect viewport)
+        : this(mouse, layer, position)
     {
         FixedTileSize = false;
 
@@ -89,7 +93,7 @@ public class Camera : EntityBase, ICamera //todo: disposable - remove resize eve
 
     public bool FixedTileSize { get; set; }
 
-    public override Point LocalMousePosition => GetLocalPosition(Mouse.ClientP);
+    public override Point LocalMousePosition => GetLocalPosition(_mouse.ClientPosition);
 
     public float MaxX { get; set; }
 

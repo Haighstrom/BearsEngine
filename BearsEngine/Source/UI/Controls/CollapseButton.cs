@@ -1,4 +1,5 @@
-﻿using BearsEngine.UI;
+﻿using BearsEngine.Input;
+using BearsEngine.UI;
 
 namespace BearsEngine.Worlds.UI.Controls;
 
@@ -8,8 +9,8 @@ public class CollapseButton : Button
     bool _collapsed = false;
     readonly IGraphic _collapseGraphic, _expandGraphic;
 
-    public CollapseButton(float layer, Rect position, string collapseGraphic, string expandGraphic, UITheme theme, ICollapsable parent)
-        : base(layer, position, collapseGraphic, theme)
+    public CollapseButton(IMouse mouse, float layer, Rect position, string collapseGraphic, string expandGraphic, UITheme theme, ICollapsable parent)
+        : base(mouse, layer, position, collapseGraphic, theme)
     {
         _target = parent;
         _collapseGraphic = BackgroundGraphic;
