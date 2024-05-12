@@ -1,4 +1,4 @@
-﻿namespace BearsEngine.Source.Core;
+﻿namespace BearsEngine;
 
 internal class RenderEventArgs : EventArgs
 {

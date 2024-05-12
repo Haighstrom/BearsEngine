@@ -1,6 +1,4 @@
-﻿using BearsEngine.Window;
-
-namespace BearsEngine.Source.Core;
+﻿namespace BearsEngine;
 
 internal interface IGameLoop
 {

@@ -1,6 +1,4 @@
-﻿using BearsEngine.OpenGL;
-
-namespace BearsEngine.Graphics;
+﻿namespace BearsEngine.Graphics;
 
 public readonly struct Texture
 {

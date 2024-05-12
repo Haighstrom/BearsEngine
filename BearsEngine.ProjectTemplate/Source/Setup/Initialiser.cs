@@ -1,6 +1,5 @@
 ﻿using BearsEngine.Input;
 using BearsEngine.ProjectTemplate.Source.Globals;
-using BearsEngine.Source.Core;
 
 namespace BearsEngine.ProjectTemplate.Source.Setup;
 

@@ -12,11 +12,13 @@ internal class MouseAPI : IMouseAPI
     private readonly Dictionary<IntPtr, int> _regdDevices = new();
     private readonly object _syncRoot = new();
     private readonly IntPtr _msgWindowHandle;
-    
+
     public MouseAPI(IntPtr messageWindowHandle)
     {
         if (messageWindowHandle == IntPtr.Zero)
+        {
             throw new ArgumentNullException("messageWindowHandle");
+        }
 
         _msgWindowHandle = messageWindowHandle;
 
@@ -76,11 +78,11 @@ internal class MouseAPI : IMouseAPI
 
         if (!User32.RegisterRawInputDevices(rids, rids.Length, Marshal.SizeOf(typeof(RAWINPUTDEVICE))))
         {
-            Log.Warning($"[Warning] Raw input registration failed with error: {Marshal.GetLastWin32Error()}. Device: {rid}");
+            Log.Warning($"Raw input registration failed with error: {Marshal.GetLastWin32Error()}. Device: {rid}");
         }
         else
         {
-            Log.Information("Registered Mouse {_mice.Count}: {device}");
+            Log.Information($"Registered Mouse {_mice.Count}: {device}");
         }
     }
     

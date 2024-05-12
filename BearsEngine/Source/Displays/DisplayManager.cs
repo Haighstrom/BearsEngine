@@ -18,15 +18,13 @@ public sealed class DisplayManager : IDisplayManager
     public DisplayManager()
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
             _api = new Windows.WinAPIDisplayManager();
+        }
         else
+        {
             throw new NotImplementedException();
-
-        Log.WriteSectionHeader(LogLevel.Information, "Display Devices");
-        foreach (DisplayInfo display in AvailableDisplays)
-            Log.Information(display);
-        Log.WriteSectionBreak(LogLevel.Information);
-        Log.WriteNewLine(LogLevel.Information);
+        }
     }
 
     /// <summary>

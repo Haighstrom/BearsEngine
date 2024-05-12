@@ -8,7 +8,7 @@ internal class IODemoScreen : Screen
     private CyclingNumberButton[,] _CNBGrid;
     private readonly IScreenFactory _screenFactory;
 
-    public IODemoScreen(IApp app, IScreenFactory screenFactory)
+    public IODemoScreen(IGameEngine app, IScreenFactory screenFactory)
         : base(app.Mouse)
     {
         _screenFactory = screenFactory;

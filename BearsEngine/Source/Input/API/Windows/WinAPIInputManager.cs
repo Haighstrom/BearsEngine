@@ -5,7 +5,7 @@ using BearsEngine.WinAPI;
 namespace BearsEngine.Input.Windows;
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "This is part of the Windows API which will only be invoked if on Windows platform.")]
-internal class WinAPIInputManager : IInputManager
+internal class WinAPIInputManager : IInputReader
 {
     private static readonly Guid GUID_DEVINTERFACE_HID = new("4D1E55B2-F16F-11CF-88CB-001111000030"); //https://learn.microsoft.com/en-us/windows-hardware/drivers/install/guid-devinterface-hid
 

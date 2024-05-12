@@ -2,16 +2,16 @@
 
 internal class ConsoleDemoScreen : Screen
 {
-    public ConsoleDemoScreen(IApp app, IScreenFactory screenFactory)
-        :base(app.Mouse)
+    public ConsoleDemoScreen(IGameEngine engine, IScreenFactory screenFactory)
+        :base(engine.Mouse)
     {
         BackgroundColour = Colour.CornflowerBlue;
 
-        Add(new ReturnButton(app, screenFactory));
-        Add(new ButtonConsoleHide(app.Mouse, app.Console));
-        Add(new ButtonConsoleShow(app.Mouse, app.Console));
-        Add(new ButtonConsoleLeftSide(app.Mouse, app.Console));
-        Add(new ButtonConsoleRightSide(app.Mouse, app.Console));
-        Add(new ButtonConsoleMaximise(app.Mouse, app.Console));
+        Add(new ReturnButton(engine, screenFactory));
+        Add(new ButtonConsoleHide(engine.Mouse, engine.Console));
+        Add(new ButtonConsoleShow(engine.Mouse, engine.Console));
+        Add(new ButtonConsoleLeftSide(engine.Mouse, engine.Console));
+        Add(new ButtonConsoleRightSide(engine.Mouse, engine.Console));
+        Add(new ButtonConsoleMaximise(engine.Mouse, engine.Console));
     }
 }

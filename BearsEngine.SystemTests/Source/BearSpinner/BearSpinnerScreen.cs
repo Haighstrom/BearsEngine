@@ -16,7 +16,7 @@ internal class BearSpinnerScreen : Screen
     private readonly TextGraphic _bearCount;
     private readonly Camera _camera;
 
-    public BearSpinnerScreen(IApp app, IWindow window, IMouse mouse, IScreenFactory screenFactory)
+    public BearSpinnerScreen(IGameEngine engine, IWindow window, IMouse mouse, IScreenFactory screenFactory)
         : base(mouse)
     {
         _window = window;
@@ -31,7 +31,7 @@ internal class BearSpinnerScreen : Screen
         Add(_camera);
         Repeat.CallMethod(() => _camera.Add(new Bear(mouse, Randomisation.Rand((int)window.ClientSize.X), Randomisation.Rand((int)window.ClientSize.Y))), window.WindowWidth * window.WindowHeight / 3000);
 
-        var b = new Button(mouse, 1, new Rect(10, 10, 60, 40), Colour.LightGray, GV.Theme, () => app.ChangeScene(_screenFactory.CreateMainMenuScreen()));
+        var b = new Button(mouse, 1, new Rect(10, 10, 60, 40), Colour.LightGray, GV.Theme, () => engine.ChangeScene(_screenFactory.CreateMainMenuScreen()));
         b.Add(new TextGraphic(GV.MainFont, Colour.Black, new Rect(60, 40), "Return") { HAlignment = HAlignment.Centred, VAlignment = VAlignment.Centred });
         Add(b);
 

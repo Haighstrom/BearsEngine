@@ -1,135 +1,143 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
+using BearsEngine.Console;
+using BearsEngine.Displays;
 using BearsEngine.Input;
+using BearsEngine.Source.Core;
 using BearsEngine.Window;
 
 namespace BearsEngine;
 
-internal class GameEngine : IGameEngine
+public class GameEngine : IGameEngine
 {
-    private const int MinimumUpdateRate = 5;
-    private const int MaximumUpdateRate = 120;
-    private const int MinimumRenderRate = 5;
-    private const int MaximumRenderRate = 120;
     private const double TimeBetweenFrameCountUpdates = 0.1; //how often frames are counted to average
     private const int FrameCountArraySize = 10; //how many captures frame counts are averaged over
     private const double TimeBetweenPeriodicUpdates = 1;
 
-    private static void ValidateEngineSettings(EngineSettings settings)
-    {
-        if (settings.TargetUPS < MinimumUpdateRate || settings.TargetUPS > MaximumUpdateRate)
-        {
-            int newRate = Maths.Clamp(settings.TargetUPS, MinimumUpdateRate, MaximumUpdateRate);
-
-            Log.Warning($"Requested an update rate of {settings.TargetUPS}, which is outside the bounds of the allowed values ({MaximumUpdateRate}-{MinimumUpdateRate}). Adjusting to {newRate}.");
-
-            settings.TargetUPS = newRate;
-        }
-
-        if (settings.TargetFramesPerSecond < MinimumRenderRate || settings.TargetFramesPerSecond > MaximumRenderRate)
-        {
-            int newRate = Maths.Clamp(settings.TargetFramesPerSecond, MinimumRenderRate, MaximumRenderRate);
-
-            Log.Warning($"Requested a render rate of {settings.TargetFramesPerSecond}, which is outside the bounds of the allowed values ({MinimumRenderRate}-{MaximumRenderRate}). Adjusting to {newRate}.");
-
-            settings.TargetFramesPerSecond = newRate;
-        }
-    }
-
     private bool _disposed = false;
     private readonly int _targetUPS, _targetRPS;
     private readonly ISceneManager _sceneManager;
-    private readonly IWindow _window;
     private readonly IMouseInternal _mouse;
     private readonly IKeyboardInternal _keyboard;
+    private readonly IInputReader _inputReader;
 
-    public static bool KeyboardUpdatesWhenWindowUnfocussed { get; set; } = false; //todo: move to IEngine
-    public static bool RunWhenUnfocussed { get; set; } = true; //todo: move to IEngine
-
-    public GameEngine(IWindow window, IMouseInternal mouse, IKeyboardInternal keyboard, EngineSettings settings)
+    public GameEngine(ApplicationSettings appSettings)
     {
-        _window = window;
-        _mouse = mouse;
-        _keyboard = keyboard;
-
-        Log.Debug($"Initialising {nameof(GameEngine)}.");
-
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            throw new InvalidOperationException("Only Windows is currently supported.");
+        {
+            throw new PlatformNotSupportedException("Only Windows is currently supported.");
+        }
 
-        InputManager = new InputManager();
+        var componentFactory = new GameEngineComponentFactory();
 
-        Log.Debug($"Environment Information:\nMachine: {Environment.MachineName}\nOS: {RuntimeInformation.OSDescription}\nUser: {Environment.UserName}\nProcessors: {Environment.ProcessorCount}\nSystem Architecture: {(Environment.Is64BitOperatingSystem ? "64-bit" : "32-bit")}\nProcess Arcitecture: {(Environment.Is64BitProcess ? "64-bit" : "32-bit")}");
+        Logger = componentFactory.CreateLogger(appSettings.LogSettings);
 
-        _sceneManager = new SceneManager(new Screen(mouse));
+        Console = componentFactory.CreateConsole(appSettings.ConsoleSettings); //create console first so other setup info can display
 
-        //TODO: Window.MouseLeftDoubleClicked += (o, a) => HI.MouseLeftDoubleClicked = true;
+        var engineLogger = new EngineLogger(Logger);
 
-        ValidateEngineSettings(settings);
+        engineLogger.LogIntro();
 
-        _targetUPS = settings.TargetUPS;
-        _targetRPS = settings.TargetFramesPerSecond;
+        engineLogger.LogSystemInformation();
 
-        OpenGLHelper.Viewport(_window.Viewport);
-        OpenGLHelper.OrthoMatrix = Matrix3.CreateOrtho(_window.ClientSize.X, _window.ClientSize.Y);
+        Displays = componentFactory.CreateDisplayManager(Logger);
 
-        _window.Resized += OnWindowResize;
+        engineLogger.LogDisplaysInformation(Displays);
 
-        Log.Debug($"{nameof(GameEngine)} initialised.");
+        Window = componentFactory.CreateWindow(appSettings.WindowSettings);
+
+        _inputReader = componentFactory.CreateInputReader();
+
+        _mouse = componentFactory.CreateMouse(Window);
+
+        _keyboard = componentFactory.CreateKeyboard();
+
+        _sceneManager = componentFactory.CreateSceneManager();
+
+        new GameLoopSettingsValidator().ValidateEngineSettings(appSettings.GameLoopSettings);
+
+        _targetUPS = appSettings.GameLoopSettings.TargetUPS;
+        _targetRPS = appSettings.GameLoopSettings.TargetFramesPerSecond;
+
+        OpenGLHelper.Viewport(Window.Viewport);
+        OpenGLHelper.OrthoMatrix = Matrix3.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
+
+        Window.Resized += OnWindowResize;
+
+        engineLogger.LogOutro();
     }
 
-    public IInputManager InputManager { get; }
+    public bool KeyboardUpdatesWhenWindowUnfocussed { get; set; } = false;
+
+    public bool RunWhenUnfocussed { get; set; } = true;
 
     public int RenderFramesPerSecond { get; private set; }
 
-    public IScene Scene
-    {
-        get => _sceneManager.CurrentScene;
-        set => _sceneManager.ChangeScene(value);
-    }
+    public IScene Scene => _sceneManager.CurrentScene;
 
     public int UpdateFramesPerSecond { get; private set; }
 
+    public ILogger Logger { get; }
+
+    public IDisplayManager Displays { get; }
+
+    public IConsoleWindow Console { get; }
+
+    public IWindow Window { get; }
+
+    public IMouse Mouse => _mouse;
+
+    public IKeyboard Keyboard => _keyboard;
+
     private void LogPeriodicInfo()
     {
-        Log.Information($"FPS: {UpdateFramesPerSecond}, RPS: {RenderFramesPerSecond}");
+        Logger.Information($"FPS: {UpdateFramesPerSecond}, RPS: {RenderFramesPerSecond}");
     }
 
     private void OnWindowResize(object? sender, EventArgs e)
     {
-        OpenGLHelper.Viewport(_window.Viewport);
-        OpenGLHelper.OrthoMatrix = Matrix3.CreateOrtho(_window.ClientSize.X, _window.ClientSize.Y);
+        OpenGLHelper.Viewport(Window.Viewport);
+        OpenGLHelper.OrthoMatrix = Matrix3.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
     }
 
     private void Render()
     {
         Matrix3 projection = new(OpenGLHelper.OrthoMatrix.Values);
-        Matrix3 identity = Matrix3.Identity;
+
+        var identity = Matrix3.Identity;
+
         Scene.Render(ref projection, ref identity);
 
-        _window.SwapBuffers();
+        Window.SwapBuffers();
     }
 
     private void Update(float elapsedTime)
     {
-        _mouse.Update(InputManager.MouseState); //caution about changing this to avoid keys getting stuck down etc
+        _mouse.Update(_inputReader.MouseState); //caution about changing this to avoid keys getting stuck down etc
 
-        if (KeyboardUpdatesWhenWindowUnfocussed || _window.Focussed)
+        if (KeyboardUpdatesWhenWindowUnfocussed || Window.Focussed)
         {
-            _keyboard.Update(InputManager.KeyboardState);
+            _keyboard.Update(_inputReader.KeyboardState);
         }
 
-        if (RunWhenUnfocussed || _window.Focussed)
+        if (RunWhenUnfocussed || Window.Focussed)
         {
             _sceneManager.UpdateScene(elapsedTime);
         }
     }
 
+    public void ChangeScene(IScene scene)
+    {
+        _sceneManager.ChangeScene(scene);
+    }
+
     public void Run(IScene firstScene)
     {
-        Scene = firstScene;
+        Window.Visible = true;
 
-        _window.ProcessEvents(); //get any initial crap out the way before we start timing
+        _sceneManager.ChangeScene(firstScene);
+
+        Window.ProcessEvents(); //get any initial crap out the way before we start timing
 
         double targetUpdateTime = 1.0 / _targetUPS;
         double targetRenderTime = 1.0 / _targetRPS;
@@ -147,9 +155,9 @@ internal class GameEngine : IGameEngine
 
         double periodicLoggingTimer = 0; //for logging things once per second
 
-        while (_window.IsOpen)
+        while (Window.IsOpen)
         {
-            _window.ProcessEvents();
+            Window.ProcessEvents();
 
             double currentTime = timer.Elapsed.TotalSeconds;
             double elapsed = currentTime - previousTime;
@@ -170,20 +178,17 @@ internal class GameEngine : IGameEngine
                 if (timeSinceLastUpdate > 2 * targetUpdateTime)
                 {
                     timeOfFrame = timeSinceLastUpdate;
-                    Log.Warning($"A frame took {timeSinceLastUpdate / targetUpdateTime: 0.00}x as long as expected.");
+                    Logger.Warning($"A frame took {timeSinceLastUpdate / targetUpdateTime: 0.00}x as long as expected.");
                 }
                 else
                 {
                     timeOfFrame = targetUpdateTime;
                 }
 
-                //var updateTimer = new Stopwatch();
-                //updateTimer.Start();
-                if (_window.IsOpen)
+                if (Window.IsOpen)
                 {
                     Update((float)timeOfFrame);
                 }
-                //Log.Debug($"Update: {updateTimer.ElapsedMilliseconds}");
 
                 timeSinceLastUpdate -= timeOfFrame;
 
@@ -192,13 +197,10 @@ internal class GameEngine : IGameEngine
 
             if (timeSinceLastRender >= targetRenderTime)
             {
-                //var renderTimer = new Stopwatch();
-                //renderTimer.Start();
-                if (_window.IsOpen)
+                if (Window.IsOpen)
                 {
                     Render();
                 }
-                //Log.Debug($"Render: {renderTimer.ElapsedMilliseconds}");
 
                 while (timeSinceLastRender >= targetRenderTime)
                     timeSinceLastRender -= targetRenderTime;
@@ -222,7 +224,10 @@ internal class GameEngine : IGameEngine
         if (periodicLoggingTimer >= TimeBetweenPeriodicUpdates)
         {
             while (periodicLoggingTimer >= TimeBetweenPeriodicUpdates)
+            {
                 periodicLoggingTimer -= TimeBetweenPeriodicUpdates;
+            }
+
             LogPeriodicInfo();
         }
     }

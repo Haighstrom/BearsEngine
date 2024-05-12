@@ -6,10 +6,10 @@ namespace BearsEngine.SystemTests.Source.TextDemo;
 
 internal class TextDemoScreen : Screen
 {
-    private readonly IApp _app;
+    private readonly IGameEngine _app;
     private readonly IScreenFactory _screenFactory;
 
-    public TextDemoScreen(IApp app, IScreenFactory screenFactory)
+    public TextDemoScreen(IGameEngine app, IScreenFactory screenFactory)
         : base(app.Mouse)
     {
         _app = app;

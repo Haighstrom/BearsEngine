@@ -28,7 +28,7 @@ internal class PathfindingDemoScreen : Screen
     private readonly Line _line;
     private readonly DropdownList<Func<Node, Node, float>> _dropDownList;
 
-    public PathfindingDemoScreen(IApp app, IScreenFactory screenFactory)
+    public PathfindingDemoScreen(IGameEngine app, IScreenFactory screenFactory)
         : base(app.Mouse)
     {
         BackgroundColour = Colour.LightGray;

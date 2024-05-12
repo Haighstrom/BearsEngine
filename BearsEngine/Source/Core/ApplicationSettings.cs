@@ -8,7 +8,7 @@ public class ApplicationSettings
 
     public ConsoleSettings ConsoleSettings { get; init; } = ConsoleSettings.Default;
 
-    public EngineSettings EngineSettings { get; init; } = EngineSettings.Default;
+    public GameLoopSettings GameLoopSettings { get; init; } = GameLoopSettings.Default;
 
     public IoSettings IoSettings { get; init; } = IoSettings.Default;
 

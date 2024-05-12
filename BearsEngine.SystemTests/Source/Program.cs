@@ -2,11 +2,11 @@
 
 var appSettings = AppSettings.Get();
 
-using (var app = new App(appSettings)) //creates window
+using (var engine = new GameEngine(appSettings)) //creates window
 {
-    var screenFactory = new ScreenFactory(app);
+    var screenFactory = new ScreenFactory(engine);
 
     var firstScene = screenFactory.CreateMainMenuScreen();
 
-    app.Run(firstScene); //runs game loop inc. 
+    engine.Run(firstScene); //runs game loop inc. 
 }

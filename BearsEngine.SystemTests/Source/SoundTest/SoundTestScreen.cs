@@ -5,10 +5,10 @@ namespace BearsEngine.SystemTests.Source.SoundTest;
 
 internal class SoundTestScreen : Screen
 {
-    private readonly IApp _app;
+    private readonly IGameEngine _app;
     private readonly IScreenFactory _screenFactory;
 
-    public SoundTestScreen(IApp app, IScreenFactory screenFactory)
+    public SoundTestScreen(IGameEngine app, IScreenFactory screenFactory)
         : base(app.Mouse)
     {
         _app = app;

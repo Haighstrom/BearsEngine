@@ -2,7 +2,7 @@
 
 internal class InputDemoScreen : Screen
 {
-    public InputDemoScreen(IApp app, IScreenFactory screenFactory)
+    public InputDemoScreen(IGameEngine app, IScreenFactory screenFactory)
         : base(app.Mouse)
     {
         BackgroundColour = Colour.CornflowerBlue;

@@ -3,7 +3,7 @@
 /// <summary>
 /// Type for getting information about input devices and input received.
 /// </summary>
-public interface IInputManager : IDisposable
+public interface IInputReader : IDisposable
 {
     /// <summary>
     /// The state of the mouse.

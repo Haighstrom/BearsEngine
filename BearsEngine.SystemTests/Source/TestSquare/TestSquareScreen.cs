@@ -6,13 +6,13 @@ namespace BearsEngine.SystemTests.Source.TestSquare;
 
 internal class TestSquareScreen : Screen
 {
-    private readonly IApp _app;
+    private readonly IGameEngine _app;
     private readonly IScreenFactory _screenFactory;
     private Camera _camera;
     private Image _image;
     private Button _button;
 
-    public TestSquareScreen(IApp app, IScreenFactory screenFactory)
+    public TestSquareScreen(IGameEngine app, IScreenFactory screenFactory)
         : base(app.Mouse)
     {
         _app = app;

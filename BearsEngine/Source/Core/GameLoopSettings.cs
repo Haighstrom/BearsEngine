@@ -1,8 +1,8 @@
 ﻿namespace BearsEngine;
 
-public class EngineSettings
+public class GameLoopSettings
 {
-    public static EngineSettings Default => new();
+    public static GameLoopSettings Default => new();
 
     public int TargetFramesPerSecond { get; set; } = 60;
 

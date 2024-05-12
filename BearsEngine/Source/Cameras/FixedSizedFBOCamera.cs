@@ -1,7 +1,6 @@
 ﻿using BearsEngine.Graphics.Shaders;
 using BearsEngine.Input;
 using BearsEngine.OpenGL;
-using BearsEngine.Source.Core;
 
 namespace BearsEngine.Worlds.Cameras;
 

@@ -22,6 +22,8 @@ public class Logger : ILogger
         _includeLogLevelInMessages = settings.IncludeLogLevelInMessages;
         _includeTimeStampInMessages = settings.IncludeTimeStampInMessages;
 
+        DefaultLogLevel = settings.DefaultLogLevel;
+
         List<ILoggerOutputStream> streams = new()
         {
             new ConsoleOutputStream(settings.ConsoleLogLevel)
@@ -62,11 +64,31 @@ public class Logger : ILogger
     {
     }
 
+    public LogLevel DefaultLogLevel { get; set; } = LogLevel.Debug;
+
+    /// <summary>
+    /// Write a Verbose level message to the logger's output stream(s).
+    /// </summary>
+    /// <param name="thingToLog">The object to be logged.</param>
+    public void Verbose(object? thingToLog) => Write(LogLevel.Verbose, thingToLog);
+
     /// <summary>
     /// Write a Debug level message to the logger's output stream(s).
     /// </summary>
     /// <param name="thingToLog">The object to be logged.</param>
     public void Debug(object? thingToLog) => Write(LogLevel.Debug, thingToLog);
+
+    /// <summary>
+    /// Write an Information level message to the logger's output stream(s).
+    /// </summary>
+    /// <param name="thingToLog">The object to be logged.</param>
+    public void Information(object? thingToLog) => Write(LogLevel.Information, thingToLog);
+
+    /// <summary>
+    /// Write a Warning level message to the logger's output stream(s).
+    /// </summary>
+    /// <param name="thingToLog">The object to be logged.</param>
+    public void Warning(object? thingToLog) => Write(LogLevel.Warning, thingToLog);
 
     /// <summary>
     /// Write a Error level message to the logger's output stream(s).
@@ -81,12 +103,6 @@ public class Logger : ILogger
     public void Fatal(object? thingToLog) => Write(LogLevel.Fatal, thingToLog);
 
     /// <summary>
-    /// Write an Information level message to the logger's output stream(s).
-    /// </summary>
-    /// <param name="thingToLog">The object to be logged.</param>
-    public void Information(object? thingToLog) => Write(LogLevel.Information, thingToLog);
-
-    /// <summary>
     /// Write a message to the logger's output stream(s).
     /// </summary>
     /// <param name="logLevel">The log level of the message.</param>
@@ -96,9 +112,12 @@ public class Logger : ILogger
     public void Write(LogLevel logLevel, object? thingToLog, bool suppressMetaInfo = false)
     {
         if (logLevel == LogLevel.None)
+        {
             throw new ArgumentException($"Cannot write log messages with {LogLevel.None}.", nameof(logLevel));
+        }
 
         foreach (var stream in _outputStreams)
+        {
             if (logLevel >= stream.LogLevel)
             {
                 string logString = "";
@@ -126,33 +145,31 @@ public class Logger : ILogger
 
                 stream.Write(logString);
             }
+        }
     }
+
+    public void Write(object? thingToLog, bool suppressMetaInfo = false) => Write(DefaultLogLevel, thingToLog, suppressMetaInfo);
 
     public void WriteSectionHeader(LogLevel logLevel, string headerName)
     {
         int charsEitherSide = Math.Max(1, (SectionBreakLength - headerName.Length) / 2);
+
         Write(logLevel, new string('-', charsEitherSide) + headerName + new string('-', charsEitherSide), true);
     }
+
+    public void WriteSectionHeader(string headerName) => WriteSectionHeader(DefaultLogLevel, headerName);
 
     public void WriteNewLine(LogLevel logLevel)
     {
         Write(logLevel, Environment.NewLine, true);
     }
 
+    public void WriteNewLine() => WriteNewLine(DefaultLogLevel);
+
     public void WriteSectionBreak(LogLevel logLevel)
     {
         Write(logLevel, new string('-', SectionBreakLength), true);
     }
 
-    /// <summary>
-    /// Write a Verbose level message to the logger's output stream(s).
-    /// </summary>
-    /// <param name="thingToLog">The object to be logged.</param>
-    public void Verbose(object? thingToLog) => Write(LogLevel.Verbose, thingToLog);
-
-    /// <summary>
-    /// Write a Warning level message to the logger's output stream(s).
-    /// </summary>
-    /// <param name="thingToLog">The object to be logged.</param>
-    public void Warning(object? thingToLog) => Write(LogLevel.Warning, thingToLog);
+    public void WriteSectionBreak() => WriteSectionBreak(DefaultLogLevel);
 }

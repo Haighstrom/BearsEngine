@@ -10,7 +10,7 @@ internal class UIDemoScreen : Screen
     private readonly IScreenFactory _screenFactory;
     private readonly ICamera _camera;
 
-    public UIDemoScreen(IApp app, IScreenFactory screenFactory)
+    public UIDemoScreen(IGameEngine app, IScreenFactory screenFactory)
         : base(app.Mouse)
     {
         _screenFactory = screenFactory;

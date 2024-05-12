@@ -1,7 +1,6 @@
 ﻿using BearsEngine.Controllers;
 using BearsEngine.SystemTests.Source.Globals;
 using BearsEngine.Input;
-using BearsEngine.Source.Core;
 
 namespace BearsEngine.SystemTests.Source.InputDemo;
 

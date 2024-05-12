@@ -2,8 +2,8 @@
 
 var appSettings = Initialiser.GetApplicationSettings();
 
-App app = new(appSettings);
+var engine = new GameEngine(appSettings);
 
-var sceneFactory = Initialiser.CreateFirstScene(app.Mouse);
+var firstScene = Initialiser.CreateFirstScene(engine.Mouse);
 
-app.Run(sceneFactory);
+engine.Run(firstScene);

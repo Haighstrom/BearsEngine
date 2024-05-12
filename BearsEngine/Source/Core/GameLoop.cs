@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using BearsEngine.Window;
 
-namespace BearsEngine.Source.Core;
+namespace BearsEngine;
 
 internal class GameLoop : IGameLoop
 {

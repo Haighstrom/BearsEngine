@@ -17,6 +17,11 @@ public class LogSettings
     public LogLevel ConsoleLogLevel { get; set; } = LogLevel.Information;
 
     /// <summary>
+    /// The level for log messages where log level is not explicitly specified
+    /// </summary>
+    public LogLevel DefaultLogLevel { get; set; } = LogLevel.Debug;
+
+    /// <summary>
     /// Whether the <see cref="LogLevel"/> of the message should be included when writing to the output stream(s). True by default.
     /// </summary>
     public bool IncludeLogLevelInMessages { get; set; } = true;

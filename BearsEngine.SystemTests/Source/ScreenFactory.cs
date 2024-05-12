@@ -4,9 +4,9 @@ namespace BearsEngine.SystemTests.Source;
 
 internal class ScreenFactory : IScreenFactory
 {
-    private readonly IApp _app;
+    private readonly IGameEngine _app;
 
-    public ScreenFactory(IApp app)
+    public ScreenFactory(IGameEngine app)
     {
         _app = app;
     }

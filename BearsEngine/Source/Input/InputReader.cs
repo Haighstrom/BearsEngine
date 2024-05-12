@@ -5,17 +5,21 @@ namespace BearsEngine.Input;
 /// <summary>
 /// Class for getting information about input devices and input received.
 /// </summary>
-public class InputManager : IInputManager
+public class InputReader : IInputReader
 {
-    private readonly IInputManager _api;
+    private readonly IInputReader _api;
     private bool _disposed;
 
-    public InputManager()
+    public InputReader()
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
             _api = new Windows.WinAPIInputManager();
+        }
         else
+        {
             throw new PlatformNotSupportedException();
+        }
     }
 
     /// <summary>
@@ -44,7 +48,7 @@ public class InputManager : IInputManager
                 _api.Dispose();
             }
             else
-                Log.Warning($"Did not dispose {nameof(InputManager)} correctly.");
+                Log.Warning($"Did not dispose {nameof(InputReader)} correctly.");
 
             _disposed = true;
         }
