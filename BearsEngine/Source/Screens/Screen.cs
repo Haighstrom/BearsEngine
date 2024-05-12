@@ -15,21 +15,19 @@ public class Screen : IScreen
 
     private bool _disposed = false;
     private readonly List<IAddable> _entities = new();
-    private readonly IMouse _mouse;
 
-    public Screen(IMouse mouse)
+    public Screen()
     {
-        _mouse = mouse;
     }
 
-    public Screen(IMouse mouse, IList<IAddable> entities)
-        : this(mouse)
+    public Screen(IList<IAddable> entities)
+        : this()
     {
         Add(entities);
     }
 
-    public Screen(IMouse mouse, params IAddable[] entities)
-        : this(mouse)
+    public Screen(params IAddable[] entities)
+        : this()
     {
         Add(entities);
     }
@@ -39,8 +37,6 @@ public class Screen : IScreen
     public Colour BackgroundColour { get; set; } = Colour.CornflowerBlue;
 
     public ICollection<IAddable> Entities => _entities.ToArray(); //recast to avoid collection modification
-
-    public Point LocalMousePosition => _mouse.ClientPosition;
 
     public bool Visible { get; set; } = true;
 

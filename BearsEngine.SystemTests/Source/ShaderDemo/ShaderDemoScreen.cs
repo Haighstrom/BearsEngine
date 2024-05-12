@@ -6,7 +6,7 @@ namespace BearsEngine.SystemTests.Source.ShaderDemo;
 internal class ShaderDemoScreen : Screen
 {
     public ShaderDemoScreen(IGameEngine app, IScreenFactory screenFactory)
-        : base(app.Mouse)
+        : base()
     {
         Add(new Button(app.Mouse, 1, new Rect(10, 10, 60, 40), Colour.LightGray, GV.Theme, "Return", () => app.ChangeScene(screenFactory.CreateMainMenuScreen())));
 

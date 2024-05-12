@@ -17,7 +17,7 @@ internal class BearSpinnerScreen : Screen
     private readonly Camera _camera;
 
     public BearSpinnerScreen(IGameEngine engine, IWindow window, IMouse mouse, IScreenFactory screenFactory)
-        : base(mouse)
+        : base()
     {
         _window = window;
         _mouse = mouse;

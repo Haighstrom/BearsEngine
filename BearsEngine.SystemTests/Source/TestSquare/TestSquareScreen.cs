@@ -13,7 +13,7 @@ internal class TestSquareScreen : Screen
     private Button _button;
 
     public TestSquareScreen(IGameEngine app, IScreenFactory screenFactory)
-        : base(app.Mouse)
+        : base()
     {
         _app = app;
         _screenFactory = screenFactory;

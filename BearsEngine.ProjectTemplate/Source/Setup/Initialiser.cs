@@ -28,6 +28,6 @@ internal class Initialiser
 
     public static IScene CreateFirstScene(IMouse mouse)
     {
-        return new Screen(mouse);
+        return new Screen();
     }
 }

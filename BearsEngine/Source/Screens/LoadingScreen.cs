@@ -30,8 +30,8 @@ public abstract class LoadingScreen : Screen
     private IntPtr _loadingRenderContext;
     private readonly IWindow _window;
 
-    public LoadingScreen(IWindow window, IMouse mouse)
-        : base(mouse)
+    public LoadingScreen(IWindow window)
+        : base()
     {
         _window = window;
     }

@@ -9,7 +9,7 @@ internal class SoundTestScreen : Screen
     private readonly IScreenFactory _screenFactory;
 
     public SoundTestScreen(IGameEngine app, IScreenFactory screenFactory)
-        : base(app.Mouse)
+        : base()
     {
         _app = app;
         _screenFactory = screenFactory;

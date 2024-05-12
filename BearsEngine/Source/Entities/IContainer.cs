@@ -4,8 +4,6 @@ public interface IContainer
 {
     ICollection<IAddable> Entities { get; }
 
-    Point LocalMousePosition { get; }
-
     void Add(IAddable e);
 
     void Add(params IAddable[] entities);

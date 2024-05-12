@@ -18,7 +18,7 @@ internal class MenuScreen : Screen
     private static Rect GetButtonRect(int row, int column) => new(70 + 170 * column, 10 + 70 * row, 100, 60);
 
     public MenuScreen(IGameEngine app, IScreenFactory screenFactory)
-        : base(app.Mouse)
+        : base()
     {
         AddDemoWorldButton(app, 0, 0, GA.GFX.Icon_TestSquare, "Test Square", new TestSquareScreen(app, screenFactory));
 

@@ -3,7 +3,7 @@
 internal class ConsoleDemoScreen : Screen
 {
     public ConsoleDemoScreen(IGameEngine engine, IScreenFactory screenFactory)
-        :base(engine.Mouse)
+        :base()
     {
         BackgroundColour = Colour.CornflowerBlue;
 

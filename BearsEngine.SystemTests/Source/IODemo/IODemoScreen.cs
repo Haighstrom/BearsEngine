@@ -9,7 +9,7 @@ internal class IODemoScreen : Screen
     private readonly IScreenFactory _screenFactory;
 
     public IODemoScreen(IGameEngine app, IScreenFactory screenFactory)
-        : base(app.Mouse)
+        : base()
     {
         _screenFactory = screenFactory;
 
