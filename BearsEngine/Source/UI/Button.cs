@@ -19,7 +19,7 @@ public class Button : Entity, IClickable
         DefaultColour = graphic; //ignore theme colour if colour is set
     }
 
-    public Button(IMouse mouse, float layer, Rect position, string graphic, UITheme theme, Action? actionOnClicked = null)
+    public Button(float layer, Rect position, string graphic, UITheme theme, Action? actionOnClicked = null)
         : this(layer, position, new Image(graphic, position.Size), theme, actionOnClicked)
     {
         DefaultColour = Colour.White; //ignore theme colour if we have an Image as graphic.

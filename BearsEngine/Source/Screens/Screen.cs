@@ -40,6 +40,8 @@ public class Screen : IScreen
 
     public bool Visible { get; set; } = true;
 
+    public Point LocalMousePosition => Mouse.Instance.ClientPosition;
+
     private void OnIRenderableLayerChanged(object? sender, LayerChangedEventArgs args)
     {
         var entity = (IAddable)sender!;

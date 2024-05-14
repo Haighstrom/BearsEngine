@@ -60,6 +60,8 @@ public abstract class LightweightEntity : UpdateableBase, IRenderableOnLayer, IR
         }
     }
 
+    public Point Centre => new(X + W / 2, Y + H / 2);
+
     public float Layer { get; }
 
     public bool Visible { get; set; } = true;

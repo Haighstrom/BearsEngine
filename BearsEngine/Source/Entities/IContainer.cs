@@ -12,6 +12,8 @@ public interface IContainer
 
     void RemoveAll();
 
+    Point LocalMousePosition { get; }
+
     IList<E> GetEntities<E>(bool considerChildren = true);
 
     IList<E> GetEntities<E>(Point p, bool considerChildren = true);
