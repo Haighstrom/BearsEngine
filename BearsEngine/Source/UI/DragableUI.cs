@@ -7,20 +7,20 @@ public class DragableUI : Entity
     private int _dragStartX, _dragStartY;
     private readonly IMouse _mouse;
 
-    public DragableUI(IMouse mouse, float layer, Rect pos, Colour colour)
-        : base(mouse, layer, pos, colour)
+    public DragableUI(float layer, Rect pos, Colour colour)
+        : base(layer, pos, colour)
     {
-        _mouse = mouse;
+        _mouse = Mouse.Instance;
     }
-    public DragableUI(IMouse mouse, float layer, Rect pos, string gfx)
-        : base(mouse, layer, pos, gfx)
+    public DragableUI(float layer, Rect pos, string gfx)
+        : base(layer, pos, gfx)
     {
-        _mouse = mouse;
+        _mouse = Mouse.Instance;
     }
-    public DragableUI(IMouse mouse, float layer, Rect pos, IGraphic gfx)
-        : base(mouse, layer, pos, gfx)
+    public DragableUI(float layer, Rect pos, IGraphic gfx)
+        : base(layer, pos, gfx)
     {
-        _mouse = mouse;
+        _mouse = Mouse.Instance;
     }
 
     public bool Dragable { get; set; } = true;

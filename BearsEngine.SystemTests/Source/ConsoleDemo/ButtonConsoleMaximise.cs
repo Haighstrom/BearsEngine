@@ -9,8 +9,8 @@ internal class ButtonConsoleMaximise : Button
 {
     private readonly IConsoleWindow _console;
 
-    public ButtonConsoleMaximise(IMouse mouse, IConsoleWindow console)
-        : base(mouse, GL.UI.Button, GP.ConsoleDemo.ButtonConsoleMaximise, Colour.Black, HFont.Default, Colour.White, "Maximise")
+    public ButtonConsoleMaximise(IConsoleWindow console)
+        : base(GL.UI.Button, GP.ConsoleDemo.ButtonConsoleMaximise, Colour.Black, HFont.Default, Colour.White, "Maximise")
     {
         _console = console;
     }

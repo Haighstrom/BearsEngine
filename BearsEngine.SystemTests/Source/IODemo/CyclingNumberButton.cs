@@ -5,8 +5,8 @@ namespace BearsEngine.SystemTests.Source.IODemo;
 
 internal class CyclingNumberButton : Button
 {
-    public CyclingNumberButton(IMouse mouse, float layer, Rect position, Colour bgColour, int startNumber)
-        : base(mouse, layer, position, bgColour, GV.Theme, "")
+    public CyclingNumberButton(float layer, Rect position, Colour bgColour, int startNumber)
+        : base(layer, position, bgColour, GV.Theme, "")
     {
         ButtonValue = startNumber;
     }

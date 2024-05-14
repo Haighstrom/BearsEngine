@@ -12,7 +12,7 @@ internal class MouseActivityList : Entity
     private readonly IMouse _mouse;
 
     public MouseActivityList(IMouse mouse)
-        : base(mouse, 10, 90, 300, 220, 160, Colour.White)
+        : base(10, 90, 300, 220, 160, Colour.White)
     {
         _mouse = mouse;
 

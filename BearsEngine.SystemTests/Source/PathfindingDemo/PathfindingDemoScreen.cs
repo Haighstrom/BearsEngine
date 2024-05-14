@@ -34,11 +34,11 @@ internal class PathfindingDemoScreen : Screen
         BackgroundColour = Colour.LightGray;
 
         Add(new ReturnButton(app, screenFactory));
-        Add(new SolveButton(app.Mouse, this));
+        Add(new SolveButton(this));
 
         Add(_line = new Line(Colour.Blue, GP.Pathfinding.SolveLineThickness, true) { Layer = GL.Camera.Debug });
 
-        Grid = new GridPathfinder<Node>(GridW, GridH, (x, y) => new Node(app.Mouse, PositionXFromIndexX(x), PositionYFromIndexY(y)));
+        Grid = new GridPathfinder<Node>(GridW, GridH, (x, y) => new Node(PositionXFromIndexX(x), PositionYFromIndexY(y)));
 
         for (var i = 0; i < GridW; i++)
             for (var j = 0; j < GridH; j++)
@@ -46,7 +46,7 @@ internal class PathfindingDemoScreen : Screen
 
         Add(new Image(Colour.DarkerGray, new Rect(GP.Pathfinding.GridTopLeft, GridW * GP.Pathfinding.SquareSize.X, GridH * GP.Pathfinding.SquareSize.Y)));
 
-        Add(_dropDownList = new(app.Mouse, GL.UI.Button, GP.Pathfinding.DropDownList, GP.Pathfinding.DropDownOptionSpacing, Colour.AntiqueWhite, GV.MainFont, Colour.Black));
+        Add(_dropDownList = new(GL.UI.Button, GP.Pathfinding.DropDownList, GP.Pathfinding.DropDownOptionSpacing, Colour.AntiqueWhite, GV.MainFont, Colour.Black));
         _dropDownList.AddOption("PythagSqrd", PythagorusSquaredHeuristic);
         _dropDownList.AddOption("Manhattan", ManhattanHeuristic);
         _dropDownList.AddOption("Clownbus", FloodFillHeuristic);

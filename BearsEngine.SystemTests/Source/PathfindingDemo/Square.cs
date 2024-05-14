@@ -11,7 +11,7 @@ internal class Square : Entity
     private readonly PathfindingDemoScreen _screen;
 
     public Square(IMouse mouse, PathfindingDemoScreen screen, float x, float y, string graphicsPath)
-    : base(mouse, 90, x, y, GP.Pathfinding.SquareSize, graphicsPath)
+    : base(90, x, y, GP.Pathfinding.SquareSize, graphicsPath)
     {
         _mouse = mouse;
         _screen = screen;

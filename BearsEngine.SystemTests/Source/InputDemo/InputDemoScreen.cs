@@ -12,7 +12,7 @@ internal class InputDemoScreen : Screen
         Add(new MouseDisplay(app.Mouse));
         Add(new MouseStateDisplay(app.Mouse));
         Add(new MouseActivityList(app.Mouse));
-        Add(new KeyboardActivityList(app.Window, app.Mouse));
-        Add(new CharActivityList(app.Window, app.Mouse));
+        Add(new KeyboardActivityList(app.Window));
+        Add(new CharActivityList(app.Window));
     }
 }

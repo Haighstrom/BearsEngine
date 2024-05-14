@@ -28,12 +28,12 @@ public class TextInputBox : Entity, IActivatable
     private int _selectionStart, _cursorPosition;
     private float _cursorFlashTimer;
     
-    public TextInputBox(IWindow window, IMouse mouse, IKeyboard keyboard, UITheme theme, Colour bg, float layer, Rect r, string initialValue = "")
-        : base(mouse, layer, r, bg)
+    public TextInputBox(IWindow window, UITheme theme, Colour bg, float layer, Rect r, string initialValue = "")
+        : base(layer, r, bg)
     {
         _window = window;
-        _mouse = mouse;
-        _keyboard = keyboard;
+        _mouse = Mouse.Instance;
+        _keyboard = Keyboard.Instance;
 
         _window.CharEntered += OnCharPressed;
         _window.KeyDown += OnKeyDown;

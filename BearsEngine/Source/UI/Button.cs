@@ -7,42 +7,42 @@ public class Button : Entity, IClickable
 {
     private readonly TextGraphic _text;
 
-    public Button(IMouse mouse, float layer, Rect position, string graphic, UITheme theme, string text, Action? actionOnClicked = null)
-        : this(mouse, layer, position, new Image(graphic, position.Size), theme, text, actionOnClicked)
+    public Button(float layer, Rect position, string graphic, UITheme theme, string text, Action? actionOnClicked = null)
+        : this(layer, position, new Image(graphic, position.Size), theme, text, actionOnClicked)
     {
         DefaultColour = Colour.White; //ignore theme colour if we have an Image as graphic.
     }
 
-    public Button(IMouse mouse, float layer, Rect position, Colour graphic, UITheme theme, string text, Action? actionOnClicked = null)
-        : this(mouse, layer, position, new Image(graphic, position.Size), theme, text, actionOnClicked)
+    public Button(float layer, Rect position, Colour graphic, UITheme theme, string text, Action? actionOnClicked = null)
+        : this(layer, position, new Image(graphic, position.Size), theme, text, actionOnClicked)
     {
         DefaultColour = graphic; //ignore theme colour if colour is set
     }
 
     public Button(IMouse mouse, float layer, Rect position, string graphic, UITheme theme, Action? actionOnClicked = null)
-        : this(mouse, layer, position, new Image(graphic, position.Size), theme, actionOnClicked)
+        : this(layer, position, new Image(graphic, position.Size), theme, actionOnClicked)
     {
         DefaultColour = Colour.White; //ignore theme colour if we have an Image as graphic.
     }
 
-    public Button(IMouse mouse, float layer, Rect position, Colour graphic, UITheme theme, Action? actionOnClicked = null)
-        : this(mouse, layer, position, new Image(graphic, position.Size), theme, actionOnClicked)
+    public Button(float layer, Rect position, Colour graphic, UITheme theme, Action? actionOnClicked = null)
+        : this(layer, position, new Image(graphic, position.Size), theme, actionOnClicked)
     {
         DefaultColour = graphic; //ignore theme colour if colour is set
     }
 
-    public Button(IMouse mouse, float layer, Rect position, UITheme theme, Action? actionOnClicked = null)
-        : this(mouse, layer, position, new Image(theme.Button.DefaultColour, position.Size), theme, actionOnClicked)
+    public Button(float layer, Rect position, UITheme theme, Action? actionOnClicked = null)
+        : this(layer, position, new Image(theme.Button.DefaultColour, position.Size), theme, actionOnClicked)
     {
     }
 
-    public Button(IMouse mouse, float layer, IRectGraphic g, UITheme theme, Action? actionOnClicked = null)
-        : this(mouse, layer, g.R, g, theme, actionOnClicked)
+    public Button(float layer, IRectGraphic g, UITheme theme, Action? actionOnClicked = null)
+        : this(layer, g.R, g, theme, actionOnClicked)
     {
     }
 
-    public Button(IMouse mouse, float layer, Rect position, IGraphic graphic, UITheme theme, Action? actionOnClicked = null)
-        : this(mouse, layer, position.X, position.Y, position.W, position.H, graphic, null, null, "", actionOnClicked)
+    public Button(float layer, Rect position, IGraphic graphic, UITheme theme, Action? actionOnClicked = null)
+        : this(layer, position.X, position.Y, position.W, position.H, graphic, null, null, "", actionOnClicked)
     {
         DefaultColour = theme.Button.DefaultColour;
         UnclickableColour = theme.Button.UnclickableColour;
@@ -50,8 +50,8 @@ public class Button : Entity, IClickable
         PressedColour = theme.Button.PressedColour;
     }
 
-    public Button(IMouse mouse, float layer, Rect position, IGraphic graphic, UITheme theme, string text, Action? actionOnClicked = null)
-        : this(mouse, layer, position.X, position.Y, position.W, position.H, graphic, theme.Button.Text.Font, theme.Button.Text.FontColour, text, actionOnClicked)
+    public Button(float layer, Rect position, IGraphic graphic, UITheme theme, string text, Action? actionOnClicked = null)
+        : this(layer, position.X, position.Y, position.W, position.H, graphic, theme.Button.Text.Font, theme.Button.Text.FontColour, text, actionOnClicked)
     {
         DefaultColour = theme.Button.DefaultColour;
         UnclickableColour = theme.Button.UnclickableColour;
@@ -59,35 +59,35 @@ public class Button : Entity, IClickable
         PressedColour = theme.Button.PressedColour;
     }
 
-    public Button(IMouse mouse, float layer, Rect r, string graphic, Action? actionOnClicked = null)
-        : this(mouse, layer, r, new Image(graphic, r.Size), actionOnClicked)
+    public Button(float layer, Rect r, string graphic, Action? actionOnClicked = null)
+        : this(layer, r, new Image(graphic, r.Size), actionOnClicked)
     {
     }
 
-    public Button(IMouse mouse, float layer, Rect r, Colour graphic, Action? actionOnClicked = null)
-        : this(mouse, layer, r, new Image(graphic, r.Size), actionOnClicked)
-    {
-        DefaultColour = graphic; //ignore theme colour if colour is set
-    }
-
-    public Button(IMouse mouse, float layer, Rect r, IGraphic? graphic = null, Action? actionOnClicked = null)
-        : this(mouse, layer, r.X, r.Y, r.W, r.H, graphic, null, null, "", actionOnClicked)
-    {
-    }
-
-    public Button(IMouse mouse, float layer, Rect r, Colour graphic, HFont font, Colour fontColour, string text = "", Action? actionOnClicked = null)
-        : this(mouse, layer, r.X, r.Y, r.W, r.H, new Image(graphic, r.Size), font, fontColour, text, actionOnClicked)
+    public Button(float layer, Rect r, Colour graphic, Action? actionOnClicked = null)
+        : this(layer, r, new Image(graphic, r.Size), actionOnClicked)
     {
         DefaultColour = graphic; //ignore theme colour if colour is set
     }
 
-    public Button(IMouse mouse, float layer, Rect r, string graphic, HFont font, Colour fontColour, string text = "", Action? actionOnClicked = null)
-        : this(mouse, layer, r.X, r.Y, r.W, r.H, new Image(graphic, r.Size), font, fontColour, text, actionOnClicked)
+    public Button(float layer, Rect r, IGraphic? graphic = null, Action? actionOnClicked = null)
+        : this(layer, r.X, r.Y, r.W, r.H, graphic, null, null, "", actionOnClicked)
     {
     }
 
-    public Button(IMouse mouse, float layer = 0, float x = 0, float y = 0, float w = 0, float h = 0, IGraphic? graphic = null, HFont? font = null, Colour? fontColour = null, string text = "", Action? actionOnClicked = null)
-        : base(mouse, layer, x, y, w, h)
+    public Button(float layer, Rect r, Colour graphic, HFont font, Colour fontColour, string text = "", Action? actionOnClicked = null)
+        : this(layer, r.X, r.Y, r.W, r.H, new Image(graphic, r.Size), font, fontColour, text, actionOnClicked)
+    {
+        DefaultColour = graphic; //ignore theme colour if colour is set
+    }
+
+    public Button(float layer, Rect r, string graphic, HFont font, Colour fontColour, string text = "", Action? actionOnClicked = null)
+        : this(layer, r.X, r.Y, r.W, r.H, new Image(graphic, r.Size), font, fontColour, text, actionOnClicked)
+    {
+    }
+
+    public Button(float layer = 0, float x = 0, float y = 0, float w = 0, float h = 0, IGraphic? graphic = null, HFont? font = null, Colour? fontColour = null, string text = "", Action? actionOnClicked = null)
+        : base(layer, x, y, w, h)
     {
         if (graphic != null)
             Add(BackgroundGraphic = graphic);

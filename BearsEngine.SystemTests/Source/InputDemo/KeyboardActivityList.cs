@@ -11,8 +11,8 @@ internal class KeyboardActivityList : Entity
     private readonly string[] _activityMessages;
     private readonly TextGraphic _activityText;
 
-    public KeyboardActivityList(IWindow window, IMouse mouse)
-        : base(mouse, 10, 400, 100, 150, 320, Colour.White)
+    public KeyboardActivityList(IWindow window)
+        : base(10, 400, 100, 150, 320, Colour.White)
     {
         Add(_activityText = new TextGraphic(HFont.Load("Helvetica", 8), Colour.Black, Size));
 

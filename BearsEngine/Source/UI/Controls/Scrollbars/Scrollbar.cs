@@ -14,15 +14,15 @@ public class Scrollbar : Entity
         private float _dragStart;
         
 
-        public Bar(IMouse mouse, ScrollbarDirection direction, Rect position, int border, UITheme theme)
-            : this(mouse, direction, position, border, theme.Scrollbar.BarButton.DefaultColour, theme.Scrollbar.BarButton.HoverColour, theme.Scrollbar.BarButton.PressedColour, theme.Scrollbar.BarButton.UnclickableColour)
+        public Bar(ScrollbarDirection direction, Rect position, int border, UITheme theme)
+            : this(direction, position, border, theme.Scrollbar.BarButton.DefaultColour, theme.Scrollbar.BarButton.HoverColour, theme.Scrollbar.BarButton.PressedColour, theme.Scrollbar.BarButton.UnclickableColour)
         {
         }
 
-        public Bar(IMouse mouse, ScrollbarDirection direction, Rect position, int border, Colour barColour, Colour hoverColour, Colour pressedColour, Colour unclickableColour)
-            : base(mouse, 1, position)
+        public Bar(ScrollbarDirection direction, Rect position, int border, Colour barColour, Colour hoverColour, Colour pressedColour, Colour unclickableColour)
+            : base(1, position)
         {
-            _mouse = mouse;
+            _mouse = Mouse.Instance;
 
             HoverColour = hoverColour;
             PressedColour = pressedColour;
@@ -180,9 +180,8 @@ public class Scrollbar : Entity
     private readonly Action<int> _actionOnMove;
     
 
-    public Scrollbar(IMouse mouse, float layer, Rect r, ScrollbarDirection direction, UITheme theme)
-        : this(mouse, 
-              layer,
+    public Scrollbar(float layer, Rect r, ScrollbarDirection direction, UITheme theme)
+        : this(layer,
               r,
               direction,
               theme.Scrollbar.BarBackgroundColour,
@@ -201,8 +200,8 @@ public class Scrollbar : Entity
     }
     
 
-    public Scrollbar(IMouse mouse, float layer, Rect fullPosition, ScrollbarDirection direction, Colour barBackgroundColour, Colour barDefaultColour, Colour barHoverColour, Colour barPressedColour, Colour barUnclickableButton, int edgeToBarSpace, Colour arrowBG, IGraphic minusArrow, IGraphic plusArrow, Colour arrowHoverColour, Colour arrowPressedColour, Colour arrowUnclickableColour)
-        : base(mouse, layer, fullPosition)
+    public Scrollbar(float layer, Rect fullPosition, ScrollbarDirection direction, Colour barBackgroundColour, Colour barDefaultColour, Colour barHoverColour, Colour barPressedColour, Colour barUnclickableButton, int edgeToBarSpace, Colour arrowBG, IGraphic minusArrow, IGraphic plusArrow, Colour arrowHoverColour, Colour arrowPressedColour, Colour arrowUnclickableColour)
+        : base(layer, fullPosition)
     {
         _direction = direction;
 
@@ -223,24 +222,24 @@ public class Scrollbar : Entity
 
         Add(_barBG = new Image(barBackgroundColour, sbBG));
 
-        Add(_bar = new Bar(mouse, direction, sbBG, edgeToBarSpace, barDefaultColour, barHoverColour, barPressedColour, barUnclickableButton));
+        Add(_bar = new Bar(direction, sbBG, edgeToBarSpace, barDefaultColour, barHoverColour, barPressedColour, barUnclickableButton));
         _bar.BarPositionChanged += (sender, args) => BarPositionChanged(sender, args);
 
-        Add(_minus = new Button(mouse, 1, b1, minusArrow)
+        Add(_minus = new Button(1, b1, minusArrow)
         {
             HoverColour = arrowHoverColour,
             PressedColour = arrowPressedColour,
             UnclickableColour = arrowUnclickableColour,
         });
-        _minus.Add(new Entity(mouse, 2, b1.Zeroed, arrowBG));
+        _minus.Add(new Entity(2, b1.Zeroed, arrowBG));
 
-        Add(_plus = new Button(mouse, 1, b2, plusArrow)
+        Add(_plus = new Button(1, b2, plusArrow)
         {
             HoverColour = arrowHoverColour,
             PressedColour = arrowPressedColour,
             UnclickableColour = arrowUnclickableColour,
         });
-        _plus.Add(new Entity(mouse, 2, b2.Zeroed, arrowBG));
+        _plus.Add(new Entity(2, b2.Zeroed, arrowBG));
     }
     
     

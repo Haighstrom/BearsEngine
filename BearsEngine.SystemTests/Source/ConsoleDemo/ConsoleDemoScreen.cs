@@ -8,10 +8,10 @@ internal class ConsoleDemoScreen : Screen
         BackgroundColour = Colour.CornflowerBlue;
 
         Add(new ReturnButton(engine, screenFactory));
-        Add(new ButtonConsoleHide(engine.Mouse, engine.Console));
-        Add(new ButtonConsoleShow(engine.Mouse, engine.Console));
-        Add(new ButtonConsoleLeftSide(engine.Mouse, engine.Console));
-        Add(new ButtonConsoleRightSide(engine.Mouse, engine.Console));
-        Add(new ButtonConsoleMaximise(engine.Mouse, engine.Console));
+        Add(new ButtonConsoleHide(engine.Console));
+        Add(new ButtonConsoleShow(engine.Console));
+        Add(new ButtonConsoleLeftSide(engine.Console));
+        Add(new ButtonConsoleRightSide(engine.Console));
+        Add(new ButtonConsoleMaximise(engine.Console));
     }
 }

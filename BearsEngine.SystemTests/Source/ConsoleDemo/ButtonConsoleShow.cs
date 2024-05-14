@@ -9,8 +9,8 @@ internal class ButtonConsoleShow : Button
 {
     private readonly IConsoleWindow _console;
 
-    public ButtonConsoleShow(IMouse mouse, IConsoleWindow console)
-        : base(mouse, GL.UI.Button, GP.ConsoleDemo.ButtonConsoleShow, Colour.Black, HFont.Default, Colour.White, "Show")
+    public ButtonConsoleShow(IConsoleWindow console)
+        : base(GL.UI.Button, GP.ConsoleDemo.ButtonConsoleShow, Colour.Black, HFont.Default, Colour.White, "Show")
     {
         _console = console;
     }

@@ -22,11 +22,11 @@ internal class TestSquareScreen : Screen
 
         app.Window.Resized += OnWindowResized;
 
-        _button = new Button(app.Mouse, 1, new Rect(5, 5, 60, 40), Colour.White, GV.Theme, () => app.ChangeScene(_screenFactory.CreateMainMenuScreen()));
+        _button = new Button(1, new Rect(5, 5, 60, 40), Colour.White, GV.Theme, () => app.ChangeScene(_screenFactory.CreateMainMenuScreen()));
         _button.Add(new TextGraphic(GV.MainFont, Colour.Black, new Rect(60, 40), "Return") { HAlignment = HAlignment.Centred, VAlignment = VAlignment.Centred });
         Add(_button);
 
-        Add(_camera = new(app.Mouse, 100, new Rect(0, 0, 800, 600), 1, 1));
+        Add(_camera = new(100, new Rect(0, 0, 800, 600), 1, 1));
         _camera.Add(_image = new(GA.GFX.TestSquare, GP.DefaultClientSize));
     }
 

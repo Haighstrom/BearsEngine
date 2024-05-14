@@ -6,8 +6,8 @@ public class ProgressBar : Entity
 {
     private readonly FillableBar _fillableBar;
 
-    public ProgressBar(IMouse mouse, float layer, string graphicsPath, Rect position)
-        : base(mouse, layer, position)
+    public ProgressBar(float layer, string graphicsPath, Rect position)
+        : base(layer, position)
     {
         _fillableBar = new FillableBar(graphicsPath, position.Size, 0);
         Add(_fillableBar);

@@ -15,22 +15,22 @@ internal class UIDemoScreen : Screen
     {
         _screenFactory = screenFactory;
 
-        var b = new Button(app.Mouse, 1, new Rect(730, 550, 60, 40), Colour.White, GV.Theme, () => app.ChangeScene(_screenFactory.CreateMainMenuScreen()));
+        var b = new Button(1, new Rect(730, 550, 60, 40), Colour.White, GV.Theme, () => app.ChangeScene(_screenFactory.CreateMainMenuScreen()));
         b.Add(new TextGraphic(GV.MainFont, Colour.Black, new Rect(60, 40), "Return") { HAlignment = HAlignment.Centred, VAlignment = VAlignment.Centred });
         Add(b);
 
-        _camera = new Camera(app.Mouse, 1, new Rect(25, 25, 300, 300), 50, 50)
+        _camera = new Camera(1, new Rect(25, 25, 300, 300), 50, 50)
         {
             BackgroundColour = Colour.LemonChiffon
         };
         //_camera.MaxX = 10;
         //_camera.MaxY = 25;
         Add(_camera);
-        Entity e1 = new(app.Mouse, 1, new Rect(0, 0, 1, 1), Colour.Red);
+        Entity e1 = new(1, new Rect(0, 0, 1, 1), Colour.Red);
         e1.Add(new TextGraphic(GV.MainFont, Colour.Black, new Rect(0, 0, 1, 1), "TNR 12") { Layer = 100, ScaleX = 1f / 50, ScaleY = 1f / 50, HAlignment = HAlignment.Centred, VAlignment = VAlignment.Centred });
         _camera.Add(e1);
-        _camera.Add(new Entity(app.Mouse, 1, new Rect(1, 1, 2, 2), Colour.Brown));
-        _camera.Add(new Entity(app.Mouse, 1, new Rect(3, 3, 3, 3), Colour.LightBlue));
+        _camera.Add(new Entity(1, new Rect(1, 1, 2, 2), Colour.Brown));
+        _camera.Add(new Entity(1, new Rect(3, 3, 3, 3), Colour.LightBlue));
         //_camera.Add(new Entity(1, new Rect(6, 6, 2, 2), Colour.Blue));
         //_camera.Add(new Entity(1, new Rect(1, 8, 1, 1), Colour.Green));
 

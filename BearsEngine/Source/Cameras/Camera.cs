@@ -16,9 +16,11 @@ public class Camera : EntityBase, ICamera //todo: disposable - remove resize eve
     private float _tileWidth, _tileHeight;
     private Rect _view = new();
 
-    private Camera(IMouse mouse, float layer, Rect position)
+    private Camera(float layer, Rect position)
         : base(layer, position)
     {
+        _mouse = Mouse.Instance;
+
         Shader = new DefaultShader();
 
         _mSAAShader = new CameraMSAAShader() { Samples = MSAASamples };
@@ -47,18 +49,17 @@ public class Camera : EntityBase, ICamera //todo: disposable - remove resize eve
         //HF.Graphics.CreateFramebuffer(W, H, out _frameBufferShaderPassID, out _frameBufferShaderPassTexture);
         //_graphic = new Image(_frameBufferShaderPassTexture);
         _ortho = Matrix3.CreateFBOOrtho(W, H);
-        _mouse = mouse;
 
         //_frameBufferShaderPassID = OpenGL.GenFramebuffer();
     }
 
-    public Camera(IMouse mouse, float layer, Rect position, Point tileSize)
-        : this(mouse, layer, position, tileSize.X, tileSize.Y)
+    public Camera(float layer, Rect position, Point tileSize)
+        : this(layer, position, tileSize.X, tileSize.Y)
     {
     }
 
-    public Camera(IMouse mouse, float layer, Rect position, float tileW, float tileH)
-        : this(mouse, layer, position)
+    public Camera(float layer, Rect position, float tileW, float tileH)
+        : this(layer, position)
     {
         FixedTileSize = true;
 
@@ -68,8 +69,8 @@ public class Camera : EntityBase, ICamera //todo: disposable - remove resize eve
 
     }
 
-    public Camera(IMouse mouse, float layer, Rect position, Rect viewport)
-        : this(mouse, layer, position)
+    public Camera(float layer, Rect position, Rect viewport)
+        : this(layer, position)
     {
         FixedTileSize = false;
 

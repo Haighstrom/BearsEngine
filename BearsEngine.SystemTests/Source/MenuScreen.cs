@@ -22,7 +22,7 @@ internal class MenuScreen : Screen
     {
         AddDemoWorldButton(app, 0, 0, GA.GFX.Icon_TestSquare, "Test Square", new TestSquareScreen(app, screenFactory));
 
-        AddDemoWorldButton(app, 1, 0, GA.GFX.ICON_BEAR_SPINNER, "Bear Spinner", new BearSpinnerScreen(app, app.Window, app.Mouse, screenFactory));
+        AddDemoWorldButton(app, 1, 0, GA.GFX.ICON_BEAR_SPINNER, "Bear Spinner", new BearSpinnerScreen(app, app.Window, screenFactory));
 
         AddDemoWorldButton(app, 2, 0, GA.GFX.ICON_UI_DEMO, "UI Demo", new UIDemoScreen(app, screenFactory));
 
@@ -44,6 +44,6 @@ internal class MenuScreen : Screen
     private void AddDemoWorldButton(IGameEngine app, int row, int column, string iconPath, string description, IScene scene)
     {
         Add(new Image(iconPath, GetImageRect(row, column)));
-        Add(new Button(app.Mouse, 1, GetButtonRect(row, column), Colour.White, GV.Theme, description, () => app.ChangeScene(scene)));
+        Add(new Button(1, GetButtonRect(row, column), Colour.White, GV.Theme, description, () => app.ChangeScene(scene)));
     }
 }

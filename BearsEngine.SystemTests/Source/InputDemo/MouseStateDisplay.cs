@@ -9,7 +9,7 @@ internal class MouseStateDisplay : Entity
     private readonly TextGraphic _stateText;
 
     public MouseStateDisplay(IMouse mouse)
-        : base(mouse, 10, 90, 230, 220, 65, Colour.White)
+        : base(10, 90, 230, 220, 65, Colour.White)
     {
         _mouse = mouse;
 

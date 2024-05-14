@@ -10,8 +10,8 @@ internal class Node : Entity, IPathfindNode<Node>
     private bool _passable = true;
     private readonly Line _squareHighlight;
 
-    public Node(IMouse mouse, float x, float y)
-    : base(mouse, 50, x, y, GP.Pathfinding.SquareSize)
+    public Node(float x, float y)
+    : base(50, x, y, GP.Pathfinding.SquareSize)
     {
         Add(_image = new Image(GA.GFX.Pathfinding.Wall, GP.Pathfinding.SquareSize) { Visible = false });
         Add(_squareHighlight = new(Colour.Orange, 1, true, R.Zeroed) { Visible = false });

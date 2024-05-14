@@ -19,10 +19,10 @@ internal class SoundTestScreen : Screen
     {
         base.Start();
 
-        var b = new Button(_app.Mouse, 1, new Rect(10, 10, 60, 40), Colour.LightGray, GV.Theme, () => _app.ChangeScene(_screenFactory.CreateMainMenuScreen()));
+        var b = new Button(1, new Rect(10, 10, 60, 40), Colour.LightGray, GV.Theme, () => _app.ChangeScene(_screenFactory.CreateMainMenuScreen()));
         b.Add(new TextGraphic(GV.MainFont, Colour.Black, new Rect(60, 40), "Return") { HAlignment = HAlignment.Centred, VAlignment = VAlignment.Centred });
         Add(b);
 
-        Add(new PlaySFXButton(_app.Mouse, new Rect(200, 200, 50, 50), GA.SFX.Powerup8));
+        Add(new PlaySFXButton(new Rect(200, 200, 50, 50), GA.SFX.Powerup8));
     }
 }

@@ -24,7 +24,7 @@ internal class TextDemoScreen : Screen
             VAlignment = VAlignment.Centred,
         };
 
-        var entity = new Entity(app.Mouse, 1, 20, 20, 40, 40, Colour.Black);
+        var entity = new Entity(1, 20, 20, 40, 40, Colour.Black);
         Add(entity);
         entity.Add(new TextGraphic(theme, entity.Size, "Hello"));
     }
@@ -123,7 +123,7 @@ internal class TextDemoScreen : Screen
         //};
         //Add(camera);
 
-        var b = new Button(_app.Mouse, 1, new Rect(730, 550, 60, 40), Colour.White, GV.Theme, () => _app.ChangeScene(_screenFactory.CreateMainMenuScreen()));
+        var b = new Button(1, new Rect(730, 550, 60, 40), Colour.White, GV.Theme, () => _app.ChangeScene(_screenFactory.CreateMainMenuScreen()));
         b.Add(new TextGraphic(GV.MainFont, Colour.Black, new Rect(60, 40), "Return") { HAlignment = HAlignment.Centred, VAlignment = VAlignment.Centred });
         Add(b);
     }

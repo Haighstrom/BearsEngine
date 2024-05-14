@@ -9,8 +9,8 @@ internal class PlaySFXButton : Button, IDisposable
     private WaveOutEvent _outputDevice;
     private bool _disposed;
 
-    public PlaySFXButton(IMouse mouse, Rect position, string sfxPath)
-    : base(mouse, 0, position, Colour.LightGray)
+    public PlaySFXButton(Rect position, string sfxPath)
+    : base(0, position, Colour.LightGray)
     {
         _sfxPath = sfxPath;
         _outputDevice = new WaveOutEvent();

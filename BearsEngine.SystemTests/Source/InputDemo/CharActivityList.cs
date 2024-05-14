@@ -11,8 +11,8 @@ internal class CharActivityList : Entity
     private readonly List<char> _activityChars = new();
     private readonly TextGraphic _activityText;
 
-    public CharActivityList(IWindow window, IMouse mouse)
-        : base(mouse, 10, 400, 50, 150, 35, Colour.White)
+    public CharActivityList(IWindow window)
+        : base(10, 400, 50, 150, 35, Colour.White)
     {
         Add(_activityText = new TextGraphic(HFont.Load("Helvetica", 8), Colour.Black, Size));
 

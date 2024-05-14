@@ -9,8 +9,8 @@ internal class ButtonConsoleRightSide : Button
 {
     private readonly IConsoleWindow _console;
 
-    public ButtonConsoleRightSide(IMouse mouse, IConsoleWindow console)
-        : base(mouse, GL.UI.Button, GP.ConsoleDemo.ButtonConsoleRightSide, Colour.Black, HFont.Default, Colour.White, "Move Right")
+    public ButtonConsoleRightSide(IConsoleWindow console)
+        : base(GL.UI.Button, GP.ConsoleDemo.ButtonConsoleRightSide, Colour.Black, HFont.Default, Colour.White, "Move Right")
     {
         _console = console;
     }

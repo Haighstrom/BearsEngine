@@ -2,8 +2,15 @@
 
 internal class Keyboard : IKeyboardInternal
 {
+    internal static Keyboard Instance { get; private set; } = null!;
+
     private KeyboardState _previousState = new();
     private KeyboardState _currentState = new();
+
+    public Keyboard()
+    {
+        Instance = this;   
+    }
 
     void IKeyboardInternal.Update(KeyboardState newState)
     {

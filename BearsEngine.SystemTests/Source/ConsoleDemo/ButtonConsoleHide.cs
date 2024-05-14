@@ -9,8 +9,8 @@ internal class ButtonConsoleHide : Button
 {
     private readonly IConsoleWindow _console;
 
-    public ButtonConsoleHide(IMouse mouse, IConsoleWindow console)
-        : base(mouse, GL.UI.Button, GP.ConsoleDemo.ButtonConsoleHide, Colour.Black, HFont.Default, Colour.White, "Hide")
+    public ButtonConsoleHide(IConsoleWindow console)
+        : base(GL.UI.Button, GP.ConsoleDemo.ButtonConsoleHide, Colour.Black, HFont.Default, Colour.White, "Hide")
     {
         _console = console;
     }

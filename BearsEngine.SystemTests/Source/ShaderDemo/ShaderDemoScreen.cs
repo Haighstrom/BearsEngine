@@ -8,7 +8,7 @@ internal class ShaderDemoScreen : Screen
     public ShaderDemoScreen(IGameEngine app, IScreenFactory screenFactory)
         : base()
     {
-        Add(new Button(app.Mouse, 1, new Rect(10, 10, 60, 40), Colour.LightGray, GV.Theme, "Return", () => app.ChangeScene(screenFactory.CreateMainMenuScreen())));
+        Add(new Button(1, new Rect(10, 10, 60, 40), Colour.LightGray, GV.Theme, "Return", () => app.ChangeScene(screenFactory.CreateMainMenuScreen())));
 
         Add(new Image(GA.GFX.Bear, new Rect(50, 100, 60, 80)));
 

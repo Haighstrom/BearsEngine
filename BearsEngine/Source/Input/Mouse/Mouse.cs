@@ -7,6 +7,9 @@ namespace BearsEngine.Input;
 /// </summary>
 internal class Mouse : IMouseInternal
 {
+    private static Mouse? s_instance;
+    internal static Mouse Instance => s_instance ?? throw new InvalidOperationException($"{nameof(Mouse)}.{nameof(Instance)} was accessed before being set");
+
     private readonly IWindow _window;
 
     private MouseState _previousState = new();
@@ -14,6 +17,8 @@ internal class Mouse : IMouseInternal
 
     public Mouse(IWindow window)
     {
+        s_instance = this;
+
         _window = window;
     }
 

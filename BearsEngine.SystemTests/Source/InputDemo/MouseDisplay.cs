@@ -7,10 +7,14 @@ namespace BearsEngine.SystemTests.Source.InputDemo;
 internal class MouseDisplay : Entity
 {
     private readonly IMouse _mouse;
-    private Image _leftPressed, _rightPressed, _mouseMoved, _wheelPressed, _wheelScrolled;
+    private readonly Image _leftPressed;
+    private readonly Image _rightPressed;
+    private readonly Image _mouseMoved;
+    private readonly Image _wheelPressed;
+    private readonly Image _wheelScrolled;
 
     public MouseDisplay(IMouse mouse)
-        : base(mouse, 10, 100, 20, 200, 200, GA.GFX.InputDemo.MouseDisplay)
+        : base(10, 100, 20, 200, 200, GA.GFX.InputDemo.MouseDisplay)
     {
         _mouse = mouse;
 

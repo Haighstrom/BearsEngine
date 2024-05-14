@@ -11,8 +11,8 @@ public class ValueDisplay : Entity
     private readonly string _valueName;
     private readonly TextGraphic _valueText;
 
-    public ValueDisplay(IMouse mouse, float layer, Rect position, string graphic, UITheme theme, string valueName, ValueGet valueToTrack)
-        : base(mouse, layer, position, graphic)
+    public ValueDisplay(float layer, Rect position, string graphic, UITheme theme, string valueName, ValueGet valueToTrack)
+        : base(layer, position, graphic)
     {
         Value = valueToTrack;
         _valueName = valueName;

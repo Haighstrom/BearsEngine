@@ -5,7 +5,7 @@ namespace BearsEngine.SystemTests.Source;
 internal class ReturnButton : Button
 {
     public ReturnButton(IGameEngine app, IScreenFactory screenFactory)
-        : base(app.Mouse, GL.UI.Button, GP.ReturnButton, Colour.LightGray, GV.Theme, "Return", () => app.ChangeScene(screenFactory.CreateMainMenuScreen()))
+        : base(GL.UI.Button, GP.ReturnButton, Colour.LightGray, GV.Theme, "Return", () => app.ChangeScene(screenFactory.CreateMainMenuScreen()))
     {
     }
 }

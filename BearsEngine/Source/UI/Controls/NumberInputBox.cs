@@ -31,11 +31,11 @@ public class NumberInputBox<T> : Entity, IActivatable
     private float _cursorFlashTimer;
     
 
-    public NumberInputBox(IWindow window, IMouse mouse, IKeyboard keyboard, UITheme theme, Colour bg, float layer, Rect r, T initialValue = default)
-        : base(mouse, layer, r, bg)
+    public NumberInputBox(IWindow window, UITheme theme, Colour bg, float layer, Rect r, T initialValue = default)
+        : base(layer, r, bg)
     {
-        _mouse = mouse;
-        _keyboard = keyboard;
+        _mouse = Mouse.Instance;
+        _keyboard = Keyboard.Instance;
         window.CharEntered += OnCharPressed;
         window.KeyDown += OnKeyDown;
 
