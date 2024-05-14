@@ -104,7 +104,7 @@ public static class OpenGLHelper
         BMP.Dispose();
         paddedBMP.Dispose();
 
-        return new Texture(newW, newH, textureID);
+        return new Texture(textureID, newW, newH);
     }
 
     private static Texture GenTexture(string path, TEXPARAMETER_VALUE minMagFilter = TEXPARAMETER_VALUE.GL_NEAREST) => GenTexture(new System.Drawing.Bitmap(path), minMagFilter);
