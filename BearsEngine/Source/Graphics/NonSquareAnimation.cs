@@ -4,7 +4,7 @@ public class NonSquareAnimation : NonSquareSprite, IUpdatable
 {
     private int[] _framesToPlay = new int[] { 0 };
     private int _playIndex = 0;
-    private LoopType _loopType;
+    private bool _looping;
     private Action? _onComplete;
 
     public NonSquareAnimation(float layer, string imgPath, float x, float y, IList<(Point OutputSize, Rect TextureSource)> frames, float animationStepTime = 0.1f)
@@ -27,8 +27,7 @@ public class NonSquareAnimation : NonSquareSprite, IUpdatable
 
     protected void OnAnimationComplete()
     {
-        if (_onComplete != null)
-            _onComplete();
+        _onComplete?.Invoke();
 
         AnimationComplete?.Invoke(this, EventArgs.Empty);
     }
@@ -37,40 +36,40 @@ public class NonSquareAnimation : NonSquareSprite, IUpdatable
     /// Starts this animation copying another animation, including its current frame and remaining frame time
     /// </summary>
     /// <param name="other"></param>
-    public void PlayMatching(NonSquareAnimation other) => PlayFrom(other._loopType, other._playIndex, other.TimeToNextFrame, other._framesToPlay);
+    public void PlayMatching(NonSquareAnimation other) => PlayFrom(other._looping, other._playIndex, other.TimeToNextFrame, other._framesToPlay);
 
     public void PlayAllOnce(Action actionOnComplete)
     {
-        Play(LoopType.OneShot, AllFrames);
+        Play(false, AllFrames);
         _onComplete = actionOnComplete;
     }
 
-    public void PlayAllOnce() => Play(LoopType.OneShot, AllFrames);
+    public void PlayAllOnce() => Play(false, AllFrames);
 
-    public void PlayAllLooping() => Play(LoopType.Looping, AllFrames);
+    public void PlayAllLooping() => Play(true, AllFrames);
 
     /// <summary>
     /// Fixes the Sprite with a single frame
     /// </summary>
     /// <param name="frame"></param>
-    public void Play(int frame) => Play(LoopType.OneShot, frame);
+    public void Play(int frame) => Play(false, frame);
 
-    public void Play(LoopType loopType, params int[] frames) => PlayFrom(loopType, 0, AnimStepTime, frames);
+    public void Play(bool looping, params int[] frames) => PlayFrom(looping, 0, AnimStepTime, frames);
 
     public void PlayOnce(Action actionOnComplete, int startFrame, params int[] frames)
     {
-        PlayFrom(LoopType.OneShot, 0, AnimStepTime, frames);
+        PlayFrom(false, 0, AnimStepTime, frames);
         _onComplete = actionOnComplete;
     }
 
-    public void PlayFrom(LoopType loopType, int fromIndex, float currentFrameRemainingTime, params int[] frames)
+    public void PlayFrom(bool looping, int fromIndex, float currentFrameRemainingTime, params int[] frames)
     {
         Playing = true;
         _framesToPlay = frames;
         _playIndex = fromIndex;
         TimeToNextFrame = currentFrameRemainingTime;
         Frame = frames[fromIndex];
-        _loopType = loopType;
+        _looping = looping;
     }
 
     public virtual void Update(float elapsed)
@@ -80,7 +79,7 @@ public class NonSquareAnimation : NonSquareSprite, IUpdatable
             TimeToNextFrame -= (float)elapsed;
             while (TimeToNextFrame <= 0)
             {
-                if (_playIndex == _framesToPlay.Length - 1 && _loopType == LoopType.OneShot)
+                if (_playIndex == _framesToPlay.Length - 1 && !_looping)
                 {
                     Playing = false;
                     TimeToNextFrame = 0;

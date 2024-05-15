@@ -45,7 +45,7 @@ public static class CollectionExtensions
 
     public static bool IsEmpty<T>(this IEnumerable<T>? list)
     {
-        return list == null || !list.Any();
+        return list is null || !list.Any();
     }
 
     public static void Add(this IList<string> list, string s, params object[] args)

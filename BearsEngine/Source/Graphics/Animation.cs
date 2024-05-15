@@ -1,118 +1,126 @@
 ﻿namespace BearsEngine.Graphics;
 
-public enum LoopType
-{
-    OneShot,
-    Looping
-}
-
 public class Animation : Sprite, IUpdatable
 {
-    private int[] _framesToPlay = new int[] { 0 };
-    private int _playIndex = 0;
-    private LoopType _loopType;
-    private Action? _onComplete;
+    private const bool LoopsByDefault = true;
+    private const float DefaultLayer = 999;
+    private const float DefaultAnimationStepTime = 0.2f;
 
-    public Animation(float layer, ISpriteTexture texture, float x, float y, float width, float height, float animationStepTime = 0.1f)
+    private IList<int> _framesToPlay = new int[] { 0 };
+    private int _currentFrameIndex = 0;
+    private bool _looping;
+    private float _timeToNextFrame;
+
+    public Animation(ISpriteTexture texture, float x, float y, float width, float height, float layer = DefaultLayer, float animationStepTime = DefaultAnimationStepTime)
         : base(texture, x, y, width, height, layer)
     {
-        AnimStepTime = animationStepTime;
+        AnimationStepTime = animationStepTime;
     }
 
-    public Animation(float layer, ISpriteTexture texture, Rect r, float animationStepTime = 0.1f)
-        : this(layer, texture, r.X, r.Y, r.W, r.H, animationStepTime)
+    public Animation(ISpriteTexture texture, Rect r, float layer = DefaultLayer, float animationStepTime = DefaultAnimationStepTime)
+        : this(texture, r.X, r.Y, r.W, r.H, layer, animationStepTime)
     {
     }
 
-    public Animation(float layer, ISpriteTexture texture, Point size, float animationStepTime = 0.1f)
-        : this(layer, texture, 0, 0, size.X, size.Y, animationStepTime)
+    public Animation(ISpriteTexture texture, Point position, float width, float height, float layer = DefaultLayer, float animationStepTime = DefaultAnimationStepTime)
+        : this(texture, position.X, position.Y, width, height, layer, animationStepTime)
     {
     }
 
-    public Animation(float layer, ISpriteTexture texture, float width, float height, float animationStepTime = 0.1f)
-        : this(layer, texture, 0, 0, width, height, animationStepTime)
+    public Animation(ISpriteTexture texture, Point size, float layer = DefaultLayer, float animationStepTime = DefaultAnimationStepTime)
+        : this(texture, 0, 0, size.X, size.Y, layer, animationStepTime)
     {
     }
 
-    public bool Active { get; set; } = true;
+    public Animation(ISpriteTexture texture, float width, float height, float layer = DefaultLayer, float animationStepTime = DefaultAnimationStepTime)
+        : this(texture, 0, 0, width, height, layer, animationStepTime)
+    {
+    }
 
-    public float TimeToNextFrame { get; set; }
+    public bool Active { get; set; } = false;
 
-    public float AnimStepTime { get; set; }
+    public float AnimationStepTime { get; set; }
 
-    public bool Playing { get; set; }
-
-    public int[] AllFrames => Enumerable.Range(0, TotalFrames).ToArray();
+    public IList<int> AllFrames => Enumerable.Range(0, TotalFrames).ToArray();
 
     public event EventHandler? AnimationComplete;
 
     protected void OnAnimationComplete()
     {
-        if (_onComplete != null)
-            _onComplete();
-
         AnimationComplete?.Invoke(this, EventArgs.Empty);
     }
 
     /// <summary>
-    /// Starts this animation copying another animation, including its current frame and remaining frame time
+    /// Start playing the animation going through the specified frames, starting at the index specified and with the remaining time of that frame, then continuing, taking AnimationStepTime per frame after that.
     /// </summary>
-    /// <param name="other"></param>
-    public void PlayMatching(Animation other) => PlayFrom(other._loopType, other._playIndex, other.TimeToNextFrame, other._framesToPlay);
-
-    public void PlayAllOnce(Action actionOnComplete)
+    /// <param name="frames">the frames to include (0-indexed)</param>
+    /// <param name="currentFrameIndex"></param>
+    /// <param name="currentFrameRemainingTime"></param>
+    /// <param name="looping"></param>
+    public void Play(IList<int> frames, int currentFrameIndex, float currentFrameRemainingTime, bool looping = LoopsByDefault)
     {
-        Play(LoopType.OneShot, AllFrames);
-        _onComplete = actionOnComplete;
+        Active = true;
+        _framesToPlay = frames;
+        _currentFrameIndex = currentFrameIndex;
+        _timeToNextFrame = currentFrameRemainingTime;
+        Frame = frames[currentFrameIndex];
+        _looping = looping;
     }
-
-    public void PlayAllOnce() => Play(LoopType.OneShot, AllFrames);
-
-    public void PlayAllLooping() => Play(LoopType.Looping, AllFrames);
 
     /// <summary>
-    /// Fixes the Sprite with a single frame
+    /// Plays the animation going through the specified frames, taking AnimationStepTime per frame. If no frames are provided, all frames will play.
     /// </summary>
-    /// <param name="frame"></param>
-    public void Play(int frame) => Play(LoopType.OneShot, frame);
-
-    public void Play(LoopType loopType, params int[] frames) => PlayFrom(loopType, 0, AnimStepTime, frames);
-
-    public void PlayOnce(Action actionOnComplete, int startFrame, params int[] frames)
+    /// <param name="looping">Whether the loop the animation.</param>
+    /// <param name="frames">The 0-indexed frames to include. Omit to loop all frames.</param>
+    public void Play(bool looping, params int[] frames)
     {
-        PlayFrom(LoopType.OneShot, 0, AnimStepTime, frames);
-        _onComplete = actionOnComplete;
+        if (!frames.Any())
+        {
+            Play(AllFrames, 0, AnimationStepTime, looping);
+        }
+        else
+        {
+            Play(frames, 0, AnimationStepTime, looping);
+        }
     }
 
-    public void PlayFrom(LoopType loopType, int fromIndex, float currentFrameRemainingTime, params int[] frames)
-    {
-        Playing = true;
-        _framesToPlay = frames;
-        _playIndex = fromIndex;
-        TimeToNextFrame = currentFrameRemainingTime;
-        Frame = frames[fromIndex];
-        _loopType = loopType;
-    }
+    /// <summary>
+    /// Plays the animation going through the specified frames, taking AnimationStepTime per frame.
+    /// </summary>
+    /// <param name="frames">The 0-indexed frames to include</param>
+    public void Play(params int[] frames) => Play(LoopsByDefault, frames);
+
+    /// <summary>
+    /// Starts this animation copying another animation frame indices, current frame and remaining frame time
+    /// </summary>
+    /// <param name="other">The animation to mimic</param>
+    public void Play(Animation other) => Play(other._framesToPlay, other._currentFrameIndex, other._timeToNextFrame, other._looping);
 
     public virtual void Update(float elapsed)
     {
-        if (Playing && _framesToPlay.Length > 1)
+        if (Active && _framesToPlay.Count > 1)
         {
-            TimeToNextFrame -= (float)elapsed;
-            while (TimeToNextFrame <= 0)
+            _timeToNextFrame -= elapsed;
+
+            while (_timeToNextFrame <= 0)
             {
-                if (_playIndex == _framesToPlay.Length - 1 && _loopType == LoopType.OneShot)
+                if (_currentFrameIndex == _framesToPlay.Count - 1 && !_looping)
                 {
-                    Playing = false;
-                    TimeToNextFrame = 0;
+                    Active = false;
+
+                    _timeToNextFrame = 0;
+
                     OnAnimationComplete();
+
                     break;
                 }
                 else
                 {
-                    _playIndex = Maths.Mod(_playIndex + 1, _framesToPlay.Length);
-                    Frame = _framesToPlay[_playIndex];
-                    TimeToNextFrame += AnimStepTime;
+                    _currentFrameIndex = Maths.Mod(_currentFrameIndex + 1, _framesToPlay.Count);
+
+                    Frame = _framesToPlay[_currentFrameIndex];
+
+                    _timeToNextFrame += AnimationStepTime;
                 }
             }
         }
