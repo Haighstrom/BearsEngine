@@ -33,7 +33,7 @@ public class FillableBar : RectGraphicBase
     }
 
     public FillableBar(string graphicPath, float x, float y, float w, float h, float initialAmountFilled = 0)
-        : base(new DefaultShader(), x, y, w, h)
+        : base(x, y, w, h)
     {
         _texture = OpenGLHelper.LoadTexture(graphicPath);
         AmountFilled = initialAmountFilled;
@@ -99,13 +99,9 @@ public class FillableBar : RectGraphicBase
 
         var mv = Matrix3.Translate(ref modelView, X, Y);
 
-        if (OpenGLHelper.LastBoundTexture != _texture.ID)
-        {
-            OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, _texture.ID);
-            OpenGLHelper.LastBoundTexture = _texture.ID;
-        }
+        OpenGLHelper.BindTexture(_texture);
 
-        BindVertexBuffer();
+        OpenGLHelper.BindVertexBuffer(VertexBuffer);
 
         if (_verticesChanged)
         {
@@ -140,6 +136,6 @@ public class FillableBar : RectGraphicBase
 
         Shader.Render(ref projection, ref mv, _vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLES);
 
-        UnbindVertexBuffer();
+        OpenGLHelper.UnbindVertexBuffer();
     }
 }

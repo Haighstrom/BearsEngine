@@ -41,11 +41,7 @@ public class SimpleGraphic : IRenderable
             OpenGLHelper.LastBoundVertexBuffer = VertexBuffer;
         }
 
-        if (OpenGLHelper.LastBoundTexture != Texture.ID)
-        {
-            OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, Texture.ID);
-            OpenGLHelper.LastBoundTexture = Texture.ID;
-        }
+        OpenGLHelper.BindTexture(Texture);
 
         Shader.Render(ref projection, ref modelView, Vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLES);
 

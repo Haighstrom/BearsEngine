@@ -32,7 +32,7 @@ public class Panel : RectGraphicBase
     }
 
     public Panel(string imgPath, float x, float y, float w, float h)
-        : base(new DefaultShader(), x, y, w, h)
+        : base(x, y, w, h)
     {
         Texture = OpenGLHelper.LoadTexture(imgPath);
     }
@@ -85,13 +85,9 @@ public class Panel : RectGraphicBase
 
         var mv = Matrix3.Translate(ref modelView, X, Y);
 
-        if (OpenGLHelper.LastBoundTexture != Texture.ID)
-        {
-            OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, Texture.ID);
-            OpenGLHelper.LastBoundTexture = Texture.ID;
-        }
+        OpenGLHelper.BindTexture(_texture);
 
-        BindVertexBuffer();
+        OpenGLHelper.BindVertexBuffer(VertexBuffer);
 
         if (_verticesChanged)
         {
@@ -150,7 +146,7 @@ public class Panel : RectGraphicBase
 
         Shader.Render(ref projection, ref mv, _vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLE_STRIP);
 
-        UnbindVertexBuffer();
+        OpenGLHelper.UnbindVertexBuffer();
     }
     
 }

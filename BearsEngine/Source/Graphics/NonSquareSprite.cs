@@ -13,16 +13,16 @@ public class NonSquareSprite : RectGraphicBase
     private readonly IList<(Point OutputSize, Rect TextureSource)> _frames;
     
     public NonSquareSprite(float layer, string imgPath, float x, float y, IList<(Point OutputSize, Rect TextureSource)> frames, int initialFrame = 0)
-        : base(new DefaultShader(), layer, x, y, frames[initialFrame].OutputSize.X, frames[initialFrame].OutputSize.Y)
+        : base(layer, x, y, frames[initialFrame].OutputSize.X, frames[initialFrame].OutputSize.Y)
     {
         _frames = frames;
         _texture = OpenGLHelper.LoadTexture(imgPath);
 
         Frame = initialFrame;
 
-        BindVertexBuffer();
+        OpenGLHelper.BindVertexBuffer(VertexBuffer);
         SetVertices();
-        UnbindVertexBuffer();
+        OpenGLHelper.UnbindVertexBuffer();
     }
 
     private Rect GetTextureSource() => _frames[_currentFrame].TextureSource;
@@ -79,13 +79,9 @@ public class NonSquareSprite : RectGraphicBase
 
         var mv = Matrix3.Translate(ref modelView, X, Y);
 
-        if (OpenGLHelper.LastBoundTexture != _texture.ID)
-        {
-            OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, _texture.ID);
-            OpenGLHelper.LastBoundTexture = _texture.ID;
-        }
+        OpenGLHelper.BindTexture(_texture);
 
-        BindVertexBuffer();
+        OpenGLHelper.BindVertexBuffer(VertexBuffer);
 
         if (_verticesChanged)
         {
@@ -94,7 +90,7 @@ public class NonSquareSprite : RectGraphicBase
 
         Shader.Render(ref projection, ref mv, _vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLE_STRIP);
 
-        UnbindVertexBuffer();
+        OpenGLHelper.UnbindVertexBuffer();
     }
     
 }

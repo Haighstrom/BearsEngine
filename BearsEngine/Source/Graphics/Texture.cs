@@ -1,7 +1,15 @@
-﻿namespace BearsEngine.Graphics;
+﻿using System.Diagnostics.CodeAnalysis;
 
-public readonly struct Texture
+namespace BearsEngine.Graphics;
+
+public class Texture : ITexture
 {
+    public Texture()
+    {
+        
+    }
+
+    [SetsRequiredMembers]
     public Texture(int id, int width, int height)
     {
         ID = id;
@@ -9,9 +17,9 @@ public readonly struct Texture
         Height = height;
     }
 
-    public int ID { get; init; }
+    public required int ID { get; init; }
 
-    public int Width { get; init; }
+    public required int Width { get; init; }
 
-    public int Height { get; init; }
+    public required int Height { get; init; }
 }

@@ -1,4 +1,5 @@
-﻿using BearsEngine.SystemTests.Source.BearSpinner;
+﻿using BearsEngine.SystemTests.Source.AnimationTest;
+using BearsEngine.SystemTests.Source.BearSpinner;
 using BearsEngine.SystemTests.Source.ConsoleDemo;
 using BearsEngine.SystemTests.Source.Globals;
 using BearsEngine.SystemTests.Source.InputDemo;
@@ -39,6 +40,8 @@ internal class MenuScreen : Screen
         AddDemoWorldButton(app, 0, 1, GA.GFX.InputDemo.Icon, "Input Demo", new InputDemoScreen(app, screenFactory));
 
         AddDemoWorldButton(app, 1, 1, GA.GFX.ConsoleDemo.Icon, "Console Demo", new ConsoleDemoScreen(app, screenFactory));
+
+        AddDemoWorldButton(app, 2, 1, GA.GFX.ConsoleDemo.Icon, "Animation Demo", new AnimationTestScreen(app, screenFactory));
     }
 
     private void AddDemoWorldButton(IGameEngine app, int row, int column, string iconPath, string description, IScene scene)

@@ -1,192 +1,135 @@
-﻿using BearsEngine.Graphics.Shaders;
-using BearsEngine.OpenGL;
+﻿using BearsEngine.OpenGL;
 
 namespace BearsEngine.Graphics;
 
-public class Sprite : RectGraphicBase
+public class Sprite : RectGraphicBase, ISprite
 {
+    private const int Vertices = 4;
     private const float DefaultLayer = 999;
 
-    private Texture _texture;
-    private Vertex[] _vertices;
-    private bool _verticesChanged = true;
-    private Point _UV1, _UV2, _UV3, _UV4;
-    private readonly float _frameW, _frameH;
-    protected int _currentFrame = 0;
-    
-    public Sprite(string imgPath, Rect r, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
-        : this(DefaultLayer, imgPath, r.X, r.Y, r.W, r.H, spriteSheetColumns, spriteSheetRows, initialFrame)
+    private ISpriteTexture _texture;
+    private bool _verticesNeedBuffering = true;
+    private int _frame = 0;
+
+    public Sprite(ISpriteTexture texture, float x, float y, float width, float height, float layer = DefaultLayer, int initialFrame = 0)
+        : base(layer, x, y, width, height)
+    {
+        _texture = texture;
+
+        _frame = initialFrame;
+    }
+
+    public Sprite(ISpriteTexture texture, Rect position, int initialFrame = 0, float layer = DefaultLayer)
+        : this(texture, position.X, position.Y, position.W, position.H, layer, initialFrame)
     {
     }
 
-    public Sprite(string imgPath, Point position, float width, float height, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
-        : this(0, imgPath, position.X, position.Y, width, height, spriteSheetColumns, spriteSheetRows, initialFrame)
+    public Sprite(ISpriteTexture texture, Point size, int initialFrame = 0, float layer = DefaultLayer)
+        : this(texture, 0, 0, size.X, size.Y, layer, initialFrame)
     {
     }
 
-    public Sprite(string imgPath, Point size, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
-        : this(DefaultLayer, imgPath, 0, 0, size.X, size.Y, spriteSheetColumns, spriteSheetRows, initialFrame)
+    public Sprite(ISpriteTexture texture, float width, float height, int initialFrame = 0, float layer = DefaultLayer)
+        : this(texture, 0, 0, width, height, layer, initialFrame)
     {
     }
-
-    public Sprite(string imgPath, float width, float height, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
-        : this(DefaultLayer, imgPath, 0, 0, width, height, spriteSheetColumns, spriteSheetRows, initialFrame)
-    {
-    }
-
-    public Sprite(string imgPath, float x, float y, float w, float h, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
-        : this(DefaultLayer, imgPath, x, y, w, h, spriteSheetColumns, spriteSheetRows, initialFrame)
-    {
-    }
-
-    public Sprite(float layer, string imgPath, Rect r, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
-        : this(layer, imgPath, r.X, r.Y, r.W, r.H, spriteSheetColumns, spriteSheetRows, initialFrame)
-    {
-    }
-
-    public Sprite(float layer, string imgPath, Point size, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
-        : this(layer, imgPath, 0, 0, size.X, size.Y, spriteSheetColumns, spriteSheetRows, initialFrame)
-    {
-    }
-
-    public Sprite(float layer, string imgPath, float width, float height, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
-        : this(layer, imgPath, 0, 0, width, height, spriteSheetColumns, spriteSheetRows, initialFrame)
-    {
-    }
-
-    public Sprite(float layer, string imgPath, float x, float y, float w, float h, int spriteSheetColumns, int spriteSheetRows, int initialFrame = 0)
-        : base(new DefaultShader(), layer, x, y, w, h)
-    {
-        Texture = OpenGLHelper.LoadSpriteTexture(imgPath, spriteSheetRows, spriteSheetColumns, TEXPARAMETER_VALUE.GL_NEAREST);
-
-        FramesAcross = spriteSheetColumns;
-        FramesDown = spriteSheetRows;
-
-        _frameW = (1f - (1 + spriteSheetColumns) * PaddingWidth) / spriteSheetColumns;
-        _frameH = (1f - (1 + spriteSheetRows) * PaddingHeight) / spriteSheetRows;
-
-
-        _UV1.X = PaddingWidth;
-        _UV1.Y = PaddingHeight;
-
-        _UV2 = _UV1 + new Point(_frameW, 0);
-        _UV3 = _UV1 + new Point(0, _frameH);
-        _UV4 = _UV1 + new Point(_frameW, _frameH);
-
-        Frame = initialFrame;
-    }
-    
 
     public override float W
     {
         set
         {
             base.W = value;
-            _verticesChanged = true;
+            _verticesNeedBuffering = true;
         }
     }
-    
 
     public override float H
     {
         set
         {
             base.H = value;
-            _verticesChanged = true;
+            _verticesNeedBuffering = true;
         }
     }
-    
 
     public override Colour Colour
     {
         set
         {
             base.Colour = value;
-            _verticesChanged = true;
+            _verticesNeedBuffering = true;
         }
     }
-    
 
-    public Texture Texture
+    public ISpriteTexture Texture
     {
         get => _texture;
         set
         {
             _texture = value;
-            _verticesChanged = true;
+            _verticesNeedBuffering = true;
         }
     }
-    
-
-    public int FramesAcross { get; }
-
-    public int FramesDown { get; }
 
     public int Frame
     {
-        get => _currentFrame;
+        get => _frame;
         set
         {
-            if (value == _currentFrame)
-                return;
+            if (_frame != value)
+            {
+                _frame = Maths.Mod(value, TotalFrames);
 
-            _currentFrame = Maths.Mod(value, TotalFrames);
-
-            int indexX = Maths.Mod(_currentFrame, FramesAcross);
-            int indexY = _currentFrame / FramesAcross;
-
-            _UV1.X = PaddingWidth + indexX * (_frameW + PaddingWidth);
-            _UV1.Y = PaddingHeight + indexY * (_frameH + PaddingHeight);
-
-            _UV2 = _UV1 + new Point(_frameW, 0);
-            _UV3 = _UV1 + new Point(0, _frameH);
-            _UV4 = _UV1 + new Point(_frameW, _frameH);
-
-            _verticesChanged = true;
+                _verticesNeedBuffering = true;
+            }
         }
     }
-    
 
-    public int TotalFrames => FramesAcross * FramesDown;
+    public int TotalFrames => _texture.Frames;
 
     public int LastFrame => TotalFrames - 1;
 
-    protected float PaddingWidth => (float)OpenGLHelper.TEXTURE_SPRITE_PADDING / Texture.Width;
-    protected float PaddingHeight => (float)OpenGLHelper.TEXTURE_SPRITE_PADDING / Texture.Height;
+    private (Point UV1, Point UV2, Point UV3, Point UV4) GetUVCoordinates()
+    {
+        return _texture.GetUVCoordinates(Frame);
+    }
+
+    private void BufferVertices()
+    {
+        var (uv1, uv2, uv3, uv4) = GetUVCoordinates();
+
+        var vertices = new Vertex[Vertices]
+        {
+            new(new Point(0, 0), Colour, uv1),
+            new(new Point(W, 0), Colour, uv2),
+            new(new Point(0, H), Colour, uv3),
+            new(new Point(W, H), Colour, uv4)
+        };
+
+        OpenGLHelper.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, vertices.Length * Vertex.STRIDE, vertices, USAGE_PATTERN.GL_STREAM_DRAW);
+    }
 
     public override void Render(ref Matrix3 projection, ref Matrix3 modelView)
     {
         if (W == 0 || H == 0)
+        {
             return;
+        }
 
         var mv = Matrix3.Translate(ref modelView, X, Y);
 
-        if (OpenGLHelper.LastBoundTexture != Texture.ID)
+        OpenGLHelper.BindTexture(_texture);
+
+        OpenGLHelper.BindVertexBuffer(VertexBuffer);
+
+        if (_verticesNeedBuffering)
         {
-            OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, Texture.ID);
-            OpenGLHelper.LastBoundTexture = Texture.ID;
+            BufferVertices();
+            _verticesNeedBuffering = false;
         }
 
-        BindVertexBuffer();
+        Shader.Render(ref projection, ref mv, Vertices, PRIMITIVE_TYPE.GL_TRIANGLE_STRIP);
 
-        if (_verticesChanged)
-        {
-            _vertices = new Vertex[4]
-            {
-                new Vertex(new Point(0, 0), Colour, _UV1),
-                new Vertex(new Point(W, 0), Colour, _UV2),
-                new Vertex(new Point(0, H), Colour, _UV3),
-                new Vertex(new Point(W, H), Colour, _UV4)
-            };
-
-            OpenGLHelper.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
-
-            _verticesChanged = false;
-        }
-
-        Shader.Render(ref projection, ref mv, _vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLE_STRIP);
-
-        UnbindVertexBuffer();
+        OpenGLHelper.UnbindVertexBuffer();
     }
-    
 }

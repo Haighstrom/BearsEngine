@@ -19,13 +19,11 @@ public enum MSAA_SAMPLES
 
 public static class OpenGLHelper
 {
-    internal const int TEXTURE_SPRITE_PADDING = 2;
+    private static int s_lastBoundTexture;
 
     internal static int LastBoundFrameBuffer { get; set; }
 
     internal static int LastBoundShader { get; set; }
-
-    internal static int LastBoundTexture { get; set; }
 
     internal static int LastBoundVertexBuffer { get; set; }
 
@@ -49,7 +47,7 @@ public static class OpenGLHelper
         return shaderID;
     }
 
-    private static Texture GenPaddedTexture(string path, int spriteRows, int spriteColumns, TEXPARAMETER_VALUE minFilter = TEXPARAMETER_VALUE.GL_NEAREST, TEXPARAMETER_VALUE magFilter = TEXPARAMETER_VALUE.GL_NEAREST, TEXPARAMETER_VALUE wrapMode = TEXPARAMETER_VALUE.GL_CLAMP_TO_EDGE)
+    private static ISpriteTexture GenPaddedTexture(string path, int spriteRows, int spriteColumns, int padding, TEXPARAMETER_VALUE minFilter = TEXPARAMETER_VALUE.GL_NEAREST, TEXPARAMETER_VALUE magFilter = TEXPARAMETER_VALUE.GL_NEAREST, TEXPARAMETER_VALUE wrapMode = TEXPARAMETER_VALUE.GL_CLAMP_TO_EDGE)
     {
         if (string.IsNullOrEmpty(path))
             throw new ArgumentException(path);
@@ -58,20 +56,19 @@ public static class OpenGLHelper
 
         var textureID = GenTexture();
 
-        if (LastBoundTexture != textureID)
+        if (s_lastBoundTexture != textureID)
         {
             OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, textureID);
-            LastBoundTexture = textureID;
+            s_lastBoundTexture = textureID;
         }
 
         var BMP = new System.Drawing.Bitmap(path);
 
         //Snip individual bmps out for each sprite cell
-        int pad = TEXTURE_SPRITE_PADDING;
         int w = BMP.Width / spriteColumns;
         int h = BMP.Height / spriteRows;
-        int newW = BMP.Width + (spriteColumns + 1) * pad;
-        int newH = BMP.Height + (spriteRows + 1) * pad;
+        int newW = BMP.Width + (spriteColumns + 1) * padding;
+        int newH = BMP.Height + (spriteRows + 1) * padding;
 
         var paddedBMP = new System.Drawing.Bitmap(newW, newH);
         using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(paddedBMP))
@@ -81,7 +78,7 @@ public static class OpenGLHelper
             for (int i = 0; i < spriteColumns; i++)
                 for (int j = 0; j < spriteRows; j++)
                 {
-                    g.DrawImage(BMP.Clone(new System.Drawing.Rectangle(i * w, j * h, w, h), System.Drawing.Imaging.PixelFormat.Format32bppArgb), new System.Drawing.Rectangle(pad + i * (w + pad), pad + j * (h + pad), w, h));
+                    g.DrawImage(BMP.Clone(new System.Drawing.Rectangle(i * w, j * h, w, h), System.Drawing.Imaging.PixelFormat.Format32bppArgb), new System.Drawing.Rectangle(padding + i * (w + padding), padding + j * (h + padding), w, h));
                 }
         }
 
@@ -104,7 +101,7 @@ public static class OpenGLHelper
         BMP.Dispose();
         paddedBMP.Dispose();
 
-        return new Texture(textureID, newW, newH);
+        return new SpriteTexture(textureID, newW, newH, spriteColumns, spriteRows, padding);
     }
 
     private static Texture GenTexture(string path, TEXPARAMETER_VALUE minMagFilter = TEXPARAMETER_VALUE.GL_NEAREST) => GenTexture(new System.Drawing.Bitmap(path), minMagFilter);
@@ -249,7 +246,7 @@ public static class OpenGLHelper
         };
 
         OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, t.ID);
-        LastBoundTexture = t.ID;
+        s_lastBoundTexture = t.ID;
 
         OpenGL32.glTexParameteri(TEXTURE_TARGET.GL_TEXTURE_2D, TEXPARAMETER_NAME.GL_TEXTURE_MAG_FILTER, minMagFilter);
         OpenGL32.glTexParameteri(TEXTURE_TARGET.GL_TEXTURE_2D, TEXPARAMETER_NAME.GL_TEXTURE_MIN_FILTER, minMagFilter);
@@ -268,10 +265,10 @@ public static class OpenGLHelper
 
         OpenGL32.glPixelStorei(PIXEL_STORE_MODE.GL_UNPACK_ALIGNMENT, 1);
 
-        if (LastBoundTexture != t.ID)
+        if (s_lastBoundTexture != t.ID)
         {
             OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, t.ID);
-            LastBoundTexture = t.ID;
+            s_lastBoundTexture = t.ID;
         }
 
         GCHandle pinned = GCHandle.Alloc(pixels, GCHandleType.Pinned);
@@ -350,23 +347,23 @@ public static class OpenGLHelper
     /// <summary>
     /// Creates a Texture2D by loading it from file (32bit png type), or retrieves it from the texture dictionary if it has already been loaded. Pads transparent border around the cells of a spritesheet to prevent black lines appearing at top and bottom of images etc
     /// </summary>
-    internal static Texture LoadSpriteTexture(string path, int spriteRows, int spriteColumns, TEXPARAMETER_VALUE minFilter, TEXPARAMETER_VALUE maxFilter, TEXPARAMETER_VALUE wrapMode)
+    internal static ISpriteTexture LoadSpriteTexture(string path, int spriteRows, int spriteColumns, int padding, TEXPARAMETER_VALUE minFilter, TEXPARAMETER_VALUE maxFilter, TEXPARAMETER_VALUE wrapMode)
     {
-        if (TextureDictionary.ContainsKey(path))
-            return TextureDictionary[path];
+        //if (TextureDictionary.ContainsKey(path))
+        //    return TextureDictionary[path];
 
-        Texture t = GenPaddedTexture(path, spriteRows, spriteColumns, minFilter, maxFilter, wrapMode);
-        TextureDictionary.Add(path, t);
+        var texture = GenPaddedTexture(path, spriteRows, spriteColumns, padding, minFilter, maxFilter, wrapMode);
+        //TextureDictionary.Add(path, t);
 
-        return t;
+        return texture;
     }
 
     /// <summary>
     /// Creates a Texture2D by loading it from file (32bit png type), or retrieves it from the texture dictionary if it has already been loaded. Pads transparent border around the cells of a spritesheet to prevent black lines appearing at top and bottom of images etc
     /// </summary>
-    public static Texture LoadSpriteTexture(string path, int spriteRows, int spriteColumns, TEXPARAMETER_VALUE filter)
+    public static ISpriteTexture LoadSpriteTexture(string path, int spriteRows, int spriteColumns, int padding, TEXPARAMETER_VALUE filter)
     {
-        return LoadSpriteTexture(path, spriteRows, spriteColumns, filter, filter, TEXPARAMETER_VALUE.GL_CLAMP_TO_EDGE);
+        return LoadSpriteTexture(path, spriteRows, spriteColumns, padding, filter, filter, TEXPARAMETER_VALUE.GL_CLAMP_TO_EDGE);
     }
 
     public static Rect NonZeroAlphaRegion(System.Drawing.Bitmap b)
@@ -612,4 +609,36 @@ public static class OpenGLHelper
     {
         OpenGL32.glViewport((int)newViewport.X, (int)newViewport.Y, (int)newViewport.W, (int)newViewport.H);
     }
+
+    public static void BindVertexBuffer(int vertexBufferID)
+    {
+        if (LastBoundVertexBuffer != vertexBufferID)
+        {
+            OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, vertexBufferID);
+            LastBoundVertexBuffer = vertexBufferID;
+        }
+    }
+
+    public static void UnbindVertexBuffer()
+    {
+        OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, 0);
+        LastBoundVertexBuffer = 0;
+    }
+
+    public static void BindTexture(ITexture texture)
+    {
+        if (s_lastBoundTexture != texture.ID)
+        {
+            OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, texture.ID);
+            OpenGLHelper.s_lastBoundTexture = texture.ID;
+        }
+    }
+
+    public static void UnbindTexture()
+    {
+        OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, 0);
+        s_lastBoundTexture = 0;
+    }
+
+
 }

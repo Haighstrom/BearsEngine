@@ -122,8 +122,7 @@ public class FixedSizedFBOCamera : EntityBase, ICamera //todo: disposable - remo
         OpenGL32.glTexParameteri(TEXTURE_TARGET.GL_TEXTURE_2D, TEXPARAMETER_NAME.GL_TEXTURE_WRAP_S, TEXPARAMETER_VALUE.GL_CLAMP_TO_EDGE);
         OpenGL32.glTexParameteri(TEXTURE_TARGET.GL_TEXTURE_2D, TEXPARAMETER_NAME.GL_TEXTURE_WRAP_T, TEXPARAMETER_VALUE.GL_CLAMP_TO_EDGE);
 
-        OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, 0);
-        OpenGLHelper.LastBoundTexture = 0;
+        OpenGLHelper.UnbindTexture();
 
         _frameBufferShaderPassID = OpenGLHelper.GenFramebuffer();
 
@@ -242,11 +241,7 @@ public class FixedSizedFBOCamera : EntityBase, ICamera //todo: disposable - remo
         OpenGL32.glBindFramebuffer(FRAMEBUFFER_TARGET.GL_FRAMEBUFFER, OpenGLHelper.LastBoundFrameBuffer);
 
         //Bind the FBO to be drawn
-        if (OpenGLHelper.LastBoundTexture != _frameBufferShaderPassTexture.ID)
-        {
-            OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, _frameBufferShaderPassTexture.ID);
-            OpenGLHelper.LastBoundTexture = _frameBufferShaderPassTexture.ID;
-        }
+        OpenGLHelper.BindTexture(_frameBufferShaderPassTexture);
 
         //Set some other blend fucntion when render the FBO texture which apparantly lets the layer alpha blend with the one beneath?
         OpenGL32.glBlendFunc(BLEND_SCALE_FACTOR.GL_ONE, BLEND_SCALE_FACTOR.GL_ONE_MINUS_SRC_ALPHA);
@@ -263,8 +258,7 @@ public class FixedSizedFBOCamera : EntityBase, ICamera //todo: disposable - remo
         Shader.Render(ref projection, ref mv, Vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLE_STRIP);
 
         //Unbind textures            
-        OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, 0);
-        OpenGLHelper.LastBoundTexture = 0;
+        OpenGLHelper.UnbindTexture();
     }
 
     public void Resize(Point newSize) => Resize(newSize.X, newSize.Y);

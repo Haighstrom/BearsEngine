@@ -61,11 +61,7 @@ public class SpriteMap : AddableRectBase, IRectGraphic
     {
         var mv = Matrix3.Translate(ref modelView, X, Y);
 
-        if (OpenGLHelper.LastBoundTexture != _texture.ID)
-        {
-            OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, _texture.ID);
-            OpenGLHelper.LastBoundTexture = _texture.ID;
-        }
+        OpenGLHelper.BindTexture(_texture);
 
         if (OpenGLHelper.LastBoundVertexBuffer != _ID)
             Bind();

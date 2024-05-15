@@ -9,16 +9,16 @@ public abstract class RectGraphicBase : AddableRectBase, IRectGraphic
 
     private float _layer;
 
-    public RectGraphicBase(IShader shader, float x, float y, float w, float h)
-        : this(shader, DefaultLayer, x, y, w, h)
+    public RectGraphicBase(float x, float y, float w, float h)
+        : this(DefaultLayer, x, y, w, h)
     {
     }
 
-    public RectGraphicBase(IShader shader, float layer, float x, float y, float w, float h)
+    public RectGraphicBase(float layer, float x, float y, float w, float h)
         : base(x, y, w, h)
     {
         _layer = layer;
-        Shader = shader;
+        Shader = new DefaultShader();
         VertexBuffer = OpenGLHelper.GenBuffer();
     }
 
@@ -55,20 +55,5 @@ public abstract class RectGraphicBase : AddableRectBase, IRectGraphic
 
     public event EventHandler<LayerChangedEventArgs>? LayerChanged;
 
-    public void BindVertexBuffer()
-    {
-        if (OpenGLHelper.LastBoundVertexBuffer != VertexBuffer)
-        {
-            OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, VertexBuffer);
-            OpenGLHelper.LastBoundVertexBuffer = VertexBuffer;
-        }
-    }
-
-    public abstract void Render(ref Matrix3 projection, ref Matrix3 modelView);      
-
-    public void UnbindVertexBuffer()
-    {
-        OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, 0);
-        OpenGLHelper.LastBoundVertexBuffer = 0;
-    }  
+    public abstract void Render(ref Matrix3 projection, ref Matrix3 modelView);
 }

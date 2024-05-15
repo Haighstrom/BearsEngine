@@ -54,7 +54,7 @@ public class Image : RectGraphicBase
     }
 
     public Image(float layer, string imgPath, float x, float y, float width, float height)
-        : base(new DefaultShader(), layer, x, y, width, height)
+        : base(layer, x, y, width, height)
     {
         Texture = OpenGLHelper.LoadTexture(imgPath);
     }
@@ -86,9 +86,11 @@ public class Image : RectGraphicBase
     }
 
     public Image(float layer, Colour colour, float x, float y, float width, float height)
-        : base(new SolidColourShader(), layer, x, y, width, height)
+        : base(layer, x, y, width, height)
     {
         Colour = colour;
+        Shader = new SolidColourShader();
+        Texture = new Texture(0, 0, 0);
     }
 
 
@@ -110,7 +112,7 @@ public class Image : RectGraphicBase
     /// Create an Image of a texture with a forced size
     /// </summary>
     public Image(Texture texture, float x, float y, float width, float height)
-        : base(new DefaultShader(), x, y, width, height)
+        : base(x, y, width, height)
     {
         Texture = texture;
     }
@@ -163,20 +165,16 @@ public class Image : RectGraphicBase
 
         mv = Matrix3.Translate(ref mv, X, Y);
 
-        if (OpenGLHelper.LastBoundTexture != Texture.ID)
-        {
-            OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D, Texture.ID);
-            OpenGLHelper.LastBoundTexture = Texture.ID;
-        }
+        OpenGLHelper.BindTexture(Texture);
 
-        BindVertexBuffer();
+        OpenGLHelper.BindVertexBuffer(VertexBuffer);
 
         if (_verticesChanged)
             UpdateVertices();
 
         Shader.Render(ref projection, ref mv, _vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLE_STRIP);
 
-        UnbindVertexBuffer();
+        OpenGLHelper.UnbindVertexBuffer();
     }
 
     private void UpdateVertices()

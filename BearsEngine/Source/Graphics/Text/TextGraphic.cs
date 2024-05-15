@@ -82,34 +82,33 @@ public class TextGraphic : RectGraphicBase, IDisposable
     }
 
     public TextGraphic(TextTheme theme, Rect position, string text = "")
-        : this(new DefaultShader(), theme.Font, theme.FontColour, position.X, position.Y, position.W, position.H, text, theme.FontScale, theme.FontScale, theme.HAlignment, theme.VAlignment)
+        : this(theme.Font, theme.FontColour, position.X, position.Y, position.W, position.H, text, theme.FontScale, theme.FontScale, theme.HAlignment, theme.VAlignment)
     {
     }
 
     public TextGraphic(TextTheme theme, float x, float y, float width, float height, string text = "")
-        : this(new DefaultShader(), theme.Font, theme.FontColour, x, y, width, height, text, theme.FontScale, theme.FontScale, theme.HAlignment, theme.VAlignment)
+        : this(theme.Font, theme.FontColour, x, y, width, height, text, theme.FontScale, theme.FontScale, theme.HAlignment, theme.VAlignment)
     {
     }
 
     public TextGraphic(TextTheme theme, Point size, string text = "")
-        : this(new DefaultShader(), theme.Font, theme.FontColour, 0, 0, size.X, size.Y, text, theme.FontScale, theme.FontScale, theme.HAlignment, theme.VAlignment)
+        : this(theme.Font, theme.FontColour, 0, 0, size.X, size.Y, text, theme.FontScale, theme.FontScale, theme.HAlignment, theme.VAlignment)
     {
     }
 
     public TextGraphic(HFont font, Colour colour, Rect position, string text = "")
-        : this(new DefaultShader(), font, colour, position.X, position.Y, position.W, position.H, text)
+        : this(font, colour, position.X, position.Y, position.W, position.H, text)
     {
     }
 
     public TextGraphic(HFont font, Colour colour, Point size, string text = "")
-        : this(new DefaultShader(), font, colour, 0, 0, size.X, size.Y, text)
+        : this(font, colour, 0, 0, size.X, size.Y, text)
     {
     }
 
-    public TextGraphic(IShader shader, HFont font, Colour colour, float x, float y, float w, float h, string text, float scaleX = 1, float scaleY = 1, HAlignment hAlignment = HAlignment.Left, VAlignment vAlignment = VAlignment.Top)
-        : base(shader, x, y, w, h)
+    public TextGraphic(HFont font, Colour colour, float x, float y, float w, float h, string text, float scaleX = 1, float scaleY = 1, HAlignment hAlignment = HAlignment.Left, VAlignment vAlignment = VAlignment.Top)
+        : base(x, y, w, h)
     {
-        Ensure.ArgumentNotNull(shader, nameof(shader));
         Ensure.ArgumentNotNull(font, nameof(font));
         Ensure.ArgumentNotNull(text, nameof(text));
         Ensure.ArgumentNotNegative(w, nameof(w));

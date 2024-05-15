@@ -8,51 +8,29 @@ public enum LoopType
 
 public class Animation : Sprite, IUpdatable
 {
-    private const float DefaultLayer = 999;
-
     private int[] _framesToPlay = new int[] { 0 };
     private int _playIndex = 0;
     private LoopType _loopType;
     private Action? _onComplete;
 
-    public Animation(float layer, string imgPath, float x, float y, float width, float height, int spriteSheetColumns, int spriteSheetRows, float animationStepTime = 0.1f)
-        : base(layer, imgPath, x, y, width, height, spriteSheetColumns, spriteSheetRows)
+    public Animation(float layer, ISpriteTexture texture, float x, float y, float width, float height, float animationStepTime = 0.1f)
+        : base(texture, x, y, width, height, layer)
     {
         AnimStepTime = animationStepTime;
     }
 
-    public Animation(string imgPath, Point size, int spriteSheetColumns, int spriteSheetRows, float animationStepTime = 0.1f)
-        : this(DefaultLayer, imgPath, 0, 0, size.X, size.Y, spriteSheetColumns, spriteSheetRows, animationStepTime)
+    public Animation(float layer, ISpriteTexture texture, Rect r, float animationStepTime = 0.1f)
+        : this(layer, texture, r.X, r.Y, r.W, r.H, animationStepTime)
     {
     }
 
-    public Animation(string imgPath, float width, float height, int spriteSheetColumns, int spriteSheetRows, float animationStepTime = 0.1f)
-        : this(DefaultLayer, imgPath, 0,0,width, height, spriteSheetColumns, spriteSheetRows, animationStepTime)
+    public Animation(float layer, ISpriteTexture texture, Point size, float animationStepTime = 0.1f)
+        : this(layer, texture, 0, 0, size.X, size.Y, animationStepTime)
     {
     }
 
-    public Animation(string imgPath, float x, float y, float width, float height, int spriteSheetColumns, int spriteSheetRows, float animationStepTime = 0.1f)
-        : this(DefaultLayer, imgPath, x, y, width, height, spriteSheetColumns, spriteSheetRows, animationStepTime)
-    {
-    }
-
-    public Animation(string imgPath, Rect r, int spriteSheetColumns, int spriteSheetRows, float animationStepTime = 0.1f)
-        : this(DefaultLayer, imgPath, r.X, r.Y, r.W, r.H, spriteSheetColumns, spriteSheetRows, animationStepTime)
-    {
-    }
-
-    public Animation(float layer, string imgPath, Point size, int spriteSheetColumns, int spriteSheetRows, float animationStepTime = 0.1f)
-        : this(layer, imgPath, 0, 0, size.X, size.Y, spriteSheetColumns, spriteSheetRows, animationStepTime)
-    {
-    }
-
-    public Animation(float layer, string imgPath, float width, float height, int spriteSheetColumns, int spriteSheetRows, float animationStepTime = 0.1f)
-        : this(layer, imgPath, 0, 0, width, height, spriteSheetColumns, spriteSheetRows, animationStepTime)
-    {
-    }
-
-    public Animation(float layer, string imgPath, Rect r, int spriteSheetColumns, int spriteSheetRows, float animationStepTime = 0.1f)
-        : this(layer, imgPath, r.X, r.Y, r.W, r.H, spriteSheetColumns, spriteSheetRows, animationStepTime)
+    public Animation(float layer, ISpriteTexture texture, float width, float height, float animationStepTime = 0.1f)
+        : this(layer, texture, 0, 0, width, height, animationStepTime)
     {
     }
 
