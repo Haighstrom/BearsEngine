@@ -128,7 +128,7 @@ public class MultiLayerAnimation : RectGraphicBase, IMultiLayerAnimation
 
     public void RemoveTexture(ISpriteTexture texture)
     {
-        var layer = _textures.FirstOrDefault(x => x.Value == texture).Key;
+        var layer = _textures.First(x => x.Value.Contains(texture)).Key;
 
         _textures[layer].Remove(texture);
 
