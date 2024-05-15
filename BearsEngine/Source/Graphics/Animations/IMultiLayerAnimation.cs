@@ -2,7 +2,7 @@
 
 public interface IMultiLayerAnimation : IAnimation
 {
-    void AddTexture(ISpriteTexture texture, int layer);
+    void AddTexture(ISpriteTexture texture, float layer);
 
     void RemoveTexture(ISpriteTexture texture);
 }

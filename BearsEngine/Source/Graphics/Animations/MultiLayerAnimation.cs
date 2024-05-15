@@ -18,7 +18,7 @@ public class MultiLayerAnimation : RectGraphicBase, IMultiLayerAnimation
     private float _timeToNextFrame;
     private bool _verticesNeedBuffering = true;
     private int _frame = 0;
-    private readonly Dictionary<int, List<ISpriteTexture>> _textures = new();
+    private readonly Dictionary<float, List<ISpriteTexture>> _textures = new();
 
     public MultiLayerAnimation(float x, float y, float width, float height, float layer = DefaultLayer, float animationStepTime = DefaultAnimationStepTime)
         : base(layer, x, y, width, height)
@@ -108,7 +108,7 @@ public class MultiLayerAnimation : RectGraphicBase, IMultiLayerAnimation
         AnimationComplete?.Invoke(this, EventArgs.Empty);
     }
 
-    public void AddTexture(ISpriteTexture texture, int layer)
+    public void AddTexture(ISpriteTexture texture, float layer)
     {
         //ensure new texture is compatible
         if (_textures.Any())
@@ -128,7 +128,7 @@ public class MultiLayerAnimation : RectGraphicBase, IMultiLayerAnimation
 
     public void RemoveTexture(ISpriteTexture texture)
     {
-        int layer = _textures.FirstOrDefault(x => x.Value == texture).Key;
+        var layer = _textures.FirstOrDefault(x => x.Value == texture).Key;
 
         _textures[layer].Remove(texture);
 
