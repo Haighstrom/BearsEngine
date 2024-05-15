@@ -1,6 +1,6 @@
 ﻿namespace BearsEngine.Graphics;
 
-public class Animation : Sprite, IUpdatable
+public class Animation : Sprite, IUpdatable, IAnimation
 {
     private const bool LoopsByDefault = true;
     private const float DefaultLayer = 999;
@@ -41,7 +41,7 @@ public class Animation : Sprite, IUpdatable
 
     public float AnimationStepTime { get; set; }
 
-    public IList<int> AllFrames => Enumerable.Range(0, TotalFrames).ToArray();
+    public IList<int> AllFrames => Enumerable.Range(0, Frames).ToArray();
 
     public event EventHandler? AnimationComplete;
 

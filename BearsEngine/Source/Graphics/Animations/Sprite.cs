@@ -78,16 +78,16 @@ public class Sprite : RectGraphicBase, ISprite
         {
             if (_frame != value)
             {
-                _frame = Maths.Mod(value, TotalFrames);
+                _frame = Maths.Mod(value, Frames);
 
                 _verticesNeedBuffering = true;
             }
         }
     }
 
-    public int TotalFrames => _texture.Frames;
+    public int Frames => _texture.Frames;
 
-    public int LastFrame => TotalFrames - 1;
+    public int LastFrame => Frames - 1;
 
     private (Point UV1, Point UV2, Point UV3, Point UV4) GetUVCoordinates()
     {

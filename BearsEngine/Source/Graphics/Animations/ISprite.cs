@@ -4,7 +4,5 @@ public interface ISprite
 {
     int Frame { get; set; }
 
-    int LastFrame { get; }
-
-    int TotalFrames { get; }
+    int Frames { get; }
 }

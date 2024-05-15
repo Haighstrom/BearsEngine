@@ -32,6 +32,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Assets\GFX\AnimationTest\Face_01.png" />
+	  <None Remove="Assets\GFX\AnimationTest\HandsFront_01.png" />
+	  <None Remove="Assets\GFX\AnimationTest\HandsRear_01.png" />
+	  <None Remove="Assets\GFX\AnimationTest\Onesie_01.png" />
+	  <None Remove="Assets\GFX\AnimationTest\Tail_01.png" />
 	  <None Remove="Assets\GFX\ConsoleDemo\Icon_ConsoleDemo.png" />
 	  <None Remove="Assets\GFX\InputDemo\Icon_InputDemo.png" />
 	  <None Remove="Assets\GFX\InputDemo\MouseDisplay.png" />
