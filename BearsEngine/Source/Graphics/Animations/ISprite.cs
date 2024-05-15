@@ -1,6 +1,6 @@
 ﻿namespace BearsEngine.Graphics;
 
-public interface ISprite
+public interface ISprite : IGraphic
 {
     int Frame { get; set; }
 
