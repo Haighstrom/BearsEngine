@@ -59,6 +59,33 @@ public class MultiLayerAnimation : RectGraphicBase, IMultiLayerAnimation
         }
     }
 
+    public override float W
+    {
+        set
+        {
+            base.W = value;
+            _verticesNeedBuffering = true;
+        }
+    }
+
+    public override float H
+    {
+        set
+        {
+            base.H = value;
+            _verticesNeedBuffering = true;
+        }
+    }
+
+    public override Colour Colour
+    {
+        set
+        {
+            base.Colour = value;
+            _verticesNeedBuffering = true;
+        }
+    }
+
     public bool Active { get; set; } = false;
 
     public float AnimationStepTime { get; set; }
