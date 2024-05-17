@@ -207,28 +207,29 @@ public class GameEngine : IGameEngine
 
                 renderFramesCounter[0]++;
             }
-        }
-        while (frameCounterTime >= TimeBetweenFrameCountUpdates)
-        {
-            frameCounterTime -= TimeBetweenFrameCountUpdates;
 
-            Array.Copy(updateFramesCounter, 0, updateFramesCounter, 1, FrameCountArraySize);
-            updateFramesCounter[0] = 0;
-            UpdateFramesPerSecond = (int)(updateFramesCounter.Skip(1).Sum() * FrameCountArraySize * TimeBetweenFrameCountUpdates);
-
-            Array.Copy(renderFramesCounter, 0, renderFramesCounter, 1, FrameCountArraySize);
-            renderFramesCounter[0] = 0;
-            RenderFramesPerSecond = (int)(renderFramesCounter.Skip(1).Sum() * FrameCountArraySize * TimeBetweenFrameCountUpdates);
-        }
-
-        if (periodicLoggingTimer >= TimeBetweenPeriodicUpdates)
-        {
-            while (periodicLoggingTimer >= TimeBetweenPeriodicUpdates)
+            while (frameCounterTime >= TimeBetweenFrameCountUpdates)
             {
-                periodicLoggingTimer -= TimeBetweenPeriodicUpdates;
+                frameCounterTime -= TimeBetweenFrameCountUpdates;
+
+                Array.Copy(updateFramesCounter, 0, updateFramesCounter, 1, FrameCountArraySize);
+                updateFramesCounter[0] = 0;
+                UpdateFramesPerSecond = (int)(updateFramesCounter.Skip(1).Sum() * FrameCountArraySize * TimeBetweenFrameCountUpdates);
+
+                Array.Copy(renderFramesCounter, 0, renderFramesCounter, 1, FrameCountArraySize);
+                renderFramesCounter[0] = 0;
+                RenderFramesPerSecond = (int)(renderFramesCounter.Skip(1).Sum() * FrameCountArraySize * TimeBetweenFrameCountUpdates);
             }
 
-            LogPeriodicInfo();
+            if (periodicLoggingTimer >= TimeBetweenPeriodicUpdates)
+            {
+                while (periodicLoggingTimer >= TimeBetweenPeriodicUpdates)
+                {
+                    periodicLoggingTimer -= TimeBetweenPeriodicUpdates;
+                }
+
+                LogPeriodicInfo();
+            }
         }
     }
 
