@@ -25,6 +25,10 @@ public interface IGameEngine : IDisposable
 
     bool RunWhenUnfocussed { get; set; }
 
+    int RenderFramesPerSecond { get; }
+
+    int UpdateFramesPerSecond { get; }
+
     void Run(IScene firstScene);
 
     void ChangeScene(IScene scene);
