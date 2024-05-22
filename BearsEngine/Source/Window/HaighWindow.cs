@@ -4,6 +4,9 @@ namespace BearsEngine.Window;
 
 public class HaighWindow : IWindow
 {
+    private static IWindow? s_instance;
+    internal static IWindow Instance => s_instance ?? throw new InvalidOperationException($"{nameof(HaighWindow)}.{nameof(Instance)} was accessed before being set");
+
     private readonly IWindow _api;
 
     public HaighWindow(WindowSettings settings)
@@ -12,6 +15,8 @@ public class HaighWindow : IWindow
             _api = new Windows.WinAPIWindow(settings);
         else
             throw new NotImplementedException();
+
+        s_instance = _api;
     }
 
     public bool IsOpen => _api.IsOpen;
