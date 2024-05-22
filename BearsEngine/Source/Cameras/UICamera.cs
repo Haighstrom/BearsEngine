@@ -5,7 +5,7 @@ using BearsEngine.Window;
 
 namespace BearsEngine.Worlds.Cameras;
 
-public class UICamera : EntityBase
+public class UICamera : EntityBase, IUICamera
 {
     private int _frameBufferMSAAID;
     private Texture _frameBufferMSAATexture;
@@ -54,8 +54,6 @@ public class UICamera : EntityBase
     protected int VertexBuffer { get; private set; }
 
     protected Vertex[] Vertices { get; set; }
-
-    public bool FixedTileSize { get; set; }
 
     public override Point LocalMousePosition => GetLocalPosition(Mouse.Instance.ClientPosition);
 
