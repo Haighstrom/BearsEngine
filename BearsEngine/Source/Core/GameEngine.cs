@@ -16,6 +16,7 @@ public class GameEngine : IGameEngine
 
     private bool _disposed = false;
     private readonly int _targetUPS, _targetRPS;
+    private readonly bool _periodicLogging;
     private readonly ISceneManager _sceneManager;
     private readonly IMouseInternal _mouse;
     private readonly IKeyboardInternal _keyboard;
@@ -58,6 +59,7 @@ public class GameEngine : IGameEngine
 
         _targetUPS = appSettings.GameLoopSettings.TargetUPS;
         _targetRPS = appSettings.GameLoopSettings.TargetFramesPerSecond;
+        _periodicLogging = appSettings.GameLoopSettings.PeriodicallyLogGameLoopInfoInConsole;
 
         OpenGLHelper.Viewport(Window.Viewport);
         OpenGLHelper.OrthoMatrix = Matrix3.CreateOrtho(Window.ClientSize.X, Window.ClientSize.Y);
@@ -228,7 +230,10 @@ public class GameEngine : IGameEngine
                     periodicLoggingTimer -= TimeBetweenPeriodicUpdates;
                 }
 
-                LogPeriodicInfo();
+                if (_periodicLogging)
+                {
+                    LogPeriodicInfo();
+                }
             }
         }
     }

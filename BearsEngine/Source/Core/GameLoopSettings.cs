@@ -7,4 +7,6 @@ public class GameLoopSettings
     public int TargetFramesPerSecond { get; set; } = 60;
 
     public int TargetUPS { get; set; } = 60;
+
+    public bool PeriodicallyLogGameLoopInfoInConsole { get; set; } = false;
 }
