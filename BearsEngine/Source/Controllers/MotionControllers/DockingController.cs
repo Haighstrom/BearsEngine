@@ -2,16 +2,16 @@
 
 public class DockingController : AddableBase, IUpdatable
 {
-    private Rect _target;
+    private readonly IRectangular _target;
     private readonly Func<Rect> _dockTo;
 
 
-    public DockingController(Rect target, Func<Rect> dockTo, QuadrantPosition dockPosition, Point shift)
+    public DockingController(IRectangular target, Func<Rect> dockTo, QuadrantPosition dockPosition, Point shift)
         : this(target, dockTo, dockPosition, (int)shift.X, (int)shift.Y)
     {
     }
 
-    public DockingController(Rect target, Func<Rect> dockTo, QuadrantPosition dockPosition, int xShift = 0, int yShift = 0)
+    public DockingController(IRectangular target, Func<Rect> dockTo, QuadrantPosition dockPosition, int xShift = 0, int yShift = 0)
     {
         _target = target;
         _dockTo = dockTo;
