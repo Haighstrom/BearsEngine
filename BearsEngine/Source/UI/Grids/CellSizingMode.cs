@@ -3,9 +3,9 @@
 /// <summary>
 /// Resize behaviour specs for cells of GridLayout panels
 /// </summary>
-public enum CellFormatMode
+public enum CellSizingMode
 {
     Fixed,
     Weighted,
-    Fit         //Match size of largest child entity
+    Fit
 }
