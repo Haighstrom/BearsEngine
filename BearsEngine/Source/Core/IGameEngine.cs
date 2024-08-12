@@ -25,6 +25,8 @@ public interface IGameEngine : IDisposable
 
     bool RunWhenUnfocussed { get; set; }
 
+    float GameSpeed { get; set; }
+
     int RenderFramesPerSecond { get; }
 
     int UpdateFramesPerSecond { get; }

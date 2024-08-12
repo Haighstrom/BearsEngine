@@ -79,6 +79,8 @@ public class GameEngine : IGameEngine
 
     public int UpdateFramesPerSecond { get; private set; }
 
+    public float GameSpeed { get; set; } = 1;
+
     public ILogger Logger { get; }
 
     public IDisplayManager Displays { get; }
@@ -124,7 +126,7 @@ public class GameEngine : IGameEngine
 
         if (RunWhenUnfocussed || Window.Focussed)
         {
-            _sceneManager.UpdateScene(elapsedTime);
+            _sceneManager.UpdateScene(elapsedTime * GameSpeed);
         }
     }
 
