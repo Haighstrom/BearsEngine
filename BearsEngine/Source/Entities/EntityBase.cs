@@ -1,6 +1,6 @@
 ﻿namespace BearsEngine.Worlds;
 
-public abstract class EntityBase : AddableRectBase, IUpdatable, IRenderableOnLayer, IContainer, IPosition, IDisposable
+public abstract class EntityBase : AddableRectBase, IEntity, IUpdatable, IRenderableOnLayer, IContainer, IPosition, IDisposable
 {
     private static float GetEntityLayer(IAddable a)
     {
