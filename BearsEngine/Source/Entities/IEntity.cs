@@ -1,5 +1,5 @@
 ﻿namespace BearsEngine.Worlds;
 
-public interface IEntity : IAddable, IRectangular, IContainer
+public interface IEntity : IAddable, IRectangular, IContainer, IRenderableOnLayer
 {
 }
