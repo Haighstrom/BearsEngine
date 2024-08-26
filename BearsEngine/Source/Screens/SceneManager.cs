@@ -37,7 +37,8 @@ internal class SceneManager : ISceneManager
                 CurrentScene.End();
             }
 
-            CurrentScene.Dispose(); //add dispose:bool somewhere to clarify if this should happen? What if scene will be reused?
+            Log.Warning("SceneManager not currently disposing prior scene");
+            //CurrentScene.Dispose(); //add dispose:bool somewhere to clarify if this should happen? What if scene will be reused?
 
             _currentScene = _nextScene;
 
