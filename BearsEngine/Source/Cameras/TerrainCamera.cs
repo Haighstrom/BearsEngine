@@ -4,15 +4,20 @@ namespace BearsEngine.Worlds.Cameras;
 
 public class TerrainCamera : Camera, ITerrainCamera
 {
-    protected SpriteMap SpriteMap { get; private set; }
+    protected ISpriteMap SpriteMap { get; private set; }
 
-    public TerrainCamera(int[,] map, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, float layer, Rect position, Rect viewport)
+    public TerrainCamera(ISpriteMap spriteMap, float layer, Rect position, Rect viewport)
         : base(layer, position, viewport)
     {
-        Add(SpriteMap = new SpriteMap(map, defaultIndex, 1, 1, terrainSpriteSheetPath, spriteSheetW, spriteSheetH));
+        Add(SpriteMap = spriteMap);
         ViewChanged += (o, s) => { SpriteMap.DrawArea = View; };
-        MaxX = map.GetLength(0);
-        MaxY = map.GetLength(1);
+        MaxX = spriteMap.MapW;
+        MaxY = spriteMap.MapH;
+    }
+
+    public TerrainCamera(int[,] map, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, float layer, Rect position, Rect viewport)
+        : this(new SpriteMap(map, defaultIndex, 1, 1, terrainSpriteSheetPath, spriteSheetW, spriteSheetH), layer, position, viewport)
+    {
     }
 
     public TerrainCamera(int mapW, int mapH, int defaultIndex, string terrainSpriteSheetPath, int spriteSheetW, int spriteSheetH, float layer, Rect position, float tileSizeW, float tileSizeH)

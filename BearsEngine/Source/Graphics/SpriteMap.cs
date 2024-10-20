@@ -3,7 +3,7 @@ using BearsEngine.OpenGL;
 
 namespace BearsEngine.Graphics;
 
-public class SpriteMap : AddableRectBase, IRectGraphic
+public class SpriteMap : AddableRectBase, ISpriteMap
 {
     private Colour _colour = Colour.White;
     private float _layer = 999;
@@ -14,7 +14,7 @@ public class SpriteMap : AddableRectBase, IRectGraphic
     private readonly float _ssTileW;
     private readonly float _ssTileH;
     private readonly int _ssColumns;
-    
+
 
     public SpriteMap(int mapW, int mapH, int defaultIndex, float tileW, float tileH, string spritesheetPath, int spriteSheetColumns, int spriteSheetRows)
         : this(ArrayHelper.CreateFilledArray(mapW, mapH, defaultIndex), defaultIndex, tileW, tileH, spritesheetPath, spriteSheetColumns, spriteSheetRows)
@@ -54,7 +54,7 @@ public class SpriteMap : AddableRectBase, IRectGraphic
             }
         }
     }
-    
+
     public bool Visible { get; set; } = true;
 
     public void Render(ref Matrix3 projection, ref Matrix3 modelView)
@@ -80,7 +80,7 @@ public class SpriteMap : AddableRectBase, IRectGraphic
                 _shader.Render(ref projection, ref tileMatrix, _vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLE_STRIP);
             }
     }
-    
+
     public float Layer
     {
         get => _layer;
@@ -98,21 +98,21 @@ public class SpriteMap : AddableRectBase, IRectGraphic
     public event EventHandler<LayerChangedEventArgs>? LayerChanged;
 
     public event EventHandler<SpriteMapIndexChangedEventArgs>? MapIndexChanged;
-    
+
 
     public Colour Colour
     {
         get => _colour;
         set => _colour = value;
     }
-    
+
 
     public byte Alpha
     {
         get => _colour.A;
         set => _colour.A = value;
     }
-    
+
 
     public bool ResizeWithParent { get; set; } = true;
 
@@ -121,10 +121,10 @@ public class SpriteMap : AddableRectBase, IRectGraphic
         W *= xScale;
         H *= yScale;
     }
-    
+
 
     public bool IsOnScreen => true; //todo: HV.Window.ClientZeroed.Intersects(Parent.GetWindowPosition(DrawArea));
-    
+
 
     public int[,] MapValues { get; set; }
 
@@ -149,14 +149,14 @@ public class SpriteMap : AddableRectBase, IRectGraphic
         OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, _ID);
         OpenGLHelper.LastBoundVertexBuffer = _ID;
     }
-    
+
 
     public void Unbind()
     {
         OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, 0);
         OpenGLHelper.LastBoundVertexBuffer = 0;
     }
-    
+
 
     private void UpdateVertices()
     {
@@ -171,10 +171,10 @@ public class SpriteMap : AddableRectBase, IRectGraphic
         OpenGLHelper.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, _vertices.Length * Vertex.STRIDE, _vertices, USAGE_PATTERN.GL_STREAM_DRAW);
         Unbind();
     }
-    
+
 
     public void SetAllMapValue(int newValue) => MapValues = ArrayHelper.CreateFilledArray(MapW, MapH, newValue);
-    
+
 
     public void Resize(int newW, int newH) => Resize(newW, newH, DefaultIndex);
 
@@ -194,6 +194,6 @@ public class SpriteMap : AddableRectBase, IRectGraphic
 
         MapValues = newMap;
     }
-    
-    
+
+
 }
