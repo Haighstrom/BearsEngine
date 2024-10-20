@@ -24,6 +24,8 @@ public class Polygon : IGraphic
 
     public IContainer Parent { get; set; }
 
+    public bool Exists => Parent is not null;
+
     public virtual void Remove() => Parent.Remove(this);
 
     public virtual void OnAdded() => Added(this, EventArgs.Empty);

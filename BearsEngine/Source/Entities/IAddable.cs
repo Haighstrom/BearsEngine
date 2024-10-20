@@ -3,6 +3,7 @@
 public interface IAddable
 {
     IContainer? Parent { get; set; }
+    bool Exists { get; }
 
     void OnAdded();
 

@@ -4,6 +4,8 @@ public class AddableBase : IAddable
 {
     public IContainer? Parent { get; set; }
 
+    public bool Exists => Parent is not null;
+
     public virtual void Remove()
     {
         if (Parent is null)
