@@ -42,16 +42,11 @@ public struct Matrix3
         mat = Translate(ref mat, -width / 2, -height / 2);
         return mat;
     }
-    
-
-    
 
     public static Matrix3 Add(ref Matrix3 mat1, ref Matrix3 mat2) => new(mat1._values.Zip(mat2._values, (a, b) => a + b).ToArray());
     
-
     public static Matrix3 Subtract(ref Matrix3 mat1, ref Matrix3 mat2) => new(mat1._values.Zip(mat2._values, (a, b) => a - b).ToArray());
     
-
     public static Matrix3 Multiply(ref Matrix3 mat1, ref Matrix3 mat2)
     {
         return new Matrix3
