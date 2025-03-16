@@ -209,7 +209,7 @@ public static class OpenGLHelper
         //Generate FBO and texture to use with the MSAA antialising pass
         framebufferTexture = new Texture(OpenGLHelper.GenTexture(), width, height);
 
-        OpenGL32.glBindTexture(TEXTURE_TARGET.GL_PROXY_TEXTURE_2D_MULTISAMPLE, framebufferTexture.ID);
+        OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D_MULTISAMPLE, framebufferTexture.ID);
         OpenGL32.glTexImage2DMultisample(TEXTURE_TARGET.GL_TEXTURE_2D_MULTISAMPLE, (int)samples, TEXTURE_INTERNALFORMAT.GL_RGB8, width, height, false);
 
         OpenGL32.glTexParameteri(TEXTURE_TARGET.GL_TEXTURE_2D, TEXPARAMETER_NAME.GL_TEXTURE_MIN_FILTER, TEXPARAMETER_VALUE.GL_LINEAR);
@@ -225,7 +225,7 @@ public static class OpenGLHelper
         OpenGL32.glDeleteTextures(1, new int[1] { framebufferTexture.ID });
         framebufferTexture = new Texture(GenTexture(), newW, newH);
 
-        OpenGL32.glBindTexture(TEXTURE_TARGET.GL_PROXY_TEXTURE_2D_MULTISAMPLE, framebufferTexture.ID);
+        OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D_MULTISAMPLE, framebufferTexture.ID);
         OpenGL32.glTexImage2DMultisample(TEXTURE_TARGET.GL_TEXTURE_2D_MULTISAMPLE, (int)newSamples, TEXTURE_INTERNALFORMAT.GL_RGB8, newW, newH, false);
 
         OpenGL32.glTexParameteri(TEXTURE_TARGET.GL_TEXTURE_2D, TEXPARAMETER_NAME.GL_TEXTURE_MIN_FILTER, TEXPARAMETER_VALUE.GL_LINEAR);
