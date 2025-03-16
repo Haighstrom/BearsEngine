@@ -1,5 +1,4 @@
 ﻿using BearsEngine.SystemTests.Source;
-using BearsEngine.SystemTests.Source.NewWorldTest;
 
 var appSettings = AppSettings.Get();
 
