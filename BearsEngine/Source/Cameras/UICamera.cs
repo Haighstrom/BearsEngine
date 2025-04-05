@@ -1,52 +1,46 @@
 ﻿using BearsEngine.Graphics.Shaders;
 using BearsEngine.Input;
 using BearsEngine.OpenGL;
-using BearsEngine.Window;
 
 namespace BearsEngine.Worlds.Cameras;
 
-public class UICamera : EntityBase, IUICamera
+public class UICamera : EntityBase //todo: disposable - remove resize event handlers?
 {
     private int _frameBufferMSAAID;
     private Texture _frameBufferMSAATexture;
     private int _frameBufferShaderPassID;
     private Texture _frameBufferShaderPassTexture;
     private readonly CameraMSAAShader _mSAAShader;
+    private readonly IMouse _mouse;
     private Matrix3 _ortho;
 
-    public UICamera(float layer)
-        : base(layer, HaighWindow.Instance.ClientSize.ToRect())
+    public UICamera(float layer, Rect position)
+        : base(layer, position)
     {
+        _mouse = Mouse.Instance;
+
         Shader = new DefaultShader();
 
         _mSAAShader = new CameraMSAAShader() { Samples = MSAASamples };
 
         VertexBuffer = OpenGLHelper.GenBuffer();
 
-        var colour = Colour.White;
+        var _colour = Colour.White;
         Vertices = new Vertex[4]
         {
-            new(0, 0, colour, 0f, 0f),
-            new(W, 0, colour, 1f,  0f),
-            new(0, H, colour, 0f,  1f),
-            new(W, H, colour, 1f,  1f)
+            new Vertex(0, 0, _colour, 0f, 0f),
+            new Vertex(W, 0, _colour, 1f,  0f),
+            new Vertex(0, H, _colour, 0f,  1f),
+            new Vertex(W, H, _colour, 1f,  1f)
         };
 
-        //if (MSAASamples != MSAA_Samples.Disabled)
-        //{
-        //    HF.Graphics.CreateMSAAFramebuffer(W, H, MSAASamples, out _frameBufferMSAAID, out _frameBufferMSAATexture);
-        //    _MSAAGraphic = new Image(_frameBufferMSAATexture)
-        //    {
-        //        Shader = new CameraMSAAShader(),
-        //    };
-        //}
+        OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, VertexBuffer);
+        OpenGLHelper.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, Vertices.Length * Vertex.STRIDE, Vertices, USAGE_PATTERN.GL_DYNAMIC_DRAW);
+        OpenGLHelper.LastBoundVertexBuffer = VertexBuffer;
+
         SetUpFBOTex((int)W, (int)H);
 
-        //HF.Graphics.CreateFramebuffer(W, H, out _frameBufferShaderPassID, out _frameBufferShaderPassTexture);
-        //_graphic = new Image(_frameBufferShaderPassTexture);
         _ortho = Matrix3.CreateFBOOrtho(W, H);
-
-        //_frameBufferShaderPassID = OpenGL.GenFramebuffer();
     }
 
     protected bool MSAAEnabled { get => MSAASamples != MSAA_SAMPLES.Disabled; }
@@ -55,33 +49,34 @@ public class UICamera : EntityBase, IUICamera
 
     protected Vertex[] Vertices { get; set; }
 
-    public override Point LocalMousePosition => GetLocalPosition(Mouse.Instance.ClientPosition);
+    /// <summary>
+    /// Angle in Degrees
+    /// </summary>
+    public float Angle { get; set; }
+
+    public Colour BackgroundColour { get; set; } = Colour.White;
+
+    public override Point LocalMousePosition => GetLocalPosition(_mouse.ClientPosition);
+
+    public bool MouseIntersecting => R.Contains(LocalMousePosition);
 
     public MSAA_SAMPLES MSAASamples { get; set; } = MSAA_SAMPLES.Disabled; //todo: trigger resize if this changes?
 
     public IShader Shader { get; set; }
 
+    /// <summary>
+    /// Initialise the textures that the Frame Buffet Object render target the camera draws to uses and the intermediate Multisample texture used in addition if MultiSample AntiAliasing is enabled.
+    /// </summary>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
     private void SetUpFBOTex(int width, int height)
     {
         if (width <= 0 || height <= 0)
             return;
 
-        if (MSAAEnabled)
+        if (MSAASamples != MSAA_SAMPLES.Disabled)
         {
-            //Generate FBO and texture to use with the MSAA antialising pass
-            _frameBufferMSAATexture = new Texture(OpenGLHelper.GenTexture(), width, height);
-
-            OpenGL32.glBindTexture(TEXTURE_TARGET.GL_PROXY_TEXTURE_2D_MULTISAMPLE, _frameBufferMSAATexture.ID);
-            OpenGL32.glTexImage2DMultisample(TEXTURE_TARGET.GL_TEXTURE_2D_MULTISAMPLE, (int)MSAASamples, TEXTURE_INTERNALFORMAT.GL_RGB8, width, height, false);
-
-            OpenGL32.glTexParameteri(TEXTURE_TARGET.GL_TEXTURE_2D, TEXPARAMETER_NAME.GL_TEXTURE_MIN_FILTER, TEXPARAMETER_VALUE.GL_LINEAR);
-            OpenGL32.glTexParameteri(TEXTURE_TARGET.GL_TEXTURE_2D, TEXPARAMETER_NAME.GL_TEXTURE_MAG_FILTER, TEXPARAMETER_VALUE.GL_LINEAR);
-            OpenGL32.glTexParameteri(TEXTURE_TARGET.GL_TEXTURE_2D, TEXPARAMETER_NAME.GL_TEXTURE_WRAP_S, TEXPARAMETER_VALUE.GL_CLAMP_TO_EDGE);
-            OpenGL32.glTexParameteri(TEXTURE_TARGET.GL_TEXTURE_2D, TEXPARAMETER_NAME.GL_TEXTURE_WRAP_T, TEXPARAMETER_VALUE.GL_CLAMP_TO_EDGE);
-
-            OpenGL32.glBindTexture(TEXTURE_TARGET.GL_PROXY_TEXTURE_2D_MULTISAMPLE, 0);
-
-            _frameBufferMSAAID = OpenGLHelper.GenFramebuffer();
+            OpenGLHelper.CreateMSAAFramebuffer(width, height, MSAASamples, out _frameBufferMSAAID, out _frameBufferMSAATexture);
         }
 
         //Generate FBO and texture to use for the final pass, where the camera's shader will be applied to the result of the MSAA pass
@@ -102,21 +97,16 @@ public class UICamera : EntityBase, IUICamera
         //Check for OpenGL errors
         var err = OpenGL32.glGetError();
         if (err != GL_ERROR.GL_NO_ERROR)
-        {
-            Log.Warning($"OpenGL error! (UICamera.Render) {err}");
-        }
+            Log.Warning($"OpenGL error! (Camera.SetUpFBOTex) {err}");
     }
 
-    public override Point GetWindowPosition(Point localCoords) => Parent.GetWindowPosition(new Point(X, Y) + localCoords);
-
-    public override Rect GetWindowPosition(Rect localCoords)
+    public override Point GetLocalPosition(Point windowCoords)
     {
-        Point tl = GetWindowPosition(localCoords.TopLeft);
-        Point br = GetWindowPosition(localCoords.BottomRight);
-        return new Rect(tl, br.X - tl.X, br.Y - tl.Y);
-    }
+        var p1 = Parent.GetLocalPosition(windowCoords);
+        var p2 = new Point(p1.X - X, p1.Y - Y);
 
-    public override Point GetLocalPosition(Point windowCoords) => Parent.GetLocalPosition(windowCoords - new Point(X, Y));
+        return p2;
+    }
 
     public override Rect GetLocalPosition(Rect windowCoords)
     {
@@ -125,13 +115,30 @@ public class UICamera : EntityBase, IUICamera
         return new Rect(tl, br.X - tl.X, br.Y - tl.Y);
     }
 
+    public override Point GetWindowPosition(Point localCoords)
+    {
+        return Parent.GetWindowPosition(new Point(X + localCoords.X, Y + localCoords.Y));
+    }
+
+    public override Rect GetWindowPosition(Rect localCoords)
+    {
+        Point tl = GetWindowPosition(localCoords.TopLeft);
+        Point br = GetWindowPosition(localCoords.BottomRight);
+        return new Rect(tl, br.X - tl.X, br.Y - tl.Y);
+    }
+
     public override void Render(ref Matrix3 projection, ref Matrix3 modelView)
     {
+        //Bind vertex buffer - optimise this later            
+        OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, VertexBuffer);
+        OpenGLHelper.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, Vertices.Length * Vertex.STRIDE, Vertices, USAGE_PATTERN.GL_DYNAMIC_DRAW);
+        OpenGLHelper.LastBoundVertexBuffer = VertexBuffer;
+
         if (MSAAEnabled)
         {
             //Bind MSAA FBO to be the draw destination and clear it
             OpenGL32.glBindFramebuffer(FRAMEBUFFER_TARGET.GL_FRAMEBUFFER, _frameBufferMSAAID);
-            OpenGL32.glFramebufferTexture2D(FRAMEBUFFER_TARGET.GL_FRAMEBUFFER, FRAMEBUFFER_ATTACHMENT_POINT.GL_COLOR_ATTACHMENT0, TEXTURE_TARGET.GL_PROXY_TEXTURE_2D_MULTISAMPLE, _frameBufferMSAATexture.ID, 0);
+            OpenGL32.glFramebufferTexture2D(FRAMEBUFFER_TARGET.GL_FRAMEBUFFER, FRAMEBUFFER_ATTACHMENT_POINT.GL_COLOR_ATTACHMENT0, TEXTURE_TARGET.GL_TEXTURE_2D_MULTISAMPLE, _frameBufferMSAATexture.ID, 0);
         }
         else
         {
@@ -141,7 +148,7 @@ public class UICamera : EntityBase, IUICamera
         }
 
         //Clear the FBO
-        OpenGL32.glClearColor(0, 0, 0, 0);
+        OpenGL32.glClearColor(BackgroundColour.R / 255f, BackgroundColour.G / 255f, BackgroundColour.B / 255f, BackgroundColour.A / 255f);
         OpenGL32.glClear(BUFFER_MASK.GL_COLOR_BUFFER_BIT);
 
         //Set normal blend function for within the layers
@@ -158,15 +165,13 @@ public class UICamera : EntityBase, IUICamera
         Matrix3 identity = Matrix3.Identity;
 
         //draw stuff here 
+
         base.Render(ref _ortho, ref identity);
+
+        OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, VertexBuffer);//this MUST be called after base render
 
         //Revert the render target 
         OpenGLHelper.LastBoundFrameBuffer = tempFBID;
-
-        //Bind vertex buffer - optimise this later            
-        OpenGL32.glBindBuffer(BUFFER_TARGET.GL_ARRAY_BUFFER, VertexBuffer);
-        OpenGLHelper.BufferData(BUFFER_TARGET.GL_ARRAY_BUFFER, Vertices.Length * Vertex.STRIDE, Vertices, USAGE_PATTERN.GL_DYNAMIC_DRAW);
-        OpenGLHelper.LastBoundVertexBuffer = VertexBuffer;
 
         if (MSAAEnabled)
         {
@@ -178,13 +183,13 @@ public class UICamera : EntityBase, IUICamera
 
             //Bind the FBO to be drawn
 
-            OpenGL32.glBindTexture(TEXTURE_TARGET.GL_PROXY_TEXTURE_2D_MULTISAMPLE, _frameBufferMSAATexture.ID);
+            OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D_MULTISAMPLE, _frameBufferMSAATexture.ID);
 
             //Do the MSAA render pass, drawing to the MSAATexture FBO
             _mSAAShader.Render(ref _ortho, ref identity, Vertices.Length, PRIMITIVE_TYPE.GL_TRIANGLE_STRIP);
 
             //Unbind the FBO 
-            OpenGL32.glBindTexture(TEXTURE_TARGET.GL_PROXY_TEXTURE_2D_MULTISAMPLE, 0);
+            OpenGL32.glBindTexture(TEXTURE_TARGET.GL_TEXTURE_2D_MULTISAMPLE, 0);
         }
 
         //Bind the render target back to either the screen, or a camera higher up the heirachy, depending on what called this
@@ -200,7 +205,8 @@ public class UICamera : EntityBase, IUICamera
         OpenGLHelper.Viewport(prevVP);
 
         Matrix3 mv = modelView;
-
+        if (Angle != 0)
+            mv = Matrix3.RotateAroundPoint(ref mv, Angle, R.Centre.X, R.Centre.Y);
         mv = Matrix3.Translate(ref mv, X, Y);
 
         //Render with assigned shader
@@ -213,25 +219,6 @@ public class UICamera : EntityBase, IUICamera
 
     public void Resize(float newW, float newH)
     {
-        W = newW;
-        H = newH;
-
-        //if (MSAASamples != MSAA_Samples.Disabled)
-        //    HF.Graphics.ResizeMSAAFramebuffer(_frameBufferMSAAID, ref _frameBufferMSAATexture, W, H, MSAASamples);
-
-        //HF.Graphics.ResizeFramebuffer(_frameBufferShaderPassID, ref _frameBufferShaderPassTexture, W, H);
-
-        var colour = Colour.White;
-        Vertices = new Vertex[4]
-        {
-            new(0, 0, colour, 0f, 0f),
-            new(W, 0, colour, 1f,  0f),
-            new(0, H, colour, 0f,  1f),
-            new(W, H, colour, 1f,  1f)
-        };
-
-        SetUpFBOTex((int)W, (int)H);
-
-        _ortho = Matrix3.CreateFBOOrtho(W, H);
+        throw new NotImplementedException();
     }
 }
