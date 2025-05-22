@@ -1,4 +1,5 @@
-﻿using BearsEngine.Graphics.Shaders;
+﻿using System.Diagnostics.CodeAnalysis;
+using BearsEngine.Graphics.Shaders;
 using BearsEngine.Input;
 using BearsEngine.OpenGL;
 
@@ -14,14 +15,16 @@ public class UICamera : EntityBase //todo: disposable - remove resize event hand
     private readonly IMouse _mouse;
     private Matrix3 _ortho;
 
-    public UICamera(float layer, Rect position)
+    public UICamera(float layer, Rect position, MSAA_SAMPLES samples)
         : base(layer, position)
     {
         _mouse = Mouse.Instance;
 
         Shader = new DefaultShader();
 
-        _mSAAShader = new CameraMSAAShader() { Samples = MSAASamples };
+        MSAASamples = samples;
+
+        _mSAAShader = new CameraMSAAShader() { Samples = samples };
 
         VertexBuffer = OpenGLHelper.GenBuffer();
 
@@ -64,6 +67,7 @@ public class UICamera : EntityBase //todo: disposable - remove resize event hand
 
     public IShader Shader { get; set; }
 
+    [MemberNotNull(nameof(_frameBufferMSAAID), nameof(_frameBufferMSAATexture), nameof(_frameBufferShaderPassID), nameof(_frameBufferShaderPassTexture))]
     /// <summary>
     /// Initialise the textures that the Frame Buffet Object render target the camera draws to uses and the intermediate Multisample texture used in addition if MultiSample AntiAliasing is enabled.
     /// </summary>
@@ -72,7 +76,7 @@ public class UICamera : EntityBase //todo: disposable - remove resize event hand
     private void SetUpFBOTex(int width, int height)
     {
         if (width <= 0 || height <= 0)
-            return;
+            throw new Exception("fbo tex received 0/0 size");
 
         if (MSAASamples != MSAA_SAMPLES.Disabled)
         {
