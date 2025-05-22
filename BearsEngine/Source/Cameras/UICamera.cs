@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Windows.Forms;
 using BearsEngine.Graphics.Shaders;
 using BearsEngine.Input;
 using BearsEngine.OpenGL;
@@ -223,6 +224,21 @@ public class UICamera : EntityBase //todo: disposable - remove resize event hand
 
     public void Resize(float newW, float newH)
     {
-        throw new NotImplementedException();
+        W = newW;
+        H = newH;
+
+        var colour = Colour.White;
+
+        Vertices =
+        [
+            new Vertex(0, 0, colour, 0f, 0f),
+            new Vertex(W, 0, colour, 1f,  0f),
+            new Vertex(0, H, colour, 0f,  1f),
+            new Vertex(W, H, colour, 1f,  1f)
+        ];
+
+        SetUpFBOTex((int)W, (int)H);
+
+        _ortho = Matrix3.CreateFBOOrtho(W, H);
     }
 }
