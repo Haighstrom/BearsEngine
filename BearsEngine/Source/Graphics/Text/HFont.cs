@@ -216,7 +216,9 @@ public class HFont : IDisposable
             r = OpenGLHelper.NonZeroAlphaRegion(image);
 
             if (r.W == 0 || r.H == 0)
+            {
                 throw new InvalidOperationException($"HFont.cs/GenerateCharacterBitmap: Font {FontName}, Size {FontSize}, character 't' is giving size (W:{r.W},H:{r.H})");
+            }
         }
 
         image = new Bitmap((int)r.X + (int)r.W, (int)r.Y + (int)r.H, PixelFormat.Format32bppArgb); //include alpha at left/top of image so positioning is preserved

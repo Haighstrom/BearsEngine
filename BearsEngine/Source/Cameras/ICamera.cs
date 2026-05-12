@@ -16,6 +16,8 @@ public interface ICamera : IRectangular, IAddable, IUpdatable, IRenderableOnLaye
 
     event EventHandler? ViewChanged;
 
+    float GameSpeed { get; set; }
+
     float MaxX { get; set; }
 
     float MaxY { get; set; }

@@ -76,6 +76,8 @@ public class Camera : EntityBase, ICamera //todo: disposable - remove resize eve
 
     protected Vertex[] Vertices { get; set; }
 
+    public float GameSpeed { get; set; } = 1;
+
     /// <summary>
     /// Angle in Degrees
     /// </summary>
@@ -229,6 +231,11 @@ public class Camera : EntityBase, ICamera //todo: disposable - remove resize eve
         Direction.Left => LocalMousePosition.X >= 0 && LocalMousePosition.X < View.X + maxDistance,
         _ => throw new ArgumentException(string.Format("edgeDirection value not handled: {0}", edgeDirection), nameof(edgeDirection)),
     };
+
+    public override void Update(float elapsed)
+    {
+        base.Update(GameSpeed * elapsed);
+    }
 
     public override void Render(ref Matrix3 projection, ref Matrix3 modelView)
     {

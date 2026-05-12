@@ -34,6 +34,8 @@ public class TaskController : AddableBase, ITaskController
     public ITask? CurrentTask { get; set; }
     public Func<ITask?>? GetNextTask { get; set; }
 
+    public void ClearTask() => CurrentTask = null;
+
     public virtual void Update(float elapsed)
     {
         if (Parent is null)
@@ -43,7 +45,7 @@ public class TaskController : AddableBase, ITaskController
         {
             CurrentTask.Update(elapsed);
 
-            if (CurrentTask.IsComplete)
+            if (CurrentTask is not null && CurrentTask.IsComplete) //null check in case the task itself cleared the task
             {
                 CurrentTask.Complete();
                 if (Parent is IAddable ie && ie.Parent is null) //kind of a hack?
@@ -56,7 +58,9 @@ public class TaskController : AddableBase, ITaskController
             return;
 
         if (CurrentTask == null && GetNextTask != null)
+        {
             CurrentTask = GetNextTask();
+        }
     }
 
 }

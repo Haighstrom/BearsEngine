@@ -3,7 +3,7 @@ using BearsEngine.OpenGL;
 
 namespace BearsEngine.Graphics;
 
-public class SimpleGraphic : IRenderable
+public class SimpleGraphic : IRenderable, IDisposable
 {
     private readonly object _syncRoot = new();
     private bool _disposed = false;
